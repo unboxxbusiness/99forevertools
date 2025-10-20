@@ -1,6 +1,7 @@
 'use server';
 
 import { suggestNiches } from '@/ai/flows/suggest-niches';
+import { generateSubjectLines } from '@/ai/flows/generate-subject-lines';
 import {z} from 'zod';
 
 const emailPermutatorSchema = z.object({
@@ -76,6 +77,29 @@ export async function suggestNichesAction(values: z.infer<typeof nicheSuggesterS
     console.error('Error suggesting niches:', error);
     return {
       error: 'Failed to suggest niches. Please try again.',
+      data: [],
+    };
+  }
+}
+
+const subjectLineGeneratorSchema = z.object({
+  topic: z.string().min(3, { message: 'Topic must be at least 3 characters long.' }),
+});
+
+export async function generateSubjectLinesAction(values: z.infer<typeof subjectLineGeneratorSchema>) {
+  try {
+    const validatedFields = subjectLineGeneratorSchema.safeParse(values);
+    if (!validatedFields.success) {
+      return { error: 'Invalid input.', data: [] };
+    }
+
+    const { topic } = validatedFields.data;
+    const result = await generateSubjectLines({ topic });
+    return { data: result.subjectLines, error: null };
+  } catch (error) {
+    console.error('Error generating subject lines:', error);
+    return {
+      error: 'Failed to generate subject lines. Please try again.',
       data: [],
     };
   }

@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, Lightbulb } from 'lucide-react';
+import { Zap, Lightbulb, MailPlus } from 'lucide-react';
 
 const tools = [
   {
@@ -16,6 +16,12 @@ const tools = [
     description: 'Get AI-powered niche market suggestions based on a keyword.',
     href: '/niche-suggester',
     icon: <Lightbulb className="h-8 w-8" />,
+  },
+  {
+    title: 'Subject Line Generator',
+    description: 'Generate 10 high-converting email subject lines for any topic.',
+    href: '/subject-line-generator',
+    icon: <MailPlus className="h-8 w-8" />,
   },
   // Add more tools here in the future
 ];
