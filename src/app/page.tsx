@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson } from 'lucide-react';
+import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot } from 'lucide-react';
 
 const tools = [
   {
@@ -46,6 +46,12 @@ const tools = [
     description: 'Generate structured data for local businesses, articles, or FAQs.',
     href: '/schema-generator',
     icon: <FileJson className="h-8 w-8" />,
+  },
+  {
+    title: 'Robots.txt Generator',
+    description: 'Create a properly formatted robots.txt file to guide search engine crawlers.',
+    href: '/robots-txt-generator',
+    icon: <Bot className="h-8 w-8" />,
   },
 ];
 
