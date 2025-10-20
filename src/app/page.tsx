@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, FileSpreadsheet, Activity } from 'lucide-react';
+import { Zap, FileSpreadsheet, Activity, Tag } from 'lucide-react';
 
 const tools = [
   {
@@ -22,6 +22,12 @@ const tools = [
     description: 'Scores headlines on length, sentiment, and power words.',
     href: '/headline-analyzer',
     icon: <Activity className="h-8 w-8" />,
+  },
+  {
+    title: 'Meta Tag Generator',
+    description: 'Create optimized meta titles and descriptions for Google search.',
+    href: '/meta-tag-generator',
+    icon: <Tag className="h-8 w-8" />,
   },
 ];
 
