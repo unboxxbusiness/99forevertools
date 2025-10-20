@@ -4,145 +4,8 @@ import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
 import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck, QrCode, Clock, KeyRound, CaseSensitive, SpellCheck, ShieldCheck, FileText, Palette, Landmark, PiggyBank, TrendingUp, Percent } from 'lucide-react';
 
-const tools = [
-  {
-    title: 'Email Permutator',
-    description: 'Generate all possible email combinations from a name and domain.',
-    href: '/email-permutator',
-    icon: <Zap className="h-8 w-8" />,
-  },
-  {
-    title: 'Simple CRM .CSV Cleaner',
-    description: 'Upload a messy CSV of leads, and the tool standardizes formatting.',
-    href: '/csv-cleaner',
-    icon: <FileSpreadsheet className="h-8 w-8" />,
-  },
-  {
-    title: 'Headline Analyzer',
-    description: 'Scores headlines on length, sentiment, and power words.',
-    href: '/headline-analyzer',
-    icon: <Activity className="h-8 w-8" />,
-  },
-  {
-    title: 'Meta Tag Generator',
-    description: 'Create optimized meta titles and descriptions for Google search.',
-    href: '/meta-tag-generator',
-    icon: <Tag className="h-8 w-8" />,
-  },
-  {
-    title: 'Keyword Density Checker',
-    description: 'Check the frequency of specific keywords in your text to avoid over-optimization.',
-    href: '/keyword-density-checker',
-    icon: <SearchCheck className="h-8 w-8" />,
-  },
-  {
-    title: 'Readability Score Calculator',
-    description: 'Analyze text and score it based on Flesch-Kincaid Reading Ease.',
-    href: '/readability-checker',
-    icon: <Glasses className="h-8 w-8" />,
-  },
-  {
-    title: 'Schema Markup Generator',
-    description: 'Generate structured data for local businesses, articles, or FAQs.',
-    href: '/schema-generator',
-    icon: <FileJson className="h-8 w-8" />,
-  },
-  {
-    title: 'Robots.txt Generator',
-    description: 'Create a properly formatted robots.txt file to guide search engine crawlers.',
-    href: '/robots-txt-generator',
-    icon: <Bot className="h-8 w-8" />,
-  },
-  {
-    title: 'Lorem Ipsum Generator',
-    description: 'Creates customizable placeholder text for design mockups.',
-    href: '/lorem-ipsum-generator',
-    icon: <ClipboardType className="h-8 w-8" />,
-  },
-  {
-    title: 'UTM Link Builder',
-    description: 'A simple form to add UTM parameters to URLs for precise campaign tracking.',
-    href: '/utm-link-builder',
-    icon: <LinkIcon className="h-8 w-8" />,
-  },
-  {
-    title: 'Email Subject Line Tester',
-    description: 'Analyzes subject lines for potential spam triggers, length, and emotional impact.',
-    href: '/email-subject-line-tester',
-    icon: <MailCheck className="h-8 w-8" />,
-  },
-  {
-    title: 'QR Code Generator',
-    description: 'Create a customizable QR code that links to a website, Wi-Fi, or contact card.',
-    href: '/qr-code-generator',
-    icon: <QrCode className="h-8 w-8" />,
-  },
-   {
-    title: 'Time Zone Converter',
-    description: 'A visual tool to compare time zones and schedule international meetings easily.',
-    href: '/time-zone-converter',
-    icon: <Clock className="h-8 w-8" />,
-  },
-  {
-    title: 'Password Generator',
-    description: 'Creates strong, secure, and customizable passwords.',
-    href: '/password-generator',
-    icon: <KeyRound className="h-8 w-8" />,
-  },
-  {
-    title: 'Case Converter',
-    description: 'Instantly converts text to various formats like UPPERCASE, lowercase, and more.',
-    href: '/case-converter',
-    icon: <CaseSensitive className="h-8 w-8" />,
-  },
-  {
-    title: 'Word & Character Counter',
-    description: 'Counts words, characters, sentences, and paragraphs in real-time.',
-    href: '/word-counter',
-    icon: <SpellCheck className="h-8 w-8" />,
-  },
-  {
-    title: 'Privacy Policy Generator',
-    description: 'Generates a generic privacy policy template for websites and apps.',
-    href: '/privacy-policy-generator',
-    icon: <ShieldCheck className="h-8 w-8" />,
-  },
-  {
-    title: 'Terms & Conditions Generator',
-    description: 'Creates a simple, template-based T&C for a small business or website.',
-    href: '/terms-and-conditions-generator',
-    icon: <FileText className="h-8 w-8" />,
-  },
-  {
-    title: 'Color Palette Generator',
-    description: 'Creates harmonious color schemes from a single color.',
-    href: '/color-palette-generator',
-    icon: <Palette className="h-8 w-8" />,
-  },
-  {
-    title: 'Loan Repayment Calculator',
-    description: 'Calculates monthly payments and total interest for loans.',
-    href: '/loan-repayment-calculator',
-    icon: <Landmark className="h-8 w-8" />,
-  },
-  {
-    title: 'Salary Sacrifice Calculator',
-    description: 'Estimates tax savings from pre-tax contributions to a pension.',
-    href: '/salary-sacrifice-calculator',
-    icon: <PiggyBank className="h-8 w-8" />,
-  },
-  {
-    title: 'Compound Interest Calculator',
-    description: 'Shows the future value of an investment by demonstrating how compound interest grows over time.',
-    href: '/compound-interest-calculator',
-    icon: <TrendingUp className="h-8 w-8" />,
-  },
-  {
-    title: 'ROI Calculator',
-    description: 'A simple calculator to determine the profitability of an investment.',
-    href: '/roi-calculator',
-    icon: <Percent className="h-8 w-8" />,
-  }
+const tools:any[] = [
+  
 ];
 
 export default function Home() {
@@ -159,18 +22,28 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {tools.sort((a, b) => a.title.localeCompare(b.title)).map((tool, index) => (
-            <div key={tool.href} className="animate-fade-in" style={{ animationDelay: `${150 * (index + 1)}ms` }}>
-              <ToolCard
-                href={tool.href}
-                title={tool.title}
-                description={tool.description}
-                icon={tool.icon}
-              />
-            </div>
-          ))}
-        </div>
+        {tools.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {tools.sort((a, b) => a.title.localeCompare(b.title)).map((tool, index) => (
+              <div key={tool.href} className="animate-fade-in" style={{ animationDelay: `${150 * (index + 1)}ms` }}>
+                <ToolCard
+                  href={tool.href}
+                  title={tool.title}
+                  description={tool.description}
+                  icon={tool.icon}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16 border-2 border-dashed rounded-lg border-muted">
+            <Bot className="mx-auto h-12 w-12 text-muted-foreground" />
+            <h3 className="mt-4 text-lg font-medium">No tools available yet.</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Your generated tools will appear here.
+            </p>
+          </div>
+        )}
       </main>
       <footer className="text-center p-6 text-sm text-muted-foreground">
         More tools coming soon...
