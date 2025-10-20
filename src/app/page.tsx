@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, Lightbulb, MailPlus, Users, FileSpreadsheet, PenSquare, Gem, ListTree, BrainCircuit } from 'lucide-react';
+import { Zap, Lightbulb, MailPlus, Users, FileSpreadsheet, PenSquare, Gem, ListTree, BrainCircuit, Youtube } from 'lucide-react';
 
 const tools = [
   {
@@ -59,6 +59,12 @@ const tools = [
     href: '/pas-copywriter',
     icon: <BrainCircuit className="h-8 w-8" />,
   },
+  {
+    title: 'YouTube Script Hook Generator',
+    description: 'Create the first 15 seconds of a YouTube script to grab viewer attention.',
+    href: '/youtube-hook-generator',
+    icon: <Youtube className="h-8 w-8" />,
+  }
 ];
 
 export default function Home() {

@@ -7,6 +7,7 @@ import { generateHeadlines } from '@/ai/flows/generate-headlines';
 import { generateValueProposition } from '@/ai/flows/generate-value-prop';
 import { generateBlogOutline } from '@/ai/flows/generate-blog-outline';
 import { generatePasCopy } from '@/ai/flows/generate-pas-copy';
+import { generateYoutubeHook } from '@/ai/flows/generate-youtube-hook';
 import {z} from 'zod';
 
 const emailPermutatorSchema = z.object({
@@ -307,6 +308,28 @@ export async function generatePasCopyAction(values: z.infer<typeof pasCopywriter
     console.error('Error generating PAS copy:', error);
     return {
       error: 'Failed to generate PAS copy. Please try again.',
+      data: null,
+    };
+  }
+}
+
+const youtubeHookGeneratorSchema = z.object({
+  topic: z.string().min(5, { message: 'Topic must be at least 5 characters long.' }),
+});
+
+export async function generateYoutubeHookAction(values: z.infer<typeof youtubeHookGeneratorSchema>) {
+  try {
+    const validatedFields = youtubeHookGeneratorSchema.safeParse(values);
+    if (!validatedFields.success) {
+      return { error: 'Invalid input.', data: null };
+    }
+
+    const result = await generateYoutubeHook(validatedFields.data);
+    return { data: result, error: null };
+  } catch (error) {
+    console.error('Error generating YouTube hook:', error);
+    return {
+      error: 'Failed to generate YouTube hook. Please try again.',
       data: null,
     };
   }
