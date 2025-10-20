@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck, QrCode, Clock, KeyRound } from 'lucide-react';
+import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck, QrCode, Clock, KeyRound, CaseSensitive } from 'lucide-react';
 
 const tools = [
   {
@@ -88,6 +88,12 @@ const tools = [
     description: 'Creates strong, secure, and customizable passwords.',
     href: '/password-generator',
     icon: <KeyRound className="h-8 w-8" />,
+  },
+  {
+    title: 'Case Converter',
+    description: 'Instantly converts text to various formats like UPPERCASE, lowercase, and more.',
+    href: '/case-converter',
+    icon: <CaseSensitive className="h-8 w-8" />,
   }
 ];
 
