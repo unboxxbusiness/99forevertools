@@ -24,7 +24,7 @@ type LeadResultsProps = {
 
 const QualificationBadge = ({ status }: { status: string }) => {
   if (status === 'qualified') {
-    return <Badge variant="default" className="bg-green-600 text-white hover:bg-green-700">Qualified</Badge>;
+    return <Badge variant="default">Qualified</Badge>;
   }
   return <Badge variant="secondary">Unqualified</Badge>;
 };
@@ -92,7 +92,7 @@ export function LeadResults({ leads, isLoading, hasSearched }: LeadResultsProps)
       </Table>
        {leads.filter(l => l.qualification === 'qualified').length > 0 && 
         <div className="mt-6 flex items-center justify-center gap-2 text-center p-4 bg-primary/10 rounded-lg animate-fade-in">
-            <PartyPopper className="h-5 w-5 text-green-500" />
+            <PartyPopper className="h-5 w-5 text-primary" />
             <p className="text-sm font-medium">You've got {leads.filter(l => l.qualification === 'qualified').length} qualified leads!</p>
         </div>
        }
