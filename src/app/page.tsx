@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, Lightbulb, MailPlus, Users, FileSpreadsheet, PenSquare, Gem, ListTree, BrainCircuit, Youtube } from 'lucide-react';
+import { Zap, FileSpreadsheet } from 'lucide-react';
 
 const tools = [
   {
@@ -12,59 +12,11 @@ const tools = [
     icon: <Zap className="h-8 w-8" />,
   },
   {
-    title: 'Niche Market Suggester',
-    description: 'Get AI-powered niche market suggestions based on a keyword.',
-    href: '/niche-suggester',
-    icon: <Lightbulb className="h-8 w-8" />,
-  },
-  {
-    title: 'Subject Line Generator',
-    description: 'Generate 10 high-converting email subject lines for any topic.',
-    href: '/subject-line-generator',
-    icon: <MailPlus className="h-8 w-8" />,
-  },
-  {
-    title: 'Who to Contact Finder',
-    description: 'Find the right job titles to contact at a company for your service.',
-    href: '/who-to-contact',
-    icon: <Users className="h-8 w-8" />,
-  },
-  {
     title: 'Simple CRM .CSV Cleaner',
     description: 'Upload a messy CSV of leads, and the tool standardizes formatting.',
     href: '/csv-cleaner',
     icon: <FileSpreadsheet className="h-8 w-8" />,
   },
-  {
-    title: 'AI Headline Generator',
-    description: 'Generate 10 catchy headlines for blog posts or landing pages.',
-    href: '/ai-headline-generator',
-    icon: <PenSquare className="h-8 w-8" />,
-  },
-  {
-    title: 'Value Proposition Generator',
-    description: 'Guides users through questions to generate a clear value proposition.',
-    href: '/value-proposition-generator',
-    icon: <Gem className="h-8 w-8" />,
-  },
-  {
-    title: 'Blog Post Outline Creator',
-    description: 'Generate a structured outline for your blog post with H2 and H3 headings.',
-    href: '/blog-outline-creator',
-    icon: <ListTree className="h-8 w-8" />,
-  },
-  {
-    title: '"Problem, Agitate, Solve" Copywriter',
-    description: 'Generate persuasive copy for landing pages or emails using the PAS framework.',
-    href: '/pas-copywriter',
-    icon: <BrainCircuit className="h-8 w-8" />,
-  },
-  {
-    title: 'YouTube Script Hook Generator',
-    description: 'Create the first 15 seconds of a YouTube script to grab viewer attention.',
-    href: '/youtube-hook-generator',
-    icon: <Youtube className="h-8 w-8" />,
-  }
 ];
 
 export default function Home() {
