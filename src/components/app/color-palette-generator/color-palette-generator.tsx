@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Copy, Check, Info, CheckCircle, XCircle } from 'lucide-react';
 import { hexToHsl, generateWebsitePalettes, type WebsitePalette } from './color-utils';
+import { Button } from '@/components/ui/button';
 
 const ColorBox = ({ color, name }: { color: string, name: string }) => {
     const { toast } = useToast();
