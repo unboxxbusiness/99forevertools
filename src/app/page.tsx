@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck } from 'lucide-react';
+import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck, QrCode } from 'lucide-react';
 
 const tools = [
   {
@@ -70,6 +70,12 @@ const tools = [
     description: 'Analyzes subject lines for potential spam triggers, length, and emotional impact.',
     href: '/email-subject-line-tester',
     icon: <MailCheck className="h-8 w-8" />,
+  },
+  {
+    title: 'QR Code Generator',
+    description: 'Create a customizable QR code that links to a website, Wi-Fi, or contact card.',
+    href: '/qr-code-generator',
+    icon: <QrCode className="h-8 w-8" />,
   },
 ];
 
