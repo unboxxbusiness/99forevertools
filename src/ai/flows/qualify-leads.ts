@@ -21,7 +21,9 @@ const LeadSchema = z.object({
     .describe(
       'The status of the website.  Valid values are \"exists\", \"missing\".'
     ),
+  country: z.string().describe('The country the business is located in.'),
   city: z.string().describe('The city the business is located in.'),
+  pincode: z.string().describe('The pincode the business is located in.'),
 });
 
 export type Lead = z.infer<typeof LeadSchema>;
@@ -59,7 +61,7 @@ const qualifyLeadsPrompt = ai.definePrompt({
   output: {schema: QualifyLeadsOutputSchema},
   prompt: `You are an expert lead qualifier for local businesses.
 
-You will receive a list of business leads, each with a business name, website status (\"exists\" or \"missing\"), and city.
+You will receive a list of business leads, each with a business name, website status (\"exists\" or \"missing\"), and location details.
 
 Your job is to qualify each lead based on the following criteria:
 
@@ -75,7 +77,9 @@ Here is the list of leads:
 {{#each leads}}
 Business Name: {{{businessName}}}
 Website Status: {{{websiteStatus}}}
+Country: {{{country}}}
 City: {{{city}}}
+Pincode: {{{pincode}}}
 {{/each}}`,
 });
 

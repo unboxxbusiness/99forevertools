@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Building2, Loader2, MapPin, Zap } from 'lucide-react';
+import { Building2, Globe, Loader2, MapPin, Pin, Zap } from 'lucide-react';
 import type { QualifiedLead } from '@/ai/flows/qualify-leads';
 import { getQualifiedLeadsAction } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
@@ -23,8 +23,14 @@ const formSchema = z.object({
   businessType: z.string().min(2, {
     message: 'Business type must be at least 2 characters.',
   }),
+  country: z.string().min(2, {
+    message: 'Country must be at least 2 characters.',
+  }),
   city: z.string().min(2, {
     message: 'City must be at least 2 characters.',
+  }),
+  pincode: z.string().min(4, {
+    message: 'Pin code must be at least 4 characters.',
   }),
 });
 
@@ -41,7 +47,9 @@ export function LeadForm({ setLeads, setIsLoading, setHasSearched }: LeadFormPro
     resolver: zodResolver(formSchema),
     defaultValues: {
       businessType: 'Restaurant',
+      country: 'USA',
       city: 'New York',
+      pincode: '10001',
     },
   });
 
@@ -81,7 +89,7 @@ export function LeadForm({ setLeads, setIsLoading, setHasSearched }: LeadFormPro
       <CardHeader>
         <CardTitle className="text-3xl font-bold tracking-tight">Generate Leads</CardTitle>
         <CardDescription>
-          Enter a business type and city to find and qualify potential leads.
+          Enter a business type and location to find and qualify potential leads.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -103,22 +111,56 @@ export function LeadForm({ setLeads, setIsLoading, setHasSearched }: LeadFormPro
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="city"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Target City</FormLabel>
-                   <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <FormControl>
-                      <Input placeholder="e.g., New York, Los Angeles, Chicago, Miami, San Francisco" {...field} className="pl-10" />
-                    </FormControl>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <FormField
+                control={form.control}
+                name="country"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Country</FormLabel>
+                     <div className="relative">
+                      <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <FormControl>
+                        <Input placeholder="e.g., USA" {...field} className="pl-10" />
+                      </FormControl>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="city"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>City</FormLabel>
+                     <div className="relative">
+                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <FormControl>
+                        <Input placeholder="e.g., New York, Miami" {...field} className="pl-10" />
+                      </FormControl>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+               <FormField
+                control={form.control}
+                name="pincode"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Pin Code</FormLabel>
+                     <div className="relative">
+                      <Pin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <FormControl>
+                        <Input placeholder="e.g., 10001" {...field} className="pl-10" />
+                      </FormControl>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <Button type="submit" disabled={isSubmitting} className="w-full">
               {isSubmitting ? (
                 <Loader2 className="animate-spin" />

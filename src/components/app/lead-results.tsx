@@ -57,7 +57,7 @@ export function LeadResults({ leads, isLoading, hasSearched }: LeadResultsProps)
         <Frown className="mx-auto h-12 w-12 text-muted-foreground" />
         <h3 className="mt-4 text-lg font-medium">No leads found</h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          We couldn't find any matching businesses. Try a different city.
+          We couldn't find any matching businesses. Try a different location.
         </p>
       </div>
   );
@@ -68,15 +68,19 @@ export function LeadResults({ leads, isLoading, hasSearched }: LeadResultsProps)
         <TableHeader>
           <TableRow>
             <TableHead>Business Name</TableHead>
+            <TableHead>Location</TableHead>
             <TableHead>Website Status</TableHead>
             <TableHead>AI Qualification</TableHead>
-            <TableHead className="w-[40%]">Reason</TableHead>
+            <TableHead className="w-[30%]">Reason</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {leads.map((lead, index) => (
             <TableRow key={index} className="animate-fade-in" style={{ animationDelay: `${index * 50}ms`, animationFillMode: 'backwards', opacity: 0 }}>
               <TableCell className="font-medium">{lead.businessName}</TableCell>
+              <TableCell className="text-sm text-muted-foreground">
+                {lead.city}, {lead.pincode}, {lead.country}
+              </TableCell>
               <TableCell>
                 <Badge variant={lead.websiteStatus === 'exists' ? 'outline' : 'destructive'}>
                   {lead.websiteStatus}

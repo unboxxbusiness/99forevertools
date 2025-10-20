@@ -6,7 +6,9 @@ import { mockLeads } from '@/lib/mock-leads';
 
 const formSchema = z.object({
   businessType: z.string().min(2, { message: 'Business type must be at least 2 characters.' }),
+  country: z.string().min(2, { message: 'Country must be at least 2 characters.' }),
   city: z.string().min(2, { message: 'City must be at least 2 characters.' }),
+  pincode: z.string().min(4, { message: 'Pin code must be at least 4 characters.' }),
 });
 
 export async function getQualifiedLeadsAction(values: z.infer<typeof formSchema>) {
@@ -18,9 +20,11 @@ export async function getQualifiedLeadsAction(values: z.infer<typeof formSchema>
 
     // In a real application, you would scrape Google Maps here.
     // For this demo, we filter from a static list based on city.
-    const { city } = validatedFields.data;
+    const { country, city, pincode } = validatedFields.data;
     const scrapedLeads = mockLeads.filter(lead => 
-      lead.city.toLowerCase() === city.toLowerCase()
+      lead.country.toLowerCase() === country.toLowerCase() &&
+      lead.city.toLowerCase() === city.toLowerCase() &&
+      lead.pincode.toLowerCase() === pincode.toLowerCase()
     );
 
     if (scrapedLeads.length === 0) {
