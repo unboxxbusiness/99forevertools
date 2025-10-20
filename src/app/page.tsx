@@ -2,10 +2,15 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck, QrCode, Clock, KeyRound, CaseSensitive, SpellCheck, ShieldCheck, FileText, Palette, Landmark, PiggyBank, TrendingUp, Percent } from 'lucide-react';
+import { Percent } from 'lucide-react';
 
 const tools:any[] = [
-  
+  {
+    href: '/gst-calculator',
+    title: 'GST Calculator',
+    description: 'Calculate GST amounts (add/remove) for any given price.',
+    icon: <Percent className="w-8 h-8" />,
+  },
 ];
 
 export default function Home() {
@@ -37,7 +42,6 @@ export default function Home() {
           </div>
         ) : (
           <div className="text-center py-16 border-2 border-dashed rounded-lg border-muted">
-            <Bot className="mx-auto h-12 w-12 text-muted-foreground" />
             <h3 className="mt-4 text-lg font-medium">No tools available yet.</h3>
             <p className="mt-1 text-sm text-muted-foreground">
               Your generated tools will appear here.
