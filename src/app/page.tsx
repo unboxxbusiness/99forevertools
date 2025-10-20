@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck, QrCode, Clock } from 'lucide-react';
+import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck, QrCode, Clock, KeyRound } from 'lucide-react';
 
 const tools = [
   {
@@ -83,6 +83,12 @@ const tools = [
     href: '/time-zone-converter',
     icon: <Clock className="h-8 w-8" />,
   },
+  {
+    title: 'Password Generator',
+    description: 'Creates strong, secure, and customizable passwords.',
+    href: '/password-generator',
+    icon: <KeyRound className="h-8 w-8" />,
+  }
 ];
 
 export default function Home() {

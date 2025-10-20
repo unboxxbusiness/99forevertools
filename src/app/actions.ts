@@ -411,3 +411,51 @@ const subjectLineAnalyzerSchema = z.object({
           };
       }
   }
+
+const passwordGeneratorSchema = z.object({
+  length: z.number().min(4).max(128),
+  includeUppercase: z.boolean(),
+  includeLowercase: z.boolean(),
+  includeNumbers: z.boolean(),
+  includeSymbols: z.boolean(),
+}).refine(data => data.includeUppercase || data.includeLowercase || data.includeNumbers || data.includeSymbols, {
+  message: 'At least one character type must be selected.',
+  path: ['includeUppercase'], // you can assign the error to a specific field
+});
+
+export async function generatePasswordAction(values: z.infer<typeof passwordGeneratorSchema>) {
+    try {
+        const validatedFields = passwordGeneratorSchema.safeParse(values);
+        if (!validatedFields.success) {
+            return { error: 'Invalid input.', data: null };
+        }
+
+        const { length, includeUppercase, includeLowercase, includeNumbers, includeSymbols } = validatedFields.data;
+        
+        const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const lower = 'abcdefghijklmnopqrstuvwxyz';
+        const numbers = '0123456789';
+        const symbols = '!@#$%^&*()_+~`|}{[]:;?><,./-=';
+
+        let charSet = '';
+        if (includeUppercase) charSet += upper;
+        if (includeLowercase) charSet += lower;
+        if (includeNumbers) charSet += numbers;
+        if (includeSymbols) charSet += symbols;
+
+        let password = '';
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * charSet.length);
+            password += charSet[randomIndex];
+        }
+
+        return { data: password, error: null };
+        
+    } catch (error) {
+        console.error('Error generating password:', error);
+        return {
+            error: 'Failed to generate password. Please try again.',
+            data: null,
+        };
+    }
+}
