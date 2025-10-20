@@ -46,10 +46,10 @@ export function LeadForm({ setLeads, setIsLoading, setHasSearched }: LeadFormPro
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      businessType: 'Restaurant',
-      country: 'USA',
-      city: 'New York',
-      pincode: '10001',
+      businessType: 'Cafe',
+      country: 'UK',
+      city: 'London',
+      pincode: 'SW1A 0AA',
     },
   });
 
@@ -121,7 +121,7 @@ export function LeadForm({ setLeads, setIsLoading, setHasSearched }: LeadFormPro
                      <div className="relative">
                       <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <FormControl>
-                        <Input placeholder="e.g., USA" {...field} className="pl-10" />
+                        <Input placeholder="e.g., USA, UK, India" {...field} className="pl-10" />
                       </FormControl>
                     </div>
                     <FormMessage />
@@ -137,7 +137,7 @@ export function LeadForm({ setLeads, setIsLoading, setHasSearched }: LeadFormPro
                      <div className="relative">
                       <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <FormControl>
-                        <Input placeholder="e.g., New York, Miami" {...field} className="pl-10" />
+                        <Input placeholder="e.g., New York, London" {...field} className="pl-10" />
                       </FormControl>
                     </div>
                     <FormMessage />
@@ -153,7 +153,7 @@ export function LeadForm({ setLeads, setIsLoading, setHasSearched }: LeadFormPro
                      <div className="relative">
                       <Pin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <FormControl>
-                        <Input placeholder="e.g., 10001" {...field} className="pl-10" />
+                        <Input placeholder="e.g., 10001, SW1A 0AA" {...field} className="pl-10" />
                       </FormControl>
                     </div>
                     <FormMessage />

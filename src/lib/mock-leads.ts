@@ -1,45 +1,33 @@
 import type { Lead } from '@/ai/flows/qualify-leads';
 
 export const mockLeads: Lead[] = [
-  // Restaurants in New York
+  // Restaurants in New York, USA
   { businessName: 'Pizza Palace', websiteStatus: 'exists', country: 'USA', city: 'New York', pincode: '10001' },
   { businessName: 'Burger Barn', websiteStatus: 'missing', country: 'USA', city: 'New York', pincode: '10001' },
   { businessName: 'Sushi Spot', websiteStatus: 'exists', country: 'USA', city: 'New York', pincode: '10002' },
   { businessName: 'Taco Town', websiteStatus: 'missing', country: 'USA', city: 'New York', pincode: '10002' },
-  { businessName: 'Pasta Place', websiteStatus: 'exists', country: 'USA', city: 'New York', pincode: '10003' },
-  { businessName: 'Downtown Diner', websiteStatus: 'missing', country: 'USA', city: 'New York', pincode: '10003' },
   
-  // Plumbers in Los Angeles
+  // Plumbers in Los Angeles, USA
   { businessName: 'LA Drains', websiteStatus: 'exists', country: 'USA', city: 'Los Angeles', pincode: '90001' },
   { businessName: 'Pipe Pros', websiteStatus: 'missing', country: 'USA', city: 'Los Angeles', pincode: '90001' },
-  { businessName: 'Flow Masters', websiteStatus: 'exists', country: 'USA', city: 'Los Angeles', pincode: '90002' },
-  { businessName: 'The Plumb-inator', websiteStatus: 'missing', country: 'USA', city: 'Los Angeles', pincode: '90002' },
-  { businessName: 'Hollywood Pipes', websiteStatus: 'exists', country: 'USA', city: 'Los Angeles', pincode: '90028' },
-  { businessName: 'Sunset Plumbing', websiteStatus: 'missing', country: 'USA', city: 'Los Angeles', pincode: '90028' },
 
-  // Gyms in Chicago
-  { businessName: 'Windy City Fitness', websiteStatus: 'missing', country: 'USA', city: 'Chicago', pincode: '60601' },
-  { businessName: 'Iron Temple', websiteStatus: 'exists', country: 'USA', city: 'Chicago', pincode: '60601' },
-  { businessName: 'Cardio Central', websiteStatus: 'missing', country: 'USA', city: 'Chicago', pincode: '60602' },
-  { businessName: 'Chicago Strength', websiteStatus: 'exists', country: 'USA', city: 'Chicago', pincode: '60602' },
-  { businessName: 'Lakeside Gym', websiteStatus: 'missing', country: 'USA', city: 'Chicago', pincode: '60605' },
-  { businessName: 'The Loop Fitness', websiteStatus: 'exists', country: 'USA', city: 'Chicago', pincode: '60605' },
+  // Cafes in London, UK
+  { businessName: 'The Royal Brew', websiteStatus: 'exists', country: 'UK', city: 'London', pincode: 'SW1A 0AA' },
+  { businessName: 'London Fog Cafe', websiteStatus: 'missing', country: 'UK', city: 'London', pincode: 'SW1A 0AA' },
+  { businessName: 'Shoreditch Grind', websiteStatus: 'exists', country: 'UK', city: 'London', pincode: 'E1 6GY' },
+  { businessName: 'Missing Bean', websiteStatus: 'missing', country: 'UK', city: 'London', pincode: 'E1 6GY' },
 
-  // Bookstores in San Francisco
-  { businessName: 'Golden Gate Books', websiteStatus: 'exists', country: 'USA', city: 'San Francisco', pincode: '94102' },
-  { businessName: 'Bay Area Reads', websiteStatus: 'exists', country: 'USA', city: 'San Francisco', pincode: '94102' },
-  { businessName: 'The Foggy Reader', websiteStatus: 'missing', country: 'USA', city: 'San Francisco', pincode: '94117' },
-  { businessName: 'SF Book Nook', websiteStatus: 'missing', country: 'USA', city: 'San Francisco', pincode: '94117' },
-  { businessName: 'Alcatraz Books', websiteStatus: 'exists', country: 'USA', city: 'San Francisco', pincode: '94133' },
-  { businessName: 'Haight-Ashbury Pages', websiteStatus: 'missing', country: 'USA', city: 'San Francisco', pincode: '94133' },
+  // Tech Shops in Berlin, Germany
+  { businessName: 'Berlin Electronics', websiteStatus: 'exists', country: 'Germany', city: 'Berlin', pincode: '10117' },
+  { businessName: 'Gadget Garage', websiteStatus: 'missing', country: 'Germany', city: 'Berlin', pincode: '10117' },
 
-  // Cafes in Miami
-  { businessName: 'Sunshine Cafe', websiteStatus: 'missing', country: 'USA', city: 'Miami', pincode: '33101' },
-  { businessName: 'Ocean Brews', websiteStatus: 'exists', country: 'USA', city: 'Miami', pincode: '33101' },
-  { businessName: 'Cuban Coffee Corner', websiteStatus: 'missing', country: 'USA', city: 'Miami', pincode: '33130' },
-  { businessName: 'Bayside Beans', websiteStatus: 'exists', country: 'USA', city: 'Miami', pincode: '33130' },
-  { businessName: 'Miami Grind', websiteStatus: 'missing', country: 'USA', city: 'Miami', pincode: '33135' },
-  { businessName: 'Little Havana Roasters', websiteStatus: 'exists', country: 'USA', city: 'Miami', pincode: '33135' },
+  // Restaurants in Mumbai, India
+  { businessName: 'Mumbai Masala', websiteStatus: 'exists', country: 'India', city: 'Mumbai', pincode: '400001' },
+  { businessName: 'Curry Corner', websiteStatus: 'missing', country: 'India', city: 'Mumbai', pincode: '400001' },
+
+  // Bookstores in Toronto, Canada
+  { businessName: 'Toronto Tomes', websiteStatus: 'exists', country: 'Canada', city: 'Toronto', pincode: 'M5H 2N2' },
+  { businessName: 'The Missing Page', websiteStatus: 'missing', country: 'Canada', city: 'Toronto', pincode: 'M5H 2N2' },
 ];
 
 export const mockBusinessTypes = [
@@ -48,4 +36,5 @@ export const mockBusinessTypes = [
   'Gym',
   'Bookstore',
   'Cafe',
+  'Tech Shop',
 ];
