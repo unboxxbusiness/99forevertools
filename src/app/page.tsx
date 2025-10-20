@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck, QrCode, Clock, KeyRound, CaseSensitive, SpellCheck } from 'lucide-react';
+import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck, QrCode, Clock, KeyRound, CaseSensitive, SpellCheck, ShieldCheck } from 'lucide-react';
 
 const tools = [
   {
@@ -100,6 +100,12 @@ const tools = [
     description: 'Counts words, characters, sentences, and paragraphs in real-time.',
     href: '/word-counter',
     icon: <SpellCheck className="h-8 w-8" />,
+  },
+  {
+    title: 'Privacy Policy Generator',
+    description: 'Generates a generic privacy policy template for websites and apps.',
+    href: '/privacy-policy-generator',
+    icon: <ShieldCheck className="h-8 w-8" />,
   }
 ];
 

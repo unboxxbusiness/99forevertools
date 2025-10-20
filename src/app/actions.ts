@@ -459,3 +459,70 @@ export async function generatePasswordAction(values: z.infer<typeof passwordGene
         };
     }
 }
+
+const privacyPolicySchema = z.object({
+    companyName: z.string().min(1, 'Company Name is required.'),
+    websiteName: z.string().min(1, 'Website Name is required.'),
+    websiteUrl: z.string().url('A valid Website URL is required.'),
+    contactEmail: z.string().email('A valid Contact Email is required.'),
+});
+
+export async function generatePrivacyPolicyAction(values: z.infer<typeof privacyPolicySchema>) {
+    try {
+        const validatedFields = privacyPolicySchema.safeParse(values);
+        if (!validatedFields.success) {
+            return { error: 'Invalid input.', data: null };
+        }
+
+        const { companyName, websiteName, websiteUrl, contactEmail } = validatedFields.data;
+        const effectiveDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+        const policy = `
+Privacy Policy for ${websiteName}
+
+Effective date: ${effectiveDate}
+
+${companyName} ("us", "we", or "our") operates the ${websiteUrl} website (the "Service").
+
+This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.
+
+We use your data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this policy.
+
+Information Collection and Use
+------------------------------
+We collect several different types of information for various purposes to provide and improve our Service to you.
+
+Types of Data Collected:
+- Personal Data: While using our Service, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you ("Personal Data").
+- Usage Data: We may also collect information on how the Service is accessed and used ("Usage Data").
+
+Use of Data
+-----------
+${companyName} uses the collected data for various purposes:
+- To provide and maintain the Service
+- To notify you about changes to our Service
+- To allow you to participate in interactive features of our Service when you choose to do so
+- To provide customer care and support
+- To provide analysis or valuable information so that we can improve the Service
+- To monitor the usage of the Service
+- To detect, prevent and address technical issues
+
+Changes to This Privacy Policy
+------------------------------
+We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.
+
+Contact Us
+----------
+If you have any questions about this Privacy Policy, please contact us by email: ${contactEmail}
+`;
+
+        return { data: policy.trim(), error: null };
+
+    } catch (error) {
+        console.error('Error generating privacy policy:', error);
+        return {
+            error: 'Failed to generate policy. Please try again.',
+            data: null,
+        };
+    }
+}
