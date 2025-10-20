@@ -5,6 +5,7 @@ import { generateSubjectLines } from '@/ai/flows/generate-subject-lines';
 import { suggestContacts } from '@/ai/flows/suggest-contacts';
 import { generateHeadlines } from '@/ai/flows/generate-headlines';
 import { generateValueProposition } from '@/ai/flows/generate-value-prop';
+import { generateBlogOutline } from '@/ai/flows/generate-blog-outline';
 import {z} from 'zod';
 
 const emailPermutatorSchema = z.object({
@@ -259,6 +260,29 @@ export async function generateValuePropAction(values: z.infer<typeof valuePropGe
     return {
       error: 'Failed to generate value proposition. Please try again.',
       data: '',
+    };
+  }
+}
+
+const blogOutlineGeneratorSchema = z.object({
+  title: z.string().min(10, { message: 'Title must be at least 10 characters long.' }),
+});
+
+export async function generateBlogOutlineAction(values: z.infer<typeof blogOutlineGeneratorSchema>) {
+  try {
+    const validatedFields = blogOutlineGeneratorSchema.safeParse(values);
+    if (!validatedFields.success) {
+      return { error: 'Invalid input.', data: null };
+    }
+
+    const { title } = validatedFields.data;
+    const result = await generateBlogOutline({ title });
+    return { data: result, error: null };
+  } catch (error) {
+    console.error('Error generating blog outline:', error);
+    return {
+      error: 'Failed to generate blog outline. Please try again.',
+      data: null,
     };
   }
 }
