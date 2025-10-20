@@ -5,15 +5,17 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function downloadAsCSV(data: string[], filename: string) {
+export function downloadAsCSV(data: any[], filename: string) {
   if (data.length === 0) {
     return;
   }
-
-  const headers = ['email'];
+  
+  const headers = Object.keys(data[0]);
   const csvRows = [
-    headers.join(','), // header row
-    ...data.map(email => `"${email}"`)
+    headers.join(','),
+    ...data.map(row => 
+      headers.map(header => `"${row[header]}"`).join(',')
+    )
   ];
   
   const csvString = csvRows.join('\n');

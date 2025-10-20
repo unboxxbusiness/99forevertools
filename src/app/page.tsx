@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, Lightbulb, MailPlus, Users } from 'lucide-react';
+import { Zap, Lightbulb, MailPlus, Users, FileSpreadsheet } from 'lucide-react';
 
 const tools = [
   {
@@ -28,6 +28,12 @@ const tools = [
     description: 'Find the right job titles to contact at a company for your service.',
     href: '/who-to-contact',
     icon: <Users className="h-8 w-8" />,
+  },
+  {
+    title: 'Simple CRM .CSV Cleaner',
+    description: 'Upload a messy CSV of leads, and the tool standardizes formatting.',
+    href: '/csv-cleaner',
+    icon: <FileSpreadsheet className="h-8 w-8" />,
   },
 ];
 
