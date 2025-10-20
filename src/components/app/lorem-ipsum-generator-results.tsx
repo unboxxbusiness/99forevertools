@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Check, Copy, Bot } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Skeleton } from '../ui/skeleton';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type LoremIpsumResultsProps = {
   text: string;
