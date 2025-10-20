@@ -83,3 +83,24 @@
     animation: fade-in 0.5s ease-out forwards;
   }
 }
+
+@layer utilities {
+  @media print {
+    .print-hidden {
+      display: none;
+    }
+    body {
+      background-color: #fff;
+      color: #000;
+    }
+    .print-bg-white {
+      background-color: #fff !important;
+    }
+    .print-text-black {
+      color: #000 !important;
+    }
+    .print-border-gray {
+        border-color: #ccc !important;
+    }
+  }
+}
