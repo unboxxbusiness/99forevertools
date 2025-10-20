@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -28,6 +28,12 @@ const tools:any[] = [
     title: 'Profit Margin Calculator',
     description: 'Find the profit margin and markup percentage from cost and sale price.',
     icon: <CircleDollarSign className="w-8 h-8" />,
+  },
+  {
+    href: '/break-even-point-calculator',
+    title: 'Break-Even Point Calculator',
+    description: 'Help businesses determine how much they need to sell to cover costs.',
+    icon: <Scale className="w-8 h-8" />,
   },
 ];
 
