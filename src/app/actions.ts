@@ -3,6 +3,7 @@
 import { suggestNiches } from '@/ai/flows/suggest-niches';
 import { generateSubjectLines } from '@/ai/flows/generate-subject-lines';
 import { suggestContacts } from '@/ai/flows/suggest-contacts';
+import { generateHeadlines } from '@/ai/flows/generate-headlines';
 import {z} from 'zod';
 
 const emailPermutatorSchema = z.object({
@@ -211,4 +212,27 @@ export async function cleanCsvAction(values: z.infer<typeof csvCleanerSchema>) {
             data: null,
         };
     }
+}
+
+const headlineGeneratorSchema = z.object({
+  topic: z.string().min(3, { message: 'Topic must be at least 3 characters long.' }),
+});
+
+export async function generateHeadlinesAction(values: z.infer<typeof headlineGeneratorSchema>) {
+  try {
+    const validatedFields = headlineGeneratorSchema.safeParse(values);
+    if (!validatedFields.success) {
+      return { error: 'Invalid input.', data: [] };
+    }
+
+    const { topic } = validatedFields.data;
+    const result = await generateHeadlines({ topic });
+    return { data: result.headlines, error: null };
+  } catch (error) {
+    console.error('Error generating headlines:', error);
+    return {
+      error: 'Failed to generate headlines. Please try again.',
+      data: [],
+    };
+  }
 }

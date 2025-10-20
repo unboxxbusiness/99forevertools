@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, Lightbulb, MailPlus, Users, FileSpreadsheet } from 'lucide-react';
+import { Zap, Lightbulb, MailPlus, Users, FileSpreadsheet, PenSquare } from 'lucide-react';
 
 const tools = [
   {
@@ -34,6 +34,12 @@ const tools = [
     description: 'Upload a messy CSV of leads, and the tool standardizes formatting.',
     href: '/csv-cleaner',
     icon: <FileSpreadsheet className="h-8 w-8" />,
+  },
+  {
+    title: 'AI Headline Generator',
+    description: 'Generate 10 catchy headlines for blog posts or landing pages.',
+    href: '/ai-headline-generator',
+    icon: <PenSquare className="h-8 w-8" />,
   },
 ];
 
