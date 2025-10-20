@@ -17,9 +17,9 @@ export function NicheSuggesterResults({ niches, isLoading, hasGenerated }: Niche
     <div className="space-y-4">
       {[...Array(5)].map((_, i) => (
         <div key={i} className="p-4 border rounded-lg">
-           <Skeleton key={i} className="h-6 w-1/2 mb-2" />
-           <Skeleton key={i} className="h-4 w-full" />
-           <Skeleton key={i} className="h-4 w-3/4 mt-1" />
+           <Skeleton className="h-6 w-1/2 mb-2" />
+           <Skeleton className="h-4 w-full" />
+           <Skeleton className="h-4 w-3/4 mt-1" />
         </div>
       ))}
     </div>
