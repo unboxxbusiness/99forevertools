@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, Lightbulb, MailPlus, Users, FileSpreadsheet, PenSquare } from 'lucide-react';
+import { Zap, Lightbulb, MailPlus, Users, FileSpreadsheet, PenSquare, Gem } from 'lucide-react';
 
 const tools = [
   {
@@ -40,6 +40,12 @@ const tools = [
     description: 'Generate 10 catchy headlines for blog posts or landing pages.',
     href: '/ai-headline-generator',
     icon: <PenSquare className="h-8 w-8" />,
+  },
+  {
+    title: 'Value Proposition Generator',
+    description: 'Guides users through questions to generate a clear value proposition.',
+    href: '/value-proposition-generator',
+    icon: <Gem className="h-8 w-8" />,
   },
 ];
 

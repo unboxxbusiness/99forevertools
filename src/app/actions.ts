@@ -4,6 +4,7 @@ import { suggestNiches } from '@/ai/flows/suggest-niches';
 import { generateSubjectLines } from '@/ai/flows/generate-subject-lines';
 import { suggestContacts } from '@/ai/flows/suggest-contacts';
 import { generateHeadlines } from '@/ai/flows/generate-headlines';
+import { generateValueProposition } from '@/ai/flows/generate-value-prop';
 import {z} from 'zod';
 
 const emailPermutatorSchema = z.object({
@@ -233,6 +234,31 @@ export async function generateHeadlinesAction(values: z.infer<typeof headlineGen
     return {
       error: 'Failed to generate headlines. Please try again.',
       data: [],
+    };
+  }
+}
+
+const valuePropGeneratorSchema = z.object({
+  productName: z.string().min(2, { message: 'Product name must be at least 2 characters.' }),
+  targetAudience: z.string().min(3, { message: 'Target audience must be at least 3 characters.' }),
+  mainBenefit: z.string().min(10, { message: 'Main benefit must be at least 10 characters.' }),
+  differentiator: z.string().min(10, { message: 'Differentiator must be at least 10 characters.' }),
+});
+
+export async function generateValuePropAction(values: z.infer<typeof valuePropGeneratorSchema>) {
+  try {
+    const validatedFields = valuePropGeneratorSchema.safeParse(values);
+    if (!validatedFields.success) {
+      return { error: 'Invalid input.', data: '' };
+    }
+
+    const result = await generateValueProposition(validatedFields.data);
+    return { data: result.valueProposition, error: null };
+  } catch (error) {
+    console.error('Error generating value proposition:', error);
+    return {
+      error: 'Failed to generate value proposition. Please try again.',
+      data: '',
     };
   }
 }
