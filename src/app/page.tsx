@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -40,6 +40,12 @@ const tools:any[] = [
     title: 'Salary to CTC Calculator',
     description: 'Estimate the total cost of an employee to the company.',
     icon: <Calculator className="w-8 h-8" />,
+  },
+  {
+    href: '/hra-exemption-calculator',
+    title: 'HRA Exemption Calculator',
+    description: 'Calculate your House Rent Allowance exemption for tax purposes.',
+    icon: <HomeIcon className="w-8 h-8" />,
   },
 ];
 
