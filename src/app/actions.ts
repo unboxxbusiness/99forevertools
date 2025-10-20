@@ -2,6 +2,7 @@
 
 import { suggestNiches } from '@/ai/flows/suggest-niches';
 import { generateSubjectLines } from '@/ai/flows/generate-subject-lines';
+import { suggestContacts } from '@/ai/flows/suggest-contacts';
 import {z} from 'zod';
 
 const emailPermutatorSchema = z.object({
@@ -100,6 +101,30 @@ export async function generateSubjectLinesAction(values: z.infer<typeof subjectL
     console.error('Error generating subject lines:', error);
     return {
       error: 'Failed to generate subject lines. Please try again.',
+      data: [],
+    };
+  }
+}
+
+const contactSuggesterSchema = z.object({
+  companyWebsite: z.string().url({ message: 'Please enter a valid URL.' }),
+  service: z.string().min(3, { message: 'Service must be at least 3 characters long.' }),
+});
+
+export async function suggestContactsAction(values: z.infer<typeof contactSuggesterSchema>) {
+  try {
+    const validatedFields = contactSuggesterSchema.safeParse(values);
+    if (!validatedFields.success) {
+      return { error: 'Invalid input.', data: [] };
+    }
+
+    const { companyWebsite, service } = validatedFields.data;
+    const result = await suggestContacts({ companyWebsite, service });
+    return { data: result.jobTitles, error: null };
+  } catch (error) {
+    console.error('Error suggesting contacts:', error);
+    return {
+      error: 'Failed to suggest contacts. Please try again.',
       data: [],
     };
   }

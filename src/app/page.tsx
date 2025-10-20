@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, Lightbulb, MailPlus } from 'lucide-react';
+import { Zap, Lightbulb, MailPlus, Users } from 'lucide-react';
 
 const tools = [
   {
@@ -23,7 +23,12 @@ const tools = [
     href: '/subject-line-generator',
     icon: <MailPlus className="h-8 w-8" />,
   },
-  // Add more tools here in the future
+  {
+    title: 'Who to Contact Finder',
+    description: 'Find the right job titles to contact at a company for your service.',
+    href: '/who-to-contact',
+    icon: <Users className="h-8 w-8" />,
+  },
 ];
 
 export default function Home() {
