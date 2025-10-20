@@ -1,8 +1,9 @@
 'use server';
 
+import { suggestNiches } from '@/ai/flows/suggest-niches';
 import {z} from 'zod';
 
-const formSchema = z.object({
+const emailPermutatorSchema = z.object({
   firstName: z
     .string()
     .min(1, {message: 'First name is required.'})
@@ -18,10 +19,10 @@ const formSchema = z.object({
 });
 
 export async function generateEmailPermutationsAction(
-  values: z.infer<typeof formSchema>
+  values: z.infer<typeof emailPermutatorSchema>
 ) {
   try {
-    const validatedFields = formSchema.safeParse(values);
+    const validatedFields = emailPermutatorSchema.safeParse(values);
     if (!validatedFields.success) {
       return {error: 'Invalid input.', data: []};
     }
@@ -52,6 +53,29 @@ export async function generateEmailPermutationsAction(
     console.error('Error generating permutations:', error);
     return {
       error: 'Failed to generate emails. Please try again.',
+      data: [],
+    };
+  }
+}
+
+const nicheSuggesterSchema = z.object({
+  keyword: z.string().min(1, { message: 'Keyword is required.' }),
+});
+
+export async function suggestNichesAction(values: z.infer<typeof nicheSuggesterSchema>) {
+  try {
+    const validatedFields = nicheSuggesterSchema.safeParse(values);
+    if (!validatedFields.success) {
+      return { error: 'Invalid input.', data: [] };
+    }
+
+    const { keyword } = validatedFields.data;
+    const niches = await suggestNiches({ keyword });
+    return { data: niches.suggestions, error: null };
+  } catch (error) {
+    console.error('Error suggesting niches:', error);
+    return {
+      error: 'Failed to suggest niches. Please try again.',
       data: [],
     };
   }

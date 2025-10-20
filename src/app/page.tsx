@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap } from 'lucide-react';
+import { Zap, Lightbulb } from 'lucide-react';
 
 const tools = [
   {
@@ -10,6 +10,12 @@ const tools = [
     description: 'Generate all possible email combinations from a name and domain.',
     href: '/email-permutator',
     icon: <Zap className="h-8 w-8" />,
+  },
+  {
+    title: 'Niche Market Suggester',
+    description: 'Get AI-powered niche market suggestions based on a keyword.',
+    href: '/niche-suggester',
+    icon: <Lightbulb className="h-8 w-8" />,
   },
   // Add more tools here in the future
 ];
