@@ -211,3 +211,47 @@ export async function analyzeHeadlineAction(values: z.infer<typeof headlineAnaly
         };
     }
 }
+
+const keywordDensitySchema = z.object({
+  text: z.string().min(1, { message: 'Text content cannot be empty.' }),
+  keyword: z.string().min(1, { message: 'Keyword cannot be empty.' }),
+});
+
+export async function checkKeywordDensityAction(values: z.infer<typeof keywordDensitySchema>) {
+    try {
+        const validatedFields = keywordDensitySchema.safeParse(values);
+        if (!validatedFields.success) {
+            return { error: 'Invalid input.', data: null };
+        }
+
+        const { text, keyword } = validatedFields.data;
+
+        const words = text.toLowerCase().split(/\s+/).filter(word => word.length > 0);
+        const totalWords = words.length;
+        
+        if (totalWords === 0) {
+            return { data: { density: 0, count: 0, totalWords: 0 }, error: null };
+        }
+
+        const keywordLower = keyword.toLowerCase();
+        const keywordCount = words.filter(word => word.includes(keywordLower)).length;
+
+        const density = (keywordCount / totalWords) * 100;
+
+        return {
+            data: {
+                density: parseFloat(density.toFixed(2)),
+                count: keywordCount,
+                totalWords,
+            },
+            error: null
+        };
+
+    } catch (error) {
+        console.error('Error checking keyword density:', error);
+        return {
+            error: 'Failed to check keyword density. Please try again.',
+            data: null,
+        };
+    }
+}

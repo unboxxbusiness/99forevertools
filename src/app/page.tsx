@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, FileSpreadsheet, Activity, Tag } from 'lucide-react';
+import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck } from 'lucide-react';
 
 const tools = [
   {
@@ -28,6 +28,12 @@ const tools = [
     description: 'Create optimized meta titles and descriptions for Google search.',
     href: '/meta-tag-generator',
     icon: <Tag className="h-8 w-8" />,
+  },
+  {
+    title: 'Keyword Density Checker',
+    description: 'Check the frequency of specific keywords in your text to avoid over-optimization.',
+    href: '/keyword-density-checker',
+    icon: <SearchCheck className="h-8 w-8" />,
   },
 ];
 
