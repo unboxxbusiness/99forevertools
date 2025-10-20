@@ -6,6 +6,7 @@ import { suggestContacts } from '@/ai/flows/suggest-contacts';
 import { generateHeadlines } from '@/ai/flows/generate-headlines';
 import { generateValueProposition } from '@/ai/flows/generate-value-prop';
 import { generateBlogOutline } from '@/ai/flows/generate-blog-outline';
+import { generatePasCopy } from '@/ai/flows/generate-pas-copy';
 import {z} from 'zod';
 
 const emailPermutatorSchema = z.object({
@@ -282,6 +283,30 @@ export async function generateBlogOutlineAction(values: z.infer<typeof blogOutli
     console.error('Error generating blog outline:', error);
     return {
       error: 'Failed to generate blog outline. Please try again.',
+      data: null,
+    };
+  }
+}
+
+const pasCopywriterSchema = z.object({
+  problem: z.string().min(10, { message: 'Problem must be at least 10 characters.' }),
+  agitation: z.string().min(10, { message: 'Agitation must be at least 10 characters.' }),
+  solution: z.string().min(10, { message: 'Solution must be at least 10 characters.' }),
+});
+
+export async function generatePasCopyAction(values: z.infer<typeof pasCopywriterSchema>) {
+  try {
+    const validatedFields = pasCopywriterSchema.safeParse(values);
+    if (!validatedFields.success) {
+      return { error: 'Invalid input.', data: null };
+    }
+
+    const result = await generatePasCopy(validatedFields.data);
+    return { data: result, error: null };
+  } catch (error) {
+    console.error('Error generating PAS copy:', error);
+    return {
+      error: 'Failed to generate PAS copy. Please try again.',
       data: null,
     };
   }
