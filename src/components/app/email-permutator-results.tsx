@@ -74,7 +74,7 @@ export function EmailPermutatorResults({ emails, isLoading, hasGenerated }: Emai
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {emails.map((email, index) => (
-            <div key={index} className="flex items-center justify-between bg-muted/50 p-2 rounded-md animate-fade-in" style={{ animationDelay: `${index * 20}ms`, animationFillMode: 'backwards', opacity: 0 }}>
+            <div key={index} className="flex items-center justify-between bg-muted/50 p-2 rounded-md animate-fade-in" style={{ animationDelay: `${index * 20}ms`}}>
               <span className="text-sm font-mono truncate">{email}</span>
               <Button
                   variant="ghost"
@@ -99,7 +99,7 @@ export function EmailPermutatorResults({ emails, isLoading, hasGenerated }: Emai
   const resultsCount = hasGenerated && !isLoading ? emails.length : null;
 
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in" style={{ animationDelay: '150ms'}}>
       <Card className="shadow-lg bg-card/80 backdrop-blur-sm">
         <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
