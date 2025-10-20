@@ -310,3 +310,30 @@ export async function calculateReadabilityAction(values: z.infer<typeof readabil
         };
     }
 }
+
+const loremIpsumSchema = z.object({
+  paragraphs: z.number().min(1).max(50),
+});
+
+const loremIpsumText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
+export async function generateLoremIpsumAction(values: z.infer<typeof loremIpsumSchema>) {
+    try {
+        const validatedFields = loremIpsumSchema.safeParse(values);
+        if (!validatedFields.success) {
+            return { error: 'Invalid input.', data: null };
+        }
+
+        const { paragraphs } = validatedFields.data;
+        const result = Array(paragraphs).fill(loremIpsumText).join('\n\n');
+
+        return { data: result, error: null };
+
+    } catch (error) {
+        console.error('Error generating Lorem Ipsum:', error);
+        return {
+            error: 'Failed to generate text. Please try again.',
+            data: null,
+        };
+    }
+}
