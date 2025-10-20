@@ -8,9 +8,9 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('en-IN', {
     style: 'currency',
-    currency: 'USD', // You can make this dynamic if needed
+    currency: 'INR',
   }).format(value);
 };
 
@@ -62,7 +62,7 @@ export function GstCalculator() {
               {calculationType === 'add' ? 'Base Amount' : 'Total Amount (incl. GST)'}
             </Label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
               <Input
                 id="amount"
                 type="text"
