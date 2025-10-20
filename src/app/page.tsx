@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -22,6 +22,12 @@ const tools:any[] = [
     title: 'Business Loan EMI Calculator',
     description: 'Calculate monthly payments for business loans.',
     icon: <Briefcase className="w-8 h-8" />,
+  },
+  {
+    href: '/profit-margin-calculator',
+    title: 'Profit Margin Calculator',
+    description: 'Find the profit margin and markup percentage from cost and sale price.',
+    icon: <CircleDollarSign className="w-8 h-8" />,
   },
 ];
 
