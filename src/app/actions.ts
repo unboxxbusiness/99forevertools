@@ -526,3 +526,67 @@ If you have any questions about this Privacy Policy, please contact us by email:
         };
     }
 }
+
+const termsAndConditionsSchema = z.object({
+    companyName: z.string().min(1, 'Company Name is required.'),
+    websiteName: z.string().min(1, 'Website Name is required.'),
+    websiteUrl: z.string().url('A valid Website URL is required.'),
+    contactEmail: z.string().email('A valid Contact Email is required.'),
+});
+
+export async function generateTermsAndConditionsAction(values: z.infer<typeof termsAndConditionsSchema>) {
+    try {
+        const validatedFields = termsAndConditionsSchema.safeParse(values);
+        if (!validatedFields.success) {
+            return { error: 'Invalid input.', data: null };
+        }
+
+        const { companyName, websiteName, websiteUrl, contactEmail } = validatedFields.data;
+        const lastUpdated = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+        const terms = `
+Terms and Conditions for ${websiteName}
+
+Last updated: ${lastUpdated}
+
+Welcome to ${websiteName}!
+
+These terms and conditions outline the rules and regulations for the use of ${companyName}'s Website, located at ${websiteUrl}.
+
+By accessing this website we assume you accept these terms and conditions. Do not continue to use ${websiteName} if you do not agree to take all of the terms and conditions stated on this page.
+
+License
+-------
+Unless otherwise stated, ${companyName} and/or its licensors own the intellectual property rights for all material on ${websiteName}. All intellectual property rights are reserved. You may access this from ${websiteName} for your own personal use subjected to restrictions set in these terms and conditions.
+
+You must not:
+- Republish material from ${websiteName}
+- Sell, rent or sub-license material from ${websiteName}
+- Reproduce, duplicate or copy material from ${websiteName}
+- Redistribute content from ${websiteName}
+
+This Agreement shall begin on the date hereof.
+
+Disclaimer
+----------
+To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website. Nothing in this disclaimer will:
+- limit or exclude our or your liability for death or personal injury;
+- limit or exclude our or your liability for fraud or fraudulent misrepresentation;
+- limit any of our or your liabilities in any way that is not permitted under applicable law; or
+- exclude any of our or your liabilities that may not be excluded under applicable law.
+
+Contact Us
+----------
+If you have any questions about these Terms, please contact us by email: ${contactEmail}
+`;
+
+        return { data: terms.trim(), error: null };
+
+    } catch (error) {
+        console.error('Error generating terms and conditions:', error);
+        return {
+            error: 'Failed to generate terms. Please try again.',
+            data: null,
+        };
+    }
+}
