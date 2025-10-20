@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, FileSpreadsheet } from 'lucide-react';
+import { Zap, FileSpreadsheet, Activity } from 'lucide-react';
 
 const tools = [
   {
@@ -16,6 +16,12 @@ const tools = [
     description: 'Upload a messy CSV of leads, and the tool standardizes formatting.',
     href: '/csv-cleaner',
     icon: <FileSpreadsheet className="h-8 w-8" />,
+  },
+  {
+    title: 'Headline Analyzer',
+    description: 'Scores headlines on length, sentiment, and power words.',
+    href: '/headline-analyzer',
+    icon: <Activity className="h-8 w-8" />,
   },
 ];
 

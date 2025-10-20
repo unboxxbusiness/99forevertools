@@ -139,3 +139,75 @@ export async function cleanCsvAction(values: z.infer<typeof csvCleanerSchema>) {
         };
     }
 }
+
+const headlineAnalyzerSchema = z.object({
+  headline: z.string().min(1, { message: 'Headline cannot be empty.' }),
+});
+
+const powerWords = [
+    'amazing', 'awesome', 'best', 'brilliant', 'certified', 'discover', 'effective', 'essential', 'exclusive',
+    'expert', 'free', 'guaranteed', 'incredible', 'instant', 'limited', 'new', 'now', 'proven', 'powerful',
+    'revolutionary', 'secret', 'shocking', 'simple', 'step-by-step', 'successful', 'ultimate', 'unique', 'unleash'
+];
+const positiveWords = ['happy', 'joy', 'love', 'excellent', 'good', 'great', 'fantastic', 'wonderful', 'pleasure', 'superb'];
+const negativeWords = ['sad', 'bad', 'terrible', 'horrible', 'awful', 'pain', 'fear', 'hate', 'problem', 'danger'];
+
+export async function analyzeHeadlineAction(values: z.infer<typeof headlineAnalyzerSchema>) {
+    try {
+        const validatedFields = headlineAnalyzerSchema.safeParse(values);
+        if (!validatedFields.success) {
+            return { error: 'Invalid input.', data: null };
+        }
+
+        const { headline } = validatedFields.data;
+        const words = headline.toLowerCase().split(/\s+/);
+        const wordCount = words.length;
+
+        // 1. Length Score (Optimal 6-12 words)
+        let lengthScore = 0;
+        if (wordCount >= 6 && wordCount <= 12) {
+            lengthScore = 100;
+        } else if (wordCount > 0) {
+            const deviation = wordCount < 6 ? 6 - wordCount : wordCount - 12;
+            lengthScore = Math.max(0, 100 - deviation * 15);
+        }
+
+        // 2. Sentiment Score
+        let sentimentScore = 50; // Start neutral
+        const positiveCount = words.filter(word => positiveWords.includes(word.replace(/[^a-z]/g, ''))).length;
+        const negativeCount = words.filter(word => negativeWords.includes(word.replace(/[^a-z]/g, ''))).length;
+        if (positiveCount > negativeCount) {
+            sentimentScore = Math.min(100, 50 + positiveCount * 20);
+        } else if (negativeCount > 0) {
+            sentimentScore = Math.max(0, 50 - negativeCount * 20);
+        }
+
+        // 3. Power Word Score
+        const powerWordCount = words.filter(word => powerWords.includes(word.replace(/[^a-z]/g, ''))).length;
+        const powerWordScore = Math.min(100, powerWordCount * 25);
+
+        // 4. Clarity (Heuristic: shorter words are clearer)
+        const avgWordLength = words.reduce((acc, word) => acc + word.length, 0) / wordCount;
+        const clarityScore = Math.max(0, 100 - (avgWordLength - 5) * 10);
+
+        const totalScore = Math.round((lengthScore + sentimentScore + powerWordScore + clarityScore) / 4);
+
+        return {
+            data: {
+                totalScore,
+                length: { score: Math.round(lengthScore), count: wordCount },
+                sentiment: { score: Math.round(sentimentScore), type: positiveCount > negativeCount ? 'Positive' : negativeCount > 0 ? 'Negative' : 'Neutral' },
+                powerWords: { score: Math.round(powerWordScore), count: powerWordCount, words: words.filter(word => powerWords.includes(word.replace(/[^a-z]/g, ''))) },
+                clarity: { score: Math.round(clarityScore) }
+            },
+            error: null
+        };
+
+    } catch (error) {
+        console.error('Error analyzing headline:', error);
+        return {
+            error: 'Failed to analyze headline. Please try again.',
+            data: null,
+        };
+    }
+}
