@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -34,6 +34,12 @@ const tools:any[] = [
     title: 'Break-Even Point Calculator',
     description: 'Help businesses determine how much they need to sell to cover costs.',
     icon: <Scale className="w-8 h-8" />,
+  },
+  {
+    href: '/salary-to-ctc-calculator',
+    title: 'Salary to CTC Calculator',
+    description: 'Estimate the total cost of an employee to the company.',
+    icon: <Calculator className="w-8 h-8" />,
   },
 ];
 
