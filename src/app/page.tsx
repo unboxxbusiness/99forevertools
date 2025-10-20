@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText } from 'lucide-react';
+import { Percent, FileText, Briefcase } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -16,6 +16,12 @@ const tools:any[] = [
     title: 'Invoice Generator',
     description: 'Quickly generate a clean, professional invoice to print or save as a PDF.',
     icon: <FileText className="w-8 h-8" />,
+  },
+  {
+    href: '/business-loan-emi-calculator',
+    title: 'Business Loan EMI Calculator',
+    description: 'Calculate monthly payments for business loans.',
+    icon: <Briefcase className="w-8 h-8" />,
   },
 ];
 
