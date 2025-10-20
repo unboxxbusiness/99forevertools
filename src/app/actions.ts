@@ -255,3 +255,58 @@ export async function checkKeywordDensityAction(values: z.infer<typeof keywordDe
         };
     }
 }
+
+const readabilityCheckerSchema = z.object({
+  text: z.string().min(1, { message: 'Text content cannot be empty.' }),
+});
+
+function countSyllables(word: string): number {
+    word = word.toLowerCase();
+    if (word.length <= 3) { return 1; }
+    word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+    word = word.replace(/^y/, '');
+    const matches = word.match(/[aeiouy]{1,2}/g);
+    return matches ? matches.length : 1;
+}
+
+export async function calculateReadabilityAction(values: z.infer<typeof readabilityCheckerSchema>) {
+    try {
+        const validatedFields = readabilityCheckerSchema.safeParse(values);
+        if (!validatedFields.success) {
+            return { error: 'Invalid input.', data: null };
+        }
+        
+        const { text } = validatedFields.data;
+
+        const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+        const wordCount = words.length;
+        
+        // Naive sentence count, might not be perfect for all cases
+        const sentenceCount = (text.match(/[.!?]+/g) || []).length;
+
+        if (wordCount === 0 || sentenceCount === 0) {
+            return { data: { score: 0, wordCount: 0, sentenceCount: 0 }, error: null };
+        }
+        
+        const syllableCount = words.reduce((acc, word) => acc + countSyllables(word), 0);
+
+        // Flesch-Kincaid Reading Ease formula
+        const score = 206.835 - 1.015 * (wordCount / sentenceCount) - 84.6 * (syllableCount / wordCount);
+
+        return {
+            data: {
+                score: Math.round(score),
+                wordCount,
+                sentenceCount,
+            },
+            error: null
+        };
+
+    } catch (error) {
+        console.error('Error calculating readability:', error);
+        return {
+            error: 'Failed to calculate readability. Please try again.',
+            data: null,
+        };
+    }
+}

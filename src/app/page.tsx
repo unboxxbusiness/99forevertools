@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck } from 'lucide-react';
+import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses } from 'lucide-react';
 
 const tools = [
   {
@@ -34,6 +34,12 @@ const tools = [
     description: 'Check the frequency of specific keywords in your text to avoid over-optimization.',
     href: '/keyword-density-checker',
     icon: <SearchCheck className="h-8 w-8" />,
+  },
+  {
+    title: 'Readability Score Calculator',
+    description: 'Analyze text and score it based on Flesch-Kincaid Reading Ease.',
+    href: '/readability-checker',
+    icon: <Glasses className="h-8 w-8" />,
   },
 ];
 
