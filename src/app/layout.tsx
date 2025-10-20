@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: '99forevertools',
-  description: 'AI-Powered Lead Generation',
+  title: 'Email Permutator',
+  description: 'Generate all possible email combinations',
 };
 
 export default function RootLayout({

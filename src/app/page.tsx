@@ -1,30 +1,29 @@
 'use client';
 
-import type { QualifiedLead } from '@/ai/flows/qualify-leads';
 import { useState } from 'react';
 import { Header } from '@/components/app/header';
-import { LeadForm } from '@/components/app/lead-form';
-import { LeadResults } from '@/components/app/lead-results';
+import { EmailPermutatorForm } from '@/components/app/email-permutator-form';
+import { EmailPermutatorResults } from '@/components/app/email-permutator-results';
 
 export default function Home() {
-  const [leads, setLeads] = useState<QualifiedLead[]>([]);
+  const [emails, setEmails] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
+  const [hasGenerated, setHasGenerated] = useState(false);
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="space-y-12">
-          <LeadForm
-            setLeads={setLeads}
+          <EmailPermutatorForm
+            setEmails={setEmails}
             setIsLoading={setIsLoading}
-            setHasSearched={setHasSearched}
+            setHasGenerated={setHasGenerated}
           />
-          <LeadResults
-            leads={leads}
+          <EmailPermutatorResults
+            emails={emails}
             isLoading={isLoading}
-            hasSearched={hasSearched}
+            hasGenerated={hasGenerated}
           />
         </div>
       </main>

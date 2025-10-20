@@ -1,44 +1,58 @@
 'use server';
 
-import { z } from 'zod';
-import { qualifyLeads, QualifyLeadsInput } from '@/ai/flows/qualify-leads';
-import { mockLeads } from '@/lib/mock-leads';
+import {z} from 'zod';
 
 const formSchema = z.object({
-  businessType: z.string().min(2, { message: 'Business type must be at least 2 characters.' }),
-  country: z.string().min(2, { message: 'Country must be at least 2 characters.' }),
-  city: z.string().min(2, { message: 'City must be at least 2 characters.' }),
-  pincode: z.string().min(4, { message: 'Pin code must be at least 4 characters.' }),
+  firstName: z
+    .string()
+    .min(1, {message: 'First name is required.'})
+    .transform(v => v.toLowerCase().replace(/[^a-z]/g, '')),
+  lastName: z
+    .string()
+    .min(1, {message: 'Last name is required.'})
+    .transform(v => v.toLowerCase().replace(/[^a-z]/g, '')),
+  domain: z
+    .string()
+    .min(1, {message: 'Domain is required.'})
+    .transform(v => v.toLowerCase()),
 });
 
-export async function getQualifiedLeadsAction(values: z.infer<typeof formSchema>) {
+export async function generateEmailPermutationsAction(
+  values: z.infer<typeof formSchema>
+) {
   try {
     const validatedFields = formSchema.safeParse(values);
     if (!validatedFields.success) {
-      return { error: 'Invalid input.', data: [] };
+      return {error: 'Invalid input.', data: []};
     }
 
-    // In a real application, you would scrape Google Maps here.
-    // For this demo, we filter from a static list based on city.
-    const { country, city, pincode } = validatedFields.data;
-    const scrapedLeads = mockLeads.filter(lead => 
-      lead.country.toLowerCase() === country.toLowerCase() &&
-      lead.city.toLowerCase() === city.toLowerCase() &&
-      lead.pincode.toLowerCase() === pincode.toLowerCase()
-    );
+    const {firstName, lastName, domain} = validatedFields.data;
+    const f = firstName.charAt(0);
+    const l = lastName.charAt(0);
 
-    if (scrapedLeads.length === 0) {
-      return { data: [], error: null };
-    }
+    const permutations = new Set([
+      `${firstName}@${domain}`,
+      `${lastName}@${domain}`,
+      `${firstName}${lastName}@${domain}`,
+      `${firstName}.${lastName}@${domain}`,
+      `${f}${lastName}@${domain}`,
+      `${f}.${lastName}@${domain}`,
+      `${firstName}${l}@${domain}`,
+      `${firstName}.${l}@${domain}`,
+      `${f}${l}@${domain}`,
+      `${f}.${l}@${domain}`,
+      `${lastName}${firstName}@${domain}`,
+      `${lastName}.${firstName}@${domain}`,
+      `${firstName}_${lastName}@${domain}`,
+      `${lastName}_${firstName}@${domain}`,
+    ]);
 
-    const aiInput: QualifyLeadsInput = {
-      leads: scrapedLeads,
-    };
-
-    const result = await qualifyLeads(aiInput);
-    return { data: result.qualifiedLeads, error: null };
+    return {data: Array.from(permutations), error: null};
   } catch (error) {
-    console.error('Error qualifying leads:', error);
-    return { error: 'Failed to qualify leads. Please try again.', data: [] };
+    console.error('Error generating permutations:', error);
+    return {
+      error: 'Failed to generate emails. Please try again.',
+      data: [],
+    };
   }
 }

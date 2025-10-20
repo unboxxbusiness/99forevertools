@@ -1,27 +1,19 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import type { QualifiedLead } from "@/ai/flows/qualify-leads";
-
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function downloadAsCSV(data: QualifiedLead[], filename: string) {
+export function downloadAsCSV(data: string[], filename: string) {
   if (data.length === 0) {
     return;
   }
 
-  const headers = Object.keys(data[0]);
+  const headers = ['email'];
   const csvRows = [
     headers.join(','), // header row
-    ...data.map(row => 
-      headers.map(fieldName => {
-        // Handle values that might contain commas
-        const value = String((row as any)[fieldName]).replace(/"/g, '""');
-        return `"${value}"`;
-      }).join(',')
-    )
+    ...data.map(email => `"${email}"`)
   ];
   
   const csvString = csvRows.join('\n');
