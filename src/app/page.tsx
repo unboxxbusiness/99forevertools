@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck, QrCode, Clock, KeyRound, CaseSensitive, SpellCheck, ShieldCheck, FileText } from 'lucide-react';
+import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck, QrCode, Clock, KeyRound, CaseSensitive, SpellCheck, ShieldCheck, FileText, Palette } from 'lucide-react';
 
 const tools = [
   {
@@ -112,6 +112,12 @@ const tools = [
     description: 'Creates a simple, template-based T&C for a small business or website.',
     href: '/terms-and-conditions-generator',
     icon: <FileText className="h-8 w-8" />,
+  },
+  {
+    title: 'Color Palette Generator',
+    description: 'Creates harmonious color schemes from a single color.',
+    href: '/color-palette-generator',
+    icon: <Palette className="h-8 w-8" />,
   }
 ];
 
