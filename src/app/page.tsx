@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck, QrCode, Clock, KeyRound, CaseSensitive, SpellCheck, ShieldCheck, FileText, Palette, Landmark, PiggyBank } from 'lucide-react';
+import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck, QrCode, Clock, KeyRound, CaseSensitive, SpellCheck, ShieldCheck, FileText, Palette, Landmark, PiggyBank, TrendingUp } from 'lucide-react';
 
 const tools = [
   {
@@ -130,6 +130,12 @@ const tools = [
     description: 'Estimates tax savings from pre-tax contributions to a pension.',
     href: '/salary-sacrifice-calculator',
     icon: <PiggyBank className="h-8 w-8" />,
+  },
+  {
+    title: 'Compound Interest Calculator',
+    description: 'Shows the future value of an investment by demonstrating how compound interest grows over time.',
+    href: '/compound-interest-calculator',
+    icon: <TrendingUp className="h-8 w-8" />,
   }
 ];
 
