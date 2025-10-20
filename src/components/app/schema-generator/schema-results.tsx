@@ -14,8 +14,13 @@ export function SchemaResults({ schema }: SchemaResultsProps) {
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
 
+  const fullScript = `<script type="application/ld+json">
+${schema}
+</script>`;
+
   const handleCopy = () => {
-    navigator.clipboard.writeText(schema);
+    if (!schema) return;
+    navigator.clipboard.writeText(fullScript);
     setCopied(true);
     toast({ title: 'Copied to clipboard!' });
     setTimeout(() => setCopied(false), 2000);
@@ -27,7 +32,7 @@ export function SchemaResults({ schema }: SchemaResultsProps) {
         <CardHeader className="flex flex-row items-start justify-between">
           <div>
             <CardTitle className="text-3xl font-bold tracking-tight">Generated Schema</CardTitle>
-            <CardDescription>Copy and paste this into your website's `<head>` tag.</CardDescription>
+            <CardDescription>Copy and paste this into your website's `&lt;head&gt;` tag.</CardDescription>
           </div>
           {schema && (
             <Button variant="secondary" onClick={handleCopy}>
@@ -39,9 +44,7 @@ export function SchemaResults({ schema }: SchemaResultsProps) {
         <CardContent>
           {schema ? (
             <pre className="bg-muted/50 p-4 rounded-lg overflow-x-auto text-sm">
-              <code>{`<script type="application/ld+json">
-${schema}
-</script>`}</code>
+              <code>{fullScript}</code>
             </pre>
           ) : (
             <div className="text-center py-16 border-2 border-dashed rounded-lg border-muted">
