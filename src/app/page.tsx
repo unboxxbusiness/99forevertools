@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck, QrCode, Clock, KeyRound, CaseSensitive } from 'lucide-react';
+import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck, QrCode, Clock, KeyRound, CaseSensitive, SpellCheck } from 'lucide-react';
 
 const tools = [
   {
@@ -94,6 +94,12 @@ const tools = [
     description: 'Instantly converts text to various formats like UPPERCASE, lowercase, and more.',
     href: '/case-converter',
     icon: <CaseSensitive className="h-8 w-8" />,
+  },
+  {
+    title: 'Word & Character Counter',
+    description: 'Counts words, characters, sentences, and paragraphs in real-time.',
+    href: '/word-counter',
+    icon: <SpellCheck className="h-8 w-8" />,
   }
 ];
 
@@ -112,7 +118,7 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {tools.map((tool, index) => (
+          {tools.sort((a, b) => a.title.localeCompare(b.title)).map((tool, index) => (
             <div key={tool.href} className="animate-fade-in" style={{ animationDelay: `${150 * (index + 1)}ms` }}>
               <ToolCard
                 href={tool.href}
