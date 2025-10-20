@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses } from 'lucide-react';
+import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson } from 'lucide-react';
 
 const tools = [
   {
@@ -40,6 +40,12 @@ const tools = [
     description: 'Analyze text and score it based on Flesch-Kincaid Reading Ease.',
     href: '/readability-checker',
     icon: <Glasses className="h-8 w-8" />,
+  },
+  {
+    title: 'Schema Markup Generator',
+    description: 'Generate structured data for local businesses, articles, or FAQs.',
+    href: '/schema-generator',
+    icon: <FileJson className="h-8 w-8" />,
   },
 ];
 
