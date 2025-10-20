@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon } from 'lucide-react';
+import { Zap, FileSpreadsheet, Activity, Tag, SearchCheck, Glasses, FileJson, Bot, ClipboardType, Link as LinkIcon, MailCheck } from 'lucide-react';
 
 const tools = [
   {
@@ -64,6 +64,12 @@ const tools = [
     description: 'A simple form to add UTM parameters to URLs for precise campaign tracking.',
     href: '/utm-link-builder',
     icon: <LinkIcon className="h-8 w-8" />,
+  },
+  {
+    title: 'Email Subject Line Tester',
+    description: 'Analyzes subject lines for potential spam triggers, length, and emotional impact.',
+    href: '/email-subject-line-tester',
+    icon: <MailCheck className="h-8 w-8" />,
   },
 ];
 

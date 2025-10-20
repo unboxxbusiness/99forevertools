@@ -337,3 +337,77 @@ export async function generateLoremIpsumAction(values: z.infer<typeof loremIpsum
         };
     }
 }
+
+const subjectLineAnalyzerSchema = z.object({
+    subject: z.string().min(1, { message: 'Subject line cannot be empty.' }),
+  });
+  
+  const spamWords = [
+      'free', 'win', 'winner', 'prize', 'cash', 'money', 'buy', 'now', 'act now', 'urgent', 'limited time',
+      'offer', 'special promotion', 'discount', 'save', '$$$', '100% free', 'no cost', 'click here',
+      'subscribe', 'order now', 'apply now', 'get it now', 'congratulations', 'guaranteed', 'risk-free',
+      'unlimited', 'certified', 'deal', 'best price', 'clearance', 'bargain', 'bonus', 'extra', 'earn',
+      'income', 'work from home', 'online biz', 'make money', 'financial freedom', 'investment', 'stocks',
+      'Viagra', 'Cialis', 'pharmacy', 'medication', 'weight loss', 'lose weight', 'diet', 'miracle',
+      'amazing', 'revolutionary', 'hello', 'dear friend', 'greetings', 're:', 'fwd:', 'all caps'
+  ];
+  const urgencyWords = ['urgent', 'important', 'action required', 'final', 'last chance', 'today only', 'expires', 'deadline'];
+  
+  export async function analyzeSubjectLineAction(values: z.infer<typeof subjectLineAnalyzerSchema>) {
+      try {
+          const validatedFields = subjectLineAnalyzerSchema.safeParse(values);
+          if (!validatedFields.success) {
+              return { error: 'Invalid input.', data: null };
+          }
+  
+          const { subject } = validatedFields.data;
+          const words = subject.toLowerCase().split(/\s+/);
+          const charCount = subject.length;
+  
+          // 1. Length Score (Optimal 30-50 characters)
+          let lengthScore = 0;
+          if (charCount >= 30 && charCount <= 50) {
+              lengthScore = 100;
+          } else if (charCount > 0) {
+              const deviation = charCount < 30 ? 30 - charCount : charCount - 50;
+              lengthScore = Math.max(0, 100 - deviation * 5);
+          }
+  
+          // 2. Spam Word Score
+          const foundSpamWords = words.filter(word => spamWords.includes(word.replace(/[^a-z]/g, '')));
+          const spamScore = Math.max(0, 100 - foundSpamWords.length * 30);
+  
+          // 3. Emotional & Urgency Score
+          const positiveCount = words.filter(word => positiveWords.includes(word.replace(/[^a-z]/g, ''))).length;
+          const negativeCount = words.filter(word => negativeWords.includes(word.replace(/[^a-z]/g, ''))).length;
+          const urgencyCount = words.filter(word => urgencyWords.includes(word.replace(/[^a-z]/g, ''))).length;
+          const emotionScore = Math.min(100, 50 + (positiveCount * 15) + (urgencyCount * 15) - (negativeCount * 10));
+  
+          // 4. Clarity/Formatting (e.g., all caps, excessive punctuation)
+          const isAllCaps = subject === subject.toUpperCase() && subject.length > 5;
+          const hasExcessivePunctuation = (subject.match(/[!?.]{3,}/g) || []).length > 0;
+          let formattingScore = 100;
+          if (isAllCaps) formattingScore -= 50;
+          if (hasExcessivePunctuation) formattingScore -= 50;
+  
+          const totalScore = Math.round((lengthScore * 0.35) + (spamScore * 0.35) + (emotionScore * 0.2) + (formattingScore * 0.1));
+  
+          return {
+              data: {
+                  totalScore,
+                  length: { score: Math.round(lengthScore), count: charCount },
+                  spam: { score: Math.round(spamScore), count: foundSpamWords.length, words: foundSpamWords },
+                  emotion: { score: Math.round(emotionScore), positive: positiveCount, negative: negativeCount, urgency: urgencyCount },
+                  formatting: { score: Math.round(formattingScore), isAllCaps, hasExcessivePunctuation },
+              },
+              error: null
+          };
+  
+      } catch (error) {
+          console.error('Error analyzing subject line:', error);
+          return {
+              error: 'Failed to analyze subject line. Please try again.',
+              data: null,
+          };
+      }
+  }
