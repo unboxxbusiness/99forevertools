@@ -82,7 +82,7 @@ export function EmailPermutatorForm({ setEmails, setIsLoading, setHasGenerated }
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto shadow-lg bg-card/80 backdrop-blur-sm animate-fade-in">
+    <Card className="w-full max-w-2xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
       <CardHeader>
         <CardTitle className="text-3xl font-bold tracking-tight">Generate Emails</CardTitle>
         <CardDescription>
@@ -142,12 +142,12 @@ export function EmailPermutatorForm({ setEmails, setIsLoading, setHasGenerated }
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isSubmitting} className="w-full">
+            <Button type="submit" disabled={isSubmitting} className="w-full text-lg py-6">
               {isSubmitting ? (
                 <Loader2 className="animate-spin" />
               ) : (
                 <>
-                  <Zap className="mr-2 h-4 w-4" />
+                  <Zap className="mr-2 h-5 w-5" />
                   Generate Emails
                 </>
               )}

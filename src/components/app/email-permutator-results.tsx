@@ -51,7 +51,7 @@ export function EmailPermutatorResults({ emails, isLoading, hasGenerated }: Emai
   );
 
   const renderInitialState = () => (
-     <div className="text-center py-16 border-2 border-dashed rounded-lg">
+     <div className="text-center py-16 border-2 border-dashed rounded-lg border-muted">
         <Bot className="mx-auto h-12 w-12 text-muted-foreground" />
         <h3 className="mt-4 text-lg font-medium">Ready to find emails?</h3>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -61,7 +61,7 @@ export function EmailPermutatorResults({ emails, isLoading, hasGenerated }: Emai
   );
 
   const renderNoResultsState = () => (
-    <div className="text-center py-16 border-2 border-dashed rounded-lg">
+    <div className="text-center py-16 border-2 border-dashed rounded-lg border-muted">
         <Frown className="mx-auto h-12 w-12 text-muted-foreground" />
         <h3 className="mt-4 text-lg font-medium">No emails generated</h3>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -100,7 +100,7 @@ export function EmailPermutatorResults({ emails, isLoading, hasGenerated }: Emai
 
   return (
     <div className="animate-fade-in" style={{ animationDelay: '150ms'}}>
-      <Card className="shadow-lg bg-card/80 backdrop-blur-sm">
+      <Card className="shadow-lg bg-card border-border/50">
         <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <CardTitle className="text-3xl font-bold tracking-tight">Generated Emails</CardTitle>
@@ -114,11 +114,11 @@ export function EmailPermutatorResults({ emails, isLoading, hasGenerated }: Emai
           </div>
           {emails.length > 0 && !isLoading && (
             <div className='flex gap-2'>
-              <Button onClick={copyAllToClipboard} variant="outline">
+              <Button onClick={copyAllToClipboard} variant="secondary">
                 <Copy className="mr-2 h-4 w-4" />
                 Copy All
               </Button>
-              <Button onClick={handleExport} variant="outline">
+              <Button onClick={handleExport} variant="secondary">
                 <Download className="mr-2 h-4 w-4" />
                 Export CSV
               </Button>

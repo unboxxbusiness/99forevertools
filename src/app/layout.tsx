@@ -6,8 +6,8 @@ import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Email Permutator',
-  description: 'Generate all possible email combinations',
+  title: 'Marketing ToolKit',
+  description: 'Your one-stop solution for marketing tools',
 };
 
 export default function RootLayout({
