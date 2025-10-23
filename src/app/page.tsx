@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -137,6 +137,12 @@ const tools:any[] = [
     title: 'Image Resizer',
     description: 'Resize images to specific dimensions (e.g., for social media posts).',
     icon: <Crop className="w-8 h-8" />,
+  },
+  {
+    href: '/logo-maker',
+    title: 'Logo Maker',
+    description: 'Create a simple, text-based logo using your business\'s initials or name.',
+    icon: <Palette className="w-8 h-8" />,
   }
 ];
 
