@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { User, Link as LinkIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 
 type BioData = {
   name: string;
@@ -19,17 +19,29 @@ const urlSafeBase64Decode = (str: string) => {
     while (str.length % 4) {
         str += '=';
     }
-    return atob(str);
+    // `atob` is only available in the browser
+    if (typeof window !== 'undefined') {
+        return window.atob(str);
+    }
+    return '';
 };
 
-export default function BioPage({ params: { data: encodedData } }: { params: { data: string } }) {
+export default function BioPage() {
+  const params = useParams();
+  const encodedData = params.data as string;
   const [data, setData] = useState<BioData | null>(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    if (!encodedData) return;
+
     try {
       // Decode the URL-safe base64 string
       const decodedData = decodeURIComponent(urlSafeBase64Decode(encodedData));
+      if (!decodedData) {
+          setError(true);
+          return;
+      }
       const parsedData = JSON.parse(decodedData);
       setData(parsedData);
     } catch (error) {
