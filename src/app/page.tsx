@@ -83,6 +83,7 @@ const allTools = [
       { href: '/whatsapp-link-generator', title: 'WhatsApp Link Generator', description: 'Create a wa.me link with a pre-filled message.', icon: <MessageSquare className="w-8 h-8" /> },
       { href: '/whatsapp-widget-generator', title: 'WhatsApp Widget Generator', description: 'Create a floating WhatsApp chat button for your website.', icon: <MessageSquarePlus className="w-8 h-8" /> },
       { href: '/whatsapp-bio-link', title: 'WhatsApp Bio Link Page', description: 'Create a Linktree-style page for your WhatsApp profile.', icon: <Contact className="w-8 h-8" /> },
+      { href: '/whatsapp-broadcast-templates', title: 'WhatsApp Broadcast Templates', description: 'Free templates for sales, support, and more.', icon: <BookOpen className="w-8 h-8" /> },
     ]
   },
   {

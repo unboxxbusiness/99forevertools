@@ -46,6 +46,7 @@ const tools = [
   '/whatsapp-link-generator',
   '/whatsapp-widget-generator',
   '/whatsapp-bio-link',
+  '/whatsapp-broadcast-templates',
   '/festival-wish-generator',
   '/google-maps-link-generator',
   '/review-link-generator',
