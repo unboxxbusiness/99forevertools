@@ -179,14 +179,15 @@ export default function Home() {
           <p className="mt-2 text-muted-foreground">
             ✅ Pro Lead-Gen Site ✅ FREE Lifetime Hosting 🚫 No Monthly Bills. Ever.
           </p>
-          <a
-            href="https://99studiopro.com/lifetime-website-deal/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-block text-lg font-bold text-primary underline"
-          >
-            Click the link for your ₹10,000 offer! 👇
-          </a>
+          <Button asChild size="lg" className="mt-4 animate-pulse">
+            <a
+              href="https://99studiopro.com/lifetime-website-deal/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Claim Your ₹10,000 Offer Now!
+            </a>
+          </Button>
         </div>
       </footer>
     </div>
