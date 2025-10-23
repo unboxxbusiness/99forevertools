@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef } from 'react';
@@ -93,6 +94,9 @@ export function BeforeAfterSliderGenerator() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const firstImage = beforeImageUrl ? { imageUrl: beforeImageUrl } : undefined;
+  const secondImage = afterImageUrl ? { imageUrl: afterImageUrl } : undefined;
+
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
       <CardHeader className="text-center">
@@ -109,13 +113,13 @@ export function BeforeAfterSliderGenerator() {
           <ImageUploader image={afterImageUrl} setImage={handleSetAfterImage} title="Upload 'After' Image" />
         </div>
 
-        {beforeImageUrl && afterImageUrl && (
+        {firstImage && secondImage && (
           <div className="border-t pt-8 space-y-6">
             <h3 className="text-xl font-semibold text-center">Live Preview</h3>
             <div className="w-full max-w-lg mx-auto aspect-square">
               <BeforeAfterSlider
-                beforeImage={{ imageUrl: beforeImageUrl }}
-                afterImage={{ imageUrl: afterImageUrl }}
+                beforeImage={firstImage}
+                afterImage={secondImage}
               />
             </div>
           </div>
