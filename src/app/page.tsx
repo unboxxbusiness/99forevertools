@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -203,6 +203,12 @@ const tools:any[] = [
     title: 'Case Converter',
     description: 'Convert text to UPPERCASE, lowercase, Title Case, etc.',
     icon: <CaseSensitive className="w-8 h-8" />,
+  },
+  {
+    href: '/privacy-policy-generator',
+    title: 'Privacy Policy Generator',
+    description: 'Generate a generic privacy policy for your website.',
+    icon: <Shield className="w-8 h-8" />,
   }
 ];
 
@@ -248,3 +254,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
