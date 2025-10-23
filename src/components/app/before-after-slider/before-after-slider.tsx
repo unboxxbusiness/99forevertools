@@ -74,10 +74,12 @@ export function BeforeAfterSliderGenerator() {
 
   const handleSetBeforeImage = (file: File) => {
     setBeforeImage(file);
+    if (beforeImageUrl) URL.revokeObjectURL(beforeImageUrl);
     setBeforeImageUrl(URL.createObjectURL(file));
   };
   const handleSetAfterImage = (file: File) => {
     setAfterImage(file);
+    if (afterImageUrl) URL.revokeObjectURL(afterImageUrl);
     setAfterImageUrl(URL.createObjectURL(file));
   };
 
@@ -93,9 +95,6 @@ export function BeforeAfterSliderGenerator() {
     toast({ title: 'Embed code copied to clipboard!' });
     setTimeout(() => setCopied(false), 2000);
   };
-
-  const firstImage = beforeImageUrl ? { imageUrl: beforeImageUrl } : undefined;
-  const secondImage = afterImageUrl ? { imageUrl: afterImageUrl } : undefined;
 
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
@@ -113,13 +112,13 @@ export function BeforeAfterSliderGenerator() {
           <ImageUploader image={afterImageUrl} setImage={handleSetAfterImage} title="Upload 'After' Image" />
         </div>
 
-        {firstImage && secondImage && (
+        {beforeImageUrl && afterImageUrl && (
           <div className="border-t pt-8 space-y-6">
             <h3 className="text-xl font-semibold text-center">Live Preview</h3>
             <div className="w-full max-w-lg mx-auto aspect-square">
               <BeforeAfterSlider
-                beforeImage={firstImage}
-                afterImage={secondImage}
+                beforeImage={{ imageUrl: beforeImageUrl }}
+                afterImage={{ imageUrl: afterImageUrl }}
               />
             </div>
           </div>
