@@ -51,7 +51,7 @@ const allTools = [
     category: 'Branding & Design',
     icon: <Paintbrush className="w-6 h-6" />,
     tools: [
-      { href: '/invoice-generator', title: 'Invoice Generator', description: 'Quickly generate a clean, professional invoice.', icon: <FileText className="w-8 h-8" /> },
+      { href: '/invoice-generator', title: 'Invoice Generator', description: 'Generate a professional invoice (PDF) to print or share on WhatsApp.', icon: <FileText className="w-8 h-8" /> },
       { href: '/business-slogan-generator', title: 'Business Slogan Generator', description: 'Generate catchy taglines based on keywords.', icon: <Lightbulb className="w-8 h-8" /> },
       { href: '/business-name-generator', title: 'Business Name Generator', description: 'Generate potential names for a new business.', icon: <PenSquare className="w-8 h-8" /> },
       { href: '/logo-maker', title: 'Logo Maker', description: 'Create a simple, text-based logo for your business.', icon: <Palette className="w-8 h-8" /> },
