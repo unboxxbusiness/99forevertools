@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { User, Link as LinkIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { notFound, useParams } from 'next/navigation';
+import JSZip from 'jszip';
 
 type BioData = {
   name: string;
@@ -13,17 +14,28 @@ type BioData = {
   links: { title: string; url: string }[];
 };
 
-// This function decodes a URL-safe Base64 string
-const urlSafeBase64Decode = (str: string) => {
-    str = str.replace(/-/g, '+').replace(/_/g, '/');
-    while (str.length % 4) {
-        str += '=';
+// This function decodes a URL-safe Base64 string and decompresses it
+const decompressAndDecode = async (str: string): Promise<any> => {
+    try {
+        let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+        while (base64.length % 4) {
+            base64 += '=';
+        }
+
+        const zip = new JSZip();
+        const content = await zip.loadAsync(base64, { base64: true });
+        const dataFile = content.file('data.json');
+        
+        if (!dataFile) {
+            throw new Error("data.json not found in archive");
+        }
+
+        const jsonString = await dataFile.async('string');
+        return JSON.parse(jsonString);
+    } catch (error) {
+        console.error("Failed to decompress or decode data", error);
+        throw error;
     }
-    // `atob` is only available in the browser
-    if (typeof window !== 'undefined') {
-        return window.atob(str);
-    }
-    return '';
 };
 
 export default function BioPage() {
@@ -35,19 +47,18 @@ export default function BioPage() {
   useEffect(() => {
     if (!encodedData) return;
 
-    try {
-      // Decode the URL-safe base64 string
-      const decodedData = decodeURIComponent(urlSafeBase64Decode(encodedData));
-      if (!decodedData) {
-          setError(true);
-          return;
-      }
-      const parsedData = JSON.parse(decodedData);
-      setData(parsedData);
-    } catch (error) {
-      console.error("Failed to parse bio data", error);
-      setError(true);
-    }
+    const processData = async () => {
+        try {
+            const parsedData = await decompressAndDecode(encodedData);
+            setData(parsedData);
+        } catch (err) {
+            console.error("Failed to parse bio data", err);
+            setError(true);
+        }
+    };
+
+    processData();
+    
   }, [encodedData]);
 
   if (error) {

@@ -6,9 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Trash2, PlusCircle, User, Link as LinkIcon, Copy, Check } from 'lucide-react';
+import { Trash2, PlusCircle, User, Link as LinkIcon, Copy, Check, Loader2 } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import JSZip from 'jszip';
 
 type BioLink = {
   id: number;
@@ -16,9 +17,12 @@ type BioLink = {
   url: string;
 };
 
-// This function encodes data to a URL-safe Base64 string
-const urlSafeBase64Encode = (data: object): string => {
-    return btoa(encodeURIComponent(JSON.stringify(data)))
+// This function compresses data and then encodes it to a URL-safe Base64 string
+const compressAndEncode = async (data: object): Promise<string> => {
+    const zip = new JSZip();
+    zip.file('data.json', JSON.stringify(data));
+    const compressed = await zip.generateAsync({ type: 'base64' });
+    return compressed
         .replace(/\+/g, '-') // Convert '+' to '-'
         .replace(/\//g, '_') // Convert '/' to '_'
         .replace(/=+$/, ''); // Remove trailing '='
@@ -38,6 +42,7 @@ export function LinkInBioGenerator() {
   const [copied, setCopied] = useState(false);
   const [shareableLink, setShareableLink] = useState('');
   const [displayLink, setDisplayLink] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const handleAddLink = () => {
     setLinks([...links, { id: nextId, title: '', url: '' }]);
@@ -72,21 +77,28 @@ export function LinkInBioGenerator() {
   };
   
   useEffect(() => {
-    const data = {
-      name,
-      bio,
-      image: profileImage,
-      links: links.filter(l => l.title && l.url),
+    const generateLink = async () => {
+      setIsGenerating(true);
+      const data = {
+        name,
+        bio,
+        image: profileImage,
+        links: links.filter(l => l.title && l.url),
+      };
+      
+      const encoded = await compressAndEncode(data);
+      
+      if (typeof window !== 'undefined') {
+        const fullLink = `${window.location.origin}/bio/${encoded}`;
+        setShareableLink(fullLink);
+
+        const shortLink = fullLink.replace(window.location.origin, '...').substring(0, 40) + (fullLink.length > 40 ? '...' : '');
+        setDisplayLink(shortLink);
+      }
+      setIsGenerating(false);
     };
-    const encoded = urlSafeBase64Encode(data);
-    
-    // This effect runs only on the client, so window is available
-    const fullLink = `${window.location.origin}/bio/${encoded}`;
-    setShareableLink(fullLink);
 
-    const shortLink = fullLink.replace(window.location.origin, '...').substring(0, 40) + (fullLink.length > 40 ? '...' : '');
-    setDisplayLink(shortLink);
-
+    generateLink();
   }, [name, bio, profileImage, links]);
 
 
@@ -147,8 +159,15 @@ export function LinkInBioGenerator() {
             <div className="space-y-4 p-4 border rounded-lg bg-primary/10">
                  <h3 className="font-semibold text-primary">Your Shareable Link</h3>
                  <div className="bg-background p-2 rounded-md flex items-center justify-between gap-2 break-all">
-                    <code className="text-sm">{displayLink}</code>
-                    <Button variant="ghost" size="icon" onClick={handleCopyLink}>
+                    {isGenerating ? (
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            <span>Generating...</span>
+                        </div>
+                    ) : (
+                        <code className="text-sm">{displayLink}</code>
+                    )}
+                    <Button variant="ghost" size="icon" onClick={handleCopyLink} disabled={isGenerating}>
                         {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                     </Button>
                 </div>
