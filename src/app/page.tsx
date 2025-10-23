@@ -6,7 +6,7 @@ import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as Link2Icon, Activity, ExternalLink, Camera, Code, Network, Search, Gift, FileJson, Bot, TestTube2, Mail, Users, CalculatorIcon, Paintbrush, Clock, Check, MoveRight } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as Link2Icon, Activity, ExternalLink, Camera, Code, Network, Search, Gift, FileJson, Bot, TestTube2, Mail, Users, CalculatorIcon, Paintbrush, Clock } from 'lucide-react';
 
 const allTools = [
   {
@@ -110,9 +110,15 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
-      <main className="flex-grow container mx-auto px-4 py-12 md:py-16">
-        <div className="text-center mb-12 animate-fade-in">
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-primary">
+      <main className="flex-grow container mx-auto px-4">
+        <div className="py-20 md:py-32 text-center animate-fade-in relative">
+          <div 
+            className="absolute inset-0 -z-10" 
+            style={{
+              backgroundImage: 'radial-gradient(circle at top, hsl(var(--primary) / 0.1), transparent 60%)'
+            }}
+          />
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-primary">
             Free Tools for Small Business Growth
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
@@ -123,7 +129,7 @@ export default function Home() {
             <Input
               type="search"
               placeholder="Search for your perfect tool..."
-              className="h-12 text-lg pl-12"
+              className="h-12 text-lg pl-12 bg-background/50 backdrop-blur-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -134,6 +140,7 @@ export default function Home() {
           <Button 
             variant={activeCategory === 'All' ? 'default' : 'secondary'}
             onClick={() => setActiveCategory('All')}
+            className="rounded-full"
           >
             All Tools
           </Button>
@@ -142,6 +149,7 @@ export default function Home() {
               key={category.category}
               variant={activeCategory === category.category ? 'default' : 'secondary'}
               onClick={() => setActiveCategory(category.category)}
+              className="rounded-full"
             >
               {category.icon}
               {category.category}
@@ -150,7 +158,7 @@ export default function Home() {
         </div>
 
         {filteredTools.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-16">
             {filteredTools.map((tool, index) => (
               <div key={tool.href} className="animate-fade-in" style={{ animationDelay: `${50 * (index % 12)}ms` }}>
                 <ToolCard
