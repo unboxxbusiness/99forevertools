@@ -272,6 +272,12 @@ const tools:any[] = [
     description: 'Create batches of unique, random codes for your marketing campaigns.',
     icon: <Gift className="w-8 h-8" />,
   },
+  {
+    href: '/meta-tag-generator',
+    title: 'SERP Preview Tool',
+    description: 'Show how a meta title and description will look on a Google search results page.',
+    icon: <Search className="w-8 h-8" />,
+  },
 ];
 
 export default function Home() {
