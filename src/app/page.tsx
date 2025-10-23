@@ -134,6 +134,9 @@ export default function Home() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+          <p className="mt-4 text-xs text-muted-foreground">
+            No registration required  &bull;  100% free  &bull;  More Tools Coming Soon
+          </p>
         </div>
 
         <div className="flex flex-wrap justify-center gap-2 mb-12 animate-fade-in">
@@ -149,7 +152,7 @@ export default function Home() {
               key={category.category}
               variant={activeCategory === category.category ? 'default' : 'secondary'}
               onClick={() => setActiveCategory(category.category)}
-              className="rounded-full"
+              className="rounded-full gap-2"
             >
               {category.icon}
               {category.category}
@@ -158,7 +161,7 @@ export default function Home() {
         </div>
 
         {filteredTools.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-16">
             {filteredTools.map((tool, index) => (
               <div key={tool.href} className="animate-fade-in" style={{ animationDelay: `${50 * (index % 12)}ms` }}>
                 <ToolCard
