@@ -6,7 +6,7 @@ import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as LinkIcon, Activity, ExternalLink, Camera, Code, Network, Search, Gift, FileJson, Bot, TestTube2, Mail, Users, CalculatorIcon, Paintbrush, Clock, Binary, MessageSquarePlus, BookOpen, IndianRupee } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as LinkIcon, Activity, ExternalLink, Camera, Code, Network, Search, Gift, FileJson, Bot, TestTube2, Mail, Users, CalculatorIcon, Paintbrush, Clock, Binary, MessageSquarePlus, BookOpen, IndianRupee, User as UserIcon } from 'lucide-react';
 
 const allTools = [
   {
@@ -53,10 +53,10 @@ const allTools = [
     category: 'Branding & Design',
     icon: <Paintbrush className="w-6 h-6" />,
     tools: [
-      { href: '/invoice-generator', title: 'Invoice Generator', description: 'Generate a professional invoice to print or save as a PDF.', icon: <FileText className="w-8 h-8" /> },
+      { href: '/invoice-generator', title: 'Shareable Invoice Generator', description: 'Generate a professional invoice to print, save as PDF, and share.', icon: <FileText className="w-8 h-8" /> },
       { href: '/business-slogan-generator', title: 'Business Slogan Generator', description: 'Generate catchy taglines based on keywords.', icon: <Lightbulb className="w-8 h-8" /> },
       { href: '/business-name-generator', title: 'Business Name Generator', description: 'Generate potential names for a new business.', icon: <PenSquare className="w-8 h-8" /> },
-      { href: '/logo-maker', title: 'Logo Maker', description: 'Create a simple, text-based logo for your business.', icon: <Palette className="w-8 h-8" /> },
+      { href: '/logo-maker', title: 'Advanced Logo Maker', description: 'Create a simple, text-based logo for your business.', icon: <Palette className="w-8 h-8" /> },
       { href: '/color-palette-generator', title: 'Color Palette Generator', description: 'Generate accessible color schemes from a base color.', icon: <Palette className="w-8 h-8" /> },
       { href: '/email-signature-generator', title: 'Email Signature Generator', description: 'Create a professional HTML email signature.', icon: <PenSquare className="w-8 h-8" /> },
     ]
@@ -75,6 +75,7 @@ const allTools = [
         { href: '/image-to-base64-converter', title: 'Image to Base64 Converter', description: 'Convert images to Base64 encoded strings.', icon: <Binary className="w-8 h-8" /> },
         { href: '/image-to-png-converter', title: 'Image to PNG Converter', description: 'Convert various image formats to PNG.', icon: <Image className="w-8 h-8" /> },
         { href: '/photo-filter-studio', title: 'Photo Filter Studio', description: 'Apply professional filters to your photos instantly.', icon: <Camera className="w-8 h-8" /> },
+        { href: '/instagram-profile-photo-maker', title: 'Instagram Profile Photo Maker', description: 'Create a circular profile picture with a gradient story ring.', icon: <UserIcon className="w-8 h-8" /> },
     ]
   },
   {

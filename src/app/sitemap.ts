@@ -69,6 +69,7 @@ const tools = [
   '/photo-filter-studio',
   '/upi-qr-code-generator',
   '/manual-sales-tracker',
+  '/instagram-profile-photo-maker',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
