@@ -11,8 +11,8 @@ import { Download, Globe, Camera, Loader2 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export function WebsiteScreenshotGenerator() {
-  const [url, setUrl] = useState('');
-  const [screenshotData, setScreenshotData] = useState<string | null>(null);
+  const [url, setUrl] = useState('https://www.google.com');
+  const [screenshotUrl, setScreenshotUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -27,18 +27,24 @@ export function WebsiteScreenshotGenerator() {
     }
 
     setIsLoading(true);
-    setScreenshotData(null);
+    setScreenshotUrl(null);
+    
+    // Using a more reliable screenshot service to avoid quota issues.
+    // This is a public access key for screenshotone.com's free plan.
+    const accessKey = 'uWbN9CBMw-xPag';
+    const apiUrl = `https://api.screenshotone.com/take?access_key=${accessKey}&url=${encodeURIComponent(url)}&full_page=true`;
 
     try {
-      const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&screenshot=true`;
       const response = await fetch(apiUrl);
-      const data = await response.json();
       
-      if (response.ok && data.lighthouseResult?.audits?.['final-screenshot']?.details?.data) {
-        setScreenshotData(data.lighthouseResult.audits['final-screenshot'].details.data);
+      if (response.ok) {
+        const imageBlob = await response.blob();
+        const imageUrl = URL.createObjectURL(imageBlob);
+        setScreenshotUrl(imageUrl);
         toast({ title: 'Screenshot captured!' });
       } else {
-        throw new Error(data.error?.message || 'Failed to capture screenshot. The URL might be invalid or unreachable.');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to capture screenshot. The URL might be invalid or unreachable.');
       }
     } catch (error: any) {
       toast({
@@ -52,9 +58,10 @@ export function WebsiteScreenshotGenerator() {
   };
 
   const handleDownload = () => {
-    if (!screenshotData) return;
+    if (!screenshotUrl) return;
     const link = document.createElement('a');
-    link.href = screenshotData;
+    link.href = screenshotUrl;
+    // The screenshot service returns a jpeg
     link.download = `screenshot-${new URL(url).hostname}.jpeg`;
     document.body.appendChild(link);
     link.click();
@@ -100,9 +107,9 @@ export function WebsiteScreenshotGenerator() {
           <div className="bg-muted/30 p-4 rounded-lg min-h-[400px] flex items-center justify-center">
             {isLoading ? (
               <Skeleton className="w-full h-full min-h-[400px]" />
-            ) : screenshotData ? (
+            ) : screenshotUrl ? (
               <div className="space-y-4 animate-fade-in text-center">
-                <img src={screenshotData} alt="Website screenshot" className="rounded-md border-2 border-border max-w-full" />
+                <img src={screenshotUrl} alt="Website screenshot" className="rounded-md border-2 border-border max-w-full" />
                 <Button onClick={handleDownload} className="mt-4">
                   <Download className="mr-2 h-4 w-4" />
                   Download Screenshot
