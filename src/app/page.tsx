@@ -210,13 +210,13 @@ export default function Home() {
                 <p className="text-muted-foreground">(No Monthly Fees. Ever.)</p>
             </div>
 
-            <Button asChild size="lg" className="gap-4 text-lg py-7 px-10 animate-pulse">
+            <Button asChild size="lg">
                 <a
                 href="https://99studiopro.com/lifetime-website-deal/"
                 target="_blank"
                 rel="noopener noreferrer"
                 >
-                Claim Your ₹10,000 Offer <MoveRight className="w-5 h-5" />
+                Claim Your ₹10,000 Offer <MoveRight className="w-5 h-5 ml-2" />
                 </a>
             </Button>
           </div>
