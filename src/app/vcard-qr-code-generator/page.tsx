@@ -6,12 +6,6 @@ import { VCardQrCodeGenerator } from '@/components/app/vcard-qr-code-generator/v
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'vCard QR Code Generator | 99forevertools',
-  description: 'Generate a QR code containing your contact information (vCard). Users can scan it to save your details directly to their phone.',
-};
 
 export default function VCardQrCodeGeneratorPage() {
   return (

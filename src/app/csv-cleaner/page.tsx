@@ -8,12 +8,6 @@ import { CsvCleanerResults } from '@/components/app/csv-cleaner-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'CSV Cleaner and Formatter | 99forevertools',
-  description: 'Clean and standardize your CSV files online. Fix names, phone numbers, and other common data issues automatically. Upload your file to get started.',
-};
 
 export type CleanedCsvData = {
   headers: string[];

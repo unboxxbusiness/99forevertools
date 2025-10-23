@@ -6,12 +6,6 @@ import { SalarySacrificeCalculator } from '@/components/app/salary-sacrifice-cal
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Salary Sacrifice Calculator | 99forevertools',
-  description: 'Estimate your potential tax savings from pre-tax pension contributions. See how salary sacrifice affects your take-home pay.',
-};
 
 export default function SalarySacrificeCalculatorPage() {
   return (

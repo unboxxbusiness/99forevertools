@@ -6,12 +6,6 @@ import { GifMaker } from '@/components/app/gif-maker/gif-maker';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'GIF Maker - Images to GIF | 99forevertools',
-  description: 'Create animated GIFs from a series of images or a video. Customize size, frame rate, and add text overlays easily.',
-};
 
 export default function GifMakerPage() {
   return (

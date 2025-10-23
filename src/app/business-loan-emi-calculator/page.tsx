@@ -6,12 +6,6 @@ import { BusinessLoanEMICalculator } from '@/components/app/business-loan-emi-ca
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Business Loan EMI Calculator | 99forevertools',
-  description: 'Calculate your monthly EMI for a business loan. Our easy-to-use calculator helps you plan your finances with an amortization schedule.',
-};
 
 export default function BusinessLoanEMICalculatorPage() {
   return (

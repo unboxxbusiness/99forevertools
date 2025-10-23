@@ -6,12 +6,6 @@ import { AboutUsGenerator } from '@/components/app/about-us-generator/about-us-g
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Free About Us Page Generator | 99forevertools',
-  description: 'Create a professional "About Us" page for your business in seconds. Fill in your details and get a ready-to-use template for your website.',
-};
 
 export default function AboutUsGeneratorPage() {
   return (

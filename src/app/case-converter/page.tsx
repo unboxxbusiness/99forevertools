@@ -1,18 +1,11 @@
 
 'use client';
 
-import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { CaseConverter } from '@/components/app/case-converter/case-converter';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Online Case Converter | 99forevertools',
-  description: 'Easily convert text between different cases: UPPERCASE, lowercase, Title Case, and Sentence case. A simple tool for writers and editors.',
-};
 
 export default function CaseConverterPage() {
   return (

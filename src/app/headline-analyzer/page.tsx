@@ -8,12 +8,6 @@ import { HeadlineAnalyzerResults, type HeadlineAnalysis } from '@/components/app
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Free Headline Analyzer | 99forevertools',
-  description: 'Score your headlines for effectiveness. Our tool analyzes word count, sentiment, power words, and clarity to help you write better headlines.',
-};
 
 export default function HeadlineAnalyzerPage() {
   const [analysis, setAnalysis] = useState<HeadlineAnalysis | null>(null);

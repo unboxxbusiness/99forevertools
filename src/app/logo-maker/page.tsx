@@ -6,12 +6,6 @@ import { LogoMaker } from '@/components/app/logo-maker/logo-maker';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Free Logo Maker | 99forevertools',
-  description: 'Create a simple, text-based logo for your business. Customize fonts, colors, icons, and layout to generate a unique logo in seconds.',
-};
 
 export default function LogoMakerPage() {
   return (

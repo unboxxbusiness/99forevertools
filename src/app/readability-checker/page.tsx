@@ -8,12 +8,6 @@ import { ReadabilityCheckerResults, type ReadabilityAnalysis } from '@/component
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Readability Score Calculator | 99forevertools',
-  description: 'Check the readability of your text with the Flesch-Kincaid test. Improve your content by making it easier to understand.',
-};
 
 export default function ReadabilityCheckerPage() {
   const [analysis, setAnalysis] = useState<ReadabilityAnalysis | null>(null);

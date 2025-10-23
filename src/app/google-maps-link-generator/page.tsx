@@ -6,12 +6,6 @@ import { GoogleMapsLinkGenerator } from '@/components/app/google-maps-link-gener
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Google Maps Link Generator | 99forevertools',
-  description: 'Create a direct, shareable Google Maps link for any business address. Easy to use and perfect for websites and social media.',
-};
 
 export default function GoogleMapsLinkGeneratorPage() {
   return (

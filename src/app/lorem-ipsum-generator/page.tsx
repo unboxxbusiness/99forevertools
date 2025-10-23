@@ -8,12 +8,6 @@ import { LoremIpsumGeneratorResults } from '@/components/app/lorem-ipsum-generat
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Lorem Ipsum Generator | 99forevertools',
-  description: 'Generate placeholder text for your designs and mockups. Specify the number of paragraphs you need and copy the text instantly.',
-};
 
 export default function LoremIpsumGeneratorPage() {
   const [text, setText] = useState('');

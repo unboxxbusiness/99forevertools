@@ -6,12 +6,6 @@ import { BusinessValuationCalculator } from '@/components/app/business-valuation
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Simple Business Valuation Calculator | 99forevertools',
-  description: 'Get a quick estimate of your business\'s worth based on annual revenue and industry. A simple tool for a ballpark valuation.',
-};
 
 export default function BusinessValuationCalculatorPage() {
   return (

@@ -6,12 +6,6 @@ import { TextToSpeechConverter } from '@/components/app/text-to-speech/text-to-s
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Text to Speech Converter | 99forevertools',
-  description: 'Convert any text into natural-sounding speech online. Choose from different voices and play the audio directly in your browser.',
-};
 
 export default function TextToSpeechPage() {
   return (

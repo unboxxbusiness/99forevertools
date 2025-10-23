@@ -6,12 +6,6 @@ import { WatermarkAdder } from '@/components/app/watermark-adder/watermark-adder
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Watermark Adder | 99forevertools',
-  description: 'Add a text or image watermark to your pictures. Customize opacity, size, and position to protect your images.',
-};
 
 export default function WatermarkAdderPage() {
   return (

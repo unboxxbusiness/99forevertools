@@ -6,12 +6,6 @@ import { ProfitMarginCalculator } from '@/components/app/profit-margin-calculato
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Profit Margin Calculator | 99forevertools',
-  description: 'Calculate net profit, profit margin, and markup percentage from cost and sale prices. An essential tool for pricing strategy.',
-};
 
 export default function ProfitMarginCalculatorPage() {
   return (

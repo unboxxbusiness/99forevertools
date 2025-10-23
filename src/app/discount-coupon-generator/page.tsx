@@ -6,12 +6,6 @@ import { DiscountCouponGenerator } from '@/components/app/discount-coupon-genera
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Discount Coupon Code Generator | 99forevertools',
-  description: 'Generate batches of unique, random discount codes for your marketing campaigns. Customize prefix, suffix, length, and character set.',
-};
 
 export default function DiscountCouponGeneratorPage() {
   return (

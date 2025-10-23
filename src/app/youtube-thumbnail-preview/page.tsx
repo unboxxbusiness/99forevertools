@@ -6,12 +6,6 @@ import { YouTubeThumbnailPreview } from '@/components/app/youtube-thumbnail-prev
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'YouTube Thumbnail Preview Tool | 99forevertools',
-  description: 'See how your video thumbnail and title will look on the YouTube homepage. Upload your image and test your title before you publish.',
-};
 
 export default function YouTubeThumbnailPreviewPage() {
   return (

@@ -8,12 +8,6 @@ import { TermsAndConditionsGeneratorResults } from '@/components/app/terms-and-c
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Terms and Conditions Generator | 99forevertools',
-  description: 'Generate a basic Terms & Conditions document for your website. Enter your company details to create a standard T&C page.',
-};
 
 export default function TermsAndConditionsGeneratorPage() {
   const [terms, setTerms] = useState('');
