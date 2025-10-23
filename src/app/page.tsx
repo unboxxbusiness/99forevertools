@@ -3,9 +3,15 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info } from 'lucide-react';
 
 const tools:any[] = [
+  {
+    href: '/about-us-generator',
+    title: 'About Us Page Generator',
+    description: 'Help businesses write a simple "About Us" section using a template.',
+    icon: <Info className="w-8 h-8" />,
+  },
   {
     href: '/gst-calculator',
     title: 'GST Calculator',
@@ -260,5 +266,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
