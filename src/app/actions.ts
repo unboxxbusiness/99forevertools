@@ -5,7 +5,6 @@ import { z } from 'zod';
 import { loremIpsum } from 'lorem-ipsum';
 import { JSDOM } from 'jsdom';
 import css from 'css';
-import whois from 'freewhois';
 
 export async function generateLoremIpsumAction(values: { paragraphs: number }) {
   try {
@@ -439,43 +438,8 @@ export async function cleanCsvAction(values: z.infer<typeof csvSchema>) {
         return { error: 'Failed to clean CSV data. Please check the file format.' };
     }
 }
-
-const domainSearchSchema = z.object({
-  domain: z.string(),
-});
-
-export async function checkDomainAvailabilityAction(values: z.infer<typeof domainSearchSchema>) {
-  try {
-    let { domain } = values;
     
-    // Clean the input to remove protocol and paths
-    domain = domain.replace(/^https?:\/\//, '').split('/')[0];
 
-    if (!domain.includes('.') || domain.startsWith('.') || domain.endsWith('.')) {
-      return { error: 'Invalid domain format. Please enter a valid domain name (e.g., example.com).' };
-    }
-
-    const data = await whois(domain);
-    
-    // If data is returned, it means the domain is registered and thus unavailable.
-    // The structure might vary, but any successful response means it's taken.
-    return { data: { domain, isAvailable: false, message: `Domain "${domain}" is not available.` } };
-
-  } catch (error: any) {
-    // The `freewhois` library throws an error for available domains (e.g., 404 Not Found from RDAP).
-    // We can interpret these specific errors as "available".
-    if (error.message && (error.message.includes('404') || error.message.toLowerCase().includes('not found'))) {
-        return { data: { domain: values.domain.replace(/^https?:\/\//, '').split('/')[0], isAvailable: true, message: `Congratulations! "${values.domain.replace(/^https?:\/\//, '').split('/')[0]}" appears to be available.` } };
-    }
-    // Handle other errors, like invalid TLDs or network issues.
-    if (error.message && error.message.includes('No RDAP server found')) {
-        return { error: `The TLD ".${values.domain.split('.').pop()}" is not supported or invalid.` };
-    }
-
-    return { error: 'An unexpected error occurred during the domain check. Please try again.' };
-  }
-}
-    
 
 
 

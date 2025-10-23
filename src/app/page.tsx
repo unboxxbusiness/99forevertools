@@ -267,12 +267,6 @@ const tools:any[] = [
     icon: <Network className="w-8 h-8" />,
   },
   {
-    href: '/domain-name-search',
-    title: 'Domain Name Search',
-    description: 'A simple "whois" tool to check if a domain name is available.',
-    icon: <Search className="w-8 h-8" />,
-  },
-  {
     href: '/discount-coupon-generator',
     title: 'Discount Coupon Code Generator',
     description: 'Create batches of unique, random codes for your marketing campaigns.',
