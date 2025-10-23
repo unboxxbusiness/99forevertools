@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { Download, Gem, Rocket, Shield, Star, Zap } from 'lucide-react';
+import { Download, Gem, Rocket, Shield, Star, Zap, Briefcase, Building, Lightbulb, Globe, Heart, Home, Flag, Award, BarChart, Camera, Cloud, Code, Compass, Cpu, CreditCard, Database, GitBranch, Keyboard, Layers, LifeBuoy, Lock, Mail, MousePointer, Package, Phone, PieChart, Puzzle, Server, Settings, ShoppingBag, ShoppingCart, Smartphone, Speaker, Sun, Target, Terminal, ThumbsUp, Tool, TrafficCone, Train, TreePine, TrendingUp, Truck, Umbrella, Wallet, Watch, Wind } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
@@ -24,6 +24,53 @@ const icons: { [key: string]: (props: SVGProps<SVGSVGElement>) => JSX.Element } 
     gem: (props) => <Gem {...props} />,
     shield: (props) => <Shield {...props} />,
     star: (props) => <Star {...props} />,
+    briefcase: (props) => <Briefcase {...props} />,
+    building: (props) => <Building {...props} />,
+    lightbulb: (props) => <Lightbulb {...props} />,
+    globe: (props) => <Globe {...props} />,
+    heart: (props) => <Heart {...props} />,
+    home: (props) => <Home {...props} />,
+    flag: (props) => <Flag {...props} />,
+    award: (props) => <Award {...props} />,
+    barChart: (props) => <BarChart {...props} />,
+    camera: (props) => <Camera {...props} />,
+    cloud: (props) => <Cloud {...props} />,
+    code: (props) => <Code {...props} />,
+    compass: (props) => <Compass {...props} />,
+    cpu: (props) => <Cpu {...props} />,
+    creditCard: (props) => <CreditCard {...props} />,
+    database: (props) => <Database {...props} />,
+    gitBranch: (props) => <GitBranch {...props} />,
+    keyboard: (props) => <Keyboard {...props} />,
+    layers: (props) => <Layers {...props} />,
+    lifeBuoy: (props) => <LifeBuoy {...props} />,
+    lock: (props) => <Lock {...props} />,
+    mail: (props) => <Mail {...props} />,
+    mousePointer: (props) => <MousePointer {...props} />,
+    package: (props) => <Package {...props} />,
+    phone: (props) => <Phone {...props} />,
+    pieChart: (props) => <PieChart {...props} />,
+    puzzle: (props) => <Puzzle {...props} />,
+    server: (props) => <Server {...props} />,
+    settings: (props) => <Settings {...props} />,
+    shoppingBag: (props) => <ShoppingBag {...props} />,
+    shoppingCart: (props) => <ShoppingCart {...props} />,
+    smartphone: (props) => <Smartphone {...props} />,
+    speaker: (props) => <Speaker {...props} />,
+    sun: (props) => <Sun {...props} />,
+    target: (props) => <Target {...props} />,
+    terminal: (props) => <Terminal {...props} />,
+    thumbsUp: (props) => <ThumbsUp {...props} />,
+    tool: (props) => <Tool {...props} />,
+    trafficCone: (props) => <TrafficCone {...props} />,
+    train: (props) => <Train {...props} />,
+    treePine: (props) => <TreePine {...props} />,
+    trendingUp: (props) => <TrendingUp {...props} />,
+    truck: (props) => <Truck {...props} />,
+    umbrella: (props) => <Umbrella {...props} />,
+    wallet: (props) => <Wallet {...props} />,
+    watch: (props) => <Watch {...props} />,
+    wind: (props) => <Wind {...props} />,
 };
 const iconKeys = Object.keys(icons);
 
