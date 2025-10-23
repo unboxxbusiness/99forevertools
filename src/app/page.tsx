@@ -37,7 +37,6 @@ const allTools = [
       { href: '/loan-repayment-calculator', title: 'Loan Repayment Calculator', description: 'Estimate monthly payments for various loans.', icon: <Landmark className="w-8 h-8" /> },
       { href: '/roi-calculator', title: 'ROI Calculator', description: 'Calculate return on investment for campaigns.', icon: <TrendingUp className="w-8 h-8" /> },
       { href: '/salary-sacrifice-calculator', title: 'Salary Sacrifice Calculator', description: 'Estimate tax savings from pension contributions.', icon: <Calculator className="w-8 h-8" /> },
-      { href: '/manual-sales-tracker', title: 'Manual Sales Tracker', description: 'A simple dashboard to manually track your daily sales revenue.', icon: <IndianRupee className="w-8 h-8" /> },
     ]
   },
   {
@@ -205,7 +204,7 @@ export default function Home() {
         {filteredTools.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-16">
             {filteredTools.map((tool, index) => (
-              <div key={tool.href} className="animate-fade-in" style={{ animationDelay: `${50 * (index % 12)}ms` }}>
+              <div key={`${tool.href}-${index}`} className="animate-fade-in" style={{ animationDelay: `${50 * (index % 12)}ms` }}>
                 <ToolCard
                   href={tool.href}
                   title={tool.title}
