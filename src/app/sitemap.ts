@@ -1,0 +1,80 @@
+import { MetadataRoute } from 'next';
+
+const tools = [
+  '/gst-calculator',
+  '/business-loan-emi-calculator',
+  '/profit-margin-calculator',
+  '/break-even-point-calculator',
+  '/salary-to-ctc-calculator',
+  '/hra-exemption-calculator',
+  '/pf-calculator',
+  '/discount-calculator',
+  '/unit-price-calculator',
+  '/business-valuation-calculator',
+  '/compound-interest-calculator',
+  '/loan-repayment-calculator',
+  '/roi-calculator',
+  '/salary-sacrifice-calculator',
+  '/about-us-generator',
+  '/meta-tag-generator',
+  '/headline-analyzer',
+  '/keyword-density-checker',
+  '/readability-checker',
+  '/lorem-ipsum-generator',
+  '/press-release-title-generator',
+  '/word-counter',
+  '/case-converter',
+  '/hashtag-generator',
+  '/robots-txt-generator',
+  '/schema-generator',
+  '/utm-link-builder',
+  '/invoice-generator',
+  '/business-slogan-generator',
+  '/business-name-generator',
+  '/image-compressor',
+  '/image-resizer',
+  '/logo-maker',
+  '/color-palette-generator',
+  '/watermark-adder',
+  '/before-after-slider',
+  '/gif-maker',
+  '/favicon-generator',
+  '/youtube-thumbnail-preview',
+  '/qr-code-generator',
+  '/vcard-qr-code-generator',
+  '/whatsapp-link-generator',
+  '/festival-wish-generator',
+  '/google-maps-link-generator',
+  '/review-link-generator',
+  '/privacy-policy-generator',
+  '/terms-and-conditions-generator',
+  '/email-signature-generator',
+  '/text-to-speech',
+  '/wav-to-mp3-converter',
+  '/url-shortener',
+  '/what-is-my-ip',
+  '/discount-coupon-generator',
+  '/digital-business-card',
+  '/email-permutator',
+  '/email-subject-line-tester',
+  '/time-zone-converter',
+  '/csv-cleaner',
+  '/password-generator',
+];
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = 'https://99forevertools.com'; // Change to your actual domain
+
+  const toolUrls = tools.map(tool => ({
+    url: `${baseUrl}${tool}`,
+    lastModified: new Date(),
+  }));
+
+  return [
+    {
+      url: baseUrl,
+      lastModified: new Date(),
+    },
+    ...toolUrls,
+  ];
+}
