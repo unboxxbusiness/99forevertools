@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -245,7 +245,13 @@ const tools:any[] = [
     title: 'WAV to MP3 Converter',
     description: 'Convert .wav audio files to .mp3 format in your browser.',
     icon: <AudioLines className="w-8 h-8" />,
-  }
+  },
+  {
+    href: '/link-in-bio',
+    title: '"Link in Bio" Page Builder',
+    description: 'Create a simple, shareable landing page for your social media profiles.',
+    icon: <Link className="w-8 h-8" />,
+  },
 ];
 
 export default function Home() {
