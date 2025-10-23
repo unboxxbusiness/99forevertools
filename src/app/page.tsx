@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link, Activity, Link2, ExternalLink, Camera, Code, Network } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link, Activity, Link2, ExternalLink, Camera, Code, Network, Search } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -263,6 +263,12 @@ const tools:any[] = [
     title: 'What Is My IP?',
     description: 'A simple utility that shows the user\'s public IP address.',
     icon: <Network className="w-8 h-8" />,
+  },
+  {
+    href: '/domain-name-search',
+    title: 'Domain Name Search',
+    description: 'A simple "whois" tool to check if a domain name is available.',
+    icon: <Search className="w-8 h-8" />,
   },
 ];
 

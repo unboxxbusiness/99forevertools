@@ -439,4 +439,41 @@ export async function cleanCsvAction(values: z.infer<typeof csvSchema>) {
     }
 }
 
+const domainSearchSchema = z.object({
+  domain: z.string(),
+});
+
+export async function checkDomainAvailabilityAction(values: z.infer<typeof domainSearchSchema>) {
+  // This is a mock function. In a real application, you would use a WHOIS API.
+  // For this tool, we will simulate the check.
+  try {
+    const { domain } = values;
+
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Basic validation
+    if (!domain.includes('.') || domain.startsWith('.') || domain.endsWith('.')) {
+      return { error: 'Invalid domain format.' };
+    }
     
+    // Simulate common domains being taken
+    const takenDomains = ['google.com', 'facebook.com', 'amazon.com', 'apple.com', 'microsoft.com', 'test.com'];
+    if (takenDomains.includes(domain.toLowerCase())) {
+        return { data: { domain, isAvailable: false, message: `Domain "${domain}" is not available.` } };
+    }
+
+    // Simulate some TLDs being invalid for this simple check
+    if (domain.endsWith('.xyz') || domain.endsWith('.io')) {
+        return { data: { domain, isAvailable: false, message: `WHOIS check for ".${domain.split('.').pop()}" TLDs is not supported by this mock tool.` } };
+    }
+
+    // Otherwise, assume it's available
+    return { data: { domain, isAvailable: true, message: `Congratulations! "${domain}" is available.` } };
+
+  } catch (error) {
+    return { error: 'An unexpected error occurred during the domain check.' };
+  }
+}
+    
+
