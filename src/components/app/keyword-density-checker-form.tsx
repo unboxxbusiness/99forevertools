@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,10 +16,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, SearchCheck, Quote, Pilcrow } from 'lucide-react';
+import { Loader2, SearchCheck, Quote, Pilcrow, Lightbulb, Briefcase } from 'lucide-react';
 import { checkKeywordDensityAction } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { type KeywordDensityAnalysis } from './keyword-density-checker-results';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 
 const formSchema = z.object({
   text: z.string().min(1, {
@@ -81,6 +83,7 @@ export function KeywordDensityCheckerForm({ setAnalysis, setIsLoading, setHasGen
   }
 
   return (
+    <div className='space-y-8'>
     <Card className="w-full max-w-2xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
       <CardHeader>
         <CardTitle className="text-3xl font-bold tracking-tight">Keyword Density Checker</CardTitle>
@@ -137,5 +140,36 @@ export function KeywordDensityCheckerForm({ setAnalysis, setIsLoading, setHasGen
         </Form>
       </CardContent>
     </Card>
+      <div className="mt-8">
+        <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="how-it-works">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Lightbulb className="w-5 h-5 text-primary"/> How It Works</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ol className="list-decimal list-inside space-y-2">
+                        <li>Paste the full text of your article or webpage into the "Your Text" field.</li>
+                        <li>Enter the specific keyword or phrase you want to analyze in the "Keyword to Check" field.</li>
+                        <li>Click "Check Density" to get your results.</li>
+                        <li>The tool calculates the percentage of times your keyword appears relative to the total word count, helping you avoid "keyword stuffing" while ensuring your content is relevant.</li>
+                    </ol>
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="use-cases">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Briefcase className="w-5 h-5 text-primary"/> Use Cases for Small Business</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ul className="list-disc list-inside space-y-2">
+                        <li><strong>SEO Content Writing:</strong> Ensure your blog posts and web pages are optimized for a target keyword without overdoing it.</li>
+                        <li><strong>Competitor Analysis:</strong> Check the keyword density of top-ranking articles to understand their content strategy.</li>
+                        <li><strong>PPC Landing Pages:</strong> Optimize your landing pages to have a healthy keyword density for better Quality Scores in Google Ads.</li>
+                        <li><strong>Content Audits:</strong> Review existing content to see if it needs to be updated for better keyword targeting.</li>
+                    </ul>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+      </div>
+    </div>
   );
 }

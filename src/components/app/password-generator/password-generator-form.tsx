@@ -14,11 +14,12 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, KeyRound } from 'lucide-react';
+import { Loader2, KeyRound, Lightbulb, Briefcase } from 'lucide-react';
 import { generatePasswordAction } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const formSchema = z.object({
   length: z.number().min(4).max(64),
@@ -46,7 +47,7 @@ export function PasswordGeneratorForm({ setPassword, setIsLoading, setHasGenerat
     },
   });
 
-  const { isSubmitting, control } = form.formState;
+  const { isSubmitting } = form.formState;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
@@ -79,6 +80,7 @@ export function PasswordGeneratorForm({ setPassword, setIsLoading, setHasGenerat
   }
 
   return (
+    <div className='space-y-8'>
     <Card className="w-full shadow-lg bg-card border-primary/20 animate-fade-in h-full">
       <CardHeader>
         <CardTitle className="text-3xl font-bold tracking-tight">Password Generator</CardTitle>
@@ -162,6 +164,37 @@ export function PasswordGeneratorForm({ setPassword, setIsLoading, setHasGenerat
         </Form>
       </CardContent>
     </Card>
+      <div className="mt-8">
+        <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="how-it-works">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Lightbulb className="w-5 h-5 text-primary"/> How It Works</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ol className="list-decimal list-inside space-y-2">
+                        <li>Adjust the slider to set your desired password length.</li>
+                        <li>Select the character types you want to include: uppercase letters, numbers, and symbols.</li>
+                        <li>Click the "Generate Password" button.</li>
+                        <li>A strong, random password that meets your criteria is instantly created.</li>
+                        <li>Click the password or the "Copy" button to copy it to your clipboard.</li>
+                    </ol>
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="use-cases">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Briefcase className="w-5 h-5 text-primary"/> Use Cases for Small Business</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ul className="list-disc list-inside space-y-2">
+                        <li><strong>New Account Setup:</strong> Create unique, strong passwords for every new online service your business signs up for.</li>
+                        <li><strong>Employee Onboarding:</strong> Generate secure initial passwords for new employees' company accounts.</li>
+                        <li><strong>Wi-Fi Passwords:</strong> Create a strong and random password for your office Wi-Fi network.</li>
+                        <li><strong>Improving Security:</strong> Regularly update passwords for important accounts (like banking, social media, and email) with newly generated ones.</li>
+                    </ul>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+      </div>
+    </div>
   );
 }
-

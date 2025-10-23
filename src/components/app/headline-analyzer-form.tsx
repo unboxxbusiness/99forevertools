@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,10 +16,11 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Activity, Type } from 'lucide-react';
+import { Loader2, Activity, Type, Lightbulb, Briefcase } from 'lucide-react';
 import { analyzeHeadlineAction } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { type HeadlineAnalysis } from './headline-analyzer-results';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 
 const formSchema = z.object({
   headline: z.string().min(3, {
@@ -77,6 +79,7 @@ export function HeadlineAnalyzerForm({ setAnalysis, setIsLoading, setHasGenerate
   }
 
   return (
+    <div className='space-y-8'>
     <Card className="w-full max-w-2xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
       <CardHeader>
         <CardTitle className="text-3xl font-bold tracking-tight">Headline Analyzer</CardTitle>
@@ -117,5 +120,36 @@ export function HeadlineAnalyzerForm({ setAnalysis, setIsLoading, setHasGenerate
         </Form>
       </CardContent>
     </Card>
+      <div className="mt-8">
+        <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="how-it-works">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Lightbulb className="w-5 h-5 text-primary"/> How It Works</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ol className="list-decimal list-inside space-y-2">
+                        <li>Enter your blog or article headline into the input field.</li>
+                        <li>Click "Analyze Headline" to get an instant score and detailed feedback.</li>
+                        <li>The tool evaluates your headline based on word count, emotional sentiment, clarity, and the use of powerful, attention-grabbing words.</li>
+                        <li>Review the suggestions to refine your headline for maximum impact.</li>
+                    </ol>
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="use-cases">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Briefcase className="w-5 h-5 text-primary"/> Use Cases for Small Business</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ul className="list-disc list-inside space-y-2">
+                        <li><strong>Content Marketing:</strong> Write blog post titles that grab attention and increase click-through rates from search engines.</li>
+                        <li><strong>Email Newsletters:</strong> Craft subject lines that stand out in a crowded inbox.</li>
+                        <li><strong>Social Media Posts:</strong> Create compelling headlines for your social media updates to boost engagement.</li>
+                        <li><strong>Ad Copy:</strong> Write powerful headlines for your Google or Facebook ads to improve conversion rates.</li>
+                    </ul>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+      </div>
+    </div>
   );
 }

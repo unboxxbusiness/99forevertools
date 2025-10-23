@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,9 +15,10 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, ShieldCheck, Building, Link as LinkIcon, AtSign, Globe } from 'lucide-react';
+import { Loader2, ShieldCheck, Building, Link as LinkIcon, AtSign, Globe, Lightbulb, Briefcase } from 'lucide-react';
 import { generatePrivacyPolicyAction } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const formSchema = z.object({
   companyName: z.string().min(1, 'Company Name is required.'),
@@ -77,6 +79,7 @@ export function PrivacyPolicyGeneratorForm({ setPolicy, setIsLoading, setHasGene
   }
 
   return (
+    <div className='space-y-8'>
     <Card className="w-full shadow-lg bg-card border-primary/20 animate-fade-in h-full">
       <CardHeader>
         <CardTitle className="text-3xl font-bold tracking-tight">Privacy Policy Generator</CardTitle>
@@ -165,7 +168,36 @@ export function PrivacyPolicyGeneratorForm({ setPolicy, setIsLoading, setHasGene
         </Form>
       </CardContent>
     </Card>
+      <div className="mt-8">
+        <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="how-it-works">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Lightbulb className="w-5 h-5 text-primary"/> How It Works</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ol className="list-decimal list-inside space-y-2">
+                        <li>Enter your company name, website name, URL, and a contact email address.</li>
+                        <li>Click the "Generate Policy" button.</li>
+                        <li>The tool creates a generic, boilerplate privacy policy based on standard templates.</li>
+                        <li>Copy the generated text and add it to a new privacy policy page on your website. <strong>This is not legal advice.</strong></li>
+                    </ol>
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="use-cases">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Briefcase className="w-5 h-5 text-primary"/> Use Cases for Small Business</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ul className="list-disc list-inside space-y-2">
+                        <li><strong>New Websites:</strong> Quickly create a starting point for a privacy policy for your new website or blog.</li>
+                        <li><strong>App Development:</strong> Generate a basic policy required by app stores like Google Play or Apple App Store.</li>
+                        <li><strong>Compliance Starter:</strong> Use this as a base template before having it reviewed by a legal professional to ensure it meets all legal requirements.</li>
+                        <li><strong>Client Work:</strong> Provide clients with a placeholder privacy policy for their new websites while they seek legal counsel.</li>
+                    </ul>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+      </div>
+    </div>
   );
 }
-
-    
