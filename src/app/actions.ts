@@ -446,7 +446,11 @@ const domainSearchSchema = z.object({
 
 export async function checkDomainAvailabilityAction(values: z.infer<typeof domainSearchSchema>) {
   try {
-    const { domain } = values;
+    let { domain } = values;
+    
+    // Clean the input to remove protocol and paths
+    domain = domain.replace(/^https?:\/\//, '').split('/')[0];
+
     if (!domain.includes('.') || domain.startsWith('.') || domain.endsWith('.')) {
       return { error: 'Invalid domain format. Please enter a valid domain name (e.g., example.com).' };
     }
@@ -461,7 +465,7 @@ export async function checkDomainAvailabilityAction(values: z.infer<typeof domai
     // The `freewhois` library throws an error for available domains (e.g., 404 Not Found from RDAP).
     // We can interpret these specific errors as "available".
     if (error.message && (error.message.includes('404') || error.message.toLowerCase().includes('not found'))) {
-        return { data: { domain: values.domain, isAvailable: true, message: `Congratulations! "${values.domain}" appears to be available.` } };
+        return { data: { domain: values.domain.replace(/^https?:\/\//, '').split('/')[0], isAvailable: true, message: `Congratulations! "${values.domain.replace(/^https?:\/\//, '').split('/')[0]}" appears to be available.` } };
     }
     // Handle other errors, like invalid TLDs or network issues.
     if (error.message && error.message.includes('No RDAP server found')) {
@@ -472,5 +476,6 @@ export async function checkDomainAvailabilityAction(values: z.infer<typeof domai
   }
 }
     
+
 
 
