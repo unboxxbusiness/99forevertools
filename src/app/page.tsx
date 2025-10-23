@@ -171,8 +171,23 @@ export default function Home() {
           </div>
         )}
       </main>
-      <footer className="text-center p-6 text-sm text-muted-foreground print-hidden">
-        More tools coming soon...
+      <footer className="bg-primary/10 py-8 text-center print-hidden">
+        <div className="container mx-auto px-4">
+          <p className="text-lg font-semibold">
+            Get more customers with a Lifetime Website.
+          </p>
+          <p className="mt-2 text-muted-foreground">
+            ✅ Pro Lead-Gen Site ✅ FREE Lifetime Hosting 🚫 No Monthly Bills. Ever.
+          </p>
+          <a
+            href="https://99studiopro.com/lifetime-website-deal/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-block text-lg font-bold text-primary underline"
+          >
+            Click the link for your ₹10,000 offer! 👇
+          </a>
+        </div>
       </footer>
     </div>
   );
