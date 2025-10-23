@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
@@ -79,8 +80,8 @@ export function GifMaker() {
     const options: gifshot.GifshotOptions = {
       gifWidth,
       gifHeight,
-      numFrames,
-      frameDuration: interval * 10,
+      numFrames: sourceType === 'video' ? numFrames : undefined,
+      frameDuration: interval,
       text,
       fontSize,
     };
