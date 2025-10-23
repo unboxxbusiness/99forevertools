@@ -59,6 +59,7 @@ const allTools = [
       { href: '/logo-maker', title: 'Advanced Logo Maker', description: 'Create a simple, text-based logo for your business.', icon: <Palette className="w-8 h-8" /> },
       { href: '/color-palette-generator', title: 'Color Palette Generator', description: 'Generate accessible color schemes from a base color.', icon: <Palette className="w-8 h-8" /> },
       { href: '/email-signature-generator', title: 'Email Signature Generator', description: 'Create a professional HTML email signature.', icon: <PenSquare className="w-8 h-8" /> },
+      { href: '/social-media-image-generator', title: 'Social Media Image Generator', description: 'Create images for your social media posts.', icon: <Image className="w-8 h-8" /> },
     ]
   },
   {

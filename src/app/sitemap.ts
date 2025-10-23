@@ -70,6 +70,7 @@ const tools = [
   '/upi-qr-code-generator',
   '/manual-sales-tracker',
   '/instagram-profile-photo-maker',
+  '/social-media-image-generator',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
