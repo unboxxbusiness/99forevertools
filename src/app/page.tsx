@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -185,6 +185,12 @@ const tools:any[] = [
     title: 'Favicon Generator',
     description: 'Create a favicon pack from any image.',
     icon: <Star className="w-8 h-8" />,
+  },
+  {
+    href: '/youtube-thumbnail-preview',
+    title: 'YouTube Thumbnail Preview',
+    description: 'See how your thumbnail will look on the YouTube homepage.',
+    icon: <PlaySquare className="w-8 h-8" />,
   }
 ];
 
