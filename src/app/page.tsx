@@ -117,6 +117,8 @@ const allTools = [
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
+  
+  const totalTools = allTools.reduce((acc, category) => acc + category.tools.length, 0);
 
   const filteredTools = allTools.flatMap(category => 
     category.tools
@@ -144,7 +146,10 @@ export default function Home() {
           <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
             A collection of powerful, simple tools to supercharge your marketing, finance, and sales efforts.
           </p>
-          <div className="mt-8 max-w-xl mx-auto relative">
+           <p className="mt-8 text-lg font-semibold">
+              Explore our collection of {totalTools} powerful tools
+          </p>
+          <div className="mt-2 max-w-xl mx-auto relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               type="search"
