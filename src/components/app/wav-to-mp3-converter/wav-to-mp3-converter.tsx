@@ -53,6 +53,11 @@ export function WavToMp3Converter() {
       try {
         const arrayBuffer = e.target?.result as ArrayBuffer;
         const wav = lamejs.WavHeader.readHeader(new DataView(arrayBuffer));
+        
+        if (!wav) {
+            throw new Error("Failed to read WAV header.");
+        }
+
         const samples = new Int16Array(arrayBuffer, wav.dataOffset, wav.dataLen / 2);
         
         const mp3encoder = new lamejs.Mp3Encoder(wav.channels, wav.sampleRate, 128); // 128 kbps
