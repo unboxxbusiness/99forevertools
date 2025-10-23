@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -27,6 +27,7 @@ export function LinkInBioGenerator() {
   const [nextId, setNextId] = useState(3);
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
+  const [shareableLink, setShareableLink] = useState('');
 
   const handleAddLink = () => {
     setLinks([...links, { id: nextId, title: '', url: '' }]);
@@ -59,9 +60,8 @@ export function LinkInBioGenerator() {
       reader.readAsDataURL(file);
     }
   };
-
-  const shareableLink = useMemo(() => {
-    if (typeof window === 'undefined') return '';
+  
+  useEffect(() => {
     const data = {
       name,
       bio,
@@ -69,8 +69,9 @@ export function LinkInBioGenerator() {
       links: links.filter(l => l.title && l.url),
     };
     const encoded = btoa(encodeURIComponent(JSON.stringify(data)));
-    return `${window.location.origin}/bio/${encoded}`;
+    setShareableLink(`${window.location.origin}/bio/${encoded}`);
   }, [name, bio, profileImage, links]);
+
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareableLink);
@@ -129,7 +130,7 @@ export function LinkInBioGenerator() {
             <div className="space-y-4 p-4 border rounded-lg bg-primary/10">
                  <h3 className="font-semibold text-primary">Your Shareable Link</h3>
                  <div className="bg-background p-2 rounded-md flex items-center justify-between gap-2 break-all">
-                    <code className="text-sm">{shareableLink}</code>
+                    <code className="text-sm">{shareableLink.replace(window.location.origin, '...').substring(0, 40) + (shareableLink.length > 40 ? '...' : '')}</code>
                     <Button variant="ghost" size="icon" onClick={handleCopyLink}>
                         {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                     </Button>

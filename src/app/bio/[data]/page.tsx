@@ -15,6 +15,7 @@ type BioData = {
 
 export default function BioPage({ params }: { params: { data: string } }) {
   const [data, setData] = useState<BioData | null>(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     try {
@@ -23,9 +24,13 @@ export default function BioPage({ params }: { params: { data: string } }) {
       setData(parsedData);
     } catch (error) {
       console.error("Failed to parse bio data", error);
-      notFound();
+      setError(true);
     }
   }, [params.data]);
+
+  if (error) {
+    notFound();
+  }
 
   if (!data) {
     return (
