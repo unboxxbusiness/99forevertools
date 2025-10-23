@@ -209,6 +209,12 @@ const tools:any[] = [
     title: 'Privacy Policy Generator',
     description: 'Generate a generic privacy policy for your website.',
     icon: <Shield className="w-8 h-8" />,
+  },
+  {
+    href: '/terms-and-conditions-generator',
+    title: 'Terms & Conditions Generator',
+    description: 'Generate a generic T&C page for your website.',
+    icon: <FileText className="w-8 h-8" />,
   }
 ];
 
