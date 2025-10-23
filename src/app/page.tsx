@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -71,6 +71,12 @@ const tools:any[] = [
     title: 'QR Code Generator',
     description: 'Instantly create a downloadable QR code for URLs, Wi-Fi, and more.',
     icon: <QrCode className="w-8 h-8" />,
+  },
+    {
+    href: '/vcard-qr-code-generator',
+    title: 'Business Card QR Code Generator',
+    description: 'Generate a QR code that contains contact info (vCard).',
+    icon: <Contact className="w-8 h-8" />,
   },
   {
     href: '/whatsapp-link-generator',
