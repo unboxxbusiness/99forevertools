@@ -6,7 +6,7 @@ import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as Link2Icon, Activity, ExternalLink, Camera, Code, Network, Search, Gift, FileJson, Bot, TestTube2, Mail, Users, CalculatorIcon, Paintbrush, Clock, Binary, BookOpen, BrainCircuit } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as Link2Icon, Activity, ExternalLink, Camera, Code, Network, Search, Gift, FileJson, Bot, TestTube2, Mail, Users, CalculatorIcon, Paintbrush, Clock, Binary } from 'lucide-react';
 
 const allTools = [
   {
@@ -37,9 +37,9 @@ const allTools = [
       { href: '/meta-tag-generator', title: 'SERP Preview Tool', description: 'Preview meta tags on a Google search result page.', icon: <Search className="w-8 h-8" /> },
       { href: '/headline-analyzer', title: 'Headline Analyzer', description: 'Score a headline on length, sentiment, and keywords.', icon: <Activity className="w-8 h-8" /> },
       { href: '/keyword-density-checker', title: 'Keyword Density Checker', description: 'Check the density of a keyword in your text.', icon: <TestTube2 className="w-8 h-8" /> },
-      { href: '/readability-checker', title: 'Readability Checker', description: 'Calculate the Flesch-Kincaid readability score.', icon: <BookOpen className="w-8 h-8" /> },
+      { href: '/readability-checker', title: 'Readability Checker', description: 'Calculate the Flesch-Kincaid readability score.', icon: <FileText className="w-8 h-8" /> },
       { href: '/lorem-ipsum-generator', title: 'Lorem Ipsum Generator', description: 'Generate placeholder text for your mockups.', icon: <Pilcrow className="w-8 h-8" /> },
-      { href: '/press-release-title-generator', title: 'Press Release Title Generator', description: 'Help businesses craft compelling headlines.', icon: <Sparkles className="w-8 h-8" /> },
+      { href: '/press-release-title-generator', title: 'Press Release Title Generator', description: 'Help businesses craft compelling headlines.', icon: <Lightbulb className="w-8 h-8" /> },
       { href: '/word-counter', title: 'Word & Character Counter', description: 'Count words, characters, sentences, and paragraphs.', icon: <FileText className="w-8 h-8" /> },
       { href: '/case-converter', title: 'Case Converter', description: 'Convert text to different letter cases.', icon: <CaseSensitive className="w-8 h-8" /> },
       { href: '/hashtag-generator', title: 'Hashtag Generator', description: 'Suggest relevant hashtags for social media.', icon: <Hash className="w-8 h-8" /> },
@@ -101,15 +101,6 @@ const allTools = [
       { href: '/password-generator', title: 'Password Generator', description: 'Generate strong, secure passwords.', icon: <Shield className="w-8 h-8" /> },
     ]
   },
-  {
-    category: 'AI-Powered Tools',
-    icon: <BrainCircuit className="w-6 h-6" />,
-    tools: [
-        { href: '/ai-ad-copy-generator', title: 'AI Ad Copy Generator', description: 'Generate compelling ad copy for Facebook or Google.', icon: <Sparkles className="w-8 h-8" /> },
-        { href: '/ai-blog-post-ideas', title: 'AI Blog Post Idea Generator', description: 'Get engaging blog post titles and outlines from a topic.', icon: <Lightbulb className="w-8 h-8" /> },
-        { href: '/ai-business-story-generator', title: 'AI Business Story Generator', description: 'Write a short, compelling brand story for your business.', icon: <BookOpen className="w-8 h-8" /> },
-    ]
-  }
 ];
 
 export default function Home() {
