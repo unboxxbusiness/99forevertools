@@ -1,3 +1,4 @@
+
 import { MetadataRoute } from 'next';
 
 const tools = [
@@ -61,6 +62,10 @@ const tools = [
   '/csv-cleaner',
   '/password-generator',
   '/image-to-base64-converter',
+  '/image-to-png-converter',
+  '/ai-ad-copy-generator',
+  '/ai-blog-post-idea-generator',
+  '/ai-business-story-generator'
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
