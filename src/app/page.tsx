@@ -179,6 +179,12 @@ const tools:any[] = [
     title: 'Digital Business Card Generator',
     description: 'Create a modern, shareable digital business card.',
     icon: <Contact className="w-8 h-8" />,
+  },
+  {
+    href: '/favicon-generator',
+    title: 'Favicon Generator',
+    description: 'Create a favicon pack from any image.',
+    icon: <Star className="w-8 h-8" />,
   }
 ];
 
