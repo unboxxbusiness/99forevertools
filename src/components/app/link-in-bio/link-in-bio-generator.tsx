@@ -91,9 +91,9 @@ export function LinkInBioGenerator() {
       if (typeof window !== 'undefined') {
         const fullLink = `${window.location.origin}/bio/${encoded}`;
         setShareableLink(fullLink);
-
-        const shortLink = fullLink.replace(window.location.origin, '...').substring(0, 40) + (fullLink.length > 40 ? '...' : '');
-        setDisplayLink(shortLink);
+        // Set a user-friendly display link
+        const origin = window.location.origin;
+        setDisplayLink(`${origin.replace(/^(https?:\/\/)?(www\.)?/, '')}/bio/your-link`);
       }
       setIsGenerating(false);
     };
@@ -165,7 +165,7 @@ export function LinkInBioGenerator() {
                             <span>Generating...</span>
                         </div>
                     ) : (
-                        <code className="text-sm">{displayLink}</code>
+                        <code className="text-sm truncate">{displayLink}</code>
                     )}
                     <Button variant="ghost" size="icon" onClick={handleCopyLink} disabled={isGenerating}>
                         {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
