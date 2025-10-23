@@ -191,6 +191,12 @@ const tools:any[] = [
     title: 'YouTube Thumbnail Preview',
     description: 'See how your thumbnail will look on the YouTube homepage.',
     icon: <PlaySquare className="w-8 h-8" />,
+  },
+  {
+    href: '/word-counter',
+    title: 'Word & Character Counter',
+    description: 'A simple text box that counts words and characters.',
+    icon: <FileText className="w-8 h-8" />,
   }
 ];
 
