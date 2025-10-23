@@ -6,7 +6,7 @@ import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as Link2Icon, Activity, ExternalLink, Camera, Code, Network, Search, Gift, FileJson, Bot, TestTube2, Mail, Users, CalculatorIcon, Paintbrush, Clock, Binary, BrainCircuit, BookOpen } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as Link2Icon, Activity, ExternalLink, Camera, Code, Network, Search, Gift, FileJson, Bot, TestTube2, Mail, Users, CalculatorIcon, Paintbrush, Clock, Binary, BookOpen } from 'lucide-react';
 
 const allTools = [
   {
@@ -48,15 +48,6 @@ const allTools = [
       { href: '/utm-link-builder', title: 'UTM Link Builder', description: 'Create URLs with UTM parameters for tracking.', icon: <Link2Icon className="w-8 h-8" /> },
     ]
   },
-   {
-    category: 'AI-Powered Tools',
-    icon: <BrainCircuit className="w-6 h-6" />,
-    tools: [
-      { href: '/ai-ad-copy-generator', title: 'AI Ad Copy Generator', description: 'Generate compelling ad copy for Facebook or Google.', icon: <Sparkles className="w-8 h-8" /> },
-      { href: '/ai-blog-post-idea-generator', title: 'AI Blog Post Idea Generator', description: 'Get engaging blog post titles and outlines from a topic.', icon: <Lightbulb className="w-8 h-8" /> },
-      { href: '/ai-business-story-generator', title: 'AI Business Story Generator', description: 'Create a short, compelling brand story for your business.', icon: <BookOpen className="w-8 h-8" /> },
-    ]
-  },
   {
     category: 'Branding & Design',
     icon: <Paintbrush className="w-6 h-6" />,
@@ -75,6 +66,7 @@ const allTools = [
       { href: '/youtube-thumbnail-preview', title: 'YouTube Thumbnail Preview', description: 'See how your thumbnail will look on YouTube.', icon: <PlaySquare className="w-8 h-8" /> },
       { href: '/image-to-base64-converter', title: 'Image to Base64 Converter', description: 'Convert images to Base64 encoded strings.', icon: <Binary className="w-8 h-8" /> },
       { href: '/image-to-png-converter', title: 'Image to PNG Converter', description: 'Convert various image formats to PNG.', icon: <Image className="w-8 h-8" /> },
+      { href: '/photo-filter-studio', title: 'Photo Filter Studio', description: 'Apply professional filters to your photos instantly.', icon: <Camera className="w-8 h-8" /> },
     ]
   },
   {

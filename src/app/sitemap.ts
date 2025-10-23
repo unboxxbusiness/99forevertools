@@ -63,9 +63,7 @@ const tools = [
   '/password-generator',
   '/image-to-base64-converter',
   '/image-to-png-converter',
-  '/ai-ad-copy-generator',
-  '/ai-blog-post-idea-generator',
-  '/ai-business-story-generator'
+  '/photo-filter-studio',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
