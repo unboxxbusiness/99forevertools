@@ -72,15 +72,20 @@ export function ImageResizer() {
       canvas.height = targetDimensions.height;
       
       const result = await picaInstance.resize(img, canvas);
-      const blob = await picaInstance.toBlob(result, file.type, 0.9); // Use high quality for resizing
+
+      result.toBlob(file.type, 0.9).then(blob => {
+        if (blob) {
+            setResizedImage(blob);
+            toast({ title: "Resize complete!" });
+        } else {
+            throw new Error("Canvas to Blob conversion failed");
+        }
+        setIsLoading(false);
+      });
       
-      setResizedImage(blob);
-      
-      toast({ title: "Resize complete!" });
     } catch(err) {
       console.error(err);
       toast({ variant: 'destructive', title: 'Resize failed', description: 'There was an error processing your image.' });
-    } finally {
       setIsLoading(false);
     }
   }, [file, targetDimensions, toast]);
@@ -206,3 +211,5 @@ export function ImageResizer() {
     </Card>
   );
 }
+
+    

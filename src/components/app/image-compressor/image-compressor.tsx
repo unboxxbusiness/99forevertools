@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
 import { Upload, CheckCircle, Download, Loader2, Image as ImageIcon } from 'lucide-react';
-import pica from 'pica';
 
 const formatBytes = (bytes: number, decimals = 2) => {
   if (bytes === 0) return '0 Bytes';
@@ -62,7 +61,6 @@ export function ImageCompressor() {
     setIsLoading(true);
 
     try {
-      const picaInstance = pica();
       const img = new Image();
       img.src = URL.createObjectURL(file);
 
@@ -71,18 +69,23 @@ export function ImageCompressor() {
       const canvas = document.createElement('canvas');
       canvas.width = img.width;
       canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx?.drawImage(img, 0, 0);
       
-      const result = await picaInstance.resize(img, canvas);
-      const blob = await picaInstance.toBlob(result, file.type, quality);
+      canvas.toBlob((blob) => {
+        if (blob) {
+            setCompressedImage(blob);
+            setCompressedSize(blob.size);
+            toast({ title: "Compression complete!" });
+        } else {
+            throw new Error("Canvas to Blob conversion failed");
+        }
+        setIsLoading(false);
+      }, file.type, quality);
       
-      setCompressedImage(blob);
-      setCompressedSize(blob.size);
-      
-      toast({ title: "Compression complete!" });
     } catch(err) {
       console.error(err);
       toast({ variant: 'destructive', title: 'Compression failed', description: 'There was an error processing your image.' });
-    } finally {
       setIsLoading(false);
     }
   }, [file, quality, toast]);
@@ -194,3 +197,5 @@ export function ImageCompressor() {
     </Card>
   );
 }
+
+    
