@@ -5,6 +5,8 @@ import { useState, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Lightbulb, Briefcase } from 'lucide-react';
 
 const formatCurrency = (value: number) => {
   if (isNaN(value) || !isFinite(value)) return formatCurrency(0);
@@ -76,56 +78,88 @@ export function PfCalculator() {
   );
 
   return (
-    <Card className="w-full max-w-4xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
-      <CardHeader className="text-center">
-        <CardTitle className="text-3xl font-bold tracking-tight">Provident Fund (PF) Calculator</CardTitle>
-        <CardDescription>
-          Calculate employee and employer contributions to EPF and EPS.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-8">
-        <div className="w-full max-w-sm mx-auto space-y-2">
-          <Label htmlFor="basicSalary" className="text-lg">Your Basic Salary (Monthly)</Label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
-            <Input
-              id="basicSalary"
-              type="text"
-              value={formatValue(basicSalary)}
-              onChange={handleInputChange(setBasicSalary)}
-              className="pl-7 text-lg h-12 text-center"
-            />
-          </div>
-        </div>
-
-        <div className="border-t pt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="p-6 bg-muted/30 rounded-lg">
-            <h3 className="text-xl font-semibold mb-4 text-center">Employee's Contribution</h3>
-            <ResultRow label="EPF (12%)" monthly={employeeEpf} annually={employeeEpf * 12} />
-            <div className="flex justify-between items-center py-3 font-bold">
-              <p>Total Employee Share</p>
-              <p className="text-md font-mono">{formatCurrency(employeeEpf)}</p>
+    <div className="w-full max-w-4xl mx-auto space-y-8 animate-fade-in">
+      <Card className="w-full max-w-4xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl font-bold tracking-tight">Provident Fund (PF) Calculator</CardTitle>
+          <CardDescription>
+            Calculate employee and employer contributions to EPF and EPS.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          <div className="w-full max-w-sm mx-auto space-y-2">
+            <Label htmlFor="basicSalary" className="text-lg">Your Basic Salary (Monthly)</Label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
+              <Input
+                id="basicSalary"
+                type="text"
+                value={formatValue(basicSalary)}
+                onChange={handleInputChange(setBasicSalary)}
+                className="pl-7 text-lg h-12 text-center"
+              />
             </div>
           </div>
-          <div className="p-6 bg-muted/30 rounded-lg">
-            <h3 className="text-xl font-semibold mb-4 text-center">Employer's Contribution</h3>
-            <ResultRow label="EPS (8.33%)" monthly={employerEps} annually={employerEps * 12} />
-            <ResultRow label="EPF (3.67%)" monthly={employerEpf} annually={employerEpf * 12} />
-            <div className="flex justify-between items-center py-3 font-bold">
-              <p>Total Employer Share</p>
-              <p className="text-md font-mono">{formatCurrency(employerEpf + employerEps)}</p>
+
+          <div className="border-t pt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="p-6 bg-muted/30 rounded-lg">
+              <h3 className="text-xl font-semibold mb-4 text-center">Employee's Contribution</h3>
+              <ResultRow label="EPF (12%)" monthly={employeeEpf} annually={employeeEpf * 12} />
+              <div className="flex justify-between items-center py-3 font-bold">
+                <p>Total Employee Share</p>
+                <p className="text-md font-mono">{formatCurrency(employeeEpf)}</p>
+              </div>
+            </div>
+            <div className="p-6 bg-muted/30 rounded-lg">
+              <h3 className="text-xl font-semibold mb-4 text-center">Employer's Contribution</h3>
+              <ResultRow label="EPS (8.33%)" monthly={employerEps} annually={employerEps * 12} />
+              <ResultRow label="EPF (3.67%)" monthly={employerEpf} annually={employerEpf * 12} />
+              <div className="flex justify-between items-center py-3 font-bold">
+                <p>Total Employer Share</p>
+                <p className="text-md font-mono">{formatCurrency(employerEpf + employerEps)}</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="text-center bg-primary/10 p-6 rounded-lg border border-primary/30">
-          <p className="text-lg text-primary/80">Total Monthly PF Contribution</p>
-          <p className="text-4xl font-bold text-primary">{formatCurrency(totalContribution)}</p>
-          <p className="text-sm text-primary/70 mt-1">
-            (Total Annual Contribution: {formatCurrency(totalContribution * 12)})
-          </p>
-        </div>
-      </CardContent>
-    </Card>
+          <div className="text-center bg-primary/10 p-6 rounded-lg border border-primary/30">
+            <p className="text-lg text-primary/80">Total Monthly PF Contribution</p>
+            <p className="text-4xl font-bold text-primary">{formatCurrency(totalContribution)}</p>
+            <p className="text-sm text-primary/70 mt-1">
+              (Total Annual Contribution: {formatCurrency(totalContribution * 12)})
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+      <div className="mt-8">
+        <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="how-it-works">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Lightbulb className="w-5 h-5 text-primary"/> How It Works</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ol className="list-decimal list-inside space-y-2">
+                        <li>Enter your monthly basic salary.</li>
+                        <li>The calculator automatically computes the employee's contribution (12% of basic salary) to the EPF.</li>
+                        <li>It also calculates the employer's share, splitting it between the EPS (8.33% of basic, capped) and the EPF.</li>
+                        <li>The results show a clear breakdown of monthly and annual contributions from both employee and employer.</li>
+                    </ol>
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="use-cases">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Briefcase className="w-5 h-5 text-primary"/> Use Cases for Small Business</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ul className="list-disc list-inside space-y-2">
+                        <li><strong>Payroll Accuracy:</strong> Ensure you are calculating and deducting the correct PF amounts for your employees.</li>
+                        <li><strong>Employee Onboarding:</strong> Clearly explain the PF contribution structure to new hires.</li>
+                        <li><strong>Financial Planning:</strong> Accurately budget for employer PF contributions as part of your monthly expenses.</li>
+                        <li><strong>CTC Calculation:</strong> Use the employer's contribution amount when calculating the total Cost-to-Company for an employee.</li>
+                    </ul>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+      </div>
+    </div>
   );
 }

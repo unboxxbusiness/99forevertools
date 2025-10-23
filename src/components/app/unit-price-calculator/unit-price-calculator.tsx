@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useMemo, ChangeEvent } from 'react';
@@ -6,7 +7,8 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { ThumbsUp, ThumbsDown } from 'lucide-react';
+import { ThumbsUp, Lightbulb, Briefcase } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const UNITS = {
   // Weight
@@ -139,29 +141,61 @@ export function UnitPriceCalculator() {
   )
 
   return (
-    <Card className="w-full max-w-4xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
-      <CardHeader className="text-center">
-        <CardTitle className="text-3xl font-bold tracking-tight">Unit Price Calculator</CardTitle>
-        <CardDescription>
-          Compare two items to find the one with the better value.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <ItemInput item={itemA} setItem={setItemA} title="Item A" />
-          <ItemInput item={itemB} setItem={setItemB} title="Item B" />
-        </div>
+    <div className="w-full max-w-4xl mx-auto space-y-8 animate-fade-in">
+      <Card className="w-full max-w-4xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl font-bold tracking-tight">Unit Price Calculator</CardTitle>
+          <CardDescription>
+            Compare two items to find the one with the better value.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <ItemInput item={itemA} setItem={setItemA} title="Item A" />
+            <ItemInput item={itemB} setItem={setItemB} title="Item B" />
+          </div>
 
-        <div className="border-t pt-8">
-            <h3 className="text-xl font-semibold text-center mb-4">Comparison</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <ResultCard title="Item A Unit Price" unitPrice={unitPriceA} baseUnit={UNITS[itemA.unit].base} isBetter={betterBuy === 'A'} />
-                <ResultCard title="Item B Unit Price" unitPrice={unitPriceB} baseUnit={UNITS[itemB.unit].base} isBetter={betterBuy === 'B'} />
-            </div>
-             {betterBuy === null && unitPriceA !== null && unitPriceB !== null && <p className="text-center text-yellow-500 mt-4 text-sm">Cannot compare items with different unit types (e.g., weight vs. volume).</p>}
-             {betterBuy === 'Same' && <p className="text-center text-muted-foreground mt-4 text-sm">Both items have the same unit price.</p>}
-        </div>
-      </CardContent>
-    </Card>
+          <div className="border-t pt-8">
+              <h3 className="text-xl font-semibold text-center mb-4">Comparison</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <ResultCard title="Item A Unit Price" unitPrice={unitPriceA} baseUnit={UNITS[itemA.unit].base} isBetter={betterBuy === 'A'} />
+                  <ResultCard title="Item B Unit Price" unitPrice={unitPriceB} baseUnit={UNITS[itemB.unit].base} isBetter={betterBuy === 'B'} />
+              </div>
+               {betterBuy === null && unitPriceA !== null && unitPriceB !== null && <p className="text-center text-yellow-500 mt-4 text-sm">Cannot compare items with different unit types (e.g., weight vs. volume).</p>}
+               {betterBuy === 'Same' && <p className="text-center text-muted-foreground mt-4 text-sm">Both items have the same unit price.</p>}
+          </div>
+        </CardContent>
+      </Card>
+      <div className="mt-8">
+        <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="how-it-works">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Lightbulb className="w-5 h-5 text-primary"/> How It Works</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ol className="list-decimal list-inside space-y-2">
+                        <li>Enter the price, quantity, and unit for "Item A".</li>
+                        <li>Do the same for "Item B", making sure to use a comparable unit (e.g., grams and kilograms).</li>
+                        <li>The calculator determines the price per base unit (e.g., price per gram) for each item.</li>
+                        <li>The item with the lower unit price is highlighted as the better value.</li>
+                    </ol>
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="use-cases">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Briefcase className="w-5 h-5 text-primary"/> Use Cases for Small Business</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ul className="list-disc list-inside space-y-2">
+                        <li><strong>Purchasing Decisions:</strong> Compare bulk supply prices from different vendors to find the most cost-effective option.</li>
+                        <li><strong>Product Packaging:</strong> Decide on new product sizes by comparing the unit price to competitors.</li>
+                        <li><strong>Customer Transparency:</strong> Help customers understand the value of different product sizes in your store.</li>
+                        <li><strong>Competitive Analysis:</strong> Analyze whether your competitor's "large" size is actually a better deal than your "medium" size.</li>
+                    </ul>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+      </div>
+    </div>
   );
 }

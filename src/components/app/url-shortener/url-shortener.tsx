@@ -1,12 +1,14 @@
+
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Copy, Check, Link as LinkIcon, ExternalLink } from 'lucide-react';
+import { Copy, Check, Link as LinkIcon, ExternalLink, Lightbulb, Briefcase } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 export function URLShortener() {
   const [slug, setSlug] = useState('');
@@ -53,67 +55,99 @@ export function URLShortener() {
   };
 
   return (
-    <Card className="w-full max-w-3xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
-      <CardHeader className="text-center">
-        <CardTitle className="text-3xl font-bold tracking-tight">URL Redirect Tool</CardTitle>
-        <CardDescription>
-          Create a short link on your domain that redirects to a long URL.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="space-y-4 p-4 border rounded-lg">
-           <div className="space-y-2">
-                <Label htmlFor="slug">Short Link Path (Slug)</Label>
-                <div className="flex items-center">
-                    <span className="text-muted-foreground text-sm p-2 bg-muted/50 rounded-l-md border border-r-0">{origin}/r/</span>
-                    <Input
-                        id="slug"
-                        type="text"
-                        placeholder="your-slug"
-                        value={slug}
-                        onChange={(e) => setSlug(e.target.value.replace(/\s+/g, '-'))}
-                        className="rounded-l-none h-10"
-                    />
-                </div>
-           </div>
-          <div className="space-y-2">
-            <Label htmlFor="destinationUrl">Destination URL</Label>
-            <div className="relative">
-                <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                    id="destinationUrl"
-                    type="url"
-                    placeholder="https://example.com/very/long/url"
-                    value={destinationUrl}
-                    onChange={(e) => setDestinationUrl(e.target.value)}
-                    className="pl-10 h-10"
-                />
+    <div className="w-full max-w-3xl mx-auto space-y-8 animate-fade-in">
+      <Card className="w-full max-w-3xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl font-bold tracking-tight">URL Redirect Tool</CardTitle>
+          <CardDescription>
+            Create a short link on your domain that redirects to a long URL.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-4 p-4 border rounded-lg">
+             <div className="space-y-2">
+                  <Label htmlFor="slug">Short Link Path (Slug)</Label>
+                  <div className="flex items-center">
+                      <span className="text-muted-foreground text-sm p-2 bg-muted/50 rounded-l-md border border-r-0">{origin}/r/</span>
+                      <Input
+                          id="slug"
+                          type="text"
+                          placeholder="your-slug"
+                          value={slug}
+                          onChange={(e) => setSlug(e.target.value.replace(/\s+/g, '-'))}
+                          className="rounded-l-none h-10"
+                      />
+                  </div>
+             </div>
+            <div className="space-y-2">
+              <Label htmlFor="destinationUrl">Destination URL</Label>
+              <div className="relative">
+                  <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                      id="destinationUrl"
+                      type="url"
+                      placeholder="https://example.com/very/long/url"
+                      value={destinationUrl}
+                      onChange={(e) => setDestinationUrl(e.target.value)}
+                      className="pl-10 h-10"
+                  />
+              </div>
             </div>
           </div>
-        </div>
 
-        <Button onClick={generateLink} className="w-full h-12 text-lg">
-          <ExternalLink className="mr-2" />
-          Generate Redirect Link
-        </Button>
+          <Button onClick={generateLink} className="w-full h-12 text-lg">
+            <ExternalLink className="mr-2" />
+            Generate Redirect Link
+          </Button>
 
-        {shortUrl && (
-          <div className="border-t pt-6 space-y-4">
-            <h3 className="text-lg font-semibold flex items-center gap-2">
-              <LinkIcon className="h-5 w-5" />
-              Your Redirect Link
-            </h3>
-            <div className="bg-muted/50 p-4 rounded-lg flex items-center justify-between gap-4 break-all">
-              <a href={shortUrl} target="_blank" rel="noopener noreferrer" className="text-primary font-mono text-sm underline hover:opacity-80">
-                {shortUrl}
-              </a>
-              <Button variant="ghost" size="icon" onClick={handleCopy}>
-                {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-              </Button>
+          {shortUrl && (
+            <div className="border-t pt-6 space-y-4">
+              <h3 className="text-lg font-semibold flex items-center gap-2">
+                <LinkIcon className="h-5 w-5" />
+                Your Redirect Link
+              </h3>
+              <div className="bg-muted/50 p-4 rounded-lg flex items-center justify-between gap-4 break-all">
+                <a href={shortUrl} target="_blank" rel="noopener noreferrer" className="text-primary font-mono text-sm underline hover:opacity-80">
+                  {shortUrl}
+                </a>
+                <Button variant="ghost" size="icon" onClick={handleCopy}>
+                  {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                </Button>
+              </div>
             </div>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+          )}
+        </CardContent>
+      </Card>
+      <div className="mt-8">
+        <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="how-it-works">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Lightbulb className="w-5 h-5 text-primary"/> How It Works</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ol className="list-decimal list-inside space-y-2">
+                        <li>Choose a short, memorable "slug" for your link path.</li>
+                        <li>Paste the long, original URL you want to redirect to into the "Destination URL" field.</li>
+                        <li>Click "Generate Redirect Link" to create your new short URL.</li>
+                        <li>Copy the generated link and use it in your marketing materials. When a user visits the short link, they will be automatically sent to the destination URL.</li>
+                    </ol>
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="use-cases">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Briefcase className="w-5 h-5 text-primary"/> Use Cases for Small Business</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ul className="list-disc list-inside space-y-2">
+                        <li><strong>Social Media Marketing:</strong> Create clean, branded links for your posts that are easy to type and remember (e.g., `yourdomain.com/r/offer`).</li>
+                        <li><strong>Print Advertising:</strong> Use short, simple URLs on flyers, posters, and business cards.</li>
+                        <li><strong>Affiliate Links:</strong> Cloak long, messy affiliate links with a clean URL from your own domain.</li>
+                        <li><strong>Link Tracking:</strong> While this tool doesn't track clicks, you can use it in combination with UTM parameters to create clean, trackable links.</li>
+                    </ul>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+      </div>
+    </div>
   );
 }

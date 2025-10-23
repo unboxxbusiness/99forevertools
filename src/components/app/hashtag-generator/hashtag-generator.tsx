@@ -4,10 +4,11 @@
 import { useState, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Copy, Check, Hash } from 'lucide-react';
+import { Copy, Check, Lightbulb, Briefcase } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const hashtagData = {
   'cafe': {
@@ -60,62 +61,94 @@ export function HashtagGenerator() {
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
-      <CardHeader className="text-center">
-        <CardTitle className="text-3xl font-bold tracking-tight">Instagram Hashtag Generator</CardTitle>
-        <CardDescription>
-          Suggest relevant hashtags based on your business category.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-end">
-          <div className="w-full sm:w-80 space-y-2">
-            <label className="text-lg font-medium">Select Business Category</label>
-            <Select onValueChange={(value: Category) => setSelectedCategory(value)} value={selectedCategory}>
-                <SelectTrigger className="h-12 text-lg">
-                    <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent>
-                    {Object.entries(hashtagData).map(([key, value]) => (
-                      <SelectItem key={key} value={key}>{value.name}</SelectItem>
-                    ))}
-                </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        {currentHashtags && (
-          <div className="border-t pt-6 space-y-6">
-            <div className="flex justify-between items-center">
-                <h3 className="text-xl font-semibold">Generated Hashtags</h3>
-                <Button onClick={handleCopy}>
-                    {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
-                    Copy All
-                </Button>
+    <div className="w-full max-w-4xl mx-auto space-y-8 animate-fade-in">
+      <Card className="w-full max-w-4xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl font-bold tracking-tight">Instagram Hashtag Generator</CardTitle>
+          <CardDescription>
+            Suggest relevant hashtags based on your business category.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-end">
+            <div className="w-full sm:w-80 space-y-2">
+              <label className="text-lg font-medium">Select Business Category</label>
+              <Select onValueChange={(value: Category) => setSelectedCategory(value)} value={selectedCategory}>
+                  <SelectTrigger className="h-12 text-lg">
+                      <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                      {Object.entries(hashtagData).map(([key, value]) => (
+                        <SelectItem key={key} value={key}>{value.name}</SelectItem>
+                      ))}
+                  </SelectContent>
+              </Select>
             </div>
-            
-            <div className="space-y-4">
-                <div>
-                    <h4 className="font-semibold mb-2">Popular Hashtags</h4>
-                    <div className="flex flex-wrap gap-2">
-                        {currentHashtags.popular.map(tag => (
-                            <Badge key={tag} variant="secondary" className="text-sm">{tag}</Badge>
-                        ))}
-                    </div>
-                </div>
-                 <div>
-                    <h4 className="font-semibold mb-2">Niche Hashtags</h4>
-                    <div className="flex flex-wrap gap-2">
-                        {currentHashtags.niche.map(tag => (
-                            <Badge key={tag} variant="outline">{tag}</Badge>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
           </div>
-        )}
-      </CardContent>
-    </Card>
+
+          {currentHashtags && (
+            <div className="border-t pt-6 space-y-6">
+              <div className="flex justify-between items-center">
+                  <h3 className="text-xl font-semibold">Generated Hashtags</h3>
+                  <Button onClick={handleCopy}>
+                      {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
+                      Copy All
+                  </Button>
+              </div>
+              
+              <div className="space-y-4">
+                  <div>
+                      <h4 className="font-semibold mb-2">Popular Hashtags</h4>
+                      <div className="flex flex-wrap gap-2">
+                          {currentHashtags.popular.map(tag => (
+                              <Badge key={tag} variant="secondary" className="text-sm">{tag}</Badge>
+                          ))}
+                      </div>
+                  </div>
+                   <div>
+                      <h4 className="font-semibold mb-2">Niche Hashtags</h4>
+                      <div className="flex flex-wrap gap-2">
+                          {currentHashtags.niche.map(tag => (
+                              <Badge key={tag} variant="outline">{tag}</Badge>
+                          ))}
+                      </div>
+                  </div>
+              </div>
+
+            </div>
+          )}
+        </CardContent>
+      </Card>
+      <div className="mt-8">
+        <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="how-it-works">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Lightbulb className="w-5 h-5 text-primary"/> How It Works</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ol className="list-decimal list-inside space-y-2">
+                        <li>Select your business category from the dropdown menu.</li>
+                        <li>The tool instantly generates a curated list of relevant hashtags.</li>
+                        <li>The list is divided into "Popular" hashtags for broad reach and "Niche" hashtags for a targeted audience.</li>
+                        <li>Click "Copy All" to copy the entire list to your clipboard, ready to paste into your social media posts.</li>
+                    </ol>
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="use-cases">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Briefcase className="w-5 h-5 text-primary"/> Use Cases for Small Business</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ul className="list-disc list-inside space-y-2">
+                        <li><strong>Increase Instagram Reach:</strong> Use a mix of popular and niche hashtags to get your posts seen by more people.</li>
+                        <li><strong>Save Time on Marketing:</strong> Quickly find the right hashtags without hours of research.</li>
+                        <li><strong>Target Specific Audiences:</strong> Use niche hashtags to connect with a more engaged and relevant audience.</li>
+                        <li><strong>Content Planning:</strong> Use the generated hashtags to brainstorm new content ideas for your social media.</li>
+                    </ul>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+      </div>
+    </div>
   );
 }

@@ -7,11 +7,12 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Trash2, PlusCircle, Printer, FileText } from 'lucide-react';
+import { Trash2, PlusCircle, Printer, FileText, Lightbulb, Briefcase } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 type LineItem = {
   id: number;
@@ -74,7 +75,7 @@ export function InvoiceGenerator() {
   }, [lineItems, taxRate]);
 
   return (
-    <div className="w-full max-w-4xl mx-auto animate-fade-in">
+    <div className="w-full max-w-4xl mx-auto animate-fade-in space-y-8">
         <div className="flex justify-between items-center mb-8 print-hidden">
             <div>
                 <h1 className="text-3xl font-bold tracking-tight text-primary flex items-center gap-2"><FileText /> Invoice Generator</h1>
@@ -198,6 +199,38 @@ export function InvoiceGenerator() {
                 </footer>
             </CardContent>
         </Card>
+        <div className="mt-8 print-hidden">
+            <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="how-it-works">
+                    <AccordionTrigger>
+                        <h3 className="text-lg font-semibold flex items-center gap-2"><Lightbulb className="w-5 h-5 text-primary"/> How It Works</h3>
+                    </AccordionTrigger>
+                    <AccordionContent className="pt-4 text-muted-foreground">
+                        <ol className="list-decimal list-inside space-y-2">
+                            <li>Fill in your company's details and your client's details.</li>
+                            <li>Set the invoice number, date, and due date.</li>
+                            <li>Add line items for each product or service, including description, quantity, and price.</li>
+                            <li>Add any notes and set the tax rate.</li>
+                            <li>The tool automatically calculates the subtotal, tax, and total amount.</li>
+                            <li>Click the "Print Invoice" button to print or save the invoice as a PDF.</li>
+                        </ol>
+                    </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="use-cases">
+                    <AccordionTrigger>
+                        <h3 className="text-lg font-semibold flex items-center gap-2"><Briefcase className="w-5 h-5 text-primary"/> Use Cases for Small Business</h3>
+                    </AccordionTrigger>
+                    <AccordionContent className="pt-4 text-muted-foreground">
+                        <ul className="list-disc list-inside space-y-2">
+                            <li><strong>Freelancers:</strong> Quickly create and send professional invoices for your services.</li>
+                            <li><strong>Service Businesses:</strong> Bill clients for services rendered, from consulting to plumbing.</li>
+                            <li><strong>Retailers:</strong> Generate invoices for custom orders or business-to-business sales.</li>
+                            <li><strong>Record Keeping:</strong> Save invoices as PDFs for easy accounting and tax purposes.</li>
+                        </ul>
+                    </AccordionContent>
+                </AccordionItem>
+            </Accordion>
+        </div>
     </div>
   );
 }

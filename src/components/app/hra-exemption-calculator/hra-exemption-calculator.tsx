@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -5,6 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Lightbulb, Briefcase } from 'lucide-react';
 
 const formatCurrency = (value: number) => {
   if (isNaN(value) || !isFinite(value)) return formatCurrency(0);
@@ -59,74 +62,106 @@ export function HraExemptionCalculator() {
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
-      <CardHeader className="text-center">
-        <CardTitle className="text-3xl font-bold tracking-tight">HRA Exemption Calculator</CardTitle>
-        <CardDescription>
-          Calculate your House Rent Allowance exemption for tax purposes.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="space-y-2">
-            <Label htmlFor="basicSalary" className="text-lg">Basic Salary (Annual)</Label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
-              <Input id="basicSalary" type="text" value={formatValue(basicSalary)} onChange={handleInputChange(setBasicSalary)} className="pl-7 text-lg h-12" />
+    <div className="w-full max-w-4xl mx-auto space-y-8 animate-fade-in">
+      <Card className="w-full max-w-4xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl font-bold tracking-tight">HRA Exemption Calculator</CardTitle>
+          <CardDescription>
+            Calculate your House Rent Allowance exemption for tax purposes.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="basicSalary" className="text-lg">Basic Salary (Annual)</Label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
+                <Input id="basicSalary" type="text" value={formatValue(basicSalary)} onChange={handleInputChange(setBasicSalary)} className="pl-7 text-lg h-12" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="hraReceived" className="text-lg">HRA Received (Annual)</Label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
+                <Input id="hraReceived" type="text" value={formatValue(hraReceived)} onChange={handleInputChange(setHraReceived)} className="pl-7 text-lg h-12" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="rentPaid" className="text-lg">Rent Paid (Annual)</Label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
+                <Input id="rentPaid" type="text" value={formatValue(rentPaid)} onChange={handleInputChange(setRentPaid)} className="pl-7 text-lg h-12" />
+              </div>
             </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="hraReceived" className="text-lg">HRA Received (Annual)</Label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
-              <Input id="hraReceived" type="text" value={formatValue(hraReceived)} onChange={handleInputChange(setHraReceived)} className="pl-7 text-lg h-12" />
-            </div>
+
+          <div className="flex items-center justify-center space-x-2">
+              <Label htmlFor="isMetro" className="text-lg">Living in a Metro City? (Delhi, Mumbai, Chennai, Kolkata)</Label>
+              <Switch id="isMetro" checked={isMetroCity} onCheckedChange={setIsMetroCity} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="rentPaid" className="text-lg">Rent Paid (Annual)</Label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
-              <Input id="rentPaid" type="text" value={formatValue(rentPaid)} onChange={handleInputChange(setRentPaid)} className="pl-7 text-lg h-12" />
-            </div>
+
+          <div className="border-t pt-8 space-y-4">
+              <h3 className="text-xl font-semibold text-center">Exemption Calculation</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                  <div className="p-4 bg-muted/30 rounded-lg">
+                      <p className="text-sm text-muted-foreground">Actual HRA received</p>
+                      <p className="text-xl font-bold">{formatCurrency(conditions[0])}</p>
+                  </div>
+                   <div className="p-4 bg-muted/30 rounded-lg">
+                      <p className="text-sm text-muted-foreground">Rent Paid - 10% of Salary</p>
+                      <p className="text-xl font-bold">{formatCurrency(conditions[1])}</p>
+                  </div>
+                   <div className="p-4 bg-muted/30 rounded-lg">
+                      <p className="text-sm text-muted-foreground">{isMetroCity ? '50%' : '40%'} of Salary</p>
+                      <p className="text-xl font-bold">{formatCurrency(conditions[2])}</p>
+                  </div>
+              </div>
           </div>
-        </div>
 
-        <div className="flex items-center justify-center space-x-2">
-            <Label htmlFor="isMetro" className="text-lg">Living in a Metro City? (Delhi, Mumbai, Chennai, Kolkata)</Label>
-            <Switch id="isMetro" checked={isMetroCity} onCheckedChange={setIsMetroCity} />
-        </div>
-
-        <div className="border-t pt-8 space-y-4">
-            <h3 className="text-xl font-semibold text-center">Exemption Calculation</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                <div className="p-4 bg-muted/30 rounded-lg">
-                    <p className="text-sm text-muted-foreground">Actual HRA received</p>
-                    <p className="text-xl font-bold">{formatCurrency(conditions[0])}</p>
-                </div>
-                 <div className="p-4 bg-muted/30 rounded-lg">
-                    <p className="text-sm text-muted-foreground">Rent Paid - 10% of Salary</p>
-                    <p className="text-xl font-bold">{formatCurrency(conditions[1])}</p>
-                </div>
-                 <div className="p-4 bg-muted/30 rounded-lg">
-                    <p className="text-sm text-muted-foreground">{isMetroCity ? '50%' : '40%'} of Salary</p>
-                    <p className="text-xl font-bold">{formatCurrency(conditions[2])}</p>
-                </div>
-            </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
-            <div className="p-6 bg-green-500/10 rounded-lg border border-green-500/30">
-                <p className="text-lg text-green-300">Exempt HRA</p>
-                <p className="text-4xl font-bold text-green-400">{formatCurrency(exemptHra)}</p>
-                <p className="text-xs text-green-400/70">(Minimum of the three amounts above)</p>
-            </div>
-            <div className="p-6 bg-red-500/10 rounded-lg border border-red-500/30">
-                <p className="text-lg text-red-300">Taxable HRA</p>
-                <p className="text-4xl font-bold text-red-400">{formatCurrency(taxableHra)}</p>
-                <p className="text-xs text-red-400/70">(HRA Received - Exempt HRA)</p>
-            </div>
-        </div>
-      </CardContent>
-    </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+              <div className="p-6 bg-green-500/10 rounded-lg border border-green-500/30">
+                  <p className="text-lg text-green-300">Exempt HRA</p>
+                  <p className="text-4xl font-bold text-green-400">{formatCurrency(exemptHra)}</p>
+                  <p className="text-xs text-green-400/70">(Minimum of the three amounts above)</p>
+              </div>
+              <div className="p-6 bg-red-500/10 rounded-lg border border-red-500/30">
+                  <p className="text-lg text-red-300">Taxable HRA</p>
+                  <p className="text-4xl font-bold text-red-400">{formatCurrency(taxableHra)}</p>
+                  <p className="text-xs text-red-400/70">(HRA Received - Exempt HRA)</p>
+              </div>
+          </div>
+        </CardContent>
+      </Card>
+      <div className="mt-8">
+        <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="how-it-works">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Lightbulb className="w-5 h-5 text-primary"/> How It Works</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ol className="list-decimal list-inside space-y-2">
+                        <li>Enter your annual basic salary, the total House Rent Allowance (HRA) you receive from your employer, and the total rent you pay annually.</li>
+                        <li>Indicate whether you live in a metro city, as this affects the calculation.</li>
+                        <li>The tool calculates the HRA exemption based on the three conditions specified by tax law.</li>
+                        <li>Your exempt HRA is the minimum of these three values, and the remaining amount is your taxable HRA.</li>
+                    </ol>
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="use-cases">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Briefcase className="w-5 h-5 text-primary"/> Use Cases for Small Business</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ul className="list-disc list-inside space-y-2">
+                        <li><strong>Payroll Management:</strong> Help employees understand their salary structure and tax liabilities.</li>
+                        <li><strong>Employee Benefits:</strong> Explain the tax benefits of HRA as part of the compensation package.</li>
+                        <li><strong>Financial Wellness Programs:</strong> Provide a useful tool for employees to manage their personal finances and tax planning.</li>
+                        <li><strong>Offer Letter Creation:</strong> Structure competitive salary packages by understanding the tax implications of different components like HRA.</li>
+                    </ul>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+      </div>
+    </div>
   );
 }
