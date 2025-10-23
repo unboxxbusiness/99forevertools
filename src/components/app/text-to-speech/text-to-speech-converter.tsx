@@ -197,11 +197,11 @@ export function TextToSpeechConverter() {
   const stop = () => {
     wasStoppedManually.current = true;
     window.speechSynthesis.cancel();
-    setIsSpeaking(false);
-    setIsPaused(false);
     if(isRecording) {
       stopRecording();
     }
+    setIsSpeaking(false);
+    setIsPaused(false);
   };
 
 
