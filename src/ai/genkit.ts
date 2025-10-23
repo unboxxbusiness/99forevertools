@@ -5,7 +5,7 @@
  */
 import { genkit } from 'genkit';
 import { googleAI } from '@genkit-ai/google-genai';
-import { firebase } from '@genkit-ai/firebase';
+import { firebase } from '@genkit-ai/firebase/plugin';
 
 if (!process.env.GENKIT_ENV) {
   process.env.GENKIT_ENV = 'dev';

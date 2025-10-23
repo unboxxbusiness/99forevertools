@@ -11,7 +11,7 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import { generate } from 'genkit/ai';
+import { generate } from 'genkit';
 
 const ImageToCodeInputSchema = z.object({
   imageDataUri: z
