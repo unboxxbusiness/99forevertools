@@ -68,7 +68,12 @@ export function LinkInBioGenerator() {
       image: profileImage,
       links: links.filter(l => l.title && l.url),
     };
-    const encoded = btoa(encodeURIComponent(JSON.stringify(data)));
+    const encoded = btoa(encodeURIComponent(JSON.stringify(data)))
+        .replace(/\+/g, '-') // Convert '+' to '-'
+        .replace(/\//g, '_') // Convert '/' to '_'
+        .replace(/=+$/, ''); // Remove trailing '='
+    
+    // This effect runs only on the client, so window is available
     setShareableLink(`${window.location.origin}/bio/${encoded}`);
   }, [name, bio, profileImage, links]);
 

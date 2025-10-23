@@ -13,13 +13,23 @@ type BioData = {
   links: { title: string; url: string }[];
 };
 
+// This function decodes a URL-safe Base64 string
+const urlSafeBase64Decode = (str: string) => {
+    str = str.replace(/-/g, '+').replace(/_/g, '/');
+    while (str.length % 4) {
+        str += '=';
+    }
+    return atob(str);
+};
+
 export default function BioPage({ params }: { params: { data: string } }) {
   const [data, setData] = useState<BioData | null>(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     try {
-      const decodedData = decodeURIComponent(atob(params.data));
+      // Decode the URL-safe base64 string
+      const decodedData = decodeURIComponent(urlSafeBase64Decode(params.data));
       const parsedData = JSON.parse(decodedData);
       setData(parsedData);
     } catch (error) {
