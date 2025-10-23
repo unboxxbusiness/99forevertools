@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { loremIpsum } from 'lorem-ipsum';
 import { JSDOM } from 'jsdom';
 import css from 'css';
+import whois from 'freewhois';
 
 export async function generateLoremIpsumAction(values: { paragraphs: number }) {
   try {
@@ -444,36 +445,32 @@ const domainSearchSchema = z.object({
 });
 
 export async function checkDomainAvailabilityAction(values: z.infer<typeof domainSearchSchema>) {
-  // This is a mock function. In a real application, you would use a WHOIS API.
-  // For this tool, we will simulate the check.
   try {
     const { domain } = values;
-
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // Basic validation
     if (!domain.includes('.') || domain.startsWith('.') || domain.endsWith('.')) {
-      return { error: 'Invalid domain format.' };
+      return { error: 'Invalid domain format. Please enter a valid domain name (e.g., example.com).' };
     }
+
+    const data = await whois(domain);
     
-    // Simulate common domains being taken
-    const takenDomains = ['google.com', 'facebook.com', 'amazon.com', 'apple.com', 'microsoft.com', 'test.com'];
-    if (takenDomains.includes(domain.toLowerCase())) {
-        return { data: { domain, isAvailable: false, message: `Domain "${domain}" is not available.` } };
+    // If data is returned, it means the domain is registered and thus unavailable.
+    // The structure might vary, but any successful response means it's taken.
+    return { data: { domain, isAvailable: false, message: `Domain "${domain}" is not available.` } };
+
+  } catch (error: any) {
+    // The `freewhois` library throws an error for available domains (e.g., 404 Not Found from RDAP).
+    // We can interpret these specific errors as "available".
+    if (error.message && (error.message.includes('404') || error.message.toLowerCase().includes('not found'))) {
+        return { data: { domain: values.domain, isAvailable: true, message: `Congratulations! "${values.domain}" appears to be available.` } };
+    }
+    // Handle other errors, like invalid TLDs or network issues.
+    if (error.message && error.message.includes('No RDAP server found')) {
+        return { error: `The TLD ".${values.domain.split('.').pop()}" is not supported or invalid.` };
     }
 
-    // Simulate some TLDs being invalid for this simple check
-    if (domain.endsWith('.xyz') || domain.endsWith('.io')) {
-        return { data: { domain, isAvailable: false, message: `WHOIS check for ".${domain.split('.').pop()}" TLDs is not supported by this mock tool.` } };
-    }
-
-    // Otherwise, assume it's available
-    return { data: { domain, isAvailable: true, message: `Congratulations! "${domain}" is available.` } };
-
-  } catch (error) {
-    return { error: 'An unexpected error occurred during the domain check.' };
+    return { error: 'An unexpected error occurred during the domain check. Please try again.' };
   }
 }
     
+
 
