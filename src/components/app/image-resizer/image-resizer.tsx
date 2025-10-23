@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
@@ -30,6 +29,7 @@ export function ImageResizer() {
         const img = new Image();
         img.onload = () => {
             setOriginalDimensions({ width: img.width, height: img.height });
+            URL.revokeObjectURL(img.src);
         };
         img.src = URL.createObjectURL(selectedFile);
 
@@ -63,25 +63,33 @@ export function ImageResizer() {
     try {
       const picaInstance = pica();
       const img = new Image();
-      img.src = URL.createObjectURL(file);
+      const imgSrc = URL.createObjectURL(file);
+      img.src = imgSrc;
 
-      await new Promise(resolve => { img.onload = resolve });
+      img.onload = async () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = targetDimensions.width;
+        canvas.height = targetDimensions.height;
+        
+        const result = await picaInstance.resize(img, canvas);
 
-      const canvas = document.createElement('canvas');
-      canvas.width = targetDimensions.width;
-      canvas.height = targetDimensions.height;
+        result.toBlob(file.type, 0.9).then(blob => {
+          if (blob) {
+              setResizedImage(blob);
+              toast({ title: "Resize complete!" });
+          } else {
+              throw new Error("Canvas to Blob conversion failed");
+          }
+          setIsLoading(false);
+          URL.revokeObjectURL(imgSrc);
+        });
+      };
       
-      const result = await picaInstance.resize(img, canvas);
-
-      result.toBlob(file.type, 0.9).then(blob => {
-        if (blob) {
-            setResizedImage(blob);
-            toast({ title: "Resize complete!" });
-        } else {
-            throw new Error("Canvas to Blob conversion failed");
-        }
+      img.onerror = () => {
         setIsLoading(false);
-      });
+        toast({ variant: 'destructive', title: 'Resize failed', description: 'The image could not be loaded.' });
+        URL.revokeObjectURL(imgSrc);
+      }
       
     } catch(err) {
       console.error(err);
@@ -211,5 +219,3 @@ export function ImageResizer() {
     </Card>
   );
 }
-
-    

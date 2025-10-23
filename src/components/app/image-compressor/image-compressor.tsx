@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
@@ -64,24 +63,32 @@ export function ImageCompressor() {
       const img = new Image();
       img.src = URL.createObjectURL(file);
 
-      await new Promise(resolve => { img.onload = resolve });
-
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext('2d');
-      ctx?.drawImage(img, 0, 0);
-      
-      canvas.toBlob((blob) => {
-        if (blob) {
-            setCompressedImage(blob);
-            setCompressedSize(blob.size);
-            toast({ title: "Compression complete!" });
-        } else {
-            throw new Error("Canvas to Blob conversion failed");
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+            throw new Error("Could not get canvas context");
         }
-        setIsLoading(false);
-      }, file.type, quality);
+        ctx.drawImage(img, 0, 0);
+        
+        canvas.toBlob((blob) => {
+          if (blob) {
+              setCompressedImage(blob);
+              setCompressedSize(blob.size);
+              toast({ title: "Compression complete!" });
+          } else {
+              throw new Error("Canvas to Blob conversion failed");
+          }
+          setIsLoading(false);
+          URL.revokeObjectURL(img.src);
+        }, file.type, quality);
+      };
+
+      img.onerror = () => {
+        throw new Error("Image failed to load");
+      }
       
     } catch(err) {
       console.error(err);
@@ -197,5 +204,3 @@ export function ImageCompressor() {
     </Card>
   );
 }
-
-    
