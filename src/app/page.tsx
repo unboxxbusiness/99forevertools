@@ -1,9 +1,8 @@
-
 'use client';
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link, Activity } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link, Activity, Link2 } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -257,6 +256,12 @@ const tools:any[] = [
     title: 'Headline Analyzer',
     description: 'Score a blog post or product title based on length, sentiment, and keywords.',
     icon: <Activity className="w-8 h-8" />,
+  },
+  {
+    href: '/url-shortener',
+    title: 'URL Shortener',
+    description: 'Create short, shareable links from long URLs using a free service.',
+    icon: <Link2 className="w-8 h-8" />,
   },
 ];
 
