@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -21,6 +21,7 @@ export function TextToSpeechConverter() {
   const [pitch, setPitch] = useState(1);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const stopFlag = useRef(false);
 
   const { toast } = useToast();
 
@@ -56,7 +57,7 @@ export function TextToSpeechConverter() {
       return;
     }
     
-    window.speechSynthesis.cancel();
+    window.speechSynthesis.cancel(); // Clear any previous utterances
 
     const utterance = new SpeechSynthesisUtterance(text);
     const voice = voices.find(v => v.name === selectedVoice);
@@ -72,8 +73,9 @@ export function TextToSpeechConverter() {
       setIsPaused(false);
     };
     utterance.onerror = (event) => {
-        // Don't show an error if the user manually stops the speech
-        if (event.error === 'canceled') {
+        // If the stop button was clicked, we set a flag to ignore this error.
+        if (stopFlag.current) {
+            stopFlag.current = false;
             return;
         }
         toast({ variant: 'destructive', title: 'Speech Error', description: 'Could not play the audio. Please try again.' });
@@ -93,9 +95,10 @@ export function TextToSpeechConverter() {
   };
 
   const stop = () => {
+    stopFlag.current = true;
+    window.speechSynthesis.cancel();
     setIsSpeaking(false);
     setIsPaused(false);
-    window.speechSynthesis.cancel();
   };
 
 
