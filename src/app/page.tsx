@@ -6,7 +6,7 @@ import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as Link2Icon, Activity, ExternalLink, Camera, Code, Network, Search, Gift, FileJson, Bot, TestTube2, Mail, Users, CalculatorIcon, Paintbrush, Clock, Binary, BookOpen } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as Link2Icon, Activity, ExternalLink, Camera, Code, Network, Search, Gift, FileJson, Bot, TestTube2, Mail, Users, CalculatorIcon, Paintbrush, Clock, Binary, BookOpen, BrainCircuit } from 'lucide-react';
 
 const allTools = [
   {
@@ -37,7 +37,7 @@ const allTools = [
       { href: '/meta-tag-generator', title: 'SERP Preview Tool', description: 'Preview meta tags on a Google search result page.', icon: <Search className="w-8 h-8" /> },
       { href: '/headline-analyzer', title: 'Headline Analyzer', description: 'Score a headline on length, sentiment, and keywords.', icon: <Activity className="w-8 h-8" /> },
       { href: '/keyword-density-checker', title: 'Keyword Density Checker', description: 'Check the density of a keyword in your text.', icon: <TestTube2 className="w-8 h-8" /> },
-      { href: '/readability-checker', title: 'Readability Checker', description: 'Calculate the Flesch-Kincaid readability score.', icon: <TestTube2 className="w-8 h-8" /> },
+      { href: '/readability-checker', title: 'Readability Checker', description: 'Calculate the Flesch-Kincaid readability score.', icon: <BookOpen className="w-8 h-8" /> },
       { href: '/lorem-ipsum-generator', title: 'Lorem Ipsum Generator', description: 'Generate placeholder text for your mockups.', icon: <Pilcrow className="w-8 h-8" /> },
       { href: '/press-release-title-generator', title: 'Press Release Title Generator', description: 'Help businesses craft compelling headlines.', icon: <Sparkles className="w-8 h-8" /> },
       { href: '/word-counter', title: 'Word & Character Counter', description: 'Count words, characters, sentences, and paragraphs.', icon: <FileText className="w-8 h-8" /> },
@@ -55,18 +55,25 @@ const allTools = [
       { href: '/invoice-generator', title: 'Invoice Generator', description: 'Quickly generate a clean, professional invoice.', icon: <FileText className="w-8 h-8" /> },
       { href: '/business-slogan-generator', title: 'Business Slogan Generator', description: 'Generate catchy taglines based on keywords.', icon: <Lightbulb className="w-8 h-8" /> },
       { href: '/business-name-generator', title: 'Business Name Generator', description: 'Generate potential names for a new business.', icon: <PenSquare className="w-8 h-8" /> },
-      { href: '/image-compressor', title: 'Image Compressor', description: 'Reduce image file sizes for faster web loading.', icon: <Image className="w-8 h-8" /> },
-      { href: '/image-resizer', title: 'Image Resizer', description: 'Resize images to specific dimensions.', icon: <Crop className="w-8 h-8" /> },
       { href: '/logo-maker', title: 'Logo Maker', description: 'Create a simple, text-based logo for your business.', icon: <Palette className="w-8 h-8" /> },
       { href: '/color-palette-generator', title: 'Color Palette Generator', description: 'Generate accessible color schemes from a base color.', icon: <Palette className="w-8 h-8" /> },
-      { href: '/watermark-adder', title: 'Watermark Adder', description: 'Add a text or image watermark to your pictures.', icon: <Layers className="w-8 h-8" /> },
-      { href: '/before-after-slider', title: "'Before & After' Slider", description: 'Create an interactive slider to showcase transformations.', icon: <GitCompareArrows className="w-8 h-8" /> },
-      { href: '/gif-maker', title: 'GIF Maker', description: 'Convert a series of images into an animated GIF.', icon: <Clapperboard className="w-8 h-8" /> },
-      { href: '/favicon-generator', title: 'Favicon Generator', description: 'Create a favicon pack from any image.', icon: <Star className="w-8 h-8" /> },
-      { href: '/youtube-thumbnail-preview', title: 'YouTube Thumbnail Preview', description: 'See how your thumbnail will look on YouTube.', icon: <PlaySquare className="w-8 h-8" /> },
-      { href: '/image-to-base64-converter', title: 'Image to Base64 Converter', description: 'Convert images to Base64 encoded strings.', icon: <Binary className="w-8 h-8" /> },
-      { href: '/image-to-png-converter', title: 'Image to PNG Converter', description: 'Convert various image formats to PNG.', icon: <Image className="w-8 h-8" /> },
-      { href: '/photo-filter-studio', title: 'Photo Filter Studio', description: 'Apply professional filters to your photos instantly.', icon: <Camera className="w-8 h-8" /> },
+      { href: '/email-signature-generator', title: 'Email Signature Generator', description: 'Create a professional HTML email signature.', icon: <PenSquare className="w-8 h-8" /> },
+    ]
+  },
+  {
+    category: 'Image Tools',
+    icon: <Image className="w-6 h-6" />,
+    tools: [
+        { href: '/image-compressor', title: 'Image Compressor', description: 'Reduce image file sizes for faster web loading.', icon: <Image className="w-8 h-8" /> },
+        { href: '/image-resizer', title: 'Image Resizer', description: 'Resize images to specific dimensions.', icon: <Crop className="w-8 h-8" /> },
+        { href: '/watermark-adder', title: 'Watermark Adder', description: 'Add a text or image watermark to your pictures.', icon: <Layers className="w-8 h-8" /> },
+        { href: '/before-after-slider', title: "'Before & After' Slider", description: 'Create an interactive slider to showcase transformations.', icon: <GitCompareArrows className="w-8 h-8" /> },
+        { href: '/gif-maker', title: 'GIF Maker', description: 'Convert a series of images into an animated GIF.', icon: <Clapperboard className="w-8 h-8" /> },
+        { href: '/favicon-generator', title: 'Favicon Generator', description: 'Create a favicon pack from any image.', icon: <Star className="w-8 h-8" /> },
+        { href: '/youtube-thumbnail-preview', title: 'YouTube Thumbnail Preview', description: 'See how your thumbnail will look on YouTube.', icon: <PlaySquare className="w-8 h-8" /> },
+        { href: '/image-to-base64-converter', title: 'Image to Base64 Converter', description: 'Convert images to Base64 encoded strings.', icon: <Binary className="w-8 h-8" /> },
+        { href: '/image-to-png-converter', title: 'Image to PNG Converter', description: 'Convert various image formats to PNG.', icon: <Image className="w-8 h-8" /> },
+        { href: '/photo-filter-studio', title: 'Photo Filter Studio', description: 'Apply professional filters to your photos instantly.', icon: <Camera className="w-8 h-8" /> },
     ]
   },
   {
@@ -81,7 +88,6 @@ const allTools = [
       { href: '/review-link-generator', title: 'Google Review Link Generator', description: 'Create a direct link for customers to leave a Google Review.', icon: <Star className="w-8 h-8" /> },
       { href: '/privacy-policy-generator', title: 'Privacy Policy Generator', description: 'Generate a generic privacy policy for your website.', icon: <Shield className="w-8 h-8" /> },
       { href: '/terms-and-conditions-generator', title: 'Terms & Conditions Generator', description: 'Generate a generic T&C page for your website.', icon: <FileText className="w-8 h-8" /> },
-      { href: '/email-signature-generator', title: 'Email Signature Generator', description: 'Create a professional HTML email signature.', icon: <PenSquare className="w-8 h-8" /> },
       { href: '/text-to-speech', title: 'Text to Speech', description: 'Convert text passages into spoken audio.', icon: <Volume2 className="w-8 h-8" /> },
       { href: '/wav-to-mp3-converter', title: 'WAV to MP3 Converter', description: 'Convert .wav audio files to .mp3 format.', icon: <AudioLines className="w-8 h-8" /> },
       { href: '/url-shortener', title: 'URL Redirect Tool', description: 'Create a short link that redirects to a long URL.', icon: <ExternalLink className="w-8 h-8" /> },
@@ -93,6 +99,15 @@ const allTools = [
       { href: '/time-zone-converter', title: 'Time Zone Converter', description: 'Compare time across different cities.', icon: <Clock className="w-8 h-8" /> },
       { href: '/csv-cleaner', title: 'CSV Cleaner', description: 'Clean and standardize data in your CSV files.', icon: <FileText className="w-8 h-8" /> },
       { href: '/password-generator', title: 'Password Generator', description: 'Generate strong, secure passwords.', icon: <Shield className="w-8 h-8" /> },
+    ]
+  },
+  {
+    category: 'AI-Powered Tools',
+    icon: <BrainCircuit className="w-6 h-6" />,
+    tools: [
+        { href: '/ai-ad-copy-generator', title: 'AI Ad Copy Generator', description: 'Generate compelling ad copy for Facebook or Google.', icon: <Sparkles className="w-8 h-8" /> },
+        { href: '/ai-blog-post-ideas', title: 'AI Blog Post Idea Generator', description: 'Get engaging blog post titles and outlines from a topic.', icon: <Lightbulb className="w-8 h-8" /> },
+        { href: '/ai-business-story-generator', title: 'AI Business Story Generator', description: 'Write a short, compelling brand story for your business.', icon: <BookOpen className="w-8 h-8" /> },
     ]
   }
 ];
@@ -118,7 +133,7 @@ export default function Home() {
           <div 
             className="absolute inset-0 -z-10" 
             style={{
-              backgroundImage: 'radial-gradient(circle at top, hsl(var(--primary) / 0.1), transparent 60%)'
+              backgroundImage: 'radial-gradient(circle at 50% 30%, hsl(var(--primary) / 0.1), transparent 60%)'
             }}
           />
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-primary">
