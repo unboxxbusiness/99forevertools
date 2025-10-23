@@ -94,6 +94,26 @@ export function TextToSpeechConverter() {
     };
   }, []);
 
+  const stopRecording = () => {
+    setIsRecording(false);
+    
+    if (audioContextRef.current && audioDataRef.current.length > 0) {
+      const sampleRate = audioContextRef.current.sampleRate;
+      const mergedSamples = new Float32Array(audioDataRef.current.reduce((acc, val) => acc + val.length, 0));
+      let offset = 0;
+      for (const chunk of audioDataRef.current) {
+        mergedSamples.set(chunk, offset);
+        offset += chunk.length;
+      }
+
+      const wavBlob = encodeWAV(mergedSamples, sampleRate);
+      setAudioUrl(URL.createObjectURL(wavBlob));
+    }
+    
+    scriptProcessorNodeRef.current?.disconnect();
+    audioContextRef.current?.close();
+  };
+  
   const startRecording = () => {
     if (!window.AudioContext) {
       toast({ variant: 'destructive', title: 'Audio API not supported', description: 'Your browser does not support the necessary Web Audio API for recording.' });
@@ -122,27 +142,6 @@ export function TextToSpeechConverter() {
     setIsRecording(true);
   };
   
-  const stopRecording = () => {
-    stop();
-    setIsRecording(false);
-    
-    if (audioContextRef.current && audioDataRef.current.length > 0) {
-      const sampleRate = audioContextRef.current.sampleRate;
-      const mergedSamples = new Float32Array(audioDataRef.current.reduce((acc, val) => acc + val.length, 0));
-      let offset = 0;
-      for (const chunk of audioDataRef.current) {
-        mergedSamples.set(chunk, offset);
-        offset += chunk.length;
-      }
-
-      const wavBlob = encodeWAV(mergedSamples, sampleRate);
-      setAudioUrl(URL.createObjectURL(wavBlob));
-    }
-    
-    scriptProcessorNodeRef.current?.disconnect();
-    audioContextRef.current?.close();
-  };
-
   const speak = (customUtterance?: SpeechSynthesisUtterance, destination?: MediaStreamAudioDestinationNode) => {
     if (isSpeaking && !isPaused) return;
     if (!text.trim()) {
