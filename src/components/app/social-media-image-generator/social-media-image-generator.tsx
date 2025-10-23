@@ -27,7 +27,9 @@ const fontFamilies: { [key: string]: string } = {
 
 export function SocialMediaImageGenerator() {
   const [template, setTemplate] = useState(TEMPLATES[0]);
+  const [bgType, setBgType] = useState<'color' | 'gradient'>('color');
   const [bgColor, setBgColor] = useState('#1a1a1a');
+  const [gradient, setGradient] = useState({ from: '#1a1a1a', to: '#333333' });
   const [bgImage, setBgImage] = useState<File | null>(null);
   const [overlayImage, setOverlayImage] = useState<File | null>(null);
   const [overlayImageConfig, setOverlayImageConfig] = useState({ size: 20, x: 50, y: 25 });
@@ -50,7 +52,15 @@ export function SocialMediaImageGenerator() {
     canvas.width = template.width;
     canvas.height = template.height;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = bgColor;
+
+    if (bgType === 'gradient') {
+        const linearGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        linearGradient.addColorStop(0, gradient.from);
+        linearGradient.addColorStop(1, gradient.to);
+        ctx.fillStyle = linearGradient;
+    } else {
+        ctx.fillStyle = bgColor;
+    }
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     const drawBgImage = () => {
@@ -120,7 +130,7 @@ export function SocialMediaImageGenerator() {
     }
     
     drawBgImage().then(drawOverlay).then(drawText);
-  }, [bgColor, bgImage, overlayImage, headline, bodyText, template, overlayImageConfig, font]);
+  }, [bgColor, bgImage, overlayImage, headline, bodyText, template, overlayImageConfig, font, bgType, gradient]);
 
   useEffect(() => {
     drawCanvas();
@@ -169,12 +179,33 @@ export function SocialMediaImageGenerator() {
             <div className="p-4 border rounded-lg space-y-4">
                 <h3 className="font-semibold text-lg flex items-center gap-2"><Palette/>2. Background</h3>
                 <div className="space-y-2">
-                    <Label htmlFor="bgColor">Color</Label>
-                    <Input id="bgColor" type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="p-1 h-10 w-full" />
+                    <Label>Type</Label>
+                     <RadioGroup value={bgType} onValueChange={(v) => setBgType(v as 'color' | 'gradient')} className="flex gap-2">
+                        <Label className="flex-1 text-center border rounded-md p-2 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer text-sm h-10 justify-center items-center flex">
+                            <RadioGroupItem value="color" className="sr-only" /> Solid
+                        </Label>
+                        <Label className="flex-1 text-center border rounded-md p-2 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer text-sm h-10 justify-center items-center flex">
+                            <RadioGroupItem value="gradient" className="sr-only" /> Gradient
+                        </Label>
+                    </RadioGroup>
                 </div>
-                 <div className="space-y-2">
+                {bgType === 'color' ? (
+                    <div className="space-y-2 animate-fade-in">
+                        <Label htmlFor="bgColor">Color</Label>
+                        <Input id="bgColor" type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="p-1 h-10 w-full" />
+                    </div>
+                ) : (
+                    <div className="space-y-2 animate-fade-in">
+                        <Label>Gradient Colors</Label>
+                        <div className="grid grid-cols-2 gap-2">
+                            <Input type="color" value={gradient.from} onChange={e => setGradient({...gradient, from: e.target.value})} className="p-1 h-10 w-full"/>
+                            <Input type="color" value={gradient.to} onChange={e => setGradient({...gradient, to: e.target.value})} className="p-1 h-10 w-full"/>
+                        </div>
+                    </div>
+                )}
+                 <div className="space-y-2 pt-4 border-t">
                     <Label>Image</Label>
-                    <Button variant="outline" className="w-full" onClick={() => bgImageInputRef.current?.click()}><Upload className="mr-2"/> Upload</Button>
+                    <Button variant="outline" className="w-full" onClick={() => bgImageInputRef.current?.click()}><Upload className="mr-2"/> Upload Background Image</Button>
                     <Input type="file" ref={bgImageInputRef} onChange={handleFileChange(setBgImage)} className="hidden" accept="image/*" />
                      {bgImage && <Button variant="ghost" size="sm" className="text-destructive" onClick={() => setBgImage(null)}><Trash2 className="mr-2"/>Remove Image</Button>}
                 </div>
