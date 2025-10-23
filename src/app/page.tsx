@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -52,6 +52,12 @@ const tools:any[] = [
     title: 'PF Calculator',
     description: 'Calculate employee and employer PF contributions.',
     icon: <Landmark className="w-8 h-8" />,
+  },
+  {
+    href: '/discount-calculator',
+    title: 'Discount Calculator',
+    description: 'Quickly calculate the final price after a percentage discount.',
+    icon: <TicketPercent className="w-8 h-8" />,
   }
 ];
 
