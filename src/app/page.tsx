@@ -212,7 +212,7 @@ export default function Home() {
 
             <Button asChild size="lg">
                 <a
-                href="https://99studiopro.com/lifetime-website-deal/"
+                href="https://99foreversite.shop/"
                 target="_blank"
                 rel="noopener noreferrer"
                 >
