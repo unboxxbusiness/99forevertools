@@ -42,7 +42,7 @@ export default function KeywordDensityCheckerPage() {
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="mb-6">
-          <Button asChild variant="ghost" className="pl-0">
+          <Button asChild variant="ghost">
             <Link href="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Tools
