@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -9,10 +9,9 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { Play, Pause, Square, Download, Mic, Dot } from 'lucide-react';
+import { Play, Pause, Square } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Info } from 'lucide-react';
-import wav from 'wav';
 
 export function TextToSpeechConverter() {
   const [text, setText] = useState('Hello, world! This is a test of the text-to-speech converter.');
@@ -22,12 +21,6 @@ export function TextToSpeechConverter() {
   const [pitch, setPitch] = useState(1);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [isRecording, setIsRecording] = useState(false);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
-  const streamRef = useRef<MediaStream | null>(null);
 
   const { toast } = useToast();
 
@@ -53,10 +46,6 @@ export function TextToSpeechConverter() {
       if (window.speechSynthesis.speaking) {
         window.speechSynthesis.cancel();
       }
-      streamRef.current?.getTracks().forEach(track => track.stop());
-      if (mediaRecorderRef.current?.state === 'recording') {
-        mediaRecorderRef.current?.stop();
-      }
     };
   }, []);
 
@@ -81,18 +70,11 @@ export function TextToSpeechConverter() {
     utterance.onend = () => {
       setIsSpeaking(false);
       setIsPaused(false);
-      if (mediaRecorderRef.current?.state === 'recording') {
-        stopRecording();
-      }
     };
     utterance.onerror = (event) => {
-        console.error('SpeechSynthesisUtterance.onerror', event);
         toast({ variant: 'destructive', title: 'Speech Error', description: 'Could not play the audio. Please try again.' });
         setIsSpeaking(false);
         setIsPaused(false);
-        if (mediaRecorderRef.current?.state === 'recording') {
-            stopRecording();
-        }
     };
 
     if (isPaused) {
@@ -110,67 +92,6 @@ export function TextToSpeechConverter() {
     window.speechSynthesis.cancel();
   };
 
-  const startRecording = async () => {
-    try {
-      const displayStream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
-        audio: true,
-      });
-
-      const audioTracks = displayStream.getAudioTracks();
-      if (audioTracks.length === 0) {
-        toast({
-          variant: 'destructive',
-          title: 'Audio Track Not Found',
-          description: "Please make sure to check the 'Share tab audio' option in the screen sharing dialog.",
-          duration: 8000,
-        });
-        displayStream.getTracks().forEach(track => track.stop());
-        return;
-      }
-      
-      const audioStream = new MediaStream(audioTracks);
-      streamRef.current = audioStream;
-
-      audioChunksRef.current = [];
-      const mediaRecorder = new MediaRecorder(audioStream, { mimeType: 'audio/webm' });
-      mediaRecorderRef.current = mediaRecorder;
-
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data);
-        }
-      };
-
-      mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        setAudioUrl(audioUrl);
-        displayStream.getTracks().forEach(track => track.stop());
-        setIsRecording(false);
-        toast({ title: 'Recording finished!', description: 'You can now download the audio.' });
-      };
-
-      mediaRecorder.start();
-      setIsRecording(true);
-      setAudioUrl(null);
-      toast({ title: 'Recording started!', description: 'Play the text to capture the audio.' });
-      
-    } catch (err) {
-      console.error("Error getting display media:", err);
-      if ((err as Error).name === 'NotAllowedError') {
-         toast({ variant: 'destructive', title: 'Permission Denied', description: 'You need to grant screen sharing permissions to record audio.' });
-      } else {
-         toast({ variant: 'destructive', title: 'Recording Error', description: 'Could not start screen sharing. Please try again.' });
-      }
-    }
-  };
-
-  const stopRecording = () => {
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
-      mediaRecorderRef.current.stop();
-    }
-  };
 
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
@@ -219,40 +140,19 @@ export function TextToSpeechConverter() {
                 <Pause className="mr-2" />
                 Pause
             </Button>
-             <Button onClick={stop} disabled={!isSpeaking && !isRecording} variant="destructive" size="lg">
+             <Button onClick={stop} disabled={!isSpeaking} variant="destructive" size="lg">
                 <Square className="mr-2" />
                 Stop
             </Button>
         </div>
 
-        <div className="border-t pt-6 space-y-4">
-            <h3 className="text-xl font-semibold text-center">Record and Download</h3>
-            <Alert>
-              <Info className="h-4 w-4" />
-              <AlertTitle>How to Record</AlertTitle>
-              <AlertDescription>
-                1. Click "Start Recording" and grant permission to share your screen. **Crucially, check the box to "Share tab audio"**.
-                2. Click "Play" to speak the text.
-                3. The recording will stop automatically when speech finishes, or you can click "Stop Recording".
-              </AlertDescription>
-            </Alert>
-            <div className='flex justify-center gap-4'>
-                <Button onClick={startRecording} disabled={isRecording}>
-                    <Mic className="mr-2"/> Start Recording
-                </Button>
-                <Button onClick={stopRecording} disabled={!isRecording} variant="destructive">
-                    <Dot className="mr-2 animate-ping" /> Stop Recording
-                </Button>
-            </div>
-             {audioUrl && (
-                <div className="flex flex-col items-center gap-4 pt-4 animate-fade-in">
-                    <audio src={audioUrl} controls />
-                    <a href={audioUrl} download="speech.webm">
-                        <Button><Download className="mr-2"/> Download Audio</Button>
-                    </a>
-                </div>
-             )}
-        </div>
+        <Alert>
+          <Info className="h-4 w-4" />
+          <AlertTitle>Browser-Based Tool</AlertTitle>
+          <AlertDescription>
+            This tool uses your browser's built-in text-to-speech engine. The available voices and audio quality depend on your browser and operating system. Audio download is not supported.
+          </AlertDescription>
+        </Alert>
       </CardContent>
     </Card>
   );
