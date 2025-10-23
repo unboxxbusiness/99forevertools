@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Play, Pause, Square, Download, Mic, Dot } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Info } from 'lucide-react';
+import wav from 'wav';
 
 export function TextToSpeechConverter() {
   const [text, setText] = useState('Hello, world! This is a test of the text-to-speech converter.');
