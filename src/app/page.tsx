@@ -221,6 +221,12 @@ const tools:any[] = [
     title: 'Terms & Conditions Generator',
     description: 'Generate a generic T&C page for your website.',
     icon: <FileText className="w-8 h-8" />,
+  },
+  {
+    href: '/email-signature-generator',
+    title: 'Email Signature Generator',
+    description: 'Create a professional HTML email signature.',
+    icon: <PenSquare className="w-8 h-8" />,
   }
 ];
 
