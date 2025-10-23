@@ -143,6 +143,12 @@ const tools:any[] = [
     title: 'Logo Maker',
     description: 'Create a simple, text-based logo using your business\'s initials or name.',
     icon: <Palette className="w-8 h-8" />,
+  },
+  {
+    href: '/color-palette-generator',
+    title: 'Color Palette Generator',
+    description: 'Generate accessible color schemes from a base color.',
+    icon: <Palette className="w-8 h-8" />,
   }
 ];
 
