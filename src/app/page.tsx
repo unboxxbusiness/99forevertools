@@ -6,7 +6,7 @@ import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as Link2Icon, Activity, ExternalLink, Camera, Code, Network, Search, Gift, FileJson, Bot, TestTube2, Mail, Users, CalculatorIcon, Paintbrush, Clock, Check } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as Link2Icon, Activity, ExternalLink, Camera, Code, Network, Search, Gift, FileJson, Bot, TestTube2, Mail, Users, CalculatorIcon, Paintbrush, Clock, Check, MoveRight } from 'lucide-react';
 
 const allTools = [
   {
@@ -171,51 +171,55 @@ export default function Home() {
           </div>
         )}
       </main>
-      <footer className="bg-primary/10 py-12 text-center print-hidden">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-primary">
-            Stop Paying Monthly Website Fees!
-          </h2>
-          <h3 className="mt-4 text-2xl md:text-3xl font-bold">
-            Get Your Lead-Generation Website FOREVER.
-          </h3>
-          <p className="mt-2 text-lg text-muted-foreground bg-primary/20 inline-block px-4 py-1 rounded-lg">
-            Pay ONCE. Get More Customers FOR LIFE.
-          </p>
-          <div className="mt-8 text-left inline-block">
-            <h4 className="text-xl font-semibold mb-4 text-center">Package Includes:</h4>
-            <ul className="space-y-2">
-              <li className="flex items-center gap-3">
-                <span className="bg-green-500/20 text-green-300 rounded-full p-1">
-                  <Check className="w-4 h-4" />
-                </span>
-                <span className="font-mono">Professional Lead-Gen Website <span className="text-muted-foreground">(Value: ₹15,000)</span></span>
-              </li>
-              <li className="flex items-center gap-3">
-                 <span className="bg-green-500/20 text-green-300 rounded-full p-1">
-                  <Check className="w-4 h-4" />
-                </span>
-                <span className="font-mono">FREE Lifetime Hosting <span className="text-muted-foreground">(Value: ₹5,000/Year)</span></span>
-              </li>
-            </ul>
+      <footer className="w-full py-20 lg:py-40 print-hidden">
+        <div className="container mx-auto">
+          <div className="flex flex-col text-center bg-muted rounded-md p-4 lg:p-14 gap-8 items-center">
+            <div className="flex flex-col gap-2">
+              <h3 className="text-3xl md:text-5xl tracking-tighter max-w-2xl font-bold text-primary">
+                Stop Paying Monthly Website Fees!
+              </h3>
+              <p className="text-lg leading-relaxed tracking-tight text-muted-foreground max-w-xl">
+                Get Your Lead-Generation Website <span className="font-bold">FOREVER</span>. Pay once, get more customers for life.
+              </p>
+            </div>
+            
+            <div className="text-left space-y-4">
+                <h4 className="text-xl font-semibold text-center">Package Includes:</h4>
+                <ul className="space-y-2">
+                  <li className="flex items-center gap-3">
+                    <span className="bg-green-500/20 text-green-300 rounded-full p-1">
+                      <Check className="w-4 h-4" />
+                    </span>
+                    <span className="font-mono">Professional Lead-Gen Website <span className="text-muted-foreground">(Value: ₹15,000)</span></span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                     <span className="bg-green-500/20 text-green-300 rounded-full p-1">
+                      <Check className="w-4 h-4" />
+                    </span>
+                    <span className="font-mono">FREE Lifetime Hosting <span className="text-muted-foreground">(Value: ₹5,000/Year)</span></span>
+                  </li>
+                </ul>
+            </div>
+             <div>
+                <p className="text-xl font-semibold">
+                    Total Value: <span className="line-through text-muted-foreground">~₹20,000~</span>
+                </p>
+                <p className="mt-2 text-4xl md:text-5xl font-bold text-primary">
+                    One-Time Price: ₹10,000
+                </p>
+                <p className="text-muted-foreground">(No Monthly Fees. Ever.)</p>
+            </div>
+
+            <Button asChild size="lg" className="gap-4 text-lg py-7 px-10 animate-pulse">
+                <a
+                href="https://99studiopro.com/lifetime-website-deal/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >
+                Claim Your ₹10,000 Offer <MoveRight className="w-5 h-5" />
+                </a>
+            </Button>
           </div>
-          <p className="mt-8 text-xl font-semibold">
-            Total Value: <span className="line-through text-muted-foreground">~₹20,000~</span>
-          </p>
-          <p className="mt-2 text-4xl md:text-5xl font-bold text-primary">
-            One-Time Price: ₹10,000
-          </p>
-          <p className="text-muted-foreground">(No Monthly Fees. Ever.)</p>
-          
-          <Button asChild size="lg" className="mt-6 animate-pulse text-lg py-7 px-10">
-            <a
-              href="https://99studiopro.com/lifetime-website-deal/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Claim Your ₹10,000 Offer Now!
-            </a>
-          </Button>
         </div>
       </footer>
     </div>
