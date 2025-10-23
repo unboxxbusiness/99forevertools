@@ -258,12 +258,6 @@ const tools:any[] = [
     description: 'Create a short, memorable link on your own domain that redirects to a long URL.',
     icon: <ExternalLink className="w-8 h-8" />,
   },
-  {
-    href: '/image-to-code',
-    title: 'Image to Code',
-    description: 'Turn any website screenshot into clean HTML & CSS code.',
-    icon: <Code className="w-8 h-8" />,
-  },
 ];
 
 export default function Home() {
