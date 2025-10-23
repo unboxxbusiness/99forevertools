@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -119,6 +119,12 @@ const tools:any[] = [
     title: 'Business Name Generator',
     description: 'Generate potential names for a new business or product line.',
     icon: <PenSquare className="w-8 h-8" />,
+  },
+  {
+    href: '/press-release-title-generator',
+    title: 'Press Release Title Generator',
+    description: 'Help businesses craft compelling headlines.',
+    icon: <Sparkles className="w-8 h-8" />,
   }
 ];
 
