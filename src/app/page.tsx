@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -227,6 +227,12 @@ const tools:any[] = [
     title: 'Email Signature Generator',
     description: 'Create a professional HTML email signature.',
     icon: <PenSquare className="w-8 h-8" />,
+  },
+  {
+    href: '/lorem-ipsum-generator',
+    title: 'Lorem Ipsum Generator',
+    description: 'Generate placeholder text for your design mockups.',
+    icon: <Pilcrow className="w-8 h-8" />,
   }
 ];
 
