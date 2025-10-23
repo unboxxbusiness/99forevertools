@@ -2,12 +2,12 @@
 'use client';
 
 import { Header } from '@/components/app/header';
-import { WebsiteScreenshotGenerator } from '@/components/app/website-screenshot-generator/website-screenshot-generator';
+import { ImageToCodeGenerator } from '@/components/app/image-to-code/image-to-code-generator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-export default function WebsiteScreenshotGeneratorPage() {
+export default function ImageToCodePage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
@@ -20,7 +20,7 @@ export default function WebsiteScreenshotGeneratorPage() {
             </Link>
           </Button>
         </div>
-        <WebsiteScreenshotGenerator />
+        <ImageToCodeGenerator />
       </main>
     </div>
   );
