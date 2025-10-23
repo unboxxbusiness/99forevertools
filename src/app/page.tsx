@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link, Activity, Link2, ExternalLink } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link, Activity, Link2, ExternalLink, Camera } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -257,6 +257,12 @@ const tools:any[] = [
     title: 'URL Redirect Tool',
     description: 'Create a short, memorable link on your own domain that redirects to a long URL.',
     icon: <ExternalLink className="w-8 h-8" />,
+  },
+  {
+    href: '/website-screenshot-generator',
+    title: 'Website Screenshot Generator',
+    description: 'Enter a URL to get a full-page screenshot of any website.',
+    icon: <Camera className="w-8 h-8" />,
   },
 ];
 
