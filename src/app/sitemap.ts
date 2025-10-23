@@ -60,6 +60,7 @@ const tools = [
   '/time-zone-converter',
   '/csv-cleaner',
   '/password-generator',
+  '/image-to-base64-converter',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
