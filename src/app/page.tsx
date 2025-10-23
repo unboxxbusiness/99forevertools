@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -64,6 +64,12 @@ const tools:any[] = [
     title: 'Unit Price Calculator',
     description: 'Compare product costs by their unit price (e.g., per kg/gram).',
     icon: <Scaling className="w-8 h-8" />,
+  },
+  {
+    href: '/upi-qr-code-generator',
+    title: 'UPI QR Code Generator',
+    description: 'Instantly create a downloadable UPI QR code from a UPI ID.',
+    icon: <QrCode className="w-8 h-8" />,
   }
 ];
 
