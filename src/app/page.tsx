@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -83,6 +83,12 @@ const tools:any[] = [
     title: 'Business Slogan Generator',
     description: 'Generate catchy taglines based on keywords.',
     icon: <Lightbulb className="w-8 h-8" />,
+  },
+  {
+    href: '/festival-wish-generator',
+    title: 'Festival Wish Generator',
+    description: 'Create pre-written messages for Diwali, Holi, Eid, etc.',
+    icon: <PartyPopper className="w-8 h-8" />,
   }
 ];
 
