@@ -66,9 +66,9 @@ const tools:any[] = [
     icon: <Scaling className="w-8 h-8" />,
   },
   {
-    href: '/upi-qr-code-generator',
-    title: 'UPI QR Code Generator',
-    description: 'Instantly create a downloadable UPI QR code from a UPI ID.',
+    href: '/qr-code-generator',
+    title: 'QR Code Generator',
+    description: 'Instantly create a downloadable QR code for URLs, Wi-Fi, and more.',
     icon: <QrCode className="w-8 h-8" />,
   }
 ];

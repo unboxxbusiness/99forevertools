@@ -18,6 +18,8 @@ export function QrCodeGeneratorResults({ config }: QrCodeGeneratorResultsProps) 
   
   const isValidContent = config.value && (
     config.type !== 'wifi' || (config.type === 'wifi' && config.ssid)
+  ) && (
+    config.type !== 'upi' || (config.type === 'upi' && config.upiId && config.payeeName)
   );
 
   const downloadQRCode = () => {
@@ -70,7 +72,7 @@ export function QrCodeGeneratorResults({ config }: QrCodeGeneratorResultsProps) 
               <QrCode className="mx-auto h-12 w-12 text-muted-foreground" />
               <h3 className="mt-4 text-lg font-medium">Your QR code will appear here</h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                Configure the options on the left to get started.
+                Fill out the options on the left to get started.
               </p>
             </div>
           )}

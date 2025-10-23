@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -27,6 +28,9 @@ export default function QrCodeGeneratorPage() {
     phone: '',
     email: '',
     website: '',
+    // UPI
+    upiId: '',
+    payeeName: '',
   });
 
   return (

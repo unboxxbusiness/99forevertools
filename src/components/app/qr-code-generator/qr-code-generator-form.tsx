@@ -6,10 +6,10 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Globe, Wifi, User, Palette } from 'lucide-react';
+import { Globe, Wifi, User, Palette, IndianRupee } from 'lucide-react';
 import React, { useEffect } from 'react';
 
-type QrCodeType = 'url' | 'wifi' | 'vcard';
+type QrCodeType = 'url' | 'wifi' | 'vcard' | 'upi';
 
 export type QrCodeConfig = {
   type: QrCodeType;
@@ -26,6 +26,8 @@ export type QrCodeConfig = {
   phone: string;
   email: string;
   website: string;
+  upiId: string;
+  payeeName: string;
 };
 
 type QrCodeGeneratorFormProps = {
@@ -59,10 +61,19 @@ export function QrCodeGeneratorForm({ config, setConfig }: QrCodeGeneratorFormPr
       case 'vcard':
         value = `BEGIN:VCARD\nVERSION:3.0\nN:${config.lastName};${config.firstName}\nFN:${config.firstName} ${config.lastName}\nTEL:${config.phone}\nEMAIL:${config.email}\nURL:${config.website}\nEND:VCARD`;
         break;
+      case 'upi':
+        if (config.upiId && config.payeeName) {
+            const params = new URLSearchParams({
+                pa: config.upiId,
+                pn: config.payeeName,
+            });
+            value = `upi://pay?${params.toString()}`;
+        }
+        break;
     }
     setConfig({ ...config, value });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [config.type, config.url, config.ssid, config.password, config.encryption, config.firstName, config.lastName, config.phone, config.email, config.website]);
+  }, [config.type, config.url, config.ssid, config.password, config.encryption, config.firstName, config.lastName, config.phone, config.email, config.website, config.upiId, config.payeeName]);
 
   return (
     <Card className="w-full shadow-lg bg-card border-primary/20 animate-fade-in">
@@ -74,10 +85,11 @@ export function QrCodeGeneratorForm({ config, setConfig }: QrCodeGeneratorFormPr
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="url" className="w-full" onValueChange={handleTabChange}>
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="url"><Globe className="mr-2 h-4 w-4"/>URL</TabsTrigger>
             <TabsTrigger value="wifi"><Wifi className="mr-2 h-4 w-4"/>Wi-Fi</TabsTrigger>
             <TabsTrigger value="vcard"><User className="mr-2 h-4 w-4"/>Contact</TabsTrigger>
+            <TabsTrigger value="upi"><IndianRupee className="mr-2 h-4 w-4"/>UPI</TabsTrigger>
           </TabsList>
           
           <div className="pt-6 space-y-6">
@@ -130,6 +142,26 @@ export function QrCodeGeneratorForm({ config, setConfig }: QrCodeGeneratorFormPr
                  <div className="space-y-2">
                     <Label htmlFor="website">Website</Label>
                     <Input id="website" value={config.website} onChange={handleInputChange('website')} placeholder="https://example.com" />
+                </div>
+            </TabsContent>
+            <TabsContent value="upi" className="space-y-4 m-0">
+                <div className="space-y-2">
+                    <Label htmlFor="upiId">Your UPI ID *</Label>
+                    <Input
+                    id="upiId"
+                    placeholder="yourname@bank"
+                    value={config.upiId}
+                    onChange={handleInputChange('upiId')}
+                    />
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="payeeName">Your Name *</Label>
+                    <Input
+                    id="payeeName"
+                    placeholder="e.g., John Doe"
+                    value={config.payeeName}
+                    onChange={handleInputChange('payeeName')}
+                    />
                 </div>
             </TabsContent>
 
