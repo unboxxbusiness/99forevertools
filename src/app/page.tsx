@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -161,6 +161,12 @@ const tools:any[] = [
     title: "'Before & After' Slider",
     description: 'Create an interactive slider to showcase transformations.',
     icon: <GitCompareArrows className="w-8 h-8" />,
+  },
+  {
+    href: '/gif-maker',
+    title: 'GIF Maker',
+    description: 'Convert a series of images into an animated GIF.',
+    icon: <Clapperboard className="w-8 h-8" />,
   }
 ];
 
