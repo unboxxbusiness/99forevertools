@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -197,6 +197,12 @@ const tools:any[] = [
     title: 'Word & Character Counter',
     description: 'A simple text box that counts words and characters.',
     icon: <FileText className="w-8 h-8" />,
+  },
+  {
+    href: '/case-converter',
+    title: 'Case Converter',
+    description: 'Convert text to UPPERCASE, lowercase, Title Case, etc.',
+    icon: <CaseSensitive className="w-8 h-8" />,
   }
 ];
 
