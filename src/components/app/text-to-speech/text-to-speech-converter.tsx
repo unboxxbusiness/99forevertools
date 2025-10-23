@@ -26,6 +26,7 @@ export function TextToSpeechConverter() {
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const streamRef = useRef<MediaStream | null>(null);
 
   const { toast } = useToast();
 
@@ -49,6 +50,7 @@ export function TextToSpeechConverter() {
     return () => {
       window.speechSynthesis.onvoiceschanged = null;
       window.speechSynthesis.cancel();
+      streamRef.current?.getTracks().forEach(track => track.stop());
       mediaRecorderRef.current?.stop();
     };
   }, []);
@@ -99,12 +101,12 @@ export function TextToSpeechConverter() {
 
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getDisplayMedia({
+      const displayStream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
-        audio: { sampleRate: 44100 },
+        audio: true,
       });
-      
-      const audioTracks = stream.getAudioTracks();
+
+      const audioTracks = displayStream.getAudioTracks();
       if (audioTracks.length === 0) {
         toast({
           variant: 'destructive',
@@ -112,11 +114,15 @@ export function TextToSpeechConverter() {
           description: "Please make sure to check the 'Share tab audio' option in the screen sharing dialog.",
           duration: 8000,
         });
-        stream.getTracks().forEach(track => track.stop()); // Stop the video track
+        displayStream.getTracks().forEach(track => track.stop());
         return;
       }
 
-      mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+      // Create a new stream with only the audio track
+      const audioStream = new MediaStream(audioTracks);
+      streamRef.current = audioStream;
+
+      mediaRecorderRef.current = new MediaRecorder(audioStream, { mimeType: 'audio/webm' });
       audioChunksRef.current = [];
 
       mediaRecorderRef.current.ondataavailable = (event) => {
@@ -129,28 +135,37 @@ export function TextToSpeechConverter() {
         const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
         const audioUrl = URL.createObjectURL(audioBlob);
         setAudioUrl(audioUrl);
-        stream.getTracks().forEach(track => track.stop()); // Stop screen sharing
+        displayStream.getTracks().forEach(track => track.stop());
         setIsRecording(false);
         toast({ title: 'Recording finished!', description: 'You can now download the audio.' });
       };
 
-      mediaRecorderRef.current.start();
-      setIsRecording(true);
-      setAudioUrl(null);
-      toast({ title: 'Recording started!', description: 'Play the text to capture the audio.' });
-
+      try {
+        mediaRecorderRef.current.start();
+        setIsRecording(true);
+        setAudioUrl(null);
+        toast({ title: 'Recording started!', description: 'Play the text to capture the audio.' });
+      } catch (startError) {
+         console.error("Error starting MediaRecorder:", startError);
+         toast({ variant: 'destructive', title: 'Recording Error', description: 'Could not start recording. Your browser may not support it or there was an issue with the audio stream.' });
+         displayStream.getTracks().forEach(track => track.stop());
+      }
+      
     } catch (err) {
-      console.error("Error starting recording:", err);
+      console.error("Error getting display media:", err);
       if ((err as Error).name === 'NotAllowedError') {
          toast({ variant: 'destructive', title: 'Permission Denied', description: 'You need to grant screen sharing permissions to record audio.' });
       } else {
-         toast({ variant: 'destructive', title: 'Recording Error', description: 'Could not start recording. Please try again.' });
+         toast({ variant: 'destructive', title: 'Recording Error', description: 'Could not start screen sharing. Please try again.' });
       }
     }
   };
 
   const stopRecording = () => {
-    mediaRecorderRef.current?.stop();
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
+      mediaRecorderRef.current.stop();
+    }
+    setIsRecording(false);
   };
 
   return (
