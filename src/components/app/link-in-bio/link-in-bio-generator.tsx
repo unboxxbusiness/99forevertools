@@ -16,6 +16,15 @@ type BioLink = {
   url: string;
 };
 
+// This function encodes data to a URL-safe Base64 string
+const urlSafeBase64Encode = (data: object): string => {
+    return btoa(encodeURIComponent(JSON.stringify(data)))
+        .replace(/\+/g, '-') // Convert '+' to '-'
+        .replace(/\//g, '_') // Convert '/' to '_'
+        .replace(/=+$/, ''); // Remove trailing '='
+};
+
+
 export function LinkInBioGenerator() {
   const [profileImage, setProfileImage] = useState('https://picsum.photos/seed/biolink/200/200');
   const [name, setName] = useState('Your Name');
@@ -28,6 +37,7 @@ export function LinkInBioGenerator() {
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
   const [shareableLink, setShareableLink] = useState('');
+  const [displayLink, setDisplayLink] = useState('');
 
   const handleAddLink = () => {
     setLinks([...links, { id: nextId, title: '', url: '' }]);
@@ -68,13 +78,15 @@ export function LinkInBioGenerator() {
       image: profileImage,
       links: links.filter(l => l.title && l.url),
     };
-    const encoded = btoa(encodeURIComponent(JSON.stringify(data)))
-        .replace(/\+/g, '-') // Convert '+' to '-'
-        .replace(/\//g, '_') // Convert '/' to '_'
-        .replace(/=+$/, ''); // Remove trailing '='
+    const encoded = urlSafeBase64Encode(data);
     
     // This effect runs only on the client, so window is available
-    setShareableLink(`${window.location.origin}/bio/${encoded}`);
+    const fullLink = `${window.location.origin}/bio/${encoded}`;
+    setShareableLink(fullLink);
+
+    const shortLink = fullLink.replace(window.location.origin, '...').substring(0, 40) + (fullLink.length > 40 ? '...' : '');
+    setDisplayLink(shortLink);
+
   }, [name, bio, profileImage, links]);
 
 
@@ -135,7 +147,7 @@ export function LinkInBioGenerator() {
             <div className="space-y-4 p-4 border rounded-lg bg-primary/10">
                  <h3 className="font-semibold text-primary">Your Shareable Link</h3>
                  <div className="bg-background p-2 rounded-md flex items-center justify-between gap-2 break-all">
-                    <code className="text-sm">{shareableLink.replace(window.location.origin, '...').substring(0, 40) + (shareableLink.length > 40 ? '...' : '')}</code>
+                    <code className="text-sm">{displayLink}</code>
                     <Button variant="ghost" size="icon" onClick={handleCopyLink}>
                         {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                     </Button>
