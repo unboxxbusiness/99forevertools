@@ -173,6 +173,12 @@ const tools:any[] = [
     title: 'GIF Maker',
     description: 'Convert a series of images into an animated GIF.',
     icon: <Clapperboard className="w-8 h-8" />,
+  },
+   {
+    href: '/digital-business-card',
+    title: 'Digital Business Card Generator',
+    description: 'Create a modern, shareable digital business card.',
+    icon: <Contact className="w-8 h-8" />,
   }
 ];
 
