@@ -8,13 +8,17 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
+import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Sparkles } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const TEMPLATES = [
     { name: 'Instagram Post', width: 1080, height: 1080 },
+    { name: 'LinkedIn Post', width: 1200, height: 627 },
+    { name: 'Twitter/X Post', width: 1600, height: 900 },
     { name: 'YouTube Banner', width: 2560, height: 1440 },
     { name: 'Facebook Cover', width: 820, height: 312 },
 ];
@@ -25,18 +29,42 @@ const fontFamilies: { [key: string]: string } = {
   mono: 'monospace',
 };
 
+const FILTERS = [
+  { name: 'None', style: 'none' },
+  { name: 'Grayscale', style: 'grayscale(100%)' },
+  { name: 'Sepia', style: 'sepia(100%)' },
+  { name: 'Vintage', style: 'sepia(80%) contrast(90%) brightness(110%)' },
+  { name: 'Lomo', style: 'contrast(150%) saturate(110%)' },
+  { name: 'Clarity', style: 'contrast(130%) saturate(110%)' },
+];
+
 export function SocialMediaImageGenerator() {
   const [template, setTemplate] = useState(TEMPLATES[0]);
   const [bgType, setBgType] = useState<'color' | 'gradient'>('color');
   const [bgColor, setBgColor] = useState('#1a1a1a');
   const [gradient, setGradient] = useState({ from: '#1a1a1a', to: '#333333' });
   const [bgImage, setBgImage] = useState<File | null>(null);
+  const [bgImageFilter, setBgImageFilter] = useState('none');
   const [overlayImage, setOverlayImage] = useState<File | null>(null);
   const [overlayImageConfig, setOverlayImageConfig] = useState({ size: 20, x: 50, y: 25 });
   const [font, setFont] = useState('sans');
 
-  const [headline, setHeadline] = useState({ text: 'Your Headline Here', size: 80, color: '#FFFFFF', align: 'center' as CanvasTextAlign });
-  const [bodyText, setBodyText] = useState({ text: 'This is a great place for a short, descriptive paragraph.', size: 40, color: '#DDDDDD', align: 'center' as CanvasTextAlign });
+  const [headline, setHeadline] = useState({
+      text: 'Your Headline Here',
+      size: 80,
+      color: '#FFFFFF',
+      x: 50,
+      y: 40,
+      shadow: { enabled: true, color: '#000000', blur: 10, offsetX: 5, offsetY: 5 }
+    });
+  const [bodyText, setBodyText] = useState({
+      text: 'This is a great place for a short, descriptive paragraph.',
+      size: 40,
+      color: '#DDDDDD',
+      x: 50,
+      y: 60,
+      shadow: { enabled: false, color: '#000000', blur: 5, offsetX: 2, offsetY: 2 }
+    });
 
   const bgImageInputRef = useRef<HTMLInputElement>(null);
   const overlayImageInputRef = useRef<HTMLInputElement>(null);
@@ -48,7 +76,7 @@ export function SocialMediaImageGenerator() {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    
+
     canvas.width = template.width;
     canvas.height = template.height;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -69,7 +97,9 @@ export function SocialMediaImageGenerator() {
             const img = new Image();
             img.src = URL.createObjectURL(bgImage);
             img.onload = () => {
+                ctx.filter = bgImageFilter;
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                ctx.filter = 'none'; // Reset filter
                 resolve();
             };
             img.onerror = () => resolve();
@@ -92,45 +122,71 @@ export function SocialMediaImageGenerator() {
             img.onerror = () => resolve();
         });
     };
-    
+
     const drawText = () => {
         const fontFamily = fontFamilies[font] || fontFamilies.sans;
-        const headlineSize = canvas.width * (headline.size / 2000);
-        ctx.fillStyle = headline.color;
-        ctx.font = `bold ${headlineSize}px ${fontFamily}`;
-        ctx.textAlign = headline.align;
-        ctx.textBaseline = 'middle';
-        const headlineX = headline.align === 'center' ? canvas.width / 2 : (headline.align === 'left' ? canvas.width * 0.05 : canvas.width * 0.95);
-        wrapText(ctx, headline.text, headlineX, canvas.height / 2 - headlineSize, canvas.width - (canvas.width * 0.1), headlineSize * 1.2);
 
+        // Headline
+        const headlineSize = canvas.width * (headline.size / 2000);
+        ctx.font = `bold ${headlineSize}px ${fontFamily}`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        if (headline.shadow.enabled) {
+            ctx.shadowColor = headline.shadow.color;
+            ctx.shadowBlur = headline.shadow.blur;
+            ctx.shadowOffsetX = headline.shadow.offsetX;
+            ctx.shadowOffsetY = headline.shadow.offsetY;
+        }
+        ctx.fillStyle = headline.color;
+        const headlineX = canvas.width * (headline.x / 100);
+        const headlineY = canvas.height * (headline.y / 100);
+        wrapText(ctx, headline.text, headlineX, headlineY, canvas.width - (canvas.width * 0.1), headlineSize * 1.2);
+        ctx.shadowColor = 'transparent'; // Reset shadow
+
+        // Body Text
         const bodySize = canvas.width * (bodyText.size / 2000);
-        ctx.fillStyle = bodyText.color;
         ctx.font = `${bodySize}px ${fontFamily}`;
-        ctx.textAlign = bodyText.align;
-        const bodyX = bodyText.align === 'center' ? canvas.width / 2 : (bodyText.align === 'left' ? canvas.width * 0.1 : canvas.width * 0.95);
-        wrapText(ctx, bodyText.text, bodyX, canvas.height / 2 + (headlineSize), canvas.width - (canvas.width * 0.2), bodySize * 1.2);
+        ctx.textAlign = 'center';
+        if (bodyText.shadow.enabled) {
+            ctx.shadowColor = bodyText.shadow.color;
+            ctx.shadowBlur = bodyText.shadow.blur;
+            ctx.shadowOffsetX = bodyText.shadow.offsetX;
+            ctx.shadowOffsetY = bodyText.shadow.offsetY;
+        }
+        ctx.fillStyle = bodyText.color;
+        const bodyX = canvas.width * (bodyText.x / 100);
+        const bodyY = canvas.height * (bodyText.y / 100);
+        wrapText(ctx, bodyText.text, bodyX, bodyY, canvas.width - (canvas.width * 0.2), bodySize * 1.2);
+        ctx.shadowColor = 'transparent'; // Reset shadow
     };
 
     const wrapText = (context: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) => {
         const words = text.split(' ');
         let line = '';
+        let lines = [];
         for (let n = 0; n < words.length; n++) {
             const testLine = line + words[n] + ' ';
             const metrics = context.measureText(testLine);
             const testWidth = metrics.width;
             if (testWidth > maxWidth && n > 0) {
-                context.fillText(line, x, y);
+                lines.push(line);
                 line = words[n] + ' ';
-                y += lineHeight;
             } else {
                 line = testLine;
             }
         }
-        context.fillText(line, x, y);
+        lines.push(line);
+
+        const totalHeight = lines.length * lineHeight;
+        const startY = y - totalHeight / 2 + lineHeight / 2;
+
+        for (let i = 0; i < lines.length; i++) {
+            context.fillText(lines[i].trim(), x, startY + i * lineHeight);
+        }
     }
-    
+
     drawBgImage().then(drawOverlay).then(drawText);
-  }, [bgColor, bgImage, overlayImage, headline, bodyText, template, overlayImageConfig, font, bgType, gradient]);
+  }, [bgColor, bgImage, bgImageFilter, overlayImage, headline, bodyText, template, overlayImageConfig, font, bgType, gradient]);
 
   useEffect(() => {
     drawCanvas();
@@ -155,6 +211,72 @@ export function SocialMediaImageGenerator() {
     toast({ title: 'Image downloaded!' });
   };
 
+  const TextControls = ({
+    label,
+    config,
+    setConfig
+  }: {
+    label: string,
+    config: typeof headline,
+    setConfig: React.Dispatch<React.SetStateAction<typeof headline>>
+  }) => (
+    <Accordion type="single" collapsible>
+        <AccordionItem value="item-1">
+            <AccordionTrigger>{label}</AccordionTrigger>
+            <AccordionContent className="space-y-4 pt-4">
+                 <div className="space-y-2">
+                    <Label>Text</Label>
+                    <Input value={config.text} onChange={(e) => setConfig({...config, text: e.target.value})} />
+                </div>
+                <div className="space-y-2">
+                    <Label>Font Size: {config.size}px</Label>
+                    <Slider value={[config.size]} onValueChange={(v) => setConfig({...config, size: v[0]})} min={20} max={200} step={1} />
+                </div>
+                 <div className="space-y-2">
+                    <Label>Color</Label>
+                    <Input type="color" value={config.color} onChange={(e) => setConfig({...config, color: e.target.value})} className="p-1 h-10 w-full" />
+                </div>
+                <div className="space-y-2">
+                    <Label>X Position: {config.x}%</Label>
+                    <Slider value={[config.x]} onValueChange={(v) => setConfig({...config, x: v[0]})} min={0} max={100} step={1} />
+                </div>
+                 <div className="space-y-2">
+                    <Label>Y Position: {config.y}%</Label>
+                    <Slider value={[config.y]} onValueChange={(v) => setConfig({...config, y: v[0]})} min={0} max={100} step={1} />
+                </div>
+                 <div className="space-y-2 pt-4 border-t">
+                    <div className="flex items-center gap-2">
+                        <Checkbox id={`${label}-shadow`} checked={config.shadow.enabled} onCheckedChange={(checked) => setConfig({...config, shadow: {...config.shadow, enabled: !!checked}})} />
+                        <Label htmlFor={`${label}-shadow`}>Text Shadow</Label>
+                    </div>
+                     {config.shadow.enabled && (
+                        <div className="space-y-2 pl-4 animate-fade-in">
+                             <div className="space-y-1">
+                                <Label>Shadow Color</Label>
+                                <Input type="color" value={config.shadow.color} onChange={(e) => setConfig({...config, shadow: {...config.shadow, color: e.target.value}})} className="p-1 h-8 w-full" />
+                            </div>
+                            <div className="space-y-1">
+                                <Label>Blur: {config.shadow.blur}px</Label>
+                                <Slider value={[config.shadow.blur]} onValueChange={(v) => setConfig({...config, shadow: {...config.shadow, blur: v[0]}})} min={0} max={50} step={1} />
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                                <div className="space-y-1">
+                                    <Label>Offset X: {config.shadow.offsetX}px</Label>
+                                    <Slider value={[config.shadow.offsetX]} onValueChange={(v) => setConfig({...config, shadow: {...config.shadow, offsetX: v[0]}})} min={-20} max={20} step={1} />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label>Offset Y: {config.shadow.offsetY}px</Label>
+                                    <Slider value={[config.shadow.offsetY]} onValueChange={(v) => setConfig({...config, shadow: {...config.shadow, offsetY: v[0]}})} min={-20} max={20} step={1} />
+                                </div>
+                            </div>
+                        </div>
+                     )}
+                </div>
+            </AccordionContent>
+        </AccordionItem>
+    </Accordion>
+  );
+
   return (
     <Card className="w-full max-w-7xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
       <CardHeader className="text-center">
@@ -175,7 +297,7 @@ export function SocialMediaImageGenerator() {
                     ))}
                 </RadioGroup>
             </div>
-            
+
             <div className="p-4 border rounded-lg space-y-4">
                 <h3 className="font-semibold text-lg flex items-center gap-2"><Palette/>2. Background</h3>
                 <div className="space-y-2">
@@ -207,16 +329,27 @@ export function SocialMediaImageGenerator() {
                     <Label>Image</Label>
                     <Button variant="outline" className="w-full" onClick={() => bgImageInputRef.current?.click()}><Upload className="mr-2"/> Upload Background Image</Button>
                     <Input type="file" ref={bgImageInputRef} onChange={handleFileChange(setBgImage)} className="hidden" accept="image/*" />
-                     {bgImage && <Button variant="ghost" size="sm" className="text-destructive" onClick={() => setBgImage(null)}><Trash2 className="mr-2"/>Remove Image</Button>}
+                     {bgImage && (
+                        <div className="space-y-2 pt-2 animate-fade-in">
+                             <Button variant="ghost" size="sm" className="text-destructive w-full" onClick={() => setBgImage(null)}><Trash2 className="mr-2"/>Remove Image</Button>
+                             <Label htmlFor="bgFilter">Background Filter</Label>
+                             <Select value={bgImageFilter} onValueChange={setBgImageFilter}>
+                                <SelectTrigger id="bgFilter"><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                    {FILTERS.map(f => <SelectItem key={f.name} value={f.style}>{f.name}</SelectItem>)}
+                                </SelectContent>
+                             </Select>
+                        </div>
+                     )}
                 </div>
             </div>
             <div className="p-4 border rounded-lg space-y-4">
                 <h3 className="font-semibold text-lg flex items-center gap-2"><ImageIcon/>3. Overlay/Logo</h3>
                  <Button variant="outline" className="w-full" onClick={() => overlayImageInputRef.current?.click()}><Upload className="mr-2"/> Upload Logo</Button>
                 <Input type="file" ref={overlayImageInputRef} onChange={handleFileChange(setOverlayImage)} className="hidden" accept="image/*" />
-                 {overlayImage && <Button variant="ghost" size="sm" className="text-destructive" onClick={() => setOverlayImage(null)}><Trash2 className="mr-2"/>Remove Logo</Button>}
+                 {overlayImage && <Button variant="ghost" size="sm" className="text-destructive w-full" onClick={() => setOverlayImage(null)}><Trash2 className="mr-2"/>Remove Logo</Button>}
                 {overlayImage && (
-                    <div className="space-y-4 pt-4 border-t">
+                    <div className="space-y-4 pt-4 border-t animate-fade-in">
                         <div className="space-y-2">
                             <Label>Size ({overlayImageConfig.size}%)</Label>
                             <Slider value={[overlayImageConfig.size]} onValueChange={(v) => setOverlayImageConfig({...overlayImageConfig, size: v[0]})} min={5} max={100} step={1} />
@@ -246,36 +379,13 @@ export function SocialMediaImageGenerator() {
                     </Select>
                 </div>
                 <div className="space-y-2 pt-4 border-t">
-                    <Label htmlFor="headline">Headline</Label>
-                    <Input id="headline" value={headline.text} onChange={(e) => setHeadline({...headline, text: e.target.value})} />
-                    <Label>Font Size: {headline.size}px</Label>
-                    <Slider value={[headline.size]} onValueChange={(v) => setHeadline({...headline, size: v[0]})} min={30} max={200} step={1} />
-                    <Label>Color</Label>
-                    <Input type="color" value={headline.color} onChange={(e) => setHeadline({...headline, color: e.target.value})} className="p-1 h-10 w-full" />
-                    <Label>Alignment</Label>
-                    <ToggleGroup type="single" value={headline.align} onValueChange={(v: CanvasTextAlign) => v && setHeadline({...headline, align: v})} className="w-full">
-                        <ToggleGroupItem value="left" aria-label="Align left"><AlignLeft/></ToggleGroupItem>
-                        <ToggleGroupItem value="center" aria-label="Align center"><AlignCenter/></ToggleGroupItem>
-                        <ToggleGroupItem value="right" aria-label="Align right"><AlignRight/></ToggleGroupItem>
-                    </ToggleGroup>
+                    <TextControls label="Headline" config={headline} setConfig={setHeadline} />
                 </div>
                 <div className="space-y-2 pt-4 border-t">
-                    <Label htmlFor="bodyText">Body Text</Label>
-                    <Input id="bodyText" value={bodyText.text} onChange={(e) => setBodyText({...bodyText, text: e.target.value})} />
-                     <Label>Font Size: {bodyText.size}px</Label>
-                    <Slider value={[bodyText.size]} onValueChange={(v) => setBodyText({...bodyText, size: v[0]})} min={20} max={100} step={1} />
-                    <Label>Color</Label>
-                    <Input type="color" value={bodyText.color} onChange={(e) => setBodyText({...bodyText, color: e.target.value})} className="p-1 h-10 w-full" />
-                    <Label>Alignment</Label>
-                    <ToggleGroup type="single" value={bodyText.align} onValueChange={(v: CanvasTextAlign) => v && setBodyText({...bodyText, align: v})} className="w-full">
-                        <ToggleGroupItem value="left" aria-label="Align left"><AlignLeft/></ToggleGroupItem>
-                        <ToggleGroupItem value="center" aria-label="Align center"><AlignCenter/></ToggleGroupItem>
-                        <ToggleGroupItem value="right" aria-label="Align right"><AlignRight/></ToggleGroupItem>
-                    </ToggleGroup>
+                    <TextControls label="Body Text" config={bodyText} setConfig={setBodyText} />
                 </div>
             </div>
           </div>
-          {/* Preview & Download */}
           <div className="lg:col-span-2 space-y-4">
             <h3 className="text-xl font-semibold text-center">Live Preview</h3>
             <div className="bg-muted/30 p-4 rounded-lg flex justify-center items-center">
