@@ -33,7 +33,9 @@ const generateBioPageHtml = (config: {
     colors: {
         background: string,
         button: string,
-        buttonText: string
+        buttonText: string,
+        textColor: string,
+        socialColor: string,
     }
 }) => {
   const { name, description, phone, profilePic, links, socials, colors } = config;
@@ -105,12 +107,12 @@ const generateBioPageHtml = (config: {
         h1 {
             font-size: 2em;
             margin: 0;
-            color: ${colors.buttonText};
+            color: ${colors.textColor};
         }
         p {
             font-size: 1.1em;
             margin: 10px 0 30px;
-            color: ${colors.buttonText};
+            color: ${colors.textColor};
             opacity: 0.8;
         }
         .links {
@@ -140,7 +142,7 @@ const generateBioPageHtml = (config: {
             margin-top: 30px;
         }
         .socials a {
-            color: ${colors.buttonText};
+            color: ${colors.socialColor};
             opacity: 0.8;
         }
         .socials a:hover {
@@ -192,7 +194,13 @@ export function WhatsAppBioLinkGenerator() {
     { id: 2, title: '🛍️ View Catalog', message: 'Hello, please send me your product catalog.' },
   ]);
   const [socials, setSocials] = useState<Socials>({ instagram: '', facebook: '', twitter: '', linkedin: '' });
-  const [colors, setColors] = useState({ background: '#1a1a1a', button: '#333333', buttonText: '#ffffff' });
+  const [colors, setColors] = useState({ 
+      background: '#1a1a1a',
+      textColor: '#ffffff',
+      button: '#333333',
+      buttonText: '#ffffff',
+      socialColor: '#ffffff',
+    });
 
   const [nextId, setNextId] = useState(3);
   const [copied, setCopied] = useState(false);
@@ -322,18 +330,28 @@ export function WhatsAppBioLinkGenerator() {
 
             <div className="space-y-4 p-4 border rounded-lg">
                 <h3 className="font-semibold text-lg">Color Customization</h3>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <Label htmlFor="bgColor">Background</Label>
-                        <Input id="bgColor" type="color" value={colors.background} onChange={e => handleColorChange('background', e.target.value)} className="p-1 h-10"/>
+                        <Input id="bgColor" type="color" value={colors.background} onChange={e => handleColorChange('background', e.target.value)} className="p-1 h-10 w-full"/>
                     </div>
                      <div className="space-y-1">
+                        <Label htmlFor="textColor">Text</Label>
+                        <Input id="textColor" type="color" value={colors.textColor} onChange={e => handleColorChange('textColor', e.target.value)} className="p-1 h-10 w-full"/>
+                    </div>
+                </div>
+                 <div className="grid grid-cols-3 gap-2">
+                     <div className="space-y-1">
                         <Label htmlFor="btnColor">Button</Label>
-                        <Input id="btnColor" type="color" value={colors.button} onChange={e => handleColorChange('button', e.target.value)} className="p-1 h-10"/>
+                        <Input id="btnColor" type="color" value={colors.button} onChange={e => handleColorChange('button', e.target.value)} className="p-1 h-10 w-full"/>
                     </div>
                      <div className="space-y-1">
                         <Label htmlFor="btnTextColor">Button Text</Label>
-                        <Input id="btnTextColor" type="color" value={colors.buttonText} onChange={e => handleColorChange('buttonText', e.target.value)} className="p-1 h-10"/>
+                        <Input id="btnTextColor" type="color" value={colors.buttonText} onChange={e => handleColorChange('buttonText', e.target.value)} className="p-1 h-10 w-full"/>
+                    </div>
+                    <div className="space-y-1">
+                        <Label htmlFor="socialColor">Social Icons</Label>
+                        <Input id="socialColor" type="color" value={colors.socialColor} onChange={e => handleColorChange('socialColor', e.target.value)} className="p-1 h-10 w-full"/>
                     </div>
                 </div>
             </div>
@@ -367,3 +385,4 @@ export function WhatsAppBioLinkGenerator() {
     </Card>
   );
 }
+
