@@ -13,57 +13,6 @@ import { Play, Pause, Square, Download, Mic, Dot } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Info } from 'lucide-react';
 
-// Helper function to create a valid WAV file from raw PCM data
-function encodeWAV(samples: Float32Array, sampleRate: number): Blob {
-  const buffer = new ArrayBuffer(44 + samples.length * 2);
-  const view = new DataView(buffer);
-
-  /* RIFF identifier */
-  writeString(view, 0, 'RIFF');
-  /* file length */
-  view.setUint32(4, 36 + samples.length * 2, true);
-  /* RIFF type */
-  writeString(view, 8, 'WAVE');
-  /* format chunk identifier */
-  writeString(view, 12, 'fmt ');
-  /* format chunk length */
-  view.setUint32(16, 16, true);
-  /* sample format (raw) */
-  view.setUint16(20, 1, true);
-  /* channel count */
-  view.setUint16(22, 1, true);
-  /* sample rate */
-  view.setUint32(24, sampleRate, true);
-  /* byte rate (sample rate * block align) */
-  view.setUint32(28, sampleRate * 2, true);
-  /* block align (channel count * bytes per sample) */
-  view.setUint16(32, 2, true);
-  /* bits per sample */
-  view.setUint16(34, 16, true);
-  /* data chunk identifier */
-  writeString(view, 36, 'data');
-  /* data chunk length */
-  view.setUint32(40, samples.length * 2, true);
-
-  floatTo16BitPCM(view, 44, samples);
-
-  return new Blob([view], { type: 'audio/wav' });
-}
-
-function writeString(view: DataView, offset: number, string: string) {
-  for (let i = 0; i < string.length; i++) {
-    view.setUint8(offset + i, string.charCodeAt(i));
-  }
-}
-
-function floatTo16BitPCM(output: DataView, offset: number, input: Float32Array) {
-  for (let i = 0; i < input.length; i++, offset += 2) {
-    const s = Math.max(-1, Math.min(1, input[i]));
-    output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
-  }
-}
-
-
 export function TextToSpeechConverter() {
   const [text, setText] = useState('Hello, world! This is a test of the text-to-speech converter.');
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
@@ -100,9 +49,13 @@ export function TextToSpeechConverter() {
     
     return () => {
       window.speechSynthesis.onvoiceschanged = null;
-      window.speechSynthesis.cancel();
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+      }
       streamRef.current?.getTracks().forEach(track => track.stop());
-      mediaRecorderRef.current?.stop();
+      if (mediaRecorderRef.current?.state === 'recording') {
+        mediaRecorderRef.current?.stop();
+      }
     };
   }, []);
 
@@ -127,9 +80,18 @@ export function TextToSpeechConverter() {
     utterance.onend = () => {
       setIsSpeaking(false);
       setIsPaused(false);
-      if (isRecording) {
+      if (mediaRecorderRef.current?.state === 'recording') {
         stopRecording();
       }
+    };
+    utterance.onerror = (event) => {
+        console.error('SpeechSynthesisUtterance.onerror', event);
+        toast({ variant: 'destructive', title: 'Speech Error', description: 'Could not play the audio. Please try again.' });
+        setIsSpeaking(false);
+        setIsPaused(false);
+        if (mediaRecorderRef.current?.state === 'recording') {
+            stopRecording();
+        }
     };
 
     if (isPaused) {
@@ -145,9 +107,6 @@ export function TextToSpeechConverter() {
 
   const stop = () => {
     window.speechSynthesis.cancel();
-    setIsSpeaking(false);
-    setIsPaused(false);
-    if (isRecording) stopRecording();
   };
 
   const startRecording = async () => {
@@ -168,45 +127,30 @@ export function TextToSpeechConverter() {
         displayStream.getTracks().forEach(track => track.stop());
         return;
       }
-
+      
       const audioStream = new MediaStream(audioTracks);
       streamRef.current = audioStream;
 
-      const audioContext = new AudioContext();
-      const source = audioContext.createMediaStreamSource(audioStream);
-      const processor = audioContext.createScriptProcessor(4096, 1, 1);
+      audioChunksRef.current = [];
+      const mediaRecorder = new MediaRecorder(audioStream, { mimeType: 'audio/webm' });
+      mediaRecorderRef.current = mediaRecorder;
 
-      let recordingBuffer: Float32Array[] = [];
-
-      processor.onaudioprocess = (e) => {
-        if (isRecording) {
-          const inputData = e.inputBuffer.getChannelData(0);
-          recordingBuffer.push(new Float32Array(inputData));
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
         }
       };
 
-      source.connect(processor);
-      processor.connect(audioContext.destination);
-
-      const stopHandler = () => {
-        const recordedData = new Float32Array(recordingBuffer.reduce((acc, val) => acc + val.length, 0));
-        let offset = 0;
-        for (const buffer of recordingBuffer) {
-          recordedData.set(buffer, offset);
-          offset += buffer.length;
-        }
-
-        const audioBlob = encodeWAV(recordedData, audioContext.sampleRate);
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
         const audioUrl = URL.createObjectURL(audioBlob);
         setAudioUrl(audioUrl);
-
         displayStream.getTracks().forEach(track => track.stop());
-        audioContext.close();
         setIsRecording(false);
         toast({ title: 'Recording finished!', description: 'You can now download the audio.' });
       };
 
-      mediaRecorderRef.current = { stop: stopHandler } as MediaRecorder;
+      mediaRecorder.start();
       setIsRecording(true);
       setAudioUrl(null);
       toast({ title: 'Recording started!', description: 'Play the text to capture the audio.' });
@@ -222,10 +166,9 @@ export function TextToSpeechConverter() {
   };
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current) {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
       mediaRecorderRef.current.stop();
     }
-    setIsRecording(false);
   };
 
   return (
@@ -275,7 +218,7 @@ export function TextToSpeechConverter() {
                 <Pause className="mr-2" />
                 Pause
             </Button>
-             <Button onClick={stop} disabled={!isSpeaking} variant="destructive" size="lg">
+             <Button onClick={stop} disabled={!isSpeaking && !isRecording} variant="destructive" size="lg">
                 <Square className="mr-2" />
                 Stop
             </Button>
@@ -303,8 +246,8 @@ export function TextToSpeechConverter() {
              {audioUrl && (
                 <div className="flex flex-col items-center gap-4 pt-4 animate-fade-in">
                     <audio src={audioUrl} controls />
-                    <a href={audioUrl} download="speech.wav">
-                        <Button><Download className="mr-2"/> Download WAV</Button>
+                    <a href={audioUrl} download="speech.webm">
+                        <Button><Download className="mr-2"/> Download Audio</Button>
                     </a>
                 </div>
              )}
