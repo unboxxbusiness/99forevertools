@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -107,6 +107,12 @@ const tools:any[] = [
     title: 'Google Review Link Generator',
     description: 'Create a direct link for customers to leave a Google Review.',
     icon: <Star className="w-8 h-8" />,
+  },
+  {
+    href: '/hashtag-generator',
+    title: 'Instagram Hashtag Generator',
+    description: 'Suggest relevant hashtags based on a business category.',
+    icon: <Hash className="w-8 h-8" />,
   }
 ];
 
