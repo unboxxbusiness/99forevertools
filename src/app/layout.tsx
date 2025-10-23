@@ -3,6 +3,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { Inter } from 'next/font/google';
 import { BackToTopButton } from '@/components/app/back-to-top-button';
+import { Footer } from '@/components/app/footer';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         {children}
         <Toaster />
         <BackToTopButton />
+        <Footer />
       </body>
     </html>
   );
