@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -9,7 +9,9 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { Play, Pause, Square, Volume2 } from 'lucide-react';
+import { Play, Pause, Square, Download, Mic, Dot } from 'lucide-react';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { Info } from 'lucide-react';
 
 export function TextToSpeechConverter() {
   const [text, setText] = useState('Hello, world! This is a test of the text-to-speech converter.');
@@ -19,6 +21,12 @@ export function TextToSpeechConverter() {
   const [pitch, setPitch] = useState(1);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+
   const { toast } = useToast();
 
   useEffect(() => {
@@ -31,8 +39,6 @@ export function TextToSpeechConverter() {
       }
     };
 
-    // The 'voiceschanged' event is not consistently fired on all browsers.
-    // So we check for voices immediately and then set up the event listener.
     const initialVoices = window.speechSynthesis.getVoices();
     if (initialVoices.length > 0) {
       handleVoicesChanged();
@@ -43,14 +49,14 @@ export function TextToSpeechConverter() {
     return () => {
       window.speechSynthesis.onvoiceschanged = null;
       window.speechSynthesis.cancel();
+      mediaRecorderRef.current?.stop();
     };
   }, []);
 
   const speak = () => {
     if (isSpeaking && !isPaused) return;
-
     if (!text.trim()) {
-      toast({ variant: 'destructive', title: 'No text provided', description: 'Please enter some text to speak.' });
+      toast({ variant: 'destructive', title: 'No text provided' });
       return;
     }
     
@@ -58,30 +64,19 @@ export function TextToSpeechConverter() {
 
     const utterance = new SpeechSynthesisUtterance(text);
     const voice = voices.find(v => v.name === selectedVoice);
-    if (voice) {
-      utterance.voice = voice;
-    }
+    if (voice) utterance.voice = voice;
     utterance.rate = rate;
     utterance.pitch = pitch;
 
-    utterance.onstart = () => {
-      setIsSpeaking(true);
-      setIsPaused(false);
-    };
-
-    utterance.onpause = () => {
-      setIsSpeaking(true);
-      setIsPaused(true);
-    };
-    
-    utterance.onresume = () => {
-      setIsSpeaking(true);
-      setIsPaused(false);
-    };
-
+    utterance.onstart = () => { setIsSpeaking(true); setIsPaused(false); };
+    utterance.onpause = () => { setIsSpeaking(true); setIsPaused(true); };
+    utterance.onresume = () => { setIsSpeaking(true); setIsPaused(false); };
     utterance.onend = () => {
       setIsSpeaking(false);
       setIsPaused(false);
+      if (isRecording) {
+        stopRecording();
+      }
     };
 
     if (isPaused) {
@@ -92,15 +87,53 @@ export function TextToSpeechConverter() {
   };
 
   const pause = () => {
-    if (isSpeaking && !isPaused) {
-      window.speechSynthesis.pause();
-    }
+    if (isSpeaking && !isPaused) window.speechSynthesis.pause();
   };
 
   const stop = () => {
     window.speechSynthesis.cancel();
     setIsSpeaking(false);
     setIsPaused(false);
+    if (isRecording) stopRecording();
+  };
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: { sampleRate: 44100 },
+      });
+      
+      const audioStream = new MediaStream(stream.getAudioTracks());
+      mediaRecorderRef.current = new MediaRecorder(audioStream);
+      audioChunksRef.current = [];
+
+      mediaRecorderRef.current.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data);
+      };
+
+      mediaRecorderRef.current.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        setAudioUrl(audioUrl);
+        stream.getTracks().forEach(track => track.stop()); // Stop screen sharing
+        setIsRecording(false);
+        toast({ title: 'Recording finished!', description: 'You can now download the audio.' });
+      };
+
+      mediaRecorderRef.current.start();
+      setIsRecording(true);
+      setAudioUrl(null);
+      toast({ title: 'Recording started!', description: 'Play the text to capture the audio.' });
+
+    } catch (err) {
+      console.error("Error starting recording:", err);
+      toast({ variant: 'destructive', title: 'Recording Error', description: 'Could not start recording. Please grant screen sharing permissions.' });
+    }
+  };
+
+  const stopRecording = () => {
+    mediaRecorderRef.current?.stop();
   };
 
   return (
@@ -115,11 +148,11 @@ export function TextToSpeechConverter() {
         <div className="space-y-2">
             <Label htmlFor="text" className="text-lg">Text to Speak</Label>
             <Textarea
-            id="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Type or paste your text here..."
-            className="h-40 text-base"
+              id="text"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Type or paste your text here..."
+              className="h-40 text-base"
             />
         </div>
 
@@ -127,16 +160,8 @@ export function TextToSpeechConverter() {
             <div className="space-y-2">
                 <Label htmlFor="voice">Voice</Label>
                 <Select value={selectedVoice} onValueChange={setSelectedVoice} disabled={voices.length === 0}>
-                    <SelectTrigger id="voice">
-                        <SelectValue placeholder="Select a voice..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {voices.map(voice => (
-                            <SelectItem key={voice.name} value={voice.name}>
-                                {voice.name} ({voice.lang})
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
+                    <SelectTrigger id="voice"><SelectValue placeholder="Select a voice..." /></SelectTrigger>
+                    <SelectContent>{voices.map(voice => <SelectItem key={voice.name} value={voice.name}>{voice.name} ({voice.lang})</SelectItem>)}</SelectContent>
                 </Select>
             </div>
             <div className="space-y-2">
@@ -162,6 +187,35 @@ export function TextToSpeechConverter() {
                 <Square className="mr-2" />
                 Stop
             </Button>
+        </div>
+
+        <div className="border-t pt-6 space-y-4">
+            <h3 className="text-xl font-semibold text-center">Record and Download</h3>
+            <Alert>
+              <Info className="h-4 w-4" />
+              <AlertTitle>How to Record</AlertTitle>
+              <AlertDescription>
+                1. Click "Start Recording" and grant permission to share your screen (audio will be captured from the tab).
+                2. Click "Play" to speak the text.
+                3. The recording will stop automatically when speech finishes, or you can click "Stop Recording".
+              </AlertDescription>
+            </Alert>
+            <div className='flex justify-center gap-4'>
+                <Button onClick={startRecording} disabled={isRecording}>
+                    <Mic className="mr-2"/> Start Recording
+                </Button>
+                <Button onClick={stopRecording} disabled={!isRecording} variant="destructive">
+                    <Dot className="mr-2 animate-ping" /> Stop Recording
+                </Button>
+            </div>
+             {audioUrl && (
+                <div className="flex flex-col items-center gap-4 pt-4 animate-fade-in">
+                    <audio src={audioUrl} controls />
+                    <a href={audioUrl} download="speech.wav">
+                        <Button><Download className="mr-2"/> Download WAV</Button>
+                    </a>
+                </div>
+             )}
         </div>
       </CardContent>
     </Card>
