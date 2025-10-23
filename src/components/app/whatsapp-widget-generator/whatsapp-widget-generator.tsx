@@ -26,8 +26,8 @@ const generateEmbedCode = (config: WidgetConfig) => {
   const link = `https://wa.me/${cleanPhone}?text=${encodedMessage}`;
 
   const positionStyle = config.position === 'bottom-right' ? 'right: 20px;' : 'left: 20px;';
-
-  const lucideIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`;
+  
+  const whatsappIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M16.6 14.2c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.3-.1-1.1-.4-2.2-1.3-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.5.1-.6s.2-.3.4-.4c.1-.1.2-.3.3-.4.1-.2 0-.4-.1-.5-.1-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6 0-.2.1-.4.2-.6.4-.2.2-.3.5-.3.8s-.1 1.6.5 2.8c.6 1.2 2.1 3.2 5.1 4.5 2.1.9 3.3 1.2 4.5 1.2 1.2 0 2.2-.4 2.8-.8.6-.4.9-1 .9-1.8.1-.8-.1-1.3-.2-1.4-.1-.1-.3-.2-.5-.2h-.1zM12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18.5c-4.7 0-8.5-3.8-8.5-8.5S7.3 3.5 12 3.5s8.5 3.8 8.5 8.5-3.8 8.5-8.5 8.5z"/></svg>`;
 
   return `
 <!-- Start 99forevertools WhatsApp Widget -->
@@ -58,12 +58,11 @@ const generateEmbedCode = (config: WidgetConfig) => {
     margin-right: 8px;
     width: 24px;
     height: 24px;
-    stroke: ${config.textColor};
   }
 </style>
 <div class="whatsapp-widget">
   <a href="${link}" class="whatsapp-button" target="_blank" rel="noopener noreferrer">
-    ${lucideIconSvg}
+    ${whatsappIconSvg}
     ${config.buttonText}
   </a>
 </div>
@@ -149,7 +148,7 @@ export function WhatsAppWidgetGenerator() {
                     <p className="text-sm text-muted-foreground text-center">This is a simulation of your website corner.</p>
                      <div className={`absolute bottom-5 ${positionClass} z-10`}>
                         <a href="#" className="flex items-center text-sm px-4 py-2 rounded-full shadow-lg" style={{backgroundColor: config.bgColor, color: config.textColor}}>
-                            <MessageSquare className="mr-2 w-6 h-6" style={{stroke: config.textColor}}/>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" className="mr-2 w-6 h-6"><path fill="currentColor" d="M16.6 14.2c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.3-.1-1.1-.4-2.2-1.3-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.5.1-.6s.2-.3.4-.4c.1-.1.2-.3.3-.4.1-.2 0-.4-.1-.5-.1-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6 0-.2.1-.4.2-.6.4-.2.2-.3.5-.3.8s-.1 1.6.5 2.8c.6 1.2 2.1 3.2 5.1 4.5 2.1.9 3.3 1.2 4.5 1.2 1.2 0 2.2-.4 2.8-.8.6-.4.9-1 .9-1.8.1-.8-.1-1.3-.2-1.4-.1-.1-.3-.2-.5-.2h-.1zM12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18.5c-4.7 0-8.5-3.8-8.5-8.5S7.3 3.5 12 3.5s8.5 3.8 8.5 8.5-3.8 8.5-8.5 8.5z"/></svg>
                             {config.buttonText}
                         </a>
                      </div>
