@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -58,6 +58,12 @@ const tools:any[] = [
     title: 'Discount Calculator',
     description: 'Quickly calculate the final price after a percentage discount.',
     icon: <TicketPercent className="w-8 h-8" />,
+  },
+  {
+    href: '/unit-price-calculator',
+    title: 'Unit Price Calculator',
+    description: 'Compare product costs by their unit price (e.g., per kg/gram).',
+    icon: <Scaling className="w-8 h-8" />,
   }
 ];
 
