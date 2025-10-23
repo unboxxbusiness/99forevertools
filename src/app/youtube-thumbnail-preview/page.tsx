@@ -10,13 +10,30 @@ export const metadata: Metadata = {
   description: 'See how your thumbnail and video title will look on the YouTube homepage before you upload.',
 };
 
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "YouTube Thumbnail Preview Tool",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Web",
+  "description": "A free tool to see how a YouTube thumbnail and video title will look on the YouTube homepage.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0"
+  }
+};
+
 export default function YouTubeThumbnailPreviewPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
+      <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="mb-6">
-          <Button asChild variant="ghost">
+          <Button asChild variant="ghost" className='pl-0'>
             <Link href="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Tools

@@ -11,6 +11,19 @@ export const metadata: Metadata = {
   description: 'Score your marketing headline based on length, sentiment, clarity, and power words to improve its effectiveness.',
 };
 
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Headline Analyzer",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "A free tool to score a marketing headline based on length, sentiment, clarity, and power words.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0"
+  }
+};
+
 function HeadlineAnalyzerWrapper() {
   'use client';
   const [analysis, setAnalysis] = useState<HeadlineAnalysis | null>(null);
@@ -38,10 +51,14 @@ function HeadlineAnalyzerWrapper() {
 export default function HeadlineAnalyzerPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
+      <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="mb-6">
-          <Button asChild variant="ghost">
+          <Button asChild variant="ghost" className='pl-0'>
             <Link href="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Tools

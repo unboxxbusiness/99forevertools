@@ -11,6 +11,19 @@ export const metadata: Metadata = {
   description: 'Generate structured data markup for Articles, FAQs, and Local Businesses to improve your SEO and get rich snippets.',
 };
 
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Schema Markup Generator (JSON-LD)",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "A free tool to generate structured data markup (JSON-LD) for Articles, FAQs, and Local Businesses.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0"
+  }
+};
+
 function SchemaGeneratorWrapper() {
   'use client';
   const [schema, setSchema] = useState<string>('');
@@ -26,10 +39,14 @@ function SchemaGeneratorWrapper() {
 export default function SchemaGeneratorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
+      <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="mb-6">
-          <Button asChild variant="ghost">
+          <Button asChild variant="ghost" className='pl-0'>
             <Link href="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Tools

@@ -11,6 +11,19 @@ export const metadata: Metadata = {
   description: 'Generate a basic, generic privacy policy for your website or app. Fill in your details to create a starting template.',
 };
 
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Privacy Policy Generator",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "A free tool to generate a basic privacy policy for a website or app.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0"
+  }
+};
+
 function PrivacyPolicyGeneratorWrapper() {
   'use client';
   const [policy, setPolicy] = useState('');
@@ -39,10 +52,14 @@ function PrivacyPolicyGeneratorWrapper() {
 export default function PrivacyPolicyGeneratorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
+      <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="mb-6">
-          <Button asChild variant="ghost">
+          <Button asChild variant="ghost" className='pl-0'>
             <Link href="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Tools

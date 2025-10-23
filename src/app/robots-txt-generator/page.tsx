@@ -11,6 +11,19 @@ export const metadata: Metadata = {
   description: 'Create a robots.txt file to guide search engine crawlers. Set default policies and add custom rules for specific user-agents.',
 };
 
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Robots.txt Generator",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "A free tool to create a robots.txt file to guide search engine crawlers, with options for default policies and custom rules.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0"
+  }
+};
+
 function RobotsTxtGeneratorWrapper() {
   'use client';
   const [config, setConfig] = useState<RobotsConfig>({
@@ -63,10 +76,14 @@ function RobotsTxtGeneratorWrapper() {
 export default function RobotsTxtGeneratorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
+      <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="mb-6">
-          <Button asChild variant="ghost">
+          <Button asChild variant="ghost" className='pl-0'>
             <Link href="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Tools

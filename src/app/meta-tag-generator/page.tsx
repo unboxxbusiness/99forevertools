@@ -11,6 +11,19 @@ export const metadata: Metadata = {
   description: 'Preview how your meta title and description will look on a Google search result page (SERP) and generate the HTML tags.',
 };
 
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "SERP Preview & Meta Tag Generator",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "A free tool to preview how a meta title and description will look on a Google search result page (SERP) and generate the HTML tags.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0"
+  }
+};
+
 function MetaTagGeneratorWrapper() {
   'use client';
   const [title, setTitle] = useState('Example Title | Brand Name');
@@ -34,10 +47,14 @@ function MetaTagGeneratorWrapper() {
 export default function MetaTagGeneratorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
+      <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="mb-6">
-          <Button asChild variant="ghost">
+          <Button asChild variant="ghost" className='pl-0'>
             <Link href="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Tools

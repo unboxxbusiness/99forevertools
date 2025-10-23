@@ -11,6 +11,19 @@ export const metadata: Metadata = {
   description: 'Generate a list of possible email addresses for a person based on their first name, last name, and a domain.',
 };
 
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Email Permutator",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "A free tool to generate a list of possible email addresses for a person based on their first name, last name, and a domain.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0"
+  }
+};
+
 function EmailPermutatorPageWrapper() {
   'use client';
   const [emails, setEmails] = useState<string[]>([]);
@@ -36,10 +49,14 @@ function EmailPermutatorPageWrapper() {
 export default function EmailPermutatorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
+      <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="mb-6">
-          <Button asChild variant="ghost">
+          <Button asChild variant="ghost" className='pl-0'>
             <Link href="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Tools

@@ -10,13 +10,30 @@ export const metadata: Metadata = {
   description: 'Easily add or remove GST from any amount. Our calculator supports all Indian GST rates (5%, 12%, 18%, 28%) for accurate calculations.',
 };
 
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "GST Calculator for India",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web",
+  "description": "A free calculator to easily add or remove Indian GST from any amount, supporting all official rates.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0"
+  }
+};
+
 export default function GstCalculatorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
+      <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="mb-6">
-          <Button asChild variant="ghost">
+          <Button asChild variant="ghost" className='pl-0'>
             <Link href="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Tools
