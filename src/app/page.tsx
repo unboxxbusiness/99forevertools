@@ -1,8 +1,9 @@
+
 'use client';
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -70,6 +71,12 @@ const tools:any[] = [
     title: 'QR Code Generator',
     description: 'Instantly create a downloadable QR code for URLs, Wi-Fi, and more.',
     icon: <QrCode className="w-8 h-8" />,
+  },
+  {
+    href: '/whatsapp-link-generator',
+    title: 'WhatsApp Link Generator',
+    description: 'Create a wa.me link with a pre-filled message.',
+    icon: <MessageSquare className="w-8 h-8" />,
   }
 ];
 
