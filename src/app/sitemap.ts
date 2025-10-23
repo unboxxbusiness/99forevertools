@@ -67,6 +67,7 @@ const tools = [
   '/image-to-base64-converter',
   '/image-to-png-converter',
   '/photo-filter-studio',
+  '/upi-qr-code-generator',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -85,3 +86,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...toolUrls,
   ];
 }
+
+    

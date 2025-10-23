@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -84,7 +85,7 @@ export function QrCodeGeneratorForm({ config, setConfig }: QrCodeGeneratorFormPr
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="url" className="w-full" onValueChange={handleTabChange}>
+        <Tabs defaultValue={config.type} className="w-full" onValueChange={handleTabChange}>
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="url"><Globe className="mr-2 h-4 w-4"/>URL</TabsTrigger>
             <TabsTrigger value="wifi"><Wifi className="mr-2 h-4 w-4"/>Wi-Fi</TabsTrigger>
@@ -196,3 +197,5 @@ export function QrCodeGeneratorForm({ config, setConfig }: QrCodeGeneratorFormPr
     </Card>
   );
 }
+
+    
