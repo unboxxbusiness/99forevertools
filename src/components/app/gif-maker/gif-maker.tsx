@@ -6,118 +6,104 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Download, Loader2, Clapperboard, Trash2, GripVertical, Image as ImageIcon } from 'lucide-react';
-import GIF from 'gif.js.optimized';
+import { Upload, Download, Loader2, Clapperboard, FileVideo, Image as ImageIcon } from 'lucide-react';
+import gifshot from 'gifshot';
+import { Slider } from '@/components/ui/slider';
 
-interface Frame {
-  id: number;
-  file: File;
-  preview: string;
-}
+type SourceType = 'images' | 'video';
 
 export function GifMaker() {
-  const [frames, setFrames] = useState<Frame[]>([]);
+  const [sourceFiles, setSourceFiles] = useState<File[]>([]);
+  const [sourceType, setSourceType] = useState<SourceType | null>(null);
   const [gifUrl, setGifUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [nextId, setNextId] = useState(0);
+  const [progress, setProgress] = useState(0);
 
-  const [width, setWidth] = useState(500);
-  const [height, setHeight] = useState(500);
-  const [delay, setDelay] = useState(200); // in ms
+  const [gifWidth, setGifWidth] = useState(500);
+  const [gifHeight, setGifHeight] = useState(500);
+  const [numFrames, setNumFrames] = useState(10);
+  const [interval, setInterval] = useState(0.1);
+  const [text, setText] = useState('');
+  const [fontSize, setFontSize] = useState('16px');
+
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const dragItem = useRef<number | null>(null);
-  const dragOverItem = useRef<number | null>(null);
   
   const { toast } = useToast();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (files) {
-      const newFrames: Frame[] = Array.from(files)
-        .filter(file => file.type.startsWith('image/'))
-        .map((file, index) => ({
-          id: nextId + index,
-          file,
-          preview: URL.createObjectURL(file),
-        }));
+    if (files && files.length > 0) {
+        const firstFile = files[0];
+        const type: SourceType = firstFile.type.startsWith('video/') ? 'video' : 'images';
+        
+        const validFiles = Array.from(files).filter(file => 
+            type === 'video' ? file.type.startsWith('video/') : file.type.startsWith('image/')
+        );
 
-      if (newFrames.length > 0) {
-        setFrames(prev => [...prev, ...newFrames]);
-        setNextId(prev => prev + newFrames.length);
-      }
-      
-      if (newFrames.length !== files.length) {
-        toast({
-          variant: 'destructive',
-          title: 'Some files were not images',
-          description: 'Only image files can be added as frames.',
-        });
-      }
+        if (validFiles.length === 0) {
+             toast({
+                variant: 'destructive',
+                title: 'No valid files selected',
+                description: type === 'video' ? 'Please select a video file.' : 'Please select one or more image files.'
+            });
+            return;
+        }
+
+        if (type === 'video' && validFiles.length > 1) {
+            toast({
+                variant: 'destructive',
+                title: 'Multiple videos selected',
+                description: 'You can only convert one video at a time.',
+            });
+            setSourceFiles([validFiles[0]]);
+        } else {
+            setSourceFiles(validFiles);
+        }
+
+        setSourceType(type);
+        setGifUrl(null);
+        setProgress(0);
     }
   };
 
-  const removeFrame = (id: number) => {
-    const frameToRemove = frames.find(f => f.id === id);
-    if(frameToRemove) {
-        URL.revokeObjectURL(frameToRemove.preview);
-    }
-    setFrames(frames.filter(f => f.id !== id));
-  };
-  
-  const handleSort = () => {
-    if(dragItem.current === null || dragOverItem.current === null) return;
-    
-    let _frames = [...frames];
-    const draggedItemContent = _frames.splice(dragItem.current, 1)[0];
-    _frames.splice(dragOverItem.current, 0, draggedItemContent);
-    dragItem.current = null;
-    dragOverItem.current = null;
-    setFrames(_frames);
-  }
-
-  const generateGif = useCallback(async () => {
-    if (frames.length < 2) {
-      toast({ variant: 'destructive', title: 'Not enough frames', description: 'Please upload at least 2 images.' });
+  const generateGif = useCallback(() => {
+    if (sourceFiles.length === 0) {
+      toast({ variant: 'destructive', title: 'No source selected', description: 'Please upload images or a video.' });
       return;
     }
     setIsLoading(true);
     setGifUrl(null);
+    setProgress(0);
     
-    const gif = new GIF({
-        workers: 2,
-        quality: 10,
-        width: width,
-        height: height
-    });
-
-    const loadImage = (frame: Frame) => new Promise<HTMLImageElement>((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = reject;
-        img.src = frame.preview;
-    });
-
-    try {
-        for (const frame of frames) {
-            const img = await loadImage(frame);
-            gif.addFrame(img, { copy: true, delay });
-        }
-    } catch (error) {
-        toast({ variant: 'destructive', title: 'Error loading images' });
+    const options: gifshot.GifshotOptions = {
+      gifWidth,
+      gifHeight,
+      numFrames,
+      frameDuration: interval * 10,
+      text,
+      fontSize,
+    };
+    
+    const callback = (obj: gifshot.GifshotResult) => {
         setIsLoading(false);
-        return;
+        if(!obj.error) {
+            setGifUrl(obj.image);
+            toast({ title: 'GIF generated successfully!' });
+        } else {
+            console.error(obj);
+            toast({ variant: 'destructive', title: 'Error generating GIF', description: obj.error_msg });
+        }
     }
 
-    gif.on('finished', (blob) => {
-      const url = URL.createObjectURL(blob);
-      setGifUrl(url);
-      setIsLoading(false);
-      toast({ title: 'GIF generated successfully!' });
-    });
+    if (sourceType === 'video') {
+        gifshot.createGIF({ ...options, video: [sourceFiles[0]] }, callback);
+    } else {
+        const imageUrls = sourceFiles.map(file => URL.createObjectURL(file));
+        gifshot.createGIF({ ...options, images: imageUrls }, callback);
+    }
 
-    gif.render();
-  }, [frames, width, height, delay, toast]);
+  }, [sourceFiles, sourceType, gifWidth, gifHeight, numFrames, interval, text, fontSize, toast]);
 
   const downloadGif = () => {
     if (!gifUrl) return;
@@ -134,7 +120,7 @@ export function GifMaker() {
       <CardHeader className="text-center">
         <CardTitle className="text-3xl font-bold tracking-tight">Animated GIF Maker</CardTitle>
         <CardDescription>
-          Convert a series of images into a simple animated GIF.
+          Convert images or a video into a simple animated GIF.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -142,32 +128,44 @@ export function GifMaker() {
           {/* Left Column: Controls */}
           <div className="lg:col-span-1 space-y-6">
             <div className="space-y-4 p-4 border rounded-lg">
-                <h3 className="font-semibold text-lg">1. GIF Settings</h3>
-                <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <Label htmlFor="width">Width (px)</Label>
-                        <Input id="width" type="number" value={width} onChange={(e) => setWidth(parseInt(e.target.value) || 0)} />
-                    </div>
-                     <div>
-                        <Label htmlFor="height">Height (px)</Label>
-                        <Input id="height" type="number" value={height} onChange={(e) => setHeight(parseInt(e.target.value) || 0)} />
-                    </div>
-                </div>
-                <div>
-                    <Label htmlFor="delay">Frame Delay (ms)</Label>
-                    <Input id="delay" type="number" value={delay} onChange={(e) => setDelay(parseInt(e.target.value) || 0)} />
-                </div>
+                <h3 className="font-semibold text-lg">1. Upload Source</h3>
+                <Button variant="outline" className="w-full h-24 border-dashed" onClick={() => fileInputRef.current?.click()}>
+                    <Upload className="mr-2" /> 
+                     {sourceFiles.length > 0 ? `${sourceFiles.length} file(s) selected` : 'Add Images or Video'}
+                </Button>
+                <Input type="file" ref={fileInputRef} onChange={handleFileChange} multiple className="hidden" accept="image/*,video/*" />
+                 {sourceType && <p className="text-sm text-center text-muted-foreground">Source type: <span className="font-bold">{sourceType}</span></p>}
             </div>
 
             <div className="space-y-4 p-4 border rounded-lg">
-                <h3 className="font-semibold text-lg">2. Upload Frames</h3>
-                <Button variant="outline" className="w-full h-16 border-dashed" onClick={() => fileInputRef.current?.click()}>
-                    <Upload className="mr-2" /> Add Images
-                </Button>
-                <Input type="file" ref={fileInputRef} onChange={handleFileChange} multiple className="hidden" accept="image/*" />
+                <h3 className="font-semibold text-lg">2. GIF Settings</h3>
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <Label htmlFor="width">Width (px)</Label>
+                        <Input id="width" type="number" value={gifWidth} onChange={(e) => setGifWidth(parseInt(e.target.value) || 0)} />
+                    </div>
+                     <div>
+                        <Label htmlFor="height">Height (px)</Label>
+                        <Input id="height" type="number" value={gifHeight} onChange={(e) => setGifHeight(parseInt(e.target.value) || 0)} />
+                    </div>
+                </div>
+                 {sourceType === 'video' && (
+                    <div className="space-y-2">
+                        <Label>Number of Frames: {numFrames}</Label>
+                        <Slider value={[numFrames]} onValueChange={(v) => setNumFrames(v[0])} min={5} max={100} step={5} />
+                    </div>
+                 )}
+                 <div className="space-y-2">
+                    <Label>Frame Interval: {interval.toFixed(1)}s</Label>
+                    <Slider value={[interval]} onValueChange={(v) => setInterval(v[0])} min={0.1} max={1} step={0.1} />
+                </div>
+                <div className="space-y-2">
+                    <Label>Overlay Text (optional)</Label>
+                    <Input value={text} onChange={(e) => setText(e.target.value)} placeholder="e.g. My Awesome GIF" />
+                </div>
             </div>
 
-            <Button onClick={generateGif} disabled={isLoading || frames.length < 2} className="w-full text-lg py-6">
+            <Button onClick={generateGif} disabled={isLoading || sourceFiles.length === 0} className="w-full text-lg py-6">
                 {isLoading ? (
                     <Loader2 className="animate-spin" />
                 ) : (
@@ -179,59 +177,24 @@ export function GifMaker() {
             </Button>
           </div>
 
-          {/* Right Column: Frames & Preview */}
+          {/* Right Column: Preview */}
           <div className="lg:col-span-2 space-y-6">
-             <div className="p-4 border rounded-lg space-y-4">
-                <h3 className="font-semibold text-lg">Frames</h3>
-                {frames.length > 0 ? (
-                    <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                        {frames.map((frame, index) => (
-                           <div 
-                                key={frame.id} 
-                                className="relative group aspect-square bg-muted rounded-md overflow-hidden cursor-grab"
-                                draggable
-                                onDragStart={() => dragItem.current = index}
-                                onDragEnter={() => dragOverItem.current = index}
-                                onDragEnd={handleSort}
-                                onDragOver={(e) => e.preventDefault()}
-                            >
-                                <img src={frame.preview} alt={`Frame ${index + 1}`} className="w-full h-full object-cover" />
-                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <Button variant="destructive" size="icon" className="h-8 w-8" onClick={() => removeFrame(frame.id)}>
-                                        <Trash2 className="h-4 w-4" />
-                                    </Button>
-                                    <GripVertical className="absolute top-1 right-1 h-4 w-4 text-white/50" />
-                                </div>
-                                <div className="absolute bottom-0 left-0 bg-black/70 text-white text-xs px-1.5 py-0.5 rounded-tr-md">{index + 1}</div>
-                           </div>
-                        ))}
-                    </div>
+             <div className="p-4 border rounded-lg space-y-4 bg-muted/30 flex items-center justify-center h-full">
+                {gifUrl ? (
+                     <div className='text-center space-y-4 animate-fade-in'>
+                         <img src={gifUrl} alt="Generated GIF" className="max-w-full max-h-[400px] rounded border-2 border-border" />
+                          <Button onClick={downloadGif} className="">
+                            <Download className="mr-2" />
+                            Download GIF
+                        </Button>
+                     </div>
                 ) : (
-                    <div className="text-center text-muted-foreground py-8">
-                        <p>Your uploaded frames will appear here.</p>
+                     <div className="text-center text-muted-foreground">
+                        <ImageIcon className="mx-auto h-12 w-12" />
+                        <p className="mt-4 font-semibold">GIF Preview</p>
+                        <p className="text-sm">Your generated GIF will appear here</p>
                     </div>
                 )}
-             </div>
-             
-             <div className="p-4 border rounded-lg space-y-4">
-                <h3 className="font-semibold text-lg">Preview</h3>
-                <div className="bg-muted/30 p-4 rounded-lg flex items-center justify-center h-[300px]">
-                    {gifUrl ? (
-                         <div className='text-center space-y-4 animate-fade-in'>
-                             <img src={gifUrl} alt="Generated GIF" className="max-w-full max-h-56 rounded border-2 border-border" />
-                              <Button onClick={downloadGif} className="">
-                                <Download className="mr-2" />
-                                Download GIF
-                            </Button>
-                         </div>
-                    ) : (
-                         <div className="text-center text-muted-foreground">
-                            <ImageIcon className="mx-auto h-12 w-12" />
-                            <p className="mt-4 font-semibold">GIF Preview</p>
-                            <p className="text-sm">Your generated GIF will appear here</p>
-                        </div>
-                    )}
-                </div>
              </div>
           </div>
         </div>
