@@ -1,9 +1,11 @@
 
 'use client';
 
+import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link, Activity, Link2, ExternalLink, Camera, Code, Network, Search, Gift } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as LinkIcon, Activity, Link2, ExternalLink, Camera, Code, Network, Search, Gift } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -279,6 +281,13 @@ const tools:any[] = [
 ];
 
 export default function Home() {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredTools = tools.filter(tool =>
+    tool.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    tool.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
@@ -287,14 +296,20 @@ export default function Home() {
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-primary">
             Marketing Super-Tools
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-            A collection of powerful, simple tools to supercharge your marketing efforts.
-          </p>
+          <div className="mt-4 max-w-xl mx-auto">
+            <Input
+              type="search"
+              placeholder="Search for a tool..."
+              className="h-12 text-lg"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </div>
 
-        {tools.length > 0 ? (
+        {filteredTools.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {tools.sort((a, b) => a.title.localeCompare(b.title)).map((tool, index) => (
+            {filteredTools.sort((a, b) => a.title.localeCompare(b.title)).map((tool, index) => (
               <div key={tool.href} className="animate-fade-in" style={{ animationDelay: `${150 * (index + 1)}ms` }}>
                 <ToolCard
                   href={tool.href}
@@ -307,9 +322,9 @@ export default function Home() {
           </div>
         ) : (
           <div className="text-center py-16 border-2 border-dashed rounded-lg border-muted">
-            <h3 className="mt-4 text-lg font-medium">No tools available yet.</h3>
+            <h3 className="mt-4 text-lg font-medium">No tools found for "{searchTerm}"</h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Your generated tools will appear here.
+              Try searching for something else.
             </p>
           </div>
         )}
