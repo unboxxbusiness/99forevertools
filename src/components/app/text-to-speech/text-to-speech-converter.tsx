@@ -72,6 +72,10 @@ export function TextToSpeechConverter() {
       setIsPaused(false);
     };
     utterance.onerror = (event) => {
+        // Don't show an error if the user manually stops the speech
+        if (event.error === 'canceled') {
+            return;
+        }
         toast({ variant: 'destructive', title: 'Speech Error', description: 'Could not play the audio. Please try again.' });
         setIsSpeaking(false);
         setIsPaused(false);
@@ -89,6 +93,8 @@ export function TextToSpeechConverter() {
   };
 
   const stop = () => {
+    setIsSpeaking(false);
+    setIsPaused(false);
     window.speechSynthesis.cancel();
   };
 
