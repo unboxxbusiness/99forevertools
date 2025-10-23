@@ -83,6 +83,7 @@ const allTools = [
       { href: '/vcard-qr-code-generator', title: 'Business Card QR Code Generator', description: 'Generate a QR code that contains contact info (vCard).', icon: <Contact className="w-8 h-8" /> },
       { href: '/whatsapp-link-generator', title: 'WhatsApp Link Generator', description: 'Create a wa.me link with a pre-filled message.', icon: <MessageSquare className="w-8 h-8" /> },
       { href: '/whatsapp-widget-generator', title: 'WhatsApp Widget Generator', description: 'Create a floating WhatsApp chat button for your website.', icon: <MessageSquarePlus className="w-8 h-8" /> },
+      { href: '/whatsapp-bio-link', title: 'WhatsApp Bio Link Page', description: 'Create a Linktree-style page for your WhatsApp profile.', icon: <Contact className="w-8 h-8" /> },
       { href: '/festival-wish-generator', title: 'Festival Wish Generator', description: 'Create pre-written messages for festivals.', icon: <PartyPopper className="w-8 h-8" /> },
       { href: '/google-maps-link-generator', title: 'Google Maps Link Generator', description: 'Create a direct link to a business address on Google Maps.', icon: <MapPin className="w-8 h-8" /> },
       { href: '/review-link-generator', title: 'Google Review Link Generator', description: 'Create a direct link for customers to leave a Google Review.', icon: <Star className="w-8 h-8" /> },
