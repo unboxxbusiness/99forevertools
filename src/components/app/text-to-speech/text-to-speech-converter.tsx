@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -15,6 +16,7 @@ export function TextToSpeechConverter() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [selectedVoice, setSelectedVoice] = useState<string | undefined>(undefined);
+  const [isPaused, setIsPaused] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -32,14 +34,27 @@ export function TextToSpeechConverter() {
     loadVoices(); // Initial call
   }, []);
 
+  // Effect to check if speech synthesis is paused
+  useEffect(() => {
+    const checkPaused = () => {
+        setIsPaused(window.speechSynthesis.paused && isSpeaking);
+    };
+
+    const interval = setInterval(checkPaused, 500);
+
+    return () => clearInterval(interval);
+  }, [isSpeaking]);
+
   const handlePlayPause = () => {
     if (isSpeaking) {
       window.speechSynthesis.pause();
       setIsSpeaking(false);
+      setIsPaused(true);
     } else {
-      if (window.speechSynthesis.paused) {
+      if (isPaused) {
         window.speechSynthesis.resume();
         setIsSpeaking(true);
+        setIsPaused(false);
       } else {
         startSpeech();
       }
@@ -49,6 +64,7 @@ export function TextToSpeechConverter() {
   const handleStop = () => {
      window.speechSynthesis.cancel();
      setIsSpeaking(false);
+     setIsPaused(false);
   }
 
   const startSpeech = () => {
@@ -69,10 +85,22 @@ export function TextToSpeechConverter() {
     utterance.onstart = () => {
         setIsLoading(false);
         setIsSpeaking(true);
+        setIsPaused(false);
     };
     
     utterance.onend = () => {
         setIsSpeaking(false);
+        setIsPaused(false);
+    };
+
+    utterance.onpause = () => {
+      setIsSpeaking(false);
+      setIsPaused(true);
+    };
+
+    utterance.onresume = () => {
+      setIsSpeaking(true);
+      setIsPaused(false);
     };
 
     utterance.onerror = (event) => {
@@ -80,6 +108,7 @@ export function TextToSpeechConverter() {
         toast({ variant: 'destructive', title: 'Speech Error', description: 'Could not play audio.' });
         setIsLoading(false);
         setIsSpeaking(false);
+        setIsPaused(false);
     };
 
     setIsLoading(true);
@@ -103,13 +132,13 @@ export function TextToSpeechConverter() {
             onChange={(e) => setText(e.target.value)}
             placeholder="Type or paste your text here..."
             className="h-48 text-base"
-            disabled={isSpeaking}
+            disabled={isSpeaking || isLoading}
           />
         </div>
 
          <div className="space-y-2">
             <Label htmlFor="voice">Voice</Label>
-            <Select onValueChange={setSelectedVoice} value={selectedVoice} disabled={voices.length === 0 || isSpeaking}>
+            <Select onValueChange={setSelectedVoice} value={selectedVoice} disabled={voices.length === 0 || isSpeaking || isLoading}>
               <SelectTrigger id="voice">
                 <SelectValue placeholder="Select a voice..." />
               </SelectTrigger>
@@ -133,11 +162,11 @@ export function TextToSpeechConverter() {
                 ) : (
                     <>
                     <Play className="mr-2 h-5 w-5" />
-                    {window.speechSynthesis.paused ? 'Resume' : 'Play'}
+                    {isPaused ? 'Resume' : 'Play'}
                     </>
                 )}
             </Button>
-             <Button onClick={handleStop} disabled={!isSpeaking && !window.speechSynthesis.paused} variant="destructive" className="text-lg py-6">
+             <Button onClick={handleStop} disabled={!isSpeaking && !isPaused} variant="destructive" className="text-lg py-6">
                 <RotateCcw className="mr-2 h-5 w-5" />
                 Stop
              </Button>
