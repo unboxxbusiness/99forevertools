@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -113,6 +113,12 @@ const tools:any[] = [
     title: 'Instagram Hashtag Generator',
     description: 'Suggest relevant hashtags based on a business category.',
     icon: <Hash className="w-8 h-8" />,
+  },
+  {
+    href: '/business-name-generator',
+    title: 'Business Name Generator',
+    description: 'Generate potential names for a new business or product line.',
+    icon: <PenSquare className="w-8 h-8" />,
   }
 ];
 
