@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { Download, Gem, Rocket, Shield, Star, Zap, Briefcase, Building, Lightbulb, Globe, Heart, Home, Flag, Award, BarChart, Camera, Cloud, Code, Compass, Cpu, CreditCard, Database, GitBranch, Keyboard, Layers, LifeBuoy, Lock, Mail, MousePointer, Package, Phone, PieChart, Puzzle, Server, Settings, ShoppingBag, ShoppingCart, Smartphone, Speaker, Sun, Target, Terminal, ThumbsUp, Tool, TrafficCone, Train, TreePine, TrendingUp, Truck, Umbrella, Wallet, Watch, Wind } from 'lucide-react';
+import { Download, Gem, Rocket, Shield, Star, Zap, Briefcase, Building, Lightbulb, Globe, Heart, Home, Flag, Award, BarChart, Camera, Cloud, Code, Compass, Cpu, CreditCard, Database, GitBranch, Keyboard, Layers, LifeBuoy, Lock, Mail, MousePointer, Package, Phone, PieChart, Puzzle, Server, Settings, ShoppingBag, ShoppingCart, Smartphone, Speaker, Sun, Target, Terminal, ThumbsUp, Wrench, TrafficCone, Train, TreePine, TrendingUp, Truck, Umbrella, Wallet, Watch, Wind } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
@@ -61,7 +61,7 @@ const icons: { [key: string]: (props: SVGProps<SVGSVGElement>) => JSX.Element } 
     target: (props) => <Target {...props} />,
     terminal: (props) => <Terminal {...props} />,
     thumbsUp: (props) => <ThumbsUp {...props} />,
-    tool: (props) => <Tool {...props} />,
+    wrench: (props) => <Wrench {...props} />,
     trafficCone: (props) => <TrafficCone {...props} />,
     train: (props) => <Train {...props} />,
     treePine: (props) => <TreePine {...props} />,
