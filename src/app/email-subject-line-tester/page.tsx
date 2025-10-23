@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -7,6 +8,12 @@ import { EmailSubjectLineTesterResults, type SubjectLineAnalysis } from '@/compo
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Email Subject Line Tester | 99forevertools',
+  description: 'Analyze your email subject lines for potential issues. Get a score based on length, spam triggers, and emotional impact to improve open rates.',
+};
 
 export default function EmailSubjectLineTesterPage() {
   const [analysis, setAnalysis] = useState<SubjectLineAnalysis | null>(null);

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Header } from '@/components/app/header';
@@ -5,6 +6,12 @@ import { RoiCalculator } from '@/components/app/roi-calculator/roi-calculator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Return on Investment (ROI) Calculator | 99forevertools',
+  description: 'Calculate the ROI of your marketing campaigns or investments. Enter the amount invested and the final value to see your return.',
+};
 
 export default function RoiCalculatorPage() {
   return (

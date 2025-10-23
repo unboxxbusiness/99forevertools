@@ -6,6 +6,12 @@ import { InvoiceGenerator } from '@/components/app/invoice-generator/invoice-gen
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Free Invoice Generator | 99forevertools',
+  description: 'Create clean, professional invoices in seconds. Add your line items, tax, and company details, then print or save as a PDF.',
+};
 
 export default function InvoiceGeneratorPage() {
   return (

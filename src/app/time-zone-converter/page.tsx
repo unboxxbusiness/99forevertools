@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Header } from '@/components/app/header';
@@ -5,6 +6,12 @@ import { TimeZoneConverter } from '@/components/app/time-zone-converter/time-zon
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Time Zone Converter | 99forevertools',
+  description: 'Easily compare time across different cities and time zones. Perfect for scheduling international meetings and calls.',
+};
 
 export default function TimeZoneConverterPage() {
   return (

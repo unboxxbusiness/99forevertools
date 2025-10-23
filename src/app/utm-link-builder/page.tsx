@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -7,6 +8,12 @@ import { UtmLinkBuilderResults } from '@/components/app/utm-link-builder/utm-lin
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'UTM Link Builder | 99forevertools',
+  description: 'Easily create URLs with UTM parameters for tracking your marketing campaigns in Google Analytics and other tools.',
+};
 
 export default function UtmLinkBuilderPage() {
   const [utmParams, setUtmParams] = useState<UtmParams>({

@@ -8,6 +8,12 @@ import { QrCodeGeneratorResults } from '@/components/app/qr-code-generator/qr-co
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'UPI QR Code Generator | 99forevertools',
+  description: 'Create a QR code for UPI payments. Enter your UPI ID and name to generate a QR code that customers can scan to pay you.',
+};
 
 export default function QrCodeGeneratorPage() {
   const [qrConfig, setQrConfig] = useState<QrCodeConfig>({

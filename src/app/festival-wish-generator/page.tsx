@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Header } from '@/components/app/header';
@@ -5,6 +6,12 @@ import { FestivalWishGenerator } from '@/components/app/festival-wish-generator/
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Festival Wish Message Generator | 99forevertools',
+  description: 'Get ready-to-use wishes for Diwali, Holi, Eid, Christmas, and New Year. Perfect for sending to customers and clients.',
+};
 
 export default function FestivalWishGeneratorPage() {
   return (

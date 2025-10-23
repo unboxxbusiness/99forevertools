@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -7,6 +8,12 @@ import { PasswordGeneratorResults } from '@/components/app/password-generator/pa
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Secure Password Generator | 99forevertools',
+  description: 'Generate strong, secure, and random passwords. Customize length and character types (uppercase, numbers, symbols) for maximum security.',
+};
 
 export default function PasswordGeneratorPage() {
   const [password, setPassword] = useState('');

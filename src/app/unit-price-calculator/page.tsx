@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Header } from '@/components/app/header';
@@ -5,6 +6,12 @@ import { UnitPriceCalculator } from '@/components/app/unit-price-calculator/unit
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Unit Price Calculator | 99forevertools',
+  description: 'Compare two products to find out which one is the better value. Calculate the price per gram, ml, or item to make smarter shopping decisions.',
+};
 
 export default function UnitPriceCalculatorPage() {
   return (

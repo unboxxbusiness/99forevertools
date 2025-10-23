@@ -6,6 +6,12 @@ import { WavToMp3Converter } from '@/components/app/wav-to-mp3-converter/wav-to-
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'WAV to MP3 Converter | 99forevertools',
+  description: 'Convert your .wav audio files to .mp3 format online. Fast, free, and processed directly in your browser.',
+};
 
 export default function WavToMp3ConverterPage() {
   return (

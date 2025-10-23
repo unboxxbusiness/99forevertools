@@ -8,6 +8,12 @@ import { QrCodeGeneratorResults } from '@/components/app/qr-code-generator/qr-co
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Free QR Code Generator | 99forevertools',
+  description: 'Create custom QR codes for URLs, Wi-Fi, vCards, UPI, and more. Customize colors and download your QR code as a high-quality PNG.',
+};
 
 export default function QrCodeGeneratorPage() {
   const [qrConfig, setQrConfig] = useState<QrCodeConfig>({

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -7,6 +8,12 @@ import { EmailPermutatorResults } from '@/components/app/email-permutator-result
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Email Permutator | 99forevertools',
+  description: 'Generate all possible email address combinations from a first name, last name, and domain. Perfect for sales and marketing outreach.',
+};
 
 export default function EmailPermutatorPage() {
   const [emails, setEmails] = useState<string[]>([]);

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -7,6 +8,12 @@ import { KeywordDensityCheckerResults, type KeywordDensityAnalysis } from '@/com
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Keyword Density Checker | 99forevertools',
+  description: 'Analyze the keyword density of your text to optimize for SEO. Find out if you are using your keyword too much or too little.',
+};
 
 export default function KeywordDensityCheckerPage() {
   const [analysis, setAnalysis] = useState<KeywordDensityAnalysis | null>(null);

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Header } from '@/components/app/header';
@@ -5,6 +6,12 @@ import { LoanRepaymentCalculator } from '@/components/app/loan-repayment-calcula
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Loan Repayment & EMI Calculator | 99forevertools',
+  description: 'Estimate your monthly loan payments (EMI) for personal, car, or home loans. See a full amortization schedule to understand principal vs. interest.',
+};
 
 export default function LoanRepaymentCalculatorPage() {
   return (

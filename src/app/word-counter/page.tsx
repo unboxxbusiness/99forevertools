@@ -6,6 +6,12 @@ import { WordCounter } from '@/components/app/word-counter/word-counter';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Word and Character Counter | 99forevertools',
+  description: 'Instantly count words, characters, sentences, and paragraphs in your text. A free tool for writers, students, and professionals.',
+};
 
 export default function WordCounterPage() {
   return (

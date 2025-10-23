@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -7,6 +8,12 @@ import { SchemaResults } from '@/components/app/schema-generator/schema-results'
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Schema Markup Generator (FAQ, Article) | 99forevertools',
+  description: 'Generate structured data (JSON-LD) for your website. Create schema for articles, FAQs, and local businesses to improve your SEO.',
+};
 
 export default function SchemaGeneratorPage() {
   const [schema, setSchema] = useState<string>('');

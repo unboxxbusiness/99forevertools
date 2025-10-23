@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Header } from '@/components/app/header';
@@ -5,6 +6,12 @@ import { HraExemptionCalculator } from '@/components/app/hra-exemption-calculato
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'HRA Exemption Calculator for India | 99forevertools',
+  description: 'Calculate your HRA (House Rent Allowance) exemption for tax filing. Enter your salary, HRA received, and rent paid to see your exemption.',
+};
 
 export default function HraExemptionCalculatorPage() {
   return (

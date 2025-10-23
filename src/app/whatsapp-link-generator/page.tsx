@@ -6,6 +6,12 @@ import { WhatsAppLinkGenerator } from '@/components/app/whatsapp-link-generator/
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'WhatsApp Link Generator | 99forevertools',
+  description: 'Create a custom wa.me link with a pre-filled message. Make it easy for customers to start a WhatsApp conversation with you.',
+};
 
 export default function WhatsAppLinkGeneratorPage() {
   return (

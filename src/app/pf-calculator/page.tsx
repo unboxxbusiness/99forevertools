@@ -6,6 +6,12 @@ import { PfCalculator } from '@/components/app/pf-calculator/pf-calculator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Provident Fund (PF) Calculator | 99forevertools',
+  description: 'Calculate your monthly and annual PF contributions. See the breakdown of employee (EPF) and employer (EPS & EPF) shares.',
+};
 
 export default function PfCalculatorPage() {
   return (

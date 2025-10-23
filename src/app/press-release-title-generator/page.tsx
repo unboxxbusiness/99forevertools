@@ -6,6 +6,12 @@ import { PressReleaseTitleGenerator } from '@/components/app/press-release-title
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Press Release Title Generator | 99forevertools',
+  description: 'Generate compelling press release headlines for your announcements. Enter a topic and get a list of professional titles.',
+};
 
 export default function PressReleaseTitleGeneratorPage() {
   return (

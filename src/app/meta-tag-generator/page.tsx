@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -7,6 +8,12 @@ import { MetaTagGeneratorResults } from '@/components/app/meta-tag-generator-res
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'SERP Preview & Meta Tag Generator | 99forevertools',
+  description: 'Preview how your meta title and description will look on Google. Generate the necessary HTML meta tags for your website.',
+};
 
 export default function MetaTagGeneratorPage() {
   const [title, setTitle] = useState('Example Title | Brand Name');

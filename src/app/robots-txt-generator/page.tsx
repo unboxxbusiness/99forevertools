@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -7,6 +8,12 @@ import { RobotsTxtGeneratorResults } from '@/components/app/robots-txt-generator
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Robots.txt Generator | 99forevertools',
+  description: 'Create a robots.txt file to manage search engine crawlers on your site. Set default policies and add custom rules for different user-agents.',
+};
 
 export default function RobotsTxtGeneratorPage() {
   const [config, setConfig] = useState<RobotsConfig>({
