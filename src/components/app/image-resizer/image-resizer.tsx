@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, CheckCircle, Download, Loader2, Crop, AspectRatio } from 'lucide-react';
+import { Upload, CheckCircle, Download, Loader2, Crop, Frame } from 'lucide-react';
 import pica from 'pica';
 
 export function ImageResizer() {
@@ -194,7 +194,7 @@ export function ImageResizer() {
                         </div>
                     ) : (
                         <div className='text-muted-foreground'>
-                            <AspectRatio className="h-12 w-12 mx-auto" />
+                            <Frame className="h-12 w-12 mx-auto" />
                             <p className='font-semibold mt-4'>Your resized image will appear here.</p>
                             <p className='text-sm mt-1'>Upload an image and set dimensions.</p>
                         </div>
