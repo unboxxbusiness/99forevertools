@@ -44,6 +44,7 @@ const tools = [
   '/qr-code-generator',
   '/vcard-qr-code-generator',
   '/whatsapp-link-generator',
+  '/whatsapp-widget-generator',
   '/festival-wish-generator',
   '/google-maps-link-generator',
   '/review-link-generator',
