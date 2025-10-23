@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2 } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -237,8 +237,14 @@ const tools:any[] = [
   {
     href: '/text-to-speech',
     title: 'Text to Speech',
-    description: 'Convert text into spoken audio using your browser\'s built-in voice.',
+    description: 'Convert short passages of text into spoken audio. Great for hearing how content sounds.',
     icon: <Volume2 className="w-8 h-8" />,
+  },
+  {
+    href: '/wav-to-mp3-converter',
+    title: 'WAV to MP3 Converter',
+    description: 'Convert .wav audio files to .mp3 format in your browser.',
+    icon: <AudioLines className="w-8 h-8" />,
   }
 ];
 
