@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -131,6 +131,12 @@ const tools:any[] = [
     title: 'Image Compressor',
     description: 'Reduce image file sizes for faster web loading and sharing.',
     icon: <Image className="w-8 h-8" />,
+  },
+  {
+    href: '/image-resizer',
+    title: 'Image Resizer',
+    description: 'Resize images to specific dimensions (e.g., for social media posts).',
+    icon: <Crop className="w-8 h-8" />,
   }
 ];
 
