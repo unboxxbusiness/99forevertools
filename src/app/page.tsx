@@ -10,6 +10,16 @@ import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home
 
 const allTools = [
   {
+    category: 'Featured',
+    icon: <Star className="w-6 h-6" />,
+    tools: [
+        { href: '/social-media-image-generator', title: 'Social Media Image Generator', description: 'Create images for your social media posts.', icon: <Image className="w-8 h-8" /> },
+        { href: '/logo-maker', title: 'Advanced Logo Maker', description: 'Create a simple, text-based logo for your business.', icon: <Palette className="w-8 h-8" /> },
+        { href: '/manual-sales-tracker', title: 'Manual Sales Tracker', description: 'A simple dashboard to manually track your daily sales revenue.', icon: <IndianRupee className="w-8 h-8" /> },
+        { href: '/invoice-generator', title: 'Shareable Invoice Generator', description: 'Generate a professional invoice to print, save as PDF, and share.', icon: <FileText className="w-8 h-8" /> },
+    ]
+  },
+  {
     category: 'Calculators',
     icon: <CalculatorIcon className="w-6 h-6" />,
     tools: [
@@ -130,6 +140,11 @@ export default function Home() {
         tool.description.toLowerCase().includes(searchTerm.toLowerCase()))
       )
   );
+  
+  const categories = allTools.map(category => ({
+      name: category.category,
+      icon: category.icon
+  }));
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
@@ -174,15 +189,15 @@ export default function Home() {
           >
             All Tools
           </Button>
-          {allTools.map(category => (
+          {categories.map(category => (
             <Button
-              key={category.category}
-              variant={activeCategory === category.category ? 'default' : 'secondary'}
-              onClick={() => setActiveCategory(category.category)}
+              key={category.name}
+              variant={activeCategory === category.name ? 'default' : 'secondary'}
+              onClick={() => setActiveCategory(category.name)}
               className="rounded-full gap-2"
             >
               {category.icon}
-              {category.category}
+              {category.name}
             </Button>
           ))}
         </div>
