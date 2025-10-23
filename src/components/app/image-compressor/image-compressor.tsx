@@ -61,7 +61,8 @@ export function ImageCompressor() {
 
     try {
       const img = new Image();
-      img.src = URL.createObjectURL(file);
+      const imgSrc = URL.createObjectURL(file);
+      img.src = imgSrc;
 
       img.onload = () => {
         const canvas = document.createElement('canvas');
@@ -82,12 +83,14 @@ export function ImageCompressor() {
               throw new Error("Canvas to Blob conversion failed");
           }
           setIsLoading(false);
-          URL.revokeObjectURL(img.src);
+          URL.revokeObjectURL(imgSrc);
         }, file.type, quality);
       };
 
       img.onerror = () => {
-        throw new Error("Image failed to load");
+        setIsLoading(false);
+        toast({ variant: 'destructive', title: 'Compression failed', description: 'There was an error processing your image.' });
+        URL.revokeObjectURL(imgSrc);
       }
       
     } catch(err) {

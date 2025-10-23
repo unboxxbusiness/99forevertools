@@ -7,7 +7,6 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Upload, CheckCircle, Download, Loader2, Crop, Frame } from 'lucide-react';
-import pica from 'pica';
 
 export function ImageResizer() {
   const [file, setFile] = useState<File | null>(null);
@@ -61,7 +60,6 @@ export function ImageResizer() {
     setIsLoading(true);
 
     try {
-      const picaInstance = pica();
       const img = new Image();
       const imgSrc = URL.createObjectURL(file);
       img.src = imgSrc;
@@ -70,19 +68,23 @@ export function ImageResizer() {
         const canvas = document.createElement('canvas');
         canvas.width = targetDimensions.width;
         canvas.height = targetDimensions.height;
-        
-        const result = await picaInstance.resize(img, canvas);
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          throw new Error('Could not get canvas context');
+        }
 
-        result.toBlob(file.type, 0.9).then(blob => {
-          if (blob) {
-              setResizedImage(blob);
-              toast({ title: "Resize complete!" });
-          } else {
-              throw new Error("Canvas to Blob conversion failed");
-          }
-          setIsLoading(false);
-          URL.revokeObjectURL(imgSrc);
-        });
+        ctx.drawImage(img, 0, 0, targetDimensions.width, targetDimensions.height);
+
+        canvas.toBlob((blob) => {
+            if (blob) {
+                setResizedImage(blob);
+                toast({ title: "Resize complete!" });
+            } else {
+                throw new Error("Canvas to Blob conversion failed");
+            }
+            setIsLoading(false);
+            URL.revokeObjectURL(imgSrc);
+        }, file.type);
       };
       
       img.onerror = () => {
