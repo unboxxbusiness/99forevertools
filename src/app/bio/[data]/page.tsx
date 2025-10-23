@@ -22,21 +22,21 @@ const urlSafeBase64Decode = (str: string) => {
     return atob(str);
 };
 
-export default function BioPage({ params }: { params: { data: string } }) {
+export default function BioPage({ params: { data: encodedData } }: { params: { data: string } }) {
   const [data, setData] = useState<BioData | null>(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     try {
       // Decode the URL-safe base64 string
-      const decodedData = decodeURIComponent(urlSafeBase64Decode(params.data));
+      const decodedData = decodeURIComponent(urlSafeBase64Decode(encodedData));
       const parsedData = JSON.parse(decodedData);
       setData(parsedData);
     } catch (error) {
       console.error("Failed to parse bio data", error);
       setError(true);
     }
-  }, [params.data]);
+  }, [encodedData]);
 
   if (error) {
     notFound();
