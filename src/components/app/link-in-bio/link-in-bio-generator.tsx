@@ -1,13 +1,14 @@
 
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Trash2, PlusCircle, User, Link as LinkIcon } from 'lucide-react';
+import { Trash2, PlusCircle, User, Link as LinkIcon, Copy, Check } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
 
 type BioLink = {
   id: number;
@@ -24,6 +25,8 @@ export function LinkInBioGenerator() {
     { id: 2, title: 'Follow me on X', url: 'https://x.com/example' },
   ]);
   const [nextId, setNextId] = useState(3);
+  const { toast } = useToast();
+  const [copied, setCopied] = useState(false);
 
   const handleAddLink = () => {
     setLinks([...links, { id: nextId, title: '', url: '' }]);
@@ -37,16 +40,43 @@ export function LinkInBioGenerator() {
   const handleLinkChange = (id: number, field: 'title' | 'url', value: string) => {
     setLinks(links.map(link => (link.id === id ? { ...link, [field]: value } : link)));
   };
-  
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > 2 * 1024 * 1024) { // 2MB limit
+        toast({
+          variant: 'destructive',
+          title: 'Image too large',
+          description: 'Please upload an image smaller than 2MB.',
+        });
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfileImage(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const shareableLink = useMemo(() => {
+    if (typeof window === 'undefined') return '';
+    const data = {
+      name,
+      bio,
+      image: profileImage,
+      links: links.filter(l => l.title && l.url),
+    };
+    const encoded = btoa(encodeURIComponent(JSON.stringify(data)));
+    return `${window.location.origin}/bio/${encoded}`;
+  }, [name, bio, profileImage, links]);
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(shareableLink);
+    setCopied(true);
+    toast({ title: 'Shareable link copied to clipboard!' });
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -61,13 +91,12 @@ export function LinkInBioGenerator() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Form */}
           <div className="space-y-6">
-            <h3 className="text-xl font-semibold">Your Content</h3>
             <div className="space-y-4 p-4 border rounded-lg">
-                <h4 className="font-semibold">Profile</h4>
+                <h3 className="font-semibold">Profile</h3>
                 <div className="space-y-2">
-                    <Label htmlFor="profileImage">Profile Image URL</Label>
-                    <Input id="profileImage" value={profileImage} onChange={(e) => setProfileImage(e.target.value)} placeholder="https://..." />
-                    {/* Optional: Add a file uploader */}
+                    <Label htmlFor="profileImageFile">Profile Image (optional)</Label>
+                    <Input id="profileImageFile" type="file" accept="image/*" onChange={handleImageChange} className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"/>
+                    <Input value={profileImage} onChange={(e) => setProfileImage(e.target.value)} placeholder="Or paste image URL" />
                 </div>
                  <div className="space-y-2">
                     <Label htmlFor="name">Name</Label>
@@ -80,7 +109,7 @@ export function LinkInBioGenerator() {
             </div>
 
             <div className="space-y-4 p-4 border rounded-lg">
-                <h4 className="font-semibold">Links</h4>
+                <h3 className="font-semibold">Links</h3>
                  {links.map(link => (
                     <div key={link.id} className="flex gap-2 items-end">
                         <div className="flex-grow space-y-1">
@@ -96,6 +125,18 @@ export function LinkInBioGenerator() {
                     <PlusCircle className="mr-2 h-4 w-4" /> Add Link
                 </Button>
             </div>
+            
+            <div className="space-y-4 p-4 border rounded-lg bg-primary/10">
+                 <h3 className="font-semibold text-primary">Your Shareable Link</h3>
+                 <div className="bg-background p-2 rounded-md flex items-center justify-between gap-2 break-all">
+                    <code className="text-sm">{shareableLink}</code>
+                    <Button variant="ghost" size="icon" onClick={handleCopyLink}>
+                        {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                    </Button>
+                </div>
+                <p className="text-xs text-primary/80">Copy this link and paste it into your social media bio.</p>
+            </div>
+
           </div>
           
           {/* Preview */}
@@ -114,9 +155,9 @@ export function LinkInBioGenerator() {
                   </div>
                   <div className="space-y-3">
                       {links.map(link => (
-                        <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" className="block">
+                        <a key={link.id} href={link.url || '#'} target="_blank" rel="noopener noreferrer" className="block">
                             <Button variant="secondary" className="w-full h-14 text-base">
-                                <LinkIcon className="mr-2 h-4 w-4" />
+                                {link.url && <LinkIcon className="mr-2 h-4 w-4" />}
                                 {link.title || 'Your Link Title'}
                             </Button>
                         </a>

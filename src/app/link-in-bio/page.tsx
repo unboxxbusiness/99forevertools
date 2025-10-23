@@ -12,7 +12,7 @@ export default function LinkInBioPage() {
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
-        <div className="mb-6">
+        <div className="mb-6 print-hidden">
           <Button asChild variant="ghost" className="pl-0">
             <Link href="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
