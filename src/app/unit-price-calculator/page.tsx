@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { UnitPriceCalculator } from '@/components/app/unit-price-calculator/unit-price-calculator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Unit Price Calculator | 99forevertools',
+  description: 'Compare two products to find the one with the better value by calculating their price per unit.',
+};
 
 export default function UnitPriceCalculatorPage() {
   return (

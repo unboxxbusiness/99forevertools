@@ -1,38 +1,47 @@
-
-'use client';
-
-import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { QrCodeGeneratorForm, type QrCodeConfig } from '@/components/app/qr-code-generator/qr-code-generator-form';
 import { QrCodeGeneratorResults } from '@/components/app/qr-code-generator/qr-code-generator-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 
-export default function QrCodeGeneratorPage() {
+export const metadata: Metadata = {
+  title: 'UPI QR Code Generator | 99forevertools',
+  description: 'Create a custom QR code for UPI payments. Enter your UPI ID and name to generate a downloadable QR code.',
+};
+
+function QrCodeGeneratorWrapper() {
+  'use client';
   const [qrConfig, setQrConfig] = useState<QrCodeConfig>({
-    type: 'url',
-    value: 'https://google.com',
+    type: 'upi', // Default to UPI
+    value: '',
     fgColor: '#000000',
     bgColor: '#ffffff',
-    level: 'L',
-    // URL
-    url: 'https://google.com',
-    // WIFI
+    level: 'M',
+    // ... other fields
+    url: '',
     ssid: '',
     password: '',
     encryption: 'WPA',
-    // vCard
     firstName: '',
     lastName: '',
     phone: '',
     email: '',
     website: '',
-     // UPI
     upiId: '',
     payeeName: '',
   });
 
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <QrCodeGeneratorForm config={qrConfig} setConfig={setQrConfig} />
+      <QrCodeGeneratorResults config={qrConfig} />
+    </div>
+  );
+}
+
+export default function QrCodeGeneratorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
@@ -45,10 +54,7 @@ export default function QrCodeGeneratorPage() {
             </Link>
           </Button>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <QrCodeGeneratorForm config={qrConfig} setConfig={setQrConfig} />
-          <QrCodeGeneratorResults config={qrConfig} />
-        </div>
+        <QrCodeGeneratorWrapper />
       </main>
     </div>
   );

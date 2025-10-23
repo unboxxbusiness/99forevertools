@@ -1,19 +1,39 @@
-
-'use client';
-
-import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { ReadabilityCheckerForm } from '@/components/app/readability-checker-form';
 import { ReadabilityCheckerResults, type ReadabilityAnalysis } from '@/components/app/readability-checker-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 
-export default function ReadabilityCheckerPage() {
+export const metadata: Metadata = {
+  title: 'Readability Checker | 99forevertools',
+  description: 'Calculate the Flesch-Kincaid readability score of your text to see how easy it is to understand.',
+};
+
+function ReadabilityCheckerWrapper() {
+  'use client';
   const [analysis, setAnalysis] = useState<ReadabilityAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
 
+  return (
+    <div className="space-y-12">
+      <ReadabilityCheckerForm
+        setAnalysis={setAnalysis}
+        setIsLoading={setIsLoading}
+        setHasGenerated={setHasGenerated}
+      />
+      <ReadabilityCheckerResults
+        analysis={analysis}
+        isLoading={isLoading}
+        hasGenerated={hasGenerated}
+      />
+    </div>
+  );
+}
+
+export default function ReadabilityCheckerPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
@@ -26,18 +46,7 @@ export default function ReadabilityCheckerPage() {
             </Link>
           </Button>
         </div>
-        <div className="space-y-12">
-          <ReadabilityCheckerForm
-            setAnalysis={setAnalysis}
-            setIsLoading={setIsLoading}
-            setHasGenerated={setHasGenerated}
-          />
-          <ReadabilityCheckerResults
-            analysis={analysis}
-            isLoading={isLoading}
-            hasGenerated={hasGenerated}
-          />
-        </div>
+        <ReadabilityCheckerWrapper />
       </main>
     </div>
   );

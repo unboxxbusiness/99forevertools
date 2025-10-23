@@ -1,15 +1,18 @@
-
-'use client';
-
-import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { QrCodeGeneratorForm, type QrCodeConfig } from '@/components/app/qr-code-generator/qr-code-generator-form';
 import { QrCodeGeneratorResults } from '@/components/app/qr-code-generator/qr-code-generator-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 
-export default function QrCodeGeneratorPage() {
+export const metadata: Metadata = {
+  title: 'Free QR Code Generator | 99forevertools',
+  description: 'Instantly create and customize a downloadable QR code for a URL, Wi-Fi network, vCard contact, or UPI payment.',
+};
+
+function QrCodeGeneratorWrapper() {
+  'use client';
   const [qrConfig, setQrConfig] = useState<QrCodeConfig>({
     type: 'url',
     value: 'https://google.com',
@@ -34,6 +37,15 @@ export default function QrCodeGeneratorPage() {
   });
 
   return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <QrCodeGeneratorForm config={qrConfig} setConfig={setQrConfig} />
+      <QrCodeGeneratorResults config={qrConfig} />
+    </div>
+  );
+}
+
+export default function QrCodeGeneratorPage() {
+  return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
@@ -45,10 +57,7 @@ export default function QrCodeGeneratorPage() {
             </Link>
           </Button>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <QrCodeGeneratorForm config={qrConfig} setConfig={setQrConfig} />
-          <QrCodeGeneratorResults config={qrConfig} />
-        </div>
+        <QrCodeGeneratorWrapper />
       </main>
     </div>
   );

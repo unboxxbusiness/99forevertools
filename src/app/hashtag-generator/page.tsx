@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { HashtagGenerator } from '@/components/app/hashtag-generator/hashtag-generator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Instagram Hashtag Generator | 99forevertools',
+  description: 'Suggests relevant and popular hashtags for your social media posts based on your business category.',
+};
 
 export default function HashtagGeneratorPage() {
   return (

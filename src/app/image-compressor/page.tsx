@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { ImageCompressor } from '@/components/app/image-compressor/image-compressor';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Free Image Compressor | 99forevertools',
+  description: 'Reduce image file sizes for faster web loading and sharing. Compress JPG, PNG, and other formats online.',
+};
 
 export default function ImageCompressorPage() {
   return (

@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { WhatIsMyIp } from '@/components/app/what-is-my-ip/what-is-my-ip';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'What Is My IP Address? | 99forevertools',
+  description: 'A simple utility that shows your current public IP address.',
+};
 
 export default function WhatIsMyIpPage() {
   return (

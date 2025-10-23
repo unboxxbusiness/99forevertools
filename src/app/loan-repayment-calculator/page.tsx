@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { LoanRepaymentCalculator } from '@/components/app/loan-repayment-calculator/loan-repayment-calculator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Loan Repayment Calculator | 99forevertools',
+  description: 'Estimate your monthly payments and see a full amortization schedule for any loan. Works for personal, car, or other loans.',
+};
 
 export default function LoanRepaymentCalculatorPage() {
   return (

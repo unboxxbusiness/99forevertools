@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { BreakEvenPointCalculator } from '@/components/app/break-even-point-calculator/break-even-point-calculator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Break-Even Point Calculator | 99forevertools',
+  description: 'Determine how many units you need to sell to cover your costs with our simple break-even point calculator.',
+};
 
 export default function BreakEvenPointCalculatorPage() {
   return (

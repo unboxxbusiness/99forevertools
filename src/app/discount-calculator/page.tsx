@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { DiscountCalculator } from '@/components/app/discount-calculator/discount-calculator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Discount Calculator | 99forevertools',
+  description: 'Quickly calculate the final price after a percentage discount and see the total amount saved.',
+};
 
 export default function DiscountCalculatorPage() {
   return (

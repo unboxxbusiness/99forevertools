@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { WordCounter } from '@/components/app/word-counter/word-counter';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Word and Character Counter | 99forevertools',
+  description: 'Instantly count the number of words, characters, sentences, and paragraphs in your text.',
+};
 
 export default function WordCounterPage() {
   return (

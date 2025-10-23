@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { SalaryToCtcCalculator } from '@/components/app/salary-to-ctc-calculator/salary-to-ctc-calculator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Salary to CTC Calculator | 99forevertools',
+  description: 'Estimate the total cost-to-company (CTC) for an employee based on their gross salary and other employer contributions.',
+};
 
 export default function SalaryToCtcCalculatorPage() {
   return (

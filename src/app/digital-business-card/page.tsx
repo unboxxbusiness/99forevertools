@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { DigitalBusinessCardGenerator } from '@/components/app/digital-business-card/digital-business-card';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Digital Business Card Generator | 99forevertools',
+  description: 'Create a modern, shareable digital business card with a QR code. Instantly generate a vCard for easy contact sharing.',
+};
 
 export default function DigitalBusinessCardPage() {
   return (

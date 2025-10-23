@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { FaviconGenerator } from '@/components/app/favicon-generator/favicon-generator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Favicon Generator | 99forevertools',
+  description: 'Create a complete favicon pack for your website from any image. Includes favicons for all modern browsers and devices.',
+};
 
 export default function FaviconGeneratorPage() {
   return (

@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { CompoundInterestCalculator } from '@/components/app/compound-interest-calculator/compound-interest-calculator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Compound Interest Calculator | 99forevertools',
+  description: 'Visualize the future value of your investments and see how compound interest works over time with our free calculator.',
+};
 
 export default function CompoundInterestCalculatorPage() {
   return (

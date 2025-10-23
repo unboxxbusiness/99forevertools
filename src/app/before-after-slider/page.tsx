@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { BeforeAfterSliderGenerator } from '@/components/app/before-after-slider/before-after-slider';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Free "Before and After" Image Slider Generator | 99forevertools',
+  description: 'Create a simple, embeddable before-and-after image slider. Perfect for showcasing transformations for service-based businesses.',
+};
 
 export default function BeforeAfterSliderPage() {
   return (

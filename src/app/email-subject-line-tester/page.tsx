@@ -1,20 +1,42 @@
-
-'use client';
-
-import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { EmailSubjectLineTesterForm } from '@/components/app/email-subject-line-tester-form';
 import { EmailSubjectLineTesterResults, type SubjectLineAnalysis } from '@/components/app/email-subject-line-tester-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 
-export default function EmailSubjectLineTesterPage() {
+export const metadata: Metadata = {
+  title: 'Email Subject Line Tester | 99forevertools',
+  description: 'Analyze your email subject lines for potential issues like spam triggers, length, and sentiment to improve open rates.',
+};
+
+function EmailSubjectLineTesterPageWrapper() {
+  'use client';
   const [analysis, setAnalysis] = useState<SubjectLineAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
   const [subject, setSubject] = useState('');
 
+  return (
+    <div className="space-y-12">
+      <EmailSubjectLineTesterForm
+        setAnalysis={setAnalysis}
+        setIsLoading={setIsLoading}
+        setHasGenerated={setHasGenerated}
+        setSubject={setSubject}
+      />
+      <EmailSubjectLineTesterResults
+        analysis={analysis}
+        isLoading={isLoading}
+        hasGenerated={hasGenerated}
+        subject={subject}
+      />
+    </div>
+  );
+}
+
+export default function EmailSubjectLineTesterPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
@@ -27,20 +49,7 @@ export default function EmailSubjectLineTesterPage() {
             </Link>
           </Button>
         </div>
-        <div className="space-y-12">
-          <EmailSubjectLineTesterForm
-            setAnalysis={setAnalysis}
-            setIsLoading={setIsLoading}
-            setHasGenerated={setHasGenerated}
-            setSubject={setSubject}
-          />
-          <EmailSubjectLineTesterResults
-            analysis={analysis}
-            isLoading={isLoading}
-            hasGenerated={hasGenerated}
-            subject={subject}
-          />
-        </div>
+        <EmailSubjectLineTesterPageWrapper />
       </main>
     </div>
   );

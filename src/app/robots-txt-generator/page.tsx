@@ -1,15 +1,18 @@
-
-'use client';
-
-import { useState, useEffect } from 'react';
 import { Header } from '@/components/app/header';
 import { RobotsTxtGeneratorForm, type RobotsConfig } from '@/components/app/robots-txt-generator-form';
 import { RobotsTxtGeneratorResults } from '@/components/app/robots-txt-generator-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 
-export default function RobotsTxtGeneratorPage() {
+export const metadata: Metadata = {
+  title: 'Robots.txt Generator | 99forevertools',
+  description: 'Create a robots.txt file to guide search engine crawlers. Set default policies and add custom rules for specific user-agents.',
+};
+
+function RobotsTxtGeneratorWrapper() {
+  'use client';
   const [config, setConfig] = useState<RobotsConfig>({
     defaultPolicy: 'allowAll',
     sitemap: '',
@@ -21,14 +24,12 @@ export default function RobotsTxtGeneratorPage() {
     let content = '';
     const rulesByAgent: { [key: string]: string[] } = {};
 
-    // Default policy
     if (config.defaultPolicy === 'disallowAll') {
       content += 'User-agent: *\nDisallow: /\n\n';
     } else {
       content += 'User-agent: *\nAllow: /\n\n';
     }
 
-    // Custom rules
     config.customRules.forEach(r => {
       if (r.userAgent && r.path) {
         if (!rulesByAgent[r.userAgent]) {
@@ -45,14 +46,21 @@ export default function RobotsTxtGeneratorPage() {
       content += '\n\n';
     }
 
-    // Sitemap
     if (config.sitemap) {
       content += `Sitemap: ${config.sitemap}\n`;
     }
 
     setRobotsTxt(content.trim());
   }, [config]);
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <RobotsTxtGeneratorForm config={config} setConfig={setConfig} />
+      <RobotsTxtGeneratorResults content={robotsTxt} />
+    </div>
+  );
+}
 
+export default function RobotsTxtGeneratorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
@@ -65,10 +73,7 @@ export default function RobotsTxtGeneratorPage() {
             </Link>
           </Button>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <RobotsTxtGeneratorForm config={config} setConfig={setConfig} />
-          <RobotsTxtGeneratorResults content={robotsTxt} />
-        </div>
+        <RobotsTxtGeneratorWrapper />
       </main>
     </div>
   );

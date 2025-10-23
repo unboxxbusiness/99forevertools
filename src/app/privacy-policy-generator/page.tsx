@@ -1,19 +1,42 @@
-
-'use client';
-
-import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { PrivacyPolicyGeneratorForm } from '@/components/app/privacy-policy-generator/privacy-policy-generator-form';
 import { PrivacyPolicyGeneratorResults } from '@/components/app/privacy-policy-generator/privacy-policy-generator-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 
-export default function PrivacyPolicyGeneratorPage() {
+export const metadata: Metadata = {
+  title: 'Privacy Policy Generator | 99forevertools',
+  description: 'Generate a basic, generic privacy policy for your website or app. Fill in your details to create a starting template.',
+};
+
+function PrivacyPolicyGeneratorWrapper() {
+  'use client';
   const [policy, setPolicy] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="lg:col-span-1">
+        <PrivacyPolicyGeneratorForm
+          setPolicy={setPolicy}
+          setIsLoading={setIsLoading}
+          setHasGenerated={setHasGenerated}
+        />
+      </div>
+      <div className="lg:col-span-2">
+        <PrivacyPolicyGeneratorResults
+          policy={policy}
+          isLoading={isLoading}
+          hasGenerated={hasGenerated}
+        />
+      </div>
+    </div>
+  );
+}
 
+export default function PrivacyPolicyGeneratorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
@@ -26,22 +49,7 @@ export default function PrivacyPolicyGeneratorPage() {
             </Link>
           </Button>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <div className="lg:col-span-1">
-            <PrivacyPolicyGeneratorForm
-                setPolicy={setPolicy}
-                setIsLoading={setIsLoading}
-                setHasGenerated={setHasGenerated}
-            />
-          </div>
-          <div className="lg:col-span-2">
-            <PrivacyPolicyGeneratorResults
-                policy={policy}
-                isLoading={isLoading}
-                hasGenerated={hasGenerated}
-            />
-          </div>
-        </div>
+        <PrivacyPolicyGeneratorWrapper />
       </main>
     </div>
   );

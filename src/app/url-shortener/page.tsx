@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { URLShortener } from '@/components/app/url-shortener/url-shortener';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'URL Redirect Tool / Shortener | 99forevertools',
+  description: 'Create a short link on your own domain that redirects to a longer URL. Perfect for cleaner, branded links.',
+};
 
 export default function URLShortenerPage() {
   return (

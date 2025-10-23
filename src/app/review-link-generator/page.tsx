@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { ReviewLinkGenerator } from '@/components/app/review-link-generator/review-link-generator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Google Review Link Generator | 99forevertools',
+  description: 'Create a direct link for customers to leave a Google Review for your business using its Google Place ID.',
+};
 
 export default function ReviewLinkGeneratorPage() {
   return (

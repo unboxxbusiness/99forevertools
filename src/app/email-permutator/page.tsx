@@ -1,19 +1,39 @@
-
-'use client';
-
-import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { EmailPermutatorForm } from '@/components/app/email-permutator-form';
 import { EmailPermutatorResults } from '@/components/app/email-permutator-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 
-export default function EmailPermutatorPage() {
+export const metadata: Metadata = {
+  title: 'Email Permutator: Find Any Email Address | 99forevertools',
+  description: 'Generate a list of possible email addresses for a person based on their first name, last name, and a domain.',
+};
+
+function EmailPermutatorPageWrapper() {
+  'use client';
   const [emails, setEmails] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
 
+  return (
+    <div className="space-y-12">
+      <EmailPermutatorForm
+        setEmails={setEmails}
+        setIsLoading={setIsLoading}
+        setHasGenerated={setHasGenerated}
+      />
+      <EmailPermutatorResults
+        emails={emails}
+        isLoading={isLoading}
+        hasGenerated={hasGenerated}
+      />
+    </div>
+  );
+}
+
+export default function EmailPermutatorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
@@ -26,18 +46,7 @@ export default function EmailPermutatorPage() {
             </Link>
           </Button>
         </div>
-        <div className="space-y-12">
-          <EmailPermutatorForm
-            setEmails={setEmails}
-            setIsLoading={setIsLoading}
-            setHasGenerated={setHasGenerated}
-          />
-          <EmailPermutatorResults
-            emails={emails}
-            isLoading={isLoading}
-            hasGenerated={hasGenerated}
-          />
-        </div>
+        <EmailPermutatorPageWrapper />
       </main>
     </div>
   );

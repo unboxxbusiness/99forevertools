@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { BusinessNameGenerator } from '@/components/app/business-name-generator/business-name-generator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Free Business Name Generator | 99forevertools',
+  description: 'Generate potential names for your new business or product. Enter a keyword to get a list of creative business name ideas.',
+};
 
 export default function BusinessNameGeneratorPage() {
   return (

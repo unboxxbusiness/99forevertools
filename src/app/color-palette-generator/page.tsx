@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { ColorPaletteGenerator } from '@/components/app/color-palette-generator/color-palette-generator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Color Palette & Scheme Generator | 99forevertools',
+  description: 'Generate accessible, WCAG-compliant color palettes and schemes for your website from a single base color.',
+};
 
 export default function ColorPaletteGeneratorPage() {
   return (

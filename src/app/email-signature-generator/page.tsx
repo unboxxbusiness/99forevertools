@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { EmailSignatureGenerator } from '@/components/app/email-signature-generator/email-signature-generator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Free Email Signature Generator | 99forevertools',
+  description: 'Create a professional HTML email signature with your name, title, company, contact details, and logo.',
+};
 
 export default function EmailSignatureGeneratorPage() {
   return (

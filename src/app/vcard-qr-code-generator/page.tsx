@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { VCardQrCodeGenerator } from '@/components/app/vcard-qr-code-generator/vcard-qr-code-generator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'vCard QR Code Generator for Business Cards | 99forevertools',
+  description: 'Generate a QR code containing your contact information (vCard). Perfect for digital and physical business cards.',
+};
 
 export default function VCardQrCodeGeneratorPage() {
   return (

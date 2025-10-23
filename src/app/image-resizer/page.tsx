@@ -1,11 +1,14 @@
-
-'use client';
-
 import { Header } from '@/components/app/header';
 import { ImageResizer } from '@/components/app/image-resizer/image-resizer';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Free Image Resizer | 99forevertools',
+  description: 'Resize images to specific dimensions for social media posts, websites, or any other need. Simple and fast.',
+};
 
 export default function ImageResizerPage() {
   return (
