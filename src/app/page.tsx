@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -95,6 +95,12 @@ const tools:any[] = [
     title: 'What\'s My Business Worth?',
     description: 'Get a fun, simple valuation based on your revenue and industry.',
     icon: <TrendingUp className="w-8 h-8" />,
+  },
+  {
+    href: '/google-maps-link-generator',
+    title: 'Google Maps Link Generator',
+    description: 'Create a direct link to a business address on Google Maps.',
+    icon: <MapPin className="w-8 h-8" />,
   }
 ];
 
