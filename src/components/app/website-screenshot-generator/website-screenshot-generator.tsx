@@ -28,11 +28,16 @@ export function WebsiteScreenshotGenerator() {
 
     setIsLoading(true);
     setScreenshotUrl(null);
+
+    let fullUrl = url;
+    if (!/^https?:\/\//i.test(url)) {
+      fullUrl = `https://${url}`;
+    }
     
     // Using a more reliable screenshot service to avoid quota issues.
     // This is a public access key for screenshotone.com's free plan.
     const accessKey = 'uWbN9CBMw-xPag';
-    const apiUrl = `https://api.screenshotone.com/take?access_key=${accessKey}&url=${encodeURIComponent(url)}&full_page=true`;
+    const apiUrl = `https://api.screenshotone.com/take?access_key=${accessKey}&url=${encodeURIComponent(fullUrl)}&full_page=true`;
 
     try {
       const response = await fetch(apiUrl);
@@ -61,8 +66,14 @@ export function WebsiteScreenshotGenerator() {
     if (!screenshotUrl) return;
     const link = document.createElement('a');
     link.href = screenshotUrl;
-    // The screenshot service returns a jpeg
-    link.download = `screenshot-${new URL(url).hostname}.jpeg`;
+    let hostname = 'screenshot';
+    try {
+        hostname = new URL(url.startsWith('http') ? url : `https://${url}`).hostname;
+    } catch (e) {
+        // keep default
+    }
+
+    link.download = `screenshot-${hostname}.jpeg`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
