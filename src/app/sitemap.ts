@@ -68,6 +68,7 @@ const tools = [
   '/image-to-png-converter',
   '/photo-filter-studio',
   '/upi-qr-code-generator',
+  '/manual-sales-tracker',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

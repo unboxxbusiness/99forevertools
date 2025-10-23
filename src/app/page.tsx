@@ -27,6 +27,7 @@ const allTools = [
       { href: '/loan-repayment-calculator', title: 'Loan Repayment Calculator', description: 'Estimate monthly payments for various loans.', icon: <Landmark className="w-8 h-8" /> },
       { href: '/roi-calculator', title: 'ROI Calculator', description: 'Calculate return on investment for campaigns.', icon: <TrendingUp className="w-8 h-8" /> },
       { href: '/salary-sacrifice-calculator', title: 'Salary Sacrifice Calculator', description: 'Estimate tax savings from pension contributions.', icon: <Calculator className="w-8 h-8" /> },
+      { href: '/manual-sales-tracker', title: 'Manual Sales Tracker', description: 'A simple dashboard to manually track your daily sales revenue.', icon: <IndianRupee className="w-8 h-8" /> },
     ]
   },
   {
@@ -52,7 +53,7 @@ const allTools = [
     category: 'Branding & Design',
     icon: <Paintbrush className="w-6 h-6" />,
     tools: [
-      { href: '/invoice-generator', title: 'Invoice Generator', description: 'Generate a professional invoice (PDF) to print or share on WhatsApp.', icon: <FileText className="w-8 h-8" /> },
+      { href: '/invoice-generator', title: 'Invoice Generator', description: 'Generate a professional invoice to print or save as a PDF.', icon: <FileText className="w-8 h-8" /> },
       { href: '/business-slogan-generator', title: 'Business Slogan Generator', description: 'Generate catchy taglines based on keywords.', icon: <Lightbulb className="w-8 h-8" /> },
       { href: '/business-name-generator', title: 'Business Name Generator', description: 'Generate potential names for a new business.', icon: <PenSquare className="w-8 h-8" /> },
       { href: '/logo-maker', title: 'Logo Maker', description: 'Create a simple, text-based logo for your business.', icon: <Palette className="w-8 h-8" /> },
