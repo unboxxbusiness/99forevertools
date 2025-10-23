@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -47,6 +47,12 @@ const tools:any[] = [
     description: 'Calculate your House Rent Allowance exemption for tax purposes.',
     icon: <HomeIcon className="w-8 h-8" />,
   },
+  {
+    href: '/pf-calculator',
+    title: 'PF Calculator',
+    description: 'Calculate employee and employer PF contributions.',
+    icon: <Landmark className="w-8 h-8" />,
+  }
 ];
 
 export default function Home() {
