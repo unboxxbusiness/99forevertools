@@ -6,9 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Copy, Check, Info, CheckCircle, XCircle } from 'lucide-react';
+import { Copy, Check, Info, CheckCircle, XCircle, Lightbulb, Briefcase } from 'lucide-react';
 import { hexToHsl, generateWebsitePalettes, type WebsitePalette } from './color-utils';
 import { Button } from '@/components/ui/button';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const ColorBox = ({ color, name }: { color: string, name: string }) => {
     const { toast } = useToast();
@@ -148,43 +149,77 @@ export function ColorPaletteGenerator() {
     }, [baseColor]);
 
     return (
-        <Card className="w-full max-w-5xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
-            <CardHeader>
-                <CardTitle className="text-3xl font-bold tracking-tight">Website Color Scheme Generator</CardTitle>
-                <CardDescription>
-                    Choose a base color to generate accessible, WCAG-compliant color schemes for your website.
-                </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-8">
-                <div className="flex justify-center">
-                    <div className="space-y-2 flex flex-col items-center">
-                        <Label htmlFor="base-color" className="text-lg">Base Color</Label>
-                        <div className="relative">
-                            <Input
-                                id="base-color"
-                                type="text"
-                                value={baseColor}
-                                onChange={(e) => setBaseColor(e.target.value)}
-                                className="w-40 h-12 text-center text-lg font-mono"
-                            />
-                            <Input
-                                type="color"
-                                value={baseColor}
-                                onChange={(e) => setBaseColor(e.target.value)}
-                                className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-                            />
+        <div className="w-full max-w-5xl mx-auto space-y-8 animate-fade-in">
+            <Card className="shadow-lg bg-card border-primary/20">
+                <CardHeader>
+                    <CardTitle className="text-3xl font-bold tracking-tight">Website Color Scheme Generator</CardTitle>
+                    <CardDescription>
+                        Choose a base color to generate accessible, WCAG-compliant color schemes for your website.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-8">
+                    <div className="flex justify-center">
+                        <div className="space-y-2 flex flex-col items-center">
+                            <Label htmlFor="base-color" className="text-lg">Base Color</Label>
+                            <div className="relative">
+                                <Input
+                                    id="base-color"
+                                    type="text"
+                                    value={baseColor}
+                                    onChange={(e) => setBaseColor(e.target.value)}
+                                    className="w-40 h-12 text-center text-lg font-mono"
+                                />
+                                <Input
+                                    type="color"
+                                    value={baseColor}
+                                    onChange={(e) => setBaseColor(e.target.value)}
+                                    className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {palettes && palettes.length > 0 && (
-                    <div className="space-y-8 pt-8 border-t">
-                        {palettes.map((palette, i) => (
-                           <PalettePreview key={i} palette={palette} />
-                        ))}
-                    </div>
-                )}
-            </CardContent>
-        </Card>
+                    {palettes && palettes.length > 0 && (
+                        <div className="space-y-8 pt-8 border-t">
+                            {palettes.map((palette, i) => (
+                            <PalettePreview key={i} palette={palette} />
+                            ))}
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+            <div className="mt-8">
+                <Accordion type="single" collapsible className="w-full">
+                    <AccordionItem value="how-it-works">
+                        <AccordionTrigger>
+                            <h3 className="text-lg font-semibold flex items-center gap-2"><Lightbulb className="w-5 h-5 text-primary"/> How It Works</h3>
+                        </AccordionTrigger>
+                        <AccordionContent className="pt-4 text-muted-foreground">
+                            <ol className="list-decimal list-inside space-y-2">
+                                <li>Pick a base color using the color picker or by entering a hex code.</li>
+                                <li>The tool automatically generates several color palettes (Analogous, Complementary, etc.) based on your selection.</li>
+                                <li>Each palette is designed for web use, including background, text, primary, and accent colors.</li>
+                                <li>Contrast ratios are checked to ensure your text is readable (WCAG AA compliant).</li>
+                                <li>Copy the generated CSS variables and paste them into your project's stylesheet.</li>
+                            </ol>
+                        </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="use-cases">
+                        <AccordionTrigger>
+                            <h3 className="text-lg font-semibold flex items-center gap-2"><Briefcase className="w-5 h-5 text-primary"/> Use Cases for Small Business</h3>
+                        </AccordionTrigger>
+                        <AccordionContent className="pt-4 text-muted-foreground">
+                            <ul className="list-disc list-inside space-y-2">
+                                <li><strong>Website Design:</strong> Quickly create a professional and accessible color scheme for your new website.</li>
+                                <li><strong>Rebranding:</strong> Experiment with new color palettes when refreshing your brand identity.</li>
+                                <li><strong>Marketing Materials:</strong> Ensure your flyers, social media graphics, and presentations have a consistent and appealing color scheme.</li>
+                                <li><strong>Presentations:</strong> Design beautiful and readable slides for investor pitches or client meetings.</li>
+                                <li><strong>App Development:</strong> Choose an accessible color palette for your new mobile or web application.</li>
+                            </ul>
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
+            </div>
+        </div>
     );
 }

@@ -7,8 +7,9 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Copy, Check, Info } from 'lucide-react';
+import { Copy, Check, Info, Lightbulb, Briefcase } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 type AboutUsData = {
   companyName: string;
@@ -55,52 +56,84 @@ ${data.cta}`;
   };
 
   return (
-    <Card className="w-full max-w-6xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
-      <CardHeader className="text-center">
-        <CardTitle className="text-3xl font-bold tracking-tight">"About Us" Page Generator</CardTitle>
-        <CardDescription>
-          Help your business write a simple "About Us" section using this template.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Form */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold">Your Business Details</h3>
+    <div className="w-full max-w-6xl mx-auto space-y-8 animate-fade-in">
+      <Card className="w-full shadow-lg bg-card border-primary/20">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl font-bold tracking-tight">"About Us" Page Generator</CardTitle>
+          <CardDescription>
+            Help your business write a simple "About Us" section using this template.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Form */}
             <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="companyName">Company Name</Label>
-                <Input id="companyName" value={data.companyName} onChange={handleInputChange('companyName')} />
+              <h3 className="text-xl font-semibold">Your Business Details</h3>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="companyName">Company Name</Label>
+                  <Input id="companyName" value={data.companyName} onChange={handleInputChange('companyName')} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="mission">Your Mission</Label>
+                  <Textarea id="mission" value={data.mission} onChange={handleInputChange('mission')} placeholder="e.g., to provide the best coffee in town..." />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="story">Your Story</Label>
+                  <Textarea id="story" value={data.story} onChange={handleInputChange('story')} placeholder="e.g., Founded in 2023, we started with a simple idea..." rows={5} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="cta">Call to Action</Label>
+                  <Input id="cta" value={data.cta} onChange={handleInputChange('cta')} placeholder="e.g., Explore our services today!" />
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="mission">Your Mission</Label>
-                <Textarea id="mission" value={data.mission} onChange={handleInputChange('mission')} placeholder="e.g., to provide the best coffee in town..." />
+            </div>
+            {/* Preview */}
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                  <h3 className="text-xl font-semibold">Generated "About Us" Text</h3>
+                  <Button variant="secondary" onClick={handleCopy}>
+                      {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
+                      Copy
+                  </Button>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="story">Your Story</Label>
-                <Textarea id="story" value={data.story} onChange={handleInputChange('story')} placeholder="e.g., Founded in 2023, we started with a simple idea..." rows={5} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="cta">Call to Action</Label>
-                <Input id="cta" value={data.cta} onChange={handleInputChange('cta')} placeholder="e.g., Explore our services today!" />
+              <div className="bg-muted/50 p-6 rounded-lg h-[400px] overflow-y-auto whitespace-pre-wrap text-sm leading-relaxed">
+                {generatedText}
               </div>
             </div>
           </div>
-          {/* Preview */}
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-                <h3 className="text-xl font-semibold">Generated "About Us" Text</h3>
-                <Button variant="secondary" onClick={handleCopy}>
-                    {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
-                    Copy
-                </Button>
-            </div>
-            <div className="bg-muted/50 p-6 rounded-lg h-[400px] overflow-y-auto whitespace-pre-wrap text-sm leading-relaxed">
-              {generatedText}
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+      <div className="mt-8">
+        <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="how-it-works">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Lightbulb className="w-5 h-5 text-primary"/> How It Works</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ol className="list-decimal list-inside space-y-2">
+                        <li>Enter your company name, mission statement, and brief story in the designated fields.</li>
+                        <li>Add a compelling call-to-action to encourage customer engagement.</li>
+                        <li>The tool instantly generates a structured "About Us" page content based on your inputs.</li>
+                        <li>Copy the generated text and paste it into your website's "About Us" page.</li>
+                    </ol>
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="use-cases">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Briefcase className="w-5 h-5 text-primary"/> Use Cases for Small Business</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ul className="list-disc list-inside space-y-2">
+                        <li><strong>Quickly Create Website Content:</strong> Generate a professional "About Us" page in minutes without hiring a copywriter.</li>
+                        <li><strong>Standardize Your Brand Story:</strong> Create a consistent brand narrative to use across your website, social media profiles, and marketing materials.</li>
+                        <li><strong>Improve Customer Connection:</strong> A well-crafted story helps build trust and creates a stronger connection with your audience.</li>
+                        <li><strong>Enhance Your Online Presence:</strong> Use the generated content for business listings, social media bios, and email marketing campaigns to maintain a consistent brand voice.</li>
+                    </ul>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+      </div>
+    </div>
   );
 }

@@ -6,7 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, CheckCircle, Copy, Check, Code } from 'lucide-react';
+import { Upload, CheckCircle, Copy, Check, Code, Lightbulb, Briefcase } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const ImageUploader = ({
   image,
@@ -138,51 +139,85 @@ export function BeforeAfterSliderGenerator() {
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
-      <CardHeader className="text-center">
-        <CardTitle className="text-3xl font-bold tracking-tight">
-          'Before and After' Image Slider Generator
-        </CardTitle>
-        <CardDescription>
-          Create a simple embeddable slider, great for service businesses.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <ImageUploader image={beforeImageUrl} setImage={handleSetBeforeImage} title="Upload 'Before' Image" />
-          <ImageUploader image={afterImageUrl} setImage={handleSetAfterImage} title="Upload 'After' Image" />
-        </div>
+    <div className="w-full max-w-4xl mx-auto space-y-8 animate-fade-in">
+      <Card className="shadow-lg bg-card border-primary/20">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl font-bold tracking-tight">
+            'Before and After' Image Slider Generator
+          </CardTitle>
+          <CardDescription>
+            Create a simple embeddable slider, great for service businesses.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <ImageUploader image={beforeImageUrl} setImage={handleSetBeforeImage} title="Upload 'Before' Image" />
+            <ImageUploader image={afterImageUrl} setImage={handleSetAfterImage} title="Upload 'After' Image" />
+          </div>
 
-        {beforeImageUrl && afterImageUrl && (
-          <div className="border-t pt-8 space-y-6">
-            <h3 className="text-xl font-semibold text-center">Live Preview</h3>
-            <div className="w-full max-w-lg mx-auto">
-              <CustomBeforeAfterSlider
-                beforeImageUrl={beforeImageUrl}
-                afterImageUrl={afterImageUrl}
-              />
+          {beforeImageUrl && afterImageUrl && (
+            <div className="border-t pt-8 space-y-6">
+              <h3 className="text-xl font-semibold text-center">Live Preview</h3>
+              <div className="w-full max-w-lg mx-auto">
+                <CustomBeforeAfterSlider
+                  beforeImageUrl={beforeImageUrl}
+                  afterImageUrl={afterImageUrl}
+                />
+              </div>
             </div>
-          </div>
-        )}
-        
-        {embedCode && (
-           <div className="border-t pt-8 space-y-4">
-            <div className="flex justify-between items-center">
-                 <h3 className="text-xl font-semibold flex items-center gap-2"><Code /> Embed Code</h3>
-                 <Button variant="secondary" onClick={handleCopyCode}>
-                    {copied ? <Check className="mr-2 h-4 w-4 text-green-500" /> : <Copy className="mr-2 h-4 w-4" />}
-                    {copied ? 'Copied' : 'Copy Code'}
-                </Button>
+          )}
+          
+          {embedCode && (
+            <div className="border-t pt-8 space-y-4">
+              <div className="flex justify-between items-center">
+                  <h3 className="text-xl font-semibold flex items-center gap-2"><Code /> Embed Code</h3>
+                  <Button variant="secondary" onClick={handleCopyCode}>
+                      {copied ? <Check className="mr-2 h-4 w-4 text-green-500" /> : <Copy className="mr-2 h-4 w-4" />}
+                      {copied ? 'Copied' : 'Copy Code'}
+                  </Button>
+              </div>
+              <CardDescription>
+                Paste this code into your website's HTML where you want the slider to appear.
+              </CardDescription>
+              <pre className="bg-muted/50 p-4 rounded-lg overflow-x-auto text-sm">
+                  <code>{embedCode}</code>
+              </pre>
             </div>
-            <CardDescription>
-              Paste this code into your website's HTML where you want the slider to appear.
-            </CardDescription>
-            <pre className="bg-muted/50 p-4 rounded-lg overflow-x-auto text-sm">
-                <code>{embedCode}</code>
-            </pre>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+          )}
+        </CardContent>
+      </Card>
+      <div className="mt-8">
+        <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="how-it-works">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Lightbulb className="w-5 h-5 text-primary"/> How It Works</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ol className="list-decimal list-inside space-y-2">
+                        <li>Upload your "Before" image using the left-hand uploader.</li>
+                        <li>Upload your "After" image using the right-hand uploader.</li>
+                        <li>A live preview of the interactive slider will appear.</li>
+                        <li>Copy the generated HTML embed code.</li>
+                        <li>Paste the code into your website's HTML to display the slider.</li>
+                    </ol>
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="use-cases">
+                <AccordionTrigger>
+                    <h3 className="text-lg font-semibold flex items-center gap-2"><Briefcase className="w-5 h-5 text-primary"/> Use Cases for Small Business</h3>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4 text-muted-foreground">
+                    <ul className="list-disc list-inside space-y-2">
+                        <li><strong>Home Services:</strong> Show the results of a cleaning, renovation, or landscaping project.</li>
+                        <li><strong>Beauty Salons:</strong> Display the transformation from a haircut, color, or makeup session.</li>
+                        <li><strong>Auto Detailing:</strong> Highlight the difference between a dirty and a detailed car.</li>
+                        <li><strong>Product Restoration:</strong> Showcase your ability to restore old furniture, electronics, or other items.</li>
+                        <li><strong>Fitness Coaches:</strong> Visualize a client's fitness journey and transformation over time.</li>
+                    </ul>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+      </div>
+    </div>
   );
 }
