@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { Inter } from 'next/font/google';
+import { BackToTopButton } from '@/components/app/back-to-top-button';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body>
         {children}
         <Toaster />
+        <BackToTopButton />
       </body>
     </html>
   );
