@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -101,6 +101,12 @@ const tools:any[] = [
     title: 'Google Maps Link Generator',
     description: 'Create a direct link to a business address on Google Maps.',
     icon: <MapPin className="w-8 h-8" />,
+  },
+  {
+    href: '/review-link-generator',
+    title: 'Google Review Link Generator',
+    description: 'Create a direct link for customers to leave a Google Review.',
+    icon: <Star className="w-8 h-8" />,
   }
 ];
 
