@@ -3,7 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
-import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link } from 'lucide-react';
+import { Percent, FileText, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, MessageSquare, Lightbulb, PartyPopper, TrendingUp, MapPin, Star, Hash, PenSquare, Sparkles, Image, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link, Activity } from 'lucide-react';
 
 const tools:any[] = [
   {
@@ -251,6 +251,12 @@ const tools:any[] = [
     title: '"Link in Bio" Page Builder',
     description: 'Create a simple, shareable landing page for your social media profiles.',
     icon: <Link className="w-8 h-8" />,
+  },
+  {
+    href: '/headline-analyzer',
+    title: 'Headline Analyzer',
+    description: 'Score a blog post or product title based on length, sentiment, and keywords.',
+    icon: <Activity className="w-8 h-8" />,
   },
 ];
 
