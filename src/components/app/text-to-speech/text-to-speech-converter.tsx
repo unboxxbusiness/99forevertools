@@ -108,7 +108,7 @@ export function TextToSpeechConverter() {
       <CardHeader className="text-center">
         <CardTitle className="text-3xl font-bold tracking-tight">Text to Speech Converter</CardTitle>
         <CardDescription>
-          Convert text into spoken audio using your browser's built-in voice.
+          Convert text into spoken audio. Best for short passages due to browser limitations.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
