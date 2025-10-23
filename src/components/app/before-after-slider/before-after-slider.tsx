@@ -4,12 +4,9 @@
 import { useState, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Upload, CheckCircle, Copy, Check, Code } from 'lucide-react';
-import BeforeAfterSlider from 'react-before-after-slider-component';
-import 'react-before-after-slider-component/dist/build.css';
 
 const ImageUploader = ({
   image,
@@ -64,6 +61,50 @@ const ImageUploader = ({
   );
 };
 
+const CustomBeforeAfterSlider = ({ beforeImageUrl, afterImageUrl }: { beforeImageUrl: string, afterImageUrl: string }) => {
+    const [sliderPos, setSliderPos] = useState(50);
+    const containerRef = useRef<HTMLDivElement>(null);
+  
+    const handleMove = (clientX: number) => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const width = containerRef.current.offsetWidth;
+      const newPos = (x / width) * 100;
+      if (newPos > 0 && newPos < 100) {
+        setSliderPos(newPos);
+      }
+    };
+  
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => handleMove(e.clientX);
+    const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => handleMove(e.touches[0].clientX);
+  
+    return (
+      <div
+        ref={containerRef}
+        className="relative w-full aspect-square overflow-hidden cursor-ew-resize select-none"
+        onMouseMove={handleMouseMove}
+        onTouchMove={handleTouchMove}
+      >
+        <img src={afterImageUrl} alt="After" className="absolute top-0 left-0 w-full h-full object-cover" />
+        <div
+          className="absolute top-0 left-0 h-full w-full overflow-hidden"
+          style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
+        >
+          <img src={beforeImageUrl} alt="Before" className="absolute top-0 left-0 w-full h-full object-cover" />
+        </div>
+        <div
+          className="absolute top-0 bottom-0 w-1 bg-white/80 pointer-events-none"
+          style={{ left: `${sliderPos}%`, transform: 'translateX(-50%)' }}
+        >
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/80 border-2 border-white flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-black"><path d="M13 17l5-5-5-5M6 17l5-5-5-5"/></svg>
+            </div>
+        </div>
+      </div>
+    );
+  };
+
 export function BeforeAfterSliderGenerator() {
   const [beforeImage, setBeforeImage] = useState<File | null>(null);
   const [afterImage, setAfterImage] = useState<File | null>(null);
@@ -115,10 +156,10 @@ export function BeforeAfterSliderGenerator() {
         {beforeImageUrl && afterImageUrl && (
           <div className="border-t pt-8 space-y-6">
             <h3 className="text-xl font-semibold text-center">Live Preview</h3>
-            <div className="w-full max-w-lg mx-auto aspect-square">
-              <BeforeAfterSlider
-                beforeImage={{ imageUrl: beforeImageUrl }}
-                afterImage={{ imageUrl: afterImageUrl }}
+            <div className="w-full max-w-lg mx-auto">
+              <CustomBeforeAfterSlider
+                beforeImageUrl={beforeImageUrl}
+                afterImageUrl={afterImageUrl}
               />
             </div>
           </div>
