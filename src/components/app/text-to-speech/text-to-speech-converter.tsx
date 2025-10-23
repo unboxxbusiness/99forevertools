@@ -104,12 +104,25 @@ export function TextToSpeechConverter() {
         audio: { sampleRate: 44100 },
       });
       
-      const audioStream = new MediaStream(stream.getAudioTracks());
-      mediaRecorderRef.current = new MediaRecorder(audioStream);
+      const audioTracks = stream.getAudioTracks();
+      if (audioTracks.length === 0) {
+        toast({
+          variant: 'destructive',
+          title: 'Audio Track Not Found',
+          description: "Please make sure to check the 'Share tab audio' option in the screen sharing dialog.",
+          duration: 8000,
+        });
+        stream.getTracks().forEach(track => track.stop()); // Stop the video track
+        return;
+      }
+
+      mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: 'audio/webm' });
       audioChunksRef.current = [];
 
       mediaRecorderRef.current.ondataavailable = (event) => {
-        audioChunksRef.current.push(event.data);
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
       };
 
       mediaRecorderRef.current.onstop = () => {
@@ -128,7 +141,11 @@ export function TextToSpeechConverter() {
 
     } catch (err) {
       console.error("Error starting recording:", err);
-      toast({ variant: 'destructive', title: 'Recording Error', description: 'Could not start recording. Please grant screen sharing permissions.' });
+      if ((err as Error).name === 'NotAllowedError') {
+         toast({ variant: 'destructive', title: 'Permission Denied', description: 'You need to grant screen sharing permissions to record audio.' });
+      } else {
+         toast({ variant: 'destructive', title: 'Recording Error', description: 'Could not start recording. Please try again.' });
+      }
     }
   };
 
@@ -195,7 +212,7 @@ export function TextToSpeechConverter() {
               <Info className="h-4 w-4" />
               <AlertTitle>How to Record</AlertTitle>
               <AlertDescription>
-                1. Click "Start Recording" and grant permission to share your screen (audio will be captured from the tab).
+                1. Click "Start Recording" and grant permission to share your screen. **Crucially, check the box to "Share tab audio"**.
                 2. Click "Play" to speak the text.
                 3. The recording will stop automatically when speech finishes, or you can click "Stop Recording".
               </AlertDescription>
