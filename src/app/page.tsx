@@ -5,20 +5,18 @@ import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { ToolCard } from '@/components/app/tool-card';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { allTools } from '@/lib/tools';
 import { Search, Star, CalculatorIcon, Paintbrush, Image, MessageSquare, Users, Bot, FileText, Percent, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, Lightbulb, PartyPopper, TrendingUp, MapPin, Hash, PenSquare, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as LinkIcon, Activity, ExternalLink, Camera, Code, Network, Gift, FileJson, TestTube2, Mail, Clock, Binary, MessageSquarePlus, BookOpen, IndianRupee, User as UserIcon } from 'lucide-react';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import React from 'react';
 
 const iconMap: { [key: string]: React.ReactNode } = {
-    Star: <Star className="mr-2 h-4 w-4" />,
-    CalculatorIcon: <CalculatorIcon className="mr-2 h-4 w-4" />,
-    Search: <Search className="mr-2 h-4 w-4" />,
-    Paintbrush: <Paintbrush className="mr-2 h-4 w-4" />,
-    Image: <Image className="mr-2 h-4 w-4" />,
-    MessageSquare: <MessageSquare className="mr-2 h-4 w-4" />,
-    Users: <Users className="mr-2 h-4 w-4" />,
+    Star: <Star className="mr-2 h-5 w-5" />,
+    CalculatorIcon: <CalculatorIcon className="mr-2 h-5 w-5" />,
+    Search: <Search className="mr-2 h-5 w-5" />,
+    Paintbrush: <Paintbrush className="mr-2 h-5 w-5" />,
+    Image: <Image className="mr-2 h-5 w-5" />,
+    MessageSquare: <MessageSquare className="mr-2 h-5 w-5" />,
+    Users: <Users className="mr-2 h-5 w-5" />,
     Bot: <Bot className="mr-2 h-4 w-4" />,
     FileText: <FileText className="mr-2 h-4 w-4" />,
     Percent: <Percent className="mr-2 h-4 w-4" />,
@@ -74,33 +72,18 @@ const toolIconMap: { [key: string]: React.ReactNode } = Object.entries(iconMap).
 }, {} as { [key: string]: React.ReactNode });
 
 export default function Home() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
-  
-  const activeCategory = searchParams.get('category') || 'All';
   const totalTools = allTools.reduce((acc, category) => acc + category.tools.length, 0);
 
-  const setActiveCategory = (category: string) => {
-    const params = new URLSearchParams(searchParams);
-    params.set('category', category);
-    router.push(`${pathname}?${params.toString()}`);
-  };
-
-  const categories = allTools.map(category => ({
-      name: category.category,
-      icon: iconMap[category.icon]
-  }));
-
-  const filteredTools = (
-    activeCategory === 'All'
-      ? allTools.flatMap(category => category.tools)
-      : allTools.find(c => c.category === activeCategory)?.tools || []
-  ).filter(tool =>
-    tool.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    tool.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredCategories = allTools
+    .map(category => ({
+      ...category,
+      tools: category.tools.filter(tool =>
+        tool.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        tool.description.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    }))
+    .filter(category => category.tools.length > 0);
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
@@ -137,45 +120,34 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-2 mb-12 animate-fade-in">
-          <Button 
-            variant={activeCategory === 'All' ? 'default' : 'secondary'}
-            onClick={() => setActiveCategory('All')}
-            className="rounded-full"
-          >
-            All Tools
-          </Button>
-          {categories.map(category => (
-            <Button
-              key={category.name}
-              variant={activeCategory === category.name ? 'default' : 'secondary'}
-              onClick={() => setActiveCategory(category.name)}
-              className="rounded-full gap-2"
-            >
-              {category.icon}
-              {category.name}
-            </Button>
-          ))}
-        </div>
-
-        {filteredTools.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-16">
-            {filteredTools.map((tool, index) => (
-              <div key={`${tool.href}-${index}`} className="animate-fade-in" style={{ animationDelay: `${50 * (index % 12)}ms` }}>
-                <ToolCard
-                  href={tool.href}
-                  title={tool.title}
-                  description={tool.description}
-                  icon={toolIconMap[tool.icon]}
-                />
-              </div>
+        {filteredCategories.length > 0 ? (
+          <div className="space-y-16 pb-24">
+            {filteredCategories.map((category) => (
+              <section key={category.category} className="animate-fade-in">
+                <h2 className="text-2xl font-bold tracking-tight mb-6 flex items-center">
+                  {iconMap[category.icon]}
+                  {category.category}
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {category.tools.map((tool, index) => (
+                    <div key={`${tool.href}-${index}`}>
+                      <ToolCard
+                        href={tool.href}
+                        title={tool.title}
+                        description={tool.description}
+                        icon={toolIconMap[tool.icon]}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </section>
             ))}
           </div>
         ) : (
           <div className="text-center py-16 border-2 border-dashed rounded-lg border-muted">
             <h3 className="mt-4 text-lg font-medium">No tools found</h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Try adjusting your search or filter.
+              Try adjusting your search.
             </p>
           </div>
         )}
@@ -183,5 +155,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
