@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Sparkles, PlusCircle } from 'lucide-react';
+import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Sparkles, PlusCircle, Grid } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -76,6 +76,7 @@ export function SocialMediaImageGenerator() {
   const [bgImageFilter, setBgImageFilter] = useState('none');
   const [overlays, setOverlays] = useState<OverlayConfig[]>([]);
   const [font, setFont] = useState('sans');
+  const [showGrid, setShowGrid] = useState(false);
 
   const [headline, setHeadline] = useState<TextConfig>({
       text: 'Your Headline Here',
@@ -132,6 +133,25 @@ export function SocialMediaImageGenerator() {
         ctx.fillStyle = bgColor;
     }
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    const drawGrid = () => {
+        if (!showGrid) return;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        ctx.lineWidth = 1;
+        const gridSize = 50;
+        for (let x = 0; x < canvas.width; x += gridSize) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, canvas.height);
+            ctx.stroke();
+        }
+        for (let y = 0; y < canvas.height; y += gridSize) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(canvas.width, y);
+            ctx.stroke();
+        }
+    };
 
     const drawBgImage = () => {
         if (!bgImage) return Promise.resolve();
@@ -230,8 +250,11 @@ export function SocialMediaImageGenerator() {
         }
     }
 
-    drawBgImage().then(drawOverlays).then(drawText);
-  }, [bgColor, bgImage, bgImageFilter, overlays, headline, bodyText, template, font, bgType, gradient]);
+    drawBgImage().then(() => {
+        drawGrid(); // Draw grid after background, before overlays and text
+        drawOverlays().then(drawText);
+    });
+  }, [bgColor, bgImage, bgImageFilter, overlays, headline, bodyText, template, font, bgType, gradient, showGrid]);
 
   useEffect(() => {
     drawCanvas();
@@ -492,7 +515,13 @@ export function SocialMediaImageGenerator() {
             </Accordion>
           </div>
           <div className="lg:col-span-2 space-y-4">
-            <h3 className="text-xl font-semibold text-center">Live Preview</h3>
+            <div className="flex justify-between items-center">
+                <h3 className="text-xl font-semibold">Live Preview</h3>
+                <div className="flex items-center space-x-2">
+                    <Checkbox id="show-grid" checked={showGrid} onCheckedChange={(c) => setShowGrid(!!c)} />
+                    <Label htmlFor="show-grid" className="text-sm font-medium">Show Grid</Label>
+                </div>
+            </div>
             <div className="bg-muted/30 p-4 rounded-lg flex justify-center items-center">
               <canvas ref={canvasRef} width={template.width} height={template.height} className="w-full h-auto max-w-full rounded-md shadow-lg" />
             </div>
