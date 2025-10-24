@@ -65,7 +65,7 @@ export function SocialMediaImageGenerator() {
   const [bgImage, setBgImage] = useState<File | null>(null);
   const [bgImageFilter, setBgImageFilter] = useState('none');
   const [overlayImage, setOverlayImage] = useState<File | null>(null);
-  const [overlayImageConfig, setOverlayImageConfig] = useState({ size: 20, x: 50, y: 25 });
+  const [overlayImageConfig, setOverlayImageConfig] = useState({ size: 20, x: 50, y: 25, opacity: 1 });
   const [font, setFont] = useState('sans');
 
   const [headline, setHeadline] = useState<TextConfig>({
@@ -149,7 +149,9 @@ export function SocialMediaImageGenerator() {
                 const overlayHeight = (img.height / img.width) * overlayWidth;
                 const xPos = (canvas.width - overlayWidth) * (overlayImageConfig.x / 100);
                 const yPos = (canvas.height - overlayHeight) * (overlayImageConfig.y / 100);
+                ctx.globalAlpha = overlayImageConfig.opacity;
                 ctx.drawImage(img, xPos, yPos, overlayWidth, overlayHeight);
+                ctx.globalAlpha = 1; // Reset global alpha
                 resolve();
             };
             img.onerror = () => resolve();
@@ -405,6 +407,10 @@ export function SocialMediaImageGenerator() {
                                 <div className="space-y-2">
                                     <Label>Size ({overlayImageConfig.size}%)</Label>
                                     <Slider value={[overlayImageConfig.size]} onValueChange={(v) => setOverlayImageConfig({...overlayImageConfig, size: v[0]})} min={5} max={100} step={1} />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>Opacity ({Math.round(overlayImageConfig.opacity * 100)}%)</Label>
+                                    <Slider value={[overlayImageConfig.opacity]} onValueChange={(v) => setOverlayImageConfig({...overlayImageConfig, opacity: v[0]})} min={0} max={1} step={0.05} />
                                 </div>
                                 <div className="space-y-2">
                                     <Label>Horizontal Position ({overlayImageConfig.x}%)</Label>
