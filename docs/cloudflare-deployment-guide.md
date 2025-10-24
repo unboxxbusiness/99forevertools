@@ -1,11 +1,16 @@
 # Cloudflare Pages Deployment Guide for 99forevertools
 
+## ⚠️ Important Note
+The build configuration MUST be set in the Cloudflare Pages dashboard, not in `wrangler.toml`. 
+Cloudflare Pages projects do not support the `[build]` section in wrangler.toml.
+
 ## ✅ Issue Fixed
 
 The HTTP 404 error occurred because the site was not deployed yet. The build errors have been resolved:
 - ✅ Sitemap dynamic export issue fixed
 - ✅ Dynamic route `/r/[slug]` configuration updated
 - ✅ Build now completes successfully with all 77 pages
+- ✅ Fixed wrangler.toml configuration error
 
 ## 🚀 Deployment Options
 
@@ -31,6 +36,9 @@ The HTTP 404 error occurred because the site was not deployed yet. The build err
    Root directory: app
    Node.js version: 18.x or 20.x
    ```
+
+   **Important**: The build command MUST be set in the Cloudflare dashboard, not in wrangler.toml.
+   Cloudflare Pages projects do not support the [build] section in wrangler.toml.
 
 4. **Environment Variables** (if needed)
    - No environment variables required for basic deployment
@@ -132,10 +140,15 @@ After deployment, you can add a custom domain:
 
 ## 🐛 Troubleshooting
 
+### "Configuration file for Pages projects does not support 'build'" Error
+**Solution**: Remove the `[build]` section from `wrangler.toml`. The build configuration must be set in the Cloudflare Pages dashboard under "Settings" → "Builds & deployments".
+
 ### Build Fails
 - Check Node.js version is 18.x or 20.x
 - Verify all dependencies are installed: `npm install`
 - Check build logs in Cloudflare dashboard
+- Ensure build command is set to: `npm run pages:build`
+- Ensure build output is set to: `.vercel/output/static`
 
 ### 404 Errors After Deployment
 - Wait 2-3 minutes for DNS propagation
