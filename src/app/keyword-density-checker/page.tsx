@@ -1,15 +1,12 @@
+
+'use client';
+import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { KeywordDensityCheckerForm } from '@/components/app/keyword-density-checker-form';
 import { KeywordDensityCheckerResults, type KeywordDensityAnalysis } from '@/components/app/keyword-density-checker-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Keyword Density Checker Tool | 99forevertools',
-  description: 'Check the density of a keyword or phrase within your text to ensure it is optimized for SEO without keyword stuffing.',
-};
 
 const schema = {
   "@context": "https://schema.org",
@@ -25,7 +22,6 @@ const schema = {
 };
 
 function KeywordDensityCheckerWrapper() {
-  'use client';
   const [analysis, setAnalysis] = useState<KeywordDensityAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);

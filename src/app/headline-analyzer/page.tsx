@@ -1,15 +1,12 @@
+
+'use client';
+import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { HeadlineAnalyzerForm } from '@/components/app/headline-analyzer-form';
 import { HeadlineAnalyzerResults, type HeadlineAnalysis } from '@/components/app/headline-analyzer-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Free Headline Analyzer | 99forevertools',
-  description: 'Score your marketing headline based on length, sentiment, clarity, and power words to improve its effectiveness.',
-};
 
 const schema = {
   "@context": "https://schema.org",
@@ -25,7 +22,6 @@ const schema = {
 };
 
 function HeadlineAnalyzerWrapper() {
-  'use client';
   const [analysis, setAnalysis] = useState<HeadlineAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);

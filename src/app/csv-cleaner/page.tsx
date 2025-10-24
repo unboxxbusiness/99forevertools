@@ -32,6 +32,28 @@ const schema = {
   }
 };
 
+// Create a wrapper component to contain the client-side logic
+function CsvCleanerFormWrapper() {
+  const [cleanedData, setCleanedData] = useState<CleanedCsvData>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasGenerated, setHasGenerated] = useState(false);
+
+  return (
+    <div className="space-y-12">
+      <CsvCleanerForm
+        setCleanedData={setCleanedData}
+        setIsLoading={setIsLoading}
+        setHasGenerated={setHasGenerated}
+      />
+      <CsvCleanerResults
+        cleanedData={cleanedData}
+        isLoading={isLoading}
+        hasGenerated={hasGenerated}
+      />
+    </div>
+  );
+}
+
 export default function CsvCleanerPage() {
   // The state and logic are handled within the client components
   return (
@@ -53,28 +75,6 @@ export default function CsvCleanerPage() {
         {/* We pass state management down to the client components */}
         <CsvCleanerFormWrapper />
       </main>
-    </div>
-  );
-}
-
-// Create a wrapper component to contain the client-side logic
-function CsvCleanerFormWrapper() {
-  const [cleanedData, setCleanedData] = useState<CleanedCsvData>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasGenerated, setHasGenerated] = useState(false);
-
-  return (
-    <div className="space-y-12">
-      <CsvCleanerForm
-        setCleanedData={setCleanedData}
-        setIsLoading={setIsLoading}
-        setHasGenerated={setHasGenerated}
-      />
-      <CsvCleanerResults
-        cleanedData={cleanedData}
-        isLoading={isLoading}
-        hasGenerated={hasGenerated}
-      />
     </div>
   );
 }

@@ -1,15 +1,12 @@
+
+'use client';
+import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { TermsAndConditionsGeneratorForm } from '@/components/app/terms-and-conditions-generator/terms-and-conditions-generator-form';
 import { TermsAndConditionsGeneratorResults } from '@/components/app/terms-and-conditions-generator/terms-and-conditions-generator-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Terms and Conditions Generator | 99forevertools',
-  description: 'Generate a generic Terms & Conditions document for your website or app. Fill in your company details to create a template.',
-};
 
 const schema = {
   "@context": "https://schema.org",
@@ -25,7 +22,6 @@ const schema = {
 };
 
 function TermsAndConditionsWrapper() {
-  'use client';
   const [terms, setTerms] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);

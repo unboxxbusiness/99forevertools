@@ -1,15 +1,12 @@
+
+'use client';
+import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { MetaTagGeneratorForm } from '@/components/app/meta-tag-generator-form';
 import { MetaTagGeneratorResults } from '@/components/app/meta-tag-generator-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'SERP Preview & Meta Tag Generator | 99forevertools',
-  description: 'Preview how your meta title and description will look on a Google search result page (SERP) and generate the HTML tags.',
-};
 
 const schema = {
   "@context": "https://schema.org",
@@ -25,7 +22,6 @@ const schema = {
 };
 
 function MetaTagGeneratorWrapper() {
-  'use client';
   const [title, setTitle] = useState('Example Title | Brand Name');
   const [description, setDescription] = useState('This is an example of a meta description. It should be concise and relevant to the page content, aiming for around 155 characters.');
   return (

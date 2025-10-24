@@ -1,15 +1,12 @@
+
+'use client';
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/app/header';
 import { RobotsTxtGeneratorForm, type RobotsConfig } from '@/components/app/robots-txt-generator-form';
 import { RobotsTxtGeneratorResults } from '@/components/app/robots-txt-generator-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Robots.txt Generator | 99forevertools',
-  description: 'Create a robots.txt file to guide search engine crawlers. Set default policies and add custom rules for specific user-agents.',
-};
 
 const schema = {
   "@context": "https://schema.org",
@@ -25,7 +22,6 @@ const schema = {
 };
 
 function RobotsTxtGeneratorWrapper() {
-  'use client';
   const [config, setConfig] = useState<RobotsConfig>({
     defaultPolicy: 'allowAll',
     sitemap: '',

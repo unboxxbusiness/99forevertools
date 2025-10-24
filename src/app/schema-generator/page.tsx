@@ -1,17 +1,14 @@
+
+'use client';
+import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { SchemaGeneratorForm } from '@/components/app/schema-generator/schema-generator-form';
 import { SchemaResults } from '@/components/app/schema-generator/schema-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Schema Markup Generator (JSON-LD) | 99forevertools',
-  description: 'Generate structured data markup for Articles, FAQs, and Local Businesses to improve your SEO and get rich snippets.',
-};
-
-const schema = {
+const schemaJson = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "Schema Markup Generator (JSON-LD)",
@@ -25,7 +22,6 @@ const schema = {
 };
 
 function SchemaGeneratorWrapper() {
-  'use client';
   const [schema, setSchema] = useState<string>('');
 
   return (
@@ -41,7 +37,7 @@ export default function SchemaGeneratorPage() {
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }}
       />
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">

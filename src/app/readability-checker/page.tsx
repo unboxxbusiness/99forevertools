@@ -1,15 +1,12 @@
+
+'use client';
+import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { ReadabilityCheckerForm } from '@/components/app/readability-checker-form';
 import { ReadabilityCheckerResults, type ReadabilityAnalysis } from '@/components/app/readability-checker-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Readability Checker | 99forevertools',
-  description: 'Calculate the Flesch-Kincaid readability score of your text to see how easy it is to understand.',
-};
 
 const schema = {
   "@context": "https://schema.org",
@@ -25,7 +22,6 @@ const schema = {
 };
 
 function ReadabilityCheckerWrapper() {
-  'use client';
   const [analysis, setAnalysis] = useState<ReadabilityAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);

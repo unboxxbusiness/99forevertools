@@ -1,15 +1,12 @@
+
+'use client';
+import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { EmailSubjectLineTesterForm } from '@/components/app/email-subject-line-tester-form';
 import { EmailSubjectLineTesterResults, type SubjectLineAnalysis } from '@/components/app/email-subject-line-tester-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Email Subject Line Tester | 99forevertools',
-  description: 'Analyze your email subject lines for potential issues like spam triggers, length, and sentiment to improve open rates.',
-};
 
 const schema = {
   "@context": "https://schema.org",
@@ -25,7 +22,6 @@ const schema = {
 };
 
 function EmailSubjectLineTesterPageWrapper() {
-  'use client';
   const [analysis, setAnalysis] = useState<SubjectLineAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);

@@ -1,6 +1,5 @@
 
 'use client';
-
 import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { QrCodeGeneratorForm, type QrCodeConfig } from '@/components/app/qr-code-generator/qr-code-generator-form';
