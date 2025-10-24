@@ -1,15 +1,12 @@
+
+'use client';
+import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { PrivacyPolicyGeneratorForm } from '@/components/app/privacy-policy-generator/privacy-policy-generator-form';
 import { PrivacyPolicyGeneratorResults } from '@/components/app/privacy-policy-generator/privacy-policy-generator-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Privacy Policy Generator | 99forevertools',
-  description: 'Generate a basic, generic privacy policy for your website or app. Fill in your details to create a starting template.',
-};
 
 const schema = {
   "@context": "https://schema.org",
@@ -25,7 +22,6 @@ const schema = {
 };
 
 function PrivacyPolicyGeneratorWrapper() {
-  'use client';
   const [policy, setPolicy] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
