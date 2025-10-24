@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Shapes, Square, Circle, Triangle, Layers, ChevronsUp, ChevronsDown, ChevronUp, ChevronDown } from 'lucide-react';
+import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Shapes, Square, Circle, Triangle, Layers, ChevronsUp, ChevronsDown, ChevronUp, ChevronDown, ZoomIn } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -39,6 +39,7 @@ export function SocialMediaImageGenerator() {
   const [bgColor, setBgColor] = useState('#1a1a1a');
   const [activeObject, setActiveObject] = useState<fabric.Object | null>(null);
   const [canvasObjects, setCanvasObjects] = useState<fabric.Object[]>([]);
+  const [zoom, setZoom] = useState(1);
 
   const { toast } = useToast();
 
@@ -56,6 +57,8 @@ export function SocialMediaImageGenerator() {
             height: template.height,
             backgroundColor: bgColor,
             selection: true,
+            fireRightClick: true, // Enable right-click
+            stopContextMenu: true, // Prevent default browser context menu
         });
         fabricCanvasRef.current = canvas;
 
@@ -101,6 +104,12 @@ export function SocialMediaImageGenerator() {
     }
     
     const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.altKey && canvas) {
+            canvas.isGrabMode = true;
+            canvas.selection = false;
+            canvas.defaultCursor = 'grab';
+            canvas.renderAll();
+        }
         if ((e.key === 'Delete' || e.key === 'Backspace') && canvas?.getActiveObject()) {
             canvas.remove(canvas.getActiveObject()!);
             canvas.discardActiveObject();
@@ -108,10 +117,79 @@ export function SocialMediaImageGenerator() {
         }
     };
     
+    const handleKeyUp = (e: KeyboardEvent) => {
+        if (!e.altKey && canvas) {
+            canvas.isGrabMode = false;
+            canvas.selection = true;
+            canvas.defaultCursor = 'default';
+            canvas.renderAll();
+        }
+    };
+    
+    const handleMouseWheel = (opt: fabric.IEvent<WheelEvent>) => {
+        const delta = opt.e.deltaY;
+        const canvas = fabricCanvasRef.current;
+        if (!canvas || !opt.e.ctrlKey) return;
+        
+        let newZoom = canvas.getZoom();
+        newZoom *= 0.999 ** delta;
+        if (newZoom > 4) newZoom = 4;
+        if (newZoom < 0.25) newZoom = 0.25;
+
+        canvas.zoomToPoint(new fabric.Point(opt.e.offsetX, opt.e.offsetY), newZoom);
+        setZoom(newZoom);
+        opt.e.preventDefault();
+        opt.e.stopPropagation();
+    };
+
+    const handleMouseDown = (opt: fabric.IEvent<MouseEvent>) => {
+        const canvas = fabricCanvasRef.current;
+        if (canvas && canvas.isGrabMode) {
+            const evt = opt.e;
+            canvas.isDragging = true;
+            canvas.selection = false;
+            canvas.lastPosX = evt.clientX;
+            canvas.lastPosY = evt.clientY;
+        }
+    };
+    
+    const handleMouseMove = (opt: fabric.IEvent<MouseEvent>) => {
+        const canvas = fabricCanvasRef.current;
+         if (canvas && canvas.isDragging) {
+            const e = opt.e;
+            const vpt = canvas.viewportTransform;
+            if (vpt) {
+                vpt[4] += e.clientX - (canvas.lastPosX ?? 0);
+                vpt[5] += e.clientY - (canvas.lastPosY ?? 0);
+                canvas.requestRenderAll();
+            }
+            canvas.lastPosX = e.clientX;
+            canvas.lastPosY = e.clientY;
+        }
+    }
+    
+    const handleMouseUp = () => {
+        const canvas = fabricCanvasRef.current;
+        if (canvas) {
+            canvas.isDragging = false;
+            canvas.selection = true;
+        }
+    }
+    
     window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    canvas?.on('mouse:wheel', handleMouseWheel);
+    canvas?.on('mouse:down', handleMouseDown);
+    canvas?.on('mouse:move', handleMouseMove);
+    canvas?.on('mouse:up', handleMouseUp);
 
     return () => {
         window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('keyup', handleKeyUp);
+        canvas?.off('mouse:wheel', handleMouseWheel);
+        canvas?.off('mouse:down', handleMouseDown);
+        canvas?.off('mouse:move', handleMouseMove);
+        canvas?.off('mouse:up', handleMouseUp);
     };
   }, [initCanvas]);
 
@@ -123,6 +201,15 @@ export function SocialMediaImageGenerator() {
       canvas.setBackgroundColor(bgColor, canvas.renderAll.bind(canvas));
     }
   }, [template, bgColor]);
+
+  const handleZoomChange = (value: number) => {
+    const canvas = fabricCanvasRef.current;
+    if (canvas) {
+        const center = canvas.getCenter();
+        canvas.zoomToPoint(new fabric.Point(center.left, center.top), value);
+        setZoom(value);
+    }
+  }
 
   const handleBgFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -424,8 +511,21 @@ export function SocialMediaImageGenerator() {
                         </RadioGroup>
                     </AccordionContent>
                 </AccordionItem>
+                <AccordionItem value="canvas">
+                    <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><ZoomIn/>2. Canvas</AccordionTrigger>
+                    <AccordionContent className="pt-4 space-y-4">
+                        <div className="space-y-2">
+                            <Label>Zoom ({Math.round(zoom * 100)}%)</Label>
+                            <Slider value={[zoom]} onValueChange={(v) => handleZoomChange(v[0])} min={0.25} max={4} step={0.05} />
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                            <p>Hold <kbd className="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">Alt</kbd> to drag/pan the canvas.</p>
+                            <p className="mt-1">Hold <kbd className="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">Ctrl</kbd> + Scroll to zoom.</p>
+                        </div>
+                    </AccordionContent>
+                </AccordionItem>
                 <AccordionItem value="background">
-                    <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><Palette/>2. Background</AccordionTrigger>
+                    <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><Palette/>3. Background</AccordionTrigger>
                     <AccordionContent className="pt-4 space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="bgColor">Solid Color</Label>
@@ -439,7 +539,7 @@ export function SocialMediaImageGenerator() {
                     </AccordionContent>
                 </AccordionItem>
                  <AccordionItem value="elements">
-                     <AccordionTrigger className="text-lg font-semibold">3. Add Elements</AccordionTrigger>
+                     <AccordionTrigger className="text-lg font-semibold">4. Add Elements</AccordionTrigger>
                      <AccordionContent className="pt-4 space-y-4">
                          <Button variant="outline" className="w-full" onClick={() => overlayImageInputRef.current?.click()}><ImageIcon className="mr-2"/> Add Image/Logo</Button>
                          <Input type="file" ref={overlayImageInputRef} onChange={addImageOverlay} className="hidden" accept="image/*" />
@@ -457,13 +557,13 @@ export function SocialMediaImageGenerator() {
                      </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="layers">
-                    <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><Layers/>4. Layers</AccordionTrigger>
+                    <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><Layers/>5. Layers</AccordionTrigger>
                     <AccordionContent className="pt-4">
                         <LayersPanel/>
                     </AccordionContent>
                 </AccordionItem>
                  <AccordionItem value="properties">
-                     <AccordionTrigger className="text-lg font-semibold">5. Properties</AccordionTrigger>
+                     <AccordionTrigger className="text-lg font-semibold">6. Properties</AccordionTrigger>
                      <AccordionContent>
                          <PropertiesPanel />
                      </AccordionContent>
@@ -474,7 +574,7 @@ export function SocialMediaImageGenerator() {
             </Button>
           </div>
           <div className="lg:col-span-3 space-y-4">
-            <div className="bg-muted/30 p-4 rounded-lg flex justify-center items-center overflow-auto">
+            <div className="bg-muted/30 p-4 rounded-lg flex justify-center items-center overflow-auto h-[700px]">
               <canvas ref={canvasRef} className="rounded-md shadow-lg" />
             </div>
           </div>
