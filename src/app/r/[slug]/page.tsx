@@ -3,15 +3,6 @@
 
 import { useEffect } from 'react';
 import { useSearchParams, notFound } from 'next/navigation';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Redirecting...',
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
 
 export default function RedirectPage() {
   const searchParams = useSearchParams();

@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArticleForm } from './article-form';
@@ -55,7 +55,7 @@ export function SchemaGeneratorForm({ setSchema }: SchemaGeneratorFormProps) {
                         <li>Select the type of content you want to create schema for (e.g., Article, FAQ).</li>
                         <li>Fill in the specific details about your content in the form provided.</li>
                         <li>Click "Generate Schema" to create the JSON-LD structured data.</li>
-                        <li>Copy the generated script tag and paste it into the `<head>` section of your webpage's HTML.</li>
+                        <li>Copy the generated script tag and paste it into the &lt;head&gt; section of your webpage&apos;s HTML.</li>
                     </ol>
                 </AccordionContent>
             </AccordionItem>
