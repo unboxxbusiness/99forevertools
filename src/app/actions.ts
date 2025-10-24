@@ -376,17 +376,12 @@ const cleanRow = (row: { [key: string]: string }): { [key: string]: string } => 
 
   for (const key in row) {
     let value = row[key];
-    // Ensure value is a string before calling .trim()
-    if (typeof value !== 'string') {
-        value = String(value || '');
-    }
-    const lowerKey = key.toLowerCase();
-
+    
     // Trim whitespace
     value = value.trim();
 
     // Name standardization
-    if (lowerKey.includes('name')) {
+    if (key.toLowerCase().includes('name')) {
       value = value
         .split(' ')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -394,7 +389,7 @@ const cleanRow = (row: { [key: string]: string }): { [key: string]: string } => 
     }
     
     // Phone number standardization (basic example)
-    if (lowerKey.includes('phone') || lowerKey.includes('mobile')) {
+    if (key.toLowerCase().includes('phone') || key.toLowerCase().includes('mobile')) {
         value = value.replace(/[^0-9]/g, '');
         if (value.length === 10) {
            value = `+91-${value.slice(0, 5)}-${value.slice(5)}`;
@@ -402,11 +397,11 @@ const cleanRow = (row: { [key: string]: string }): { [key: string]: string } => 
     }
 
     // Email standardization
-    if (lowerKey.includes('email')) {
+    if (key.toLowerCase().includes('email')) {
         value = value.toLowerCase();
     }
 
-    cleaned[lowerKey] = value;
+    cleaned[key.toLowerCase()] = value;
   }
   return cleaned;
 };
@@ -422,7 +417,8 @@ const parseCSV = (content: string): { headers: string[], rows: { [key: string]: 
     const values = line.split(',');
     const rowObject: { [key: string]: string } = {};
     headers.forEach((header, index) => {
-      rowObject[header] = values[index] ?? ''; // Ensure value is a string
+      // If a value is missing for a column, default to an empty string.
+      rowObject[header] = values[index] ?? ''; 
     });
     return rowObject;
   });
@@ -461,3 +457,4 @@ export async function cleanCsvAction(values: z.infer<typeof csvSchema>) {
     
 
     
+
