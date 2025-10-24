@@ -1,6 +1,7 @@
 
 'use client';
 
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArticleForm } from './article-form';
@@ -8,7 +9,6 @@ import { FaqForm } from './faq-form';
 import { LocalBusinessForm } from './local-business-form';
 import { Briefcase, FileText, HelpCircle, Lightbulb } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import React from 'react';
 
 type SchemaGeneratorFormProps = {
   setSchema: (schema: string) => void;
