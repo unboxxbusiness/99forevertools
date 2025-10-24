@@ -431,7 +431,17 @@ export async function cleanCsvAction(values: z.infer<typeof csvSchema>) {
         const { csvContent } = values;
         const { headers, rows } = parseCSV(csvContent);
         
-        const cleanedRows = rows.map(cleanRow);
+        if (headers.length === 0) {
+          return { data: { headers: [], rows: [] }};
+        }
+
+        const cleanedRows = rows.map(row => {
+            const fullRow: { [key: string]: string } = {};
+            headers.forEach(header => {
+                fullRow[header] = row[header] || '';
+            });
+            return cleanRow(fullRow);
+        });
 
         const cleanedHeaders = Array.from(new Set(cleanedRows.flatMap(row => Object.keys(row))));
 
@@ -457,5 +467,6 @@ export async function cleanCsvAction(values: z.infer<typeof csvSchema>) {
     
 
     
+
 
 
