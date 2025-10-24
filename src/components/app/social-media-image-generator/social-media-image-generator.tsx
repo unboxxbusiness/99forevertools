@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Shapes, Square, Circle, Triangle, Layers, ChevronsUp, ChevronsDown, ChevronUp, ChevronDown, ZoomIn } from 'lucide-react';
+import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Shapes, Square, Circle, Triangle, Layers, ChevronsUp, ChevronsDown, ChevronUp, ChevronDown, ZoomIn, Save, FolderOpen } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -43,6 +43,8 @@ export function SocialMediaImageGenerator() {
   const [zoom, setZoom] = useState(1);
 
   const { toast } = useToast();
+  
+  const projectFileInputRef = useRef<HTMLInputElement>(null);
 
   const updateCanvasObjects = () => {
     const canvas = fabricCanvasRef.current;
@@ -368,6 +370,40 @@ export function SocialMediaImageGenerator() {
     }
   }
 
+  const saveProject = () => {
+    const canvas = fabricCanvasRef.current;
+    if (!canvas) return;
+
+    const json = canvas.toJSON();
+    const blob = new Blob([JSON.stringify(json, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.download = 'design-project.json';
+    link.href = url;
+    link.click();
+    URL.revokeObjectURL(url);
+    toast({ title: 'Project saved!' });
+  }
+
+  const loadProject = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const json = e.target?.result as string;
+        const canvas = fabricCanvasRef.current;
+        if (canvas) {
+            canvas.loadFromJSON(json, () => {
+                canvas.renderAll();
+                updateCanvasObjects();
+                toast({ title: 'Project loaded!' });
+            });
+        }
+    };
+    reader.readAsText(file);
+  }
+
   const PropertiesPanel = () => {
     if (!activeObject) {
       return (
@@ -498,9 +534,17 @@ export function SocialMediaImageGenerator() {
       <CardContent>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1 space-y-6">
-            <Accordion type="multiple" defaultValue={['template', 'background', 'layers']} className="w-full">
+            <Accordion type="multiple" defaultValue={['project', 'template', 'background', 'layers']} className="w-full">
+                <AccordionItem value="project">
+                    <AccordionTrigger className="text-lg font-semibold">Project</AccordionTrigger>
+                    <AccordionContent className="pt-4 space-y-2">
+                         <Button variant="outline" className="w-full" onClick={saveProject}><Save className="mr-2"/> Save Project</Button>
+                         <Button variant="outline" className="w-full" onClick={() => projectFileInputRef.current?.click()}><FolderOpen className="mr-2"/> Load Project</Button>
+                         <Input type="file" ref={projectFileInputRef} onChange={loadProject} className="hidden" accept=".json"/>
+                    </AccordionContent>
+                </AccordionItem>
                 <AccordionItem value="template">
-                    <AccordionTrigger className="text-lg font-semibold">1. Template</AccordionTrigger>
+                    <AccordionTrigger className="text-lg font-semibold">Template</AccordionTrigger>
                     <AccordionContent className="pt-4">
                         <RadioGroup value={template.name} onValueChange={(val) => setTemplate(TEMPLATES.find(t => t.name === val) || TEMPLATES[0])} className="space-y-2">
                             {TEMPLATES.map(t => (
@@ -513,7 +557,7 @@ export function SocialMediaImageGenerator() {
                     </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="canvas">
-                    <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><ZoomIn/>2. Canvas</AccordionTrigger>
+                    <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><ZoomIn/>Canvas</AccordionTrigger>
                     <AccordionContent className="pt-4 space-y-4">
                         <div className="space-y-2">
                             <Label>Zoom ({Math.round(zoom * 100)}%)</Label>
@@ -526,7 +570,7 @@ export function SocialMediaImageGenerator() {
                     </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="background">
-                    <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><Palette/>3. Background</AccordionTrigger>
+                    <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><Palette/>Background</AccordionTrigger>
                     <AccordionContent className="pt-4 space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="bgColor">Solid Color</Label>
@@ -540,7 +584,7 @@ export function SocialMediaImageGenerator() {
                     </AccordionContent>
                 </AccordionItem>
                  <AccordionItem value="elements">
-                     <AccordionTrigger className="text-lg font-semibold">4. Add Elements</AccordionTrigger>
+                     <AccordionTrigger className="text-lg font-semibold">Add Elements</AccordionTrigger>
                      <AccordionContent className="pt-4 space-y-4">
                          <Button variant="outline" className="w-full" onClick={() => overlayImageInputRef.current?.click()}><ImageIcon className="mr-2"/> Add Image/Logo</Button>
                          <Input type="file" ref={overlayImageInputRef} onChange={addImageOverlay} className="hidden" accept="image/*" />
@@ -558,13 +602,13 @@ export function SocialMediaImageGenerator() {
                      </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="layers">
-                    <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><Layers/>5. Layers</AccordionTrigger>
+                    <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><Layers/>Layers</AccordionTrigger>
                     <AccordionContent className="pt-4">
                         <LayersPanel/>
                     </AccordionContent>
                 </AccordionItem>
                  <AccordionItem value="properties">
-                     <AccordionTrigger className="text-lg font-semibold">6. Properties</AccordionTrigger>
+                     <AccordionTrigger className="text-lg font-semibold">Properties</AccordionTrigger>
                      <AccordionContent>
                          <PropertiesPanel />
                      </AccordionContent>
