@@ -1,15 +1,13 @@
+
+'use client';
+
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/app/header';
 import { UtmLinkBuilderForm, type UtmParams } from '@/components/app/utm-link-builder/utm-link-builder-form';
 import { UtmLinkBuilderResults } from '@/components/app/utm-link-builder/utm-link-builder-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'UTM Link Builder | 99forevertools',
-  description: 'Create URLs with UTM parameters to track your marketing campaigns in Google Analytics and other tools.',
-};
 
 const schema = {
   "@context": "https://schema.org",
@@ -25,7 +23,6 @@ const schema = {
 };
 
 function UtmLinkBuilderWrapper() {
-  'use client';
   const [utmParams, setUtmParams] = useState<UtmParams>({
     url: '',
     source: '',
