@@ -410,6 +410,9 @@ const cleanRow = (row: { [key: string]: string }): { [key: string]: string } => 
 // Extremely basic CSV parser
 const parseCSV = (content: string): { headers: string[], rows: { [key: string]: string }[] } => {
   const lines = content.split('\n').filter(line => line.trim() !== '');
+  if (lines.length === 0) {
+    return { headers: [], rows: [] };
+  }
   const headers = lines[0].split(',').map(h => h.trim());
   const rows = lines.slice(1).map(line => {
     const values = line.split(',');
@@ -439,6 +442,7 @@ export async function cleanCsvAction(values: z.infer<typeof csvSchema>) {
     }
 }
     
+
 
 
 
