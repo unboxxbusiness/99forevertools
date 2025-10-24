@@ -376,6 +376,10 @@ const cleanRow = (row: { [key: string]: string }): { [key: string]: string } => 
 
   for (const key in row) {
     let value = row[key];
+    // Ensure value is a string before calling .trim()
+    if (typeof value !== 'string') {
+        value = String(value || '');
+    }
     const lowerKey = key.toLowerCase();
 
     // Trim whitespace
@@ -409,7 +413,7 @@ const cleanRow = (row: { [key: string]: string }): { [key: string]: string } => 
 
 // Extremely basic CSV parser
 const parseCSV = (content: string): { headers: string[], rows: { [key: string]: string }[] } => {
-  const lines = content.split('\n').filter(line => line.trim() !== '');
+  const lines = content.split('\n').filter(line => line && line.trim() !== '');
   if (lines.length === 0) {
     return { headers: [], rows: [] };
   }
@@ -418,12 +422,7 @@ const parseCSV = (content: string): { headers: string[], rows: { [key: string]: 
     const values = line.split(',');
     const rowObject: { [key: string]: string } = {};
     headers.forEach((header, index) => {
-      // Ensure we don't try to access an index that doesn't exist on values
-      if (index < values.length) {
-        rowObject[header] = (values[index] || '').trim();
-      } else {
-        rowObject[header] = '';
-      }
+      rowObject[header] = values[index]; // Keep as is, cleanRow will handle it.
     });
     return rowObject;
   });
@@ -456,5 +455,9 @@ export async function cleanCsvAction(values: z.infer<typeof csvSchema>) {
 
 
 
+
+    
+
+    
 
     
