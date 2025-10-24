@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Sparkles } from 'lucide-react';
+import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Sparkles, PlusCircle } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -56,6 +56,16 @@ interface TextConfig {
     y: number;
 }
 
+interface OverlayConfig {
+    id: number;
+    file: File;
+    src: string;
+    size: number;
+    x: number;
+    y: number;
+    opacity: number;
+}
+
 
 export function SocialMediaImageGenerator() {
   const [template, setTemplate] = useState(TEMPLATES[0]);
@@ -64,8 +74,7 @@ export function SocialMediaImageGenerator() {
   const [gradient, setGradient] = useState({ from: '#1a1a1a', to: '#333333' });
   const [bgImage, setBgImage] = useState<File | null>(null);
   const [bgImageFilter, setBgImageFilter] = useState('none');
-  const [overlayImage, setOverlayImage] = useState<File | null>(null);
-  const [overlayImageConfig, setOverlayImageConfig] = useState({ size: 20, x: 50, y: 25, opacity: 1 });
+  const [overlays, setOverlays] = useState<OverlayConfig[]>([]);
   const [font, setFont] = useState('sans');
 
   const [headline, setHeadline] = useState<TextConfig>({
@@ -139,22 +148,25 @@ export function SocialMediaImageGenerator() {
         });
     };
 
-    const drawOverlay = () => {
-        if (!overlayImage) return Promise.resolve();
-        return new Promise<void>((resolve) => {
-            const img = new Image();
-            img.src = URL.createObjectURL(overlayImage);
-            img.onload = () => {
-                const overlayWidth = canvas.width * (overlayImageConfig.size / 100);
-                const overlayHeight = (img.height / img.width) * overlayWidth;
-                const xPos = (canvas.width - overlayWidth) * (overlayImageConfig.x / 100);
-                const yPos = (canvas.height - overlayHeight) * (overlayImageConfig.y / 100);
-                ctx.globalAlpha = overlayImageConfig.opacity;
-                ctx.drawImage(img, xPos, yPos, overlayWidth, overlayHeight);
-                ctx.globalAlpha = 1; // Reset global alpha
-                resolve();
-            };
-            img.onerror = () => resolve();
+    const drawOverlays = () => {
+        const overlayPromises = overlays.map(overlay => {
+            return new Promise<void>(resolve => {
+                const img = new Image();
+                img.src = overlay.src;
+                img.onload = () => {
+                    const overlayWidth = canvas.width * (overlay.size / 100);
+                    const overlayHeight = (img.height / img.width) * overlayWidth;
+                    const xPos = (canvas.width - overlayWidth) * (overlay.x / 100);
+                    const yPos = (canvas.height - overlayHeight) * (overlay.y / 100);
+                    ctx.globalAlpha = overlay.opacity;
+                    ctx.drawImage(img, xPos, yPos, overlayWidth, overlayHeight);
+                    resolve();
+                };
+                img.onerror = () => resolve();
+            });
+        });
+        return Promise.all(overlayPromises).then(() => {
+            ctx.globalAlpha = 1; // Reset global alpha
         });
     };
 
@@ -218,21 +230,47 @@ export function SocialMediaImageGenerator() {
         }
     }
 
-    drawBgImage().then(drawOverlay).then(drawText);
-  }, [bgColor, bgImage, bgImageFilter, overlayImage, headline, bodyText, template, overlayImageConfig, font, bgType, gradient]);
+    drawBgImage().then(drawOverlays).then(drawText);
+  }, [bgColor, bgImage, bgImageFilter, overlays, headline, bodyText, template, font, bgType, gradient]);
 
   useEffect(() => {
     drawCanvas();
   }, [drawCanvas]);
 
-  const handleFileChange = (setter: React.Dispatch<React.SetStateAction<File | null>>) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBgFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith('image/')) {
-        setter(file);
+        setBgImage(file);
     } else if (file) {
         toast({ variant: 'destructive', title: 'Invalid file type', description: 'Please upload an image.' });
     }
   };
+
+  const handleAddOverlay = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+        const newOverlay: OverlayConfig = {
+            id: Date.now(),
+            file: file,
+            src: URL.createObjectURL(file),
+            size: 20,
+            x: 50,
+            y: 25,
+            opacity: 1,
+        };
+        setOverlays([...overlays, newOverlay]);
+    } else if (file) {
+        toast({ variant: 'destructive', title: 'Invalid file type', description: 'Please upload an image for the overlay.' });
+    }
+  };
+  
+  const handleOverlayChange = (id: number, newConfig: Partial<OverlayConfig>) => {
+    setOverlays(overlays.map(o => o.id === id ? {...o, ...newConfig} : o));
+  }
+
+  const removeOverlay = (id: number) => {
+    setOverlays(overlays.filter(o => o.id !== id));
+  }
 
   const downloadImage = () => {
     const canvas = canvasRef.current;
@@ -380,7 +418,7 @@ export function SocialMediaImageGenerator() {
                         <div className="space-y-2 pt-4 border-t">
                             <Label>Image</Label>
                             <Button variant="outline" className="w-full" onClick={() => bgImageInputRef.current?.click()}><Upload className="mr-2"/> Upload Background Image</Button>
-                            <Input type="file" ref={bgImageInputRef} onChange={handleFileChange(setBgImage)} className="hidden" accept="image/*" />
+                            <Input type="file" ref={bgImageInputRef} onChange={handleBgFileChange} className="hidden" accept="image/*" />
                             {bgImage && (
                                 <div className="space-y-2 pt-2 animate-fade-in">
                                     <Button variant="ghost" size="sm" className="text-destructive w-full" onClick={() => setBgImage(null)}><Trash2 className="mr-2"/>Remove Image</Button>
@@ -397,31 +435,36 @@ export function SocialMediaImageGenerator() {
                     </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="overlay">
-                     <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><ImageIcon/>3. Overlay/Logo</AccordionTrigger>
+                     <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><ImageIcon/>3. Overlays</AccordionTrigger>
                      <AccordionContent className="pt-4 space-y-4">
-                         <Button variant="outline" className="w-full" onClick={() => overlayImageInputRef.current?.click()}><Upload className="mr-2"/> Upload Logo</Button>
-                        <Input type="file" ref={overlayImageInputRef} onChange={handleFileChange(setOverlayImage)} className="hidden" accept="image/*" />
-                        {overlayImage && <Button variant="ghost" size="sm" className="text-destructive w-full" onClick={() => setOverlayImage(null)}><Trash2 className="mr-2"/>Remove Logo</Button>}
-                        {overlayImage && (
-                            <div className="space-y-4 pt-4 border-t animate-fade-in">
-                                <div className="space-y-2">
-                                    <Label>Size ({overlayImageConfig.size}%)</Label>
-                                    <Slider value={[overlayImageConfig.size]} onValueChange={(v) => setOverlayImageConfig({...overlayImageConfig, size: v[0]})} min={5} max={100} step={1} />
+                         {overlays.map((overlay, index) => (
+                             <div key={overlay.id} className="p-4 border rounded-lg space-y-4 animate-fade-in">
+                                 <div className="flex justify-between items-center">
+                                    <Label className="font-medium">Overlay {index + 1}</Label>
+                                    <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive" onClick={() => removeOverlay(overlay.id)}>
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Opacity ({Math.round(overlayImageConfig.opacity * 100)}%)</Label>
-                                    <Slider value={[overlayImageConfig.opacity]} onValueChange={(v) => setOverlayImageConfig({...overlayImageConfig, opacity: v[0]})} min={0} max={1} step={0.05} />
+                                    <Label>Size ({overlay.size}%)</Label>
+                                    <Slider value={[overlay.size]} onValueChange={(v) => handleOverlayChange(overlay.id, {size: v[0]})} min={5} max={100} step={1} />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Horizontal Position ({overlayImageConfig.x}%)</Label>
-                                    <Slider value={[overlayImageConfig.x]} onValueChange={(v) => setOverlayImageConfig({...overlayImageConfig, x: v[0]})} min={0} max={100} step={1} />
+                                    <Label>Opacity ({Math.round(overlay.opacity * 100)}%)</Label>
+                                    <Slider value={[overlay.opacity]} onValueChange={(v) => handleOverlayChange(overlay.id, {opacity: v[0]})} min={0} max={1} step={0.05} />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Vertical Position ({overlayImageConfig.y}%)</Label>
-                                    <Slider value={[overlayImageConfig.y]} onValueChange={(v) => setOverlayImageConfig({...overlayImageConfig, y: v[0]})} min={0} max={100} step={1} />
+                                    <Label>Horizontal Position ({overlay.x}%)</Label>
+                                    <Slider value={[overlay.x]} onValueChange={(v) => handleOverlayChange(overlay.id, {x: v[0]})} min={0} max={100} step={1} />
                                 </div>
-                            </div>
-                        )}
+                                <div className="space-y-2">
+                                    <Label>Vertical Position ({overlay.y}%)</Label>
+                                    <Slider value={[overlay.y]} onValueChange={(v) => handleOverlayChange(overlay.id, {y: v[0]})} min={0} max={100} step={1} />
+                                </div>
+                             </div>
+                         ))}
+                         <Button variant="outline" className="w-full" onClick={() => overlayImageInputRef.current?.click()}><PlusCircle className="mr-2"/> Add Overlay Image</Button>
+                        <Input type="file" ref={overlayImageInputRef} onChange={handleAddOverlay} className="hidden" accept="image/*" />
                      </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="text">
