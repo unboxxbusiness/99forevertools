@@ -172,9 +172,7 @@ export function SocialMediaImageGenerator() {
                 ctx.shadowOffsetY = config.shadow.offsetY;
             }
 
-            let xPos = (canvas.width / 100) * config.x;
-            if (config.align === 'left') xPos = canvas.width * 0.05;
-            if (config.align === 'right') xPos = canvas.width * 0.95;
+            const xPos = (canvas.width / 100) * config.x;
 
             wrapText(ctx, config.text, xPos, (canvas.height / 100) * config.y, canvas.width - (canvas.width * 0.1), size * 1.2);
             
@@ -197,7 +195,7 @@ export function SocialMediaImageGenerator() {
             const testLine = line + words[n] + ' ';
             const metrics = context.measureText(testLine);
             const testWidth = metrics.width;
-            if (testWidth > maxWidth && n > 0) {
+            if (testWidth > maxWidth && n > 0 && context.textAlign !== 'center') {
                 lines.push(line);
                 line = words[n] + ' ';
             } else {
@@ -208,8 +206,10 @@ export function SocialMediaImageGenerator() {
 
         const totalHeight = lines.length * lineHeight;
         let startY = y;
-        // This logic is simplified, might need adjustment for perfect vertical centering
-        startY = y - totalHeight / 2 + lineHeight / 2;
+
+        if (context.textAlign === 'center') {
+             startY = y - totalHeight / 2 + lineHeight / 2;
+        }
 
         for (let i = 0; i < lines.length; i++) {
             context.fillText(lines[i].trim(), x, startY + i * lineHeight);
@@ -284,11 +284,11 @@ export function SocialMediaImageGenerator() {
                 <AccordionTrigger>Position</AccordionTrigger>
                 <AccordionContent className="pt-4 space-y-4">
                      <div className="space-y-2">
-                        <Label>X Position ({config.x}%)</Label>
+                        <Label>Horizontal Position ({config.x}%)</Label>
                         <Slider value={[config.x]} onValueChange={(v) => setConfig({...config, x: v[0]})} min={0} max={100} step={1} />
                     </div>
                      <div className="space-y-2">
-                        <Label>Y Position ({config.y}%)</Label>
+                        <Label>Vertical Position ({config.y}%)</Label>
                         <Slider value={[config.y]} onValueChange={(v) => setConfig({...config, y: v[0]})} min={0} max={100} step={1} />
                     </div>
                 </AccordionContent>
