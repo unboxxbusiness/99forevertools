@@ -139,22 +139,24 @@ export function SocialMediaImageGenerator() {
   }
 
   useEffect(() => {
-     addText('Your Headline Here', {
-         fontSize: 80,
-         fill: '#FFFFFF',
-         textAlign: 'center',
-         fontFamily: fontFamilies[font],
-         top: 40,
-         fontWeight: 'bold',
-         shadow: new fabric.Shadow({ color: 'rgba(0,0,0,0.5)', blur: 5, offsetX: 2, offsetY: 2 }),
-     });
-      addText('This is a great place for a short, descriptive paragraph.', {
-         fontSize: 40,
-         fill: '#DDDDDD',
-         textAlign: 'center',
-         fontFamily: fontFamilies[font],
-         top: 60,
-     });
+     if(fabricCanvasRef.current) {
+        addText('Your Headline Here', {
+            fontSize: 80,
+            fill: '#FFFFFF',
+            textAlign: 'center',
+            fontFamily: fontFamilies[font],
+            top: 40,
+            fontWeight: 'bold',
+            shadow: new fabric.Shadow({ color: 'rgba(0,0,0,0.5)', blur: 5, offsetX: 2, offsetY: 2 }),
+        });
+        addText('This is a great place for a short, descriptive paragraph.', {
+            fontSize: 40,
+            fill: '#DDDDDD',
+            textAlign: 'center',
+            fontFamily: fontFamilies[font],
+            top: 60,
+        });
+     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fabricCanvasRef.current]);
 
