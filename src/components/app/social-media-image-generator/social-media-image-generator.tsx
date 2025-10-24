@@ -11,16 +11,13 @@ import { useToast } from '@/hooks/use-toast';
 import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Sparkles } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const TEMPLATES = [
     { name: 'Instagram Post', width: 1080, height: 1080 },
-    { name: 'LinkedIn Post', width: 1200, height: 627 },
-    { name: 'Twitter/X Post', width: 1600, height: 900 },
     { name: 'YouTube Banner', width: 2560, height: 1440 },
     { name: 'Facebook Cover', width: 820, height: 312 },
+    { name: 'LinkedIn Post', width: 1200, height: 627 },
+    { name: 'Twitter/X Post', width: 1600, height: 900 },
 ];
 
 const fontFamilies: { [key: string]: string } = {
@@ -53,17 +50,13 @@ export function SocialMediaImageGenerator() {
       text: 'Your Headline Here',
       size: 80,
       color: '#FFFFFF',
-      x: 50,
-      y: 40,
-      shadow: { enabled: true, color: '#000000', blur: 10, offsetX: 5, offsetY: 5 }
+      align: 'center' as CanvasTextAlign,
     });
   const [bodyText, setBodyText] = useState({
       text: 'This is a great place for a short, descriptive paragraph.',
       size: 40,
       color: '#DDDDDD',
-      x: 50,
-      y: 60,
-      shadow: { enabled: false, color: '#000000', blur: 5, offsetX: 2, offsetY: 2 }
+      align: 'center' as CanvasTextAlign,
     });
 
   const bgImageInputRef = useRef<HTMLInputElement>(null);
@@ -129,35 +122,22 @@ export function SocialMediaImageGenerator() {
         // Headline
         const headlineSize = canvas.width * (headline.size / 2000);
         ctx.font = `bold ${headlineSize}px ${fontFamily}`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        if (headline.shadow.enabled) {
-            ctx.shadowColor = headline.shadow.color;
-            ctx.shadowBlur = headline.shadow.blur;
-            ctx.shadowOffsetX = headline.shadow.offsetX;
-            ctx.shadowOffsetY = headline.shadow.offsetY;
-        }
         ctx.fillStyle = headline.color;
-        const headlineX = canvas.width * (headline.x / 100);
-        const headlineY = canvas.height * (headline.y / 100);
-        wrapText(ctx, headline.text, headlineX, headlineY, canvas.width - (canvas.width * 0.1), headlineSize * 1.2);
-        ctx.shadowColor = 'transparent'; // Reset shadow
+        ctx.textAlign = headline.align;
+        let headlineX = canvas.width / 2;
+        if (headline.align === 'left') headlineX = canvas.width * 0.05;
+        if (headline.align === 'right') headlineX = canvas.width * 0.95;
+        wrapText(ctx, headline.text, headlineX, canvas.height * 0.4, canvas.width - (canvas.width * 0.1), headlineSize * 1.2);
 
         // Body Text
         const bodySize = canvas.width * (bodyText.size / 2000);
         ctx.font = `${bodySize}px ${fontFamily}`;
-        ctx.textAlign = 'center';
-        if (bodyText.shadow.enabled) {
-            ctx.shadowColor = bodyText.shadow.color;
-            ctx.shadowBlur = bodyText.shadow.blur;
-            ctx.shadowOffsetX = bodyText.shadow.offsetX;
-            ctx.shadowOffsetY = bodyText.shadow.offsetY;
-        }
         ctx.fillStyle = bodyText.color;
-        const bodyX = canvas.width * (bodyText.x / 100);
-        const bodyY = canvas.height * (bodyText.y / 100);
-        wrapText(ctx, bodyText.text, bodyX, bodyY, canvas.width - (canvas.width * 0.2), bodySize * 1.2);
-        ctx.shadowColor = 'transparent'; // Reset shadow
+        ctx.textAlign = bodyText.align;
+        let bodyX = canvas.width / 2;
+        if (bodyText.align === 'left') bodyX = canvas.width * 0.1;
+        if (bodyText.align === 'right') bodyX = canvas.width * 0.9;
+        wrapText(ctx, bodyText.text, bodyX, canvas.height * 0.6, canvas.width - (canvas.width * 0.2), bodySize * 1.2);
     };
 
     const wrapText = (context: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) => {
@@ -220,61 +200,35 @@ export function SocialMediaImageGenerator() {
     config: typeof headline,
     setConfig: React.Dispatch<React.SetStateAction<typeof headline>>
   }) => (
-    <Accordion type="single" collapsible>
-        <AccordionItem value="item-1">
-            <AccordionTrigger>{label}</AccordionTrigger>
-            <AccordionContent className="space-y-4 pt-4">
-                 <div className="space-y-2">
-                    <Label>Text</Label>
-                    <Input value={config.text} onChange={(e) => setConfig({...config, text: e.target.value})} />
-                </div>
-                <div className="space-y-2">
-                    <Label>Font Size: {config.size}px</Label>
-                    <Slider value={[config.size]} onValueChange={(v) => setConfig({...config, size: v[0]})} min={20} max={200} step={1} />
-                </div>
-                 <div className="space-y-2">
-                    <Label>Color</Label>
-                    <Input type="color" value={config.color} onChange={(e) => setConfig({...config, color: e.target.value})} className="p-1 h-10 w-full" />
-                </div>
-                <div className="space-y-2">
-                    <Label>X Position: {config.x}%</Label>
-                    <Slider value={[config.x]} onValueChange={(v) => setConfig({...config, x: v[0]})} min={0} max={100} step={1} />
-                </div>
-                 <div className="space-y-2">
-                    <Label>Y Position: {config.y}%</Label>
-                    <Slider value={[config.y]} onValueChange={(v) => setConfig({...config, y: v[0]})} min={0} max={100} step={1} />
-                </div>
-                 <div className="space-y-2 pt-4 border-t">
-                    <div className="flex items-center gap-2">
-                        <Checkbox id={`${label}-shadow`} checked={config.shadow.enabled} onCheckedChange={(checked) => setConfig({...config, shadow: {...config.shadow, enabled: !!checked}})} />
-                        <Label htmlFor={`${label}-shadow`}>Text Shadow</Label>
-                    </div>
-                     {config.shadow.enabled && (
-                        <div className="space-y-2 pl-4 animate-fade-in">
-                             <div className="space-y-1">
-                                <Label>Shadow Color</Label>
-                                <Input type="color" value={config.shadow.color} onChange={(e) => setConfig({...config, shadow: {...config.shadow, color: e.target.value}})} className="p-1 h-8 w-full" />
-                            </div>
-                            <div className="space-y-1">
-                                <Label>Blur: {config.shadow.blur}px</Label>
-                                <Slider value={[config.shadow.blur]} onValueChange={(v) => setConfig({...config, shadow: {...config.shadow, blur: v[0]}})} min={0} max={50} step={1} />
-                            </div>
-                            <div className="grid grid-cols-2 gap-2">
-                                <div className="space-y-1">
-                                    <Label>Offset X: {config.shadow.offsetX}px</Label>
-                                    <Slider value={[config.shadow.offsetX]} onValueChange={(v) => setConfig({...config, shadow: {...config.shadow, offsetX: v[0]}})} min={-20} max={20} step={1} />
-                                </div>
-                                <div className="space-y-1">
-                                    <Label>Offset Y: {config.shadow.offsetY}px</Label>
-                                    <Slider value={[config.shadow.offsetY]} onValueChange={(v) => setConfig({...config, shadow: {...config.shadow, offsetY: v[0]}})} min={-20} max={20} step={1} />
-                                </div>
-                            </div>
-                        </div>
-                     )}
-                </div>
-            </AccordionContent>
-        </AccordionItem>
-    </Accordion>
+    <div className="space-y-4">
+        <h4 className="font-medium">{label}</h4>
+        <div className="space-y-2">
+            <Label>Text</Label>
+            <Input value={config.text} onChange={(e) => setConfig({...config, text: e.target.value})} />
+        </div>
+        <div className="space-y-2">
+            <Label>Font Size: {config.size}px</Label>
+            <Slider value={[config.size]} onValueChange={(v) => setConfig({...config, size: v[0]})} min={20} max={200} step={1} />
+        </div>
+        <div className="space-y-2">
+            <Label>Color</Label>
+            <Input type="color" value={config.color} onChange={(e) => setConfig({...config, color: e.target.value})} className="p-1 h-10 w-full" />
+        </div>
+        <div className="space-y-2">
+            <Label>Alignment</Label>
+            <RadioGroup value={config.align} onValueChange={(v) => setConfig({...config, align: v as CanvasTextAlign})} className="flex gap-2">
+                <Label className="flex-1 text-center border rounded-md p-2 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer text-sm h-10 justify-center items-center flex">
+                    <RadioGroupItem value="left" className="sr-only" /><AlignLeft/>
+                </Label>
+                <Label className="flex-1 text-center border rounded-md p-2 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer text-sm h-10 justify-center items-center flex">
+                    <RadioGroupItem value="center" className="sr-only" /><AlignCenter/>
+                </Label>
+                <Label className="flex-1 text-center border rounded-md p-2 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer text-sm h-10 justify-center items-center flex">
+                    <RadioGroupItem value="right" className="sr-only" /><AlignRight/>
+                </Label>
+            </RadioGroup>
+        </div>
+    </div>
   );
 
   return (
