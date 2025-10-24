@@ -1,83 +1,50 @@
-import { MetadataRoute } from 'next';
+'use server';
+/**
+ * @fileOverview A flow for generating ad copy.
+ */
+import {ai} from '@/ai/genkit';
+import {z} from 'genkit';
 
-const tools = [
-  '/gst-calculator',
-  '/business-loan-emi-calculator',
-  '/profit-margin-calculator',
-  '/break-even-point-calculator',
-  '/salary-to-ctc-calculator',
-  '/hra-exemption-calculator',
-  '/pf-calculator',
-  '/discount-calculator',
-  '/unit-price-calculator',
-  '/business-valuation-calculator',
-  '/compound-interest-calculator',
-  '/loan-repayment-calculator',
-  '/roi-calculator',
-  '/salary-sacrifice-calculator',
-  '/about-us-generator',
-  '/meta-tag-generator',
-  '/headline-analyzer',
-  '/keyword-density-checker',
-  '/readability-checker',
-  '/lorem-ipsum-generator',
-  '/press-release-title-generator',
-  '/word-counter',
-  '/case-converter',
-  '/hashtag-generator',
-  '/robots-txt-generator',
-  '/schema-generator',
-  '/utm-link-builder',
-  '/invoice-generator',
-  '/business-slogan-generator',
-  '/business-name-generator',
-  '/image-compressor',
-  '/image-resizer',
-  '/logo-maker',
-  '/color-palette-generator',
-  '/watermark-adder',
-  '/before-after-slider',
-  '/gif-maker',
-  '/favicon-generator',
-  '/youtube-thumbnail-preview',
-  '/qr-code-generator',
-  '/vcard-qr-code-generator',
-  '/whatsapp-link-generator',
-  '/festival-wish-generator',
-  '/google-maps-link-generator',
-  '/review-link-generator',
-  '/privacy-policy-generator',
-  '/terms-and-conditions-generator',
-  '/email-signature-generator',
-  '/text-to-speech',
-  '/wav-to-mp3-converter',
-  '/url-shortener',
-  '/what-is-my-ip',
-  '/discount-coupon-generator',
-  '/digital-business-card',
-  '/email-permutator',
-  '/email-subject-line-tester',
-  '/time-zone-converter',
-  '/csv-cleaner',
-  '/password-generator',
-  '/image-to-base64-converter',
-  '/image-to-png-converter',
-  '/photo-filter-studio',
-];
+const AdCopyInputSchema = z.object({
+  productName: z.string().describe('The name of the product or service.'),
+  description: z.string().describe('A brief description of the product or service.'),
+  targetAudience: z.string().describe('The intended audience for the ad.'),
+});
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://99forevertools.com'; // Change to your actual domain
+export type AdCopyInput = z.infer<typeof AdCopyInputSchema>;
 
-  const toolUrls = tools.map(tool => ({
-    url: `${baseUrl}${tool}`,
-    lastModified: new Date(),
-  }));
+const AdCopyOutputSchema = z.object({
+  headline: z.string().describe('A catchy headline for the ad.'),
+  body: z.string().describe('The main body text of the ad copy.'),
+});
 
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-    },
-    ...toolUrls,
-  ];
+export type AdCopyOutput = z.infer<typeof AdCopyOutputSchema>;
+
+export async function generateAdCopy(input: AdCopyInput): Promise<AdCopyOutput> {
+  return adCopyFlow(input);
 }
+
+const prompt = ai.definePrompt({
+  name: 'adCopyPrompt',
+  input: {schema: AdCopyInputSchema},
+  output: {schema: AdCopyOutputSchema},
+  prompt: `You are an expert copywriter. Generate a compelling ad for the following product.
+
+Product Name: {{{productName}}}
+Description: {{{description}}}
+Target Audience: {{{targetAudience}}}
+
+Generate a catchy headline and a persuasive body for the ad.`,
+});
+
+const adCopyFlow = ai.defineFlow(
+  {
+    name: 'adCopyFlow',
+    inputSchema: AdCopyInputSchema,
+    outputSchema: AdCopyOutputSchema,
+  },
+  async input => {
+    const {output} = await prompt(input);
+    return output!;
+  }
+);

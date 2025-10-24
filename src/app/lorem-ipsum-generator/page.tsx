@@ -1,4 +1,3 @@
-
 'use client';
 import { useState } from 'react';
 import { Header } from '@/components/app/header';
@@ -7,19 +6,6 @@ import { LoremIpsumGeneratorResults } from '@/components/app/lorem-ipsum-generat
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Lorem Ipsum Generator",
-  "applicationCategory": "TextApplication",
-  "operatingSystem": "Web",
-  "description": "A free tool to generate placeholder text (Lorem Ipsum) for mockups and designs.",
-  "offers": {
-    "@type": "Offer",
-    "price": "0"
-  }
-};
 
 function LoremIpsumGeneratorWrapper() {
   const [text, setText] = useState('');
@@ -48,10 +34,6 @@ function LoremIpsumGeneratorWrapper() {
 export default function LoremIpsumGeneratorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="mb-6">

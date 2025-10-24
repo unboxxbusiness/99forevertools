@@ -8,19 +8,6 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Email Permutator",
-  "applicationCategory": "BusinessApplication",
-  "operatingSystem": "Web",
-  "description": "A free tool to generate a list of possible email addresses for a person based on their first name, last name, and a domain.",
-  "offers": {
-    "@type": "Offer",
-    "price": "0"
-  }
-};
-
 function EmailPermutatorPageWrapper() {
   const [emails, setEmails] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,10 +32,6 @@ function EmailPermutatorPageWrapper() {
 export default function EmailPermutatorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="mb-6">

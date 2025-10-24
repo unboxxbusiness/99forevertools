@@ -8,19 +8,6 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Readability Checker",
-  "applicationCategory": "TextApplication",
-  "operatingSystem": "Web",
-  "description": "A free tool to calculate the Flesch-Kincaid readability score of a text to determine its ease of understanding.",
-  "offers": {
-    "@type": "Offer",
-    "price": "0"
-  }
-};
-
 function ReadabilityCheckerWrapper() {
   const [analysis, setAnalysis] = useState<ReadabilityAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,10 +32,6 @@ function ReadabilityCheckerWrapper() {
 export default function ReadabilityCheckerPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="mb-6">

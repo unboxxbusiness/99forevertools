@@ -7,30 +7,11 @@ import { CsvCleanerResults } from '@/components/app/csv-cleaner-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Free CSV Cleaner Tool | 99forevertools',
-  description: 'Clean and standardize data in your CSV files. Upload a CSV of leads to standardize formatting for names, phone numbers, and more.',
-};
 
 export type CleanedCsvData = {
   headers: string[];
   rows: { [key: string]: string }[];
 } | null;
-
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "CSV Cleaner Tool",
-  "applicationCategory": "BusinessApplication",
-  "operatingSystem": "Web",
-  "description": "A free tool to clean and standardize data in CSV files, such as standardizing formatting for names and phone numbers.",
-  "offers": {
-    "@type": "Offer",
-    "price": "0"
-  }
-};
 
 // Create a wrapper component to contain the client-side logic
 function CsvCleanerFormWrapper() {
@@ -55,13 +36,8 @@ function CsvCleanerFormWrapper() {
 }
 
 export default function CsvCleanerPage() {
-  // The state and logic are handled within the client components
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="mb-6">
@@ -72,7 +48,6 @@ export default function CsvCleanerPage() {
             </Link>
           </Button>
         </div>
-        {/* We pass state management down to the client components */}
         <CsvCleanerFormWrapper />
       </main>
     </div>

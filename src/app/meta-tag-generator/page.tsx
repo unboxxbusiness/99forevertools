@@ -8,19 +8,6 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "SERP Preview & Meta Tag Generator",
-  "applicationCategory": "BusinessApplication",
-  "operatingSystem": "Web",
-  "description": "A free tool to preview how a meta title and description will look on a Google search result page (SERP) and generate the HTML tags.",
-  "offers": {
-    "@type": "Offer",
-    "price": "0"
-  }
-};
-
 function MetaTagGeneratorWrapper() {
   const [title, setTitle] = useState('Example Title | Brand Name');
   const [description, setDescription] = useState('This is an example of a meta description. It should be concise and relevant to the page content, aiming for around 155 characters.');
@@ -43,10 +30,6 @@ function MetaTagGeneratorWrapper() {
 export default function MetaTagGeneratorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="mb-6">
