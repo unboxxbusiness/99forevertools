@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Sparkles, PlusCircle, Grid } from 'lucide-react';
+import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Sparkles, PlusCircle, Grid, Save, FolderOpen } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -58,21 +58,42 @@ interface TextConfig {
 
 interface OverlayConfig {
     id: number;
-    file: File;
-    src: string;
+    src: string; // Base64 or URL
     size: number;
     x: number;
     y: number;
     opacity: number;
 }
 
+// Full project state
+interface ProjectState {
+    template: { name: string; width: number; height: number; };
+    bgType: 'color' | 'gradient';
+    bgColor: string;
+    gradient: { from: string; to: string; };
+    bgImage: string | null; // Base64
+    bgImageFilter: string;
+    overlays: OverlayConfig[];
+    font: string;
+    headline: TextConfig;
+    bodyText: TextConfig;
+}
+
+const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = error => reject(error);
+    });
+};
 
 export function SocialMediaImageGenerator() {
   const [template, setTemplate] = useState(TEMPLATES[0]);
   const [bgType, setBgType] = useState<'color' | 'gradient'>('color');
   const [bgColor, setBgColor] = useState('#1a1a1a');
   const [gradient, setGradient] = useState({ from: '#1a1a1a', to: '#333333' });
-  const [bgImage, setBgImage] = useState<File | null>(null);
+  const [bgImage, setBgImage] = useState<string | null>(null); // Now stores base64
   const [bgImageFilter, setBgImageFilter] = useState('none');
   const [overlays, setOverlays] = useState<OverlayConfig[]>([]);
   const [font, setFont] = useState('sans');
@@ -111,6 +132,7 @@ export function SocialMediaImageGenerator() {
 
   const bgImageInputRef = useRef<HTMLInputElement>(null);
   const overlayImageInputRef = useRef<HTMLInputElement>(null);
+  const loadProjectInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toast } = useToast();
 
@@ -157,7 +179,7 @@ export function SocialMediaImageGenerator() {
         if (!bgImage) return Promise.resolve();
         return new Promise<void>((resolve) => {
             const img = new Image();
-            img.src = URL.createObjectURL(bgImage);
+            img.src = bgImage;
             img.onload = () => {
                 ctx.filter = bgImageFilter;
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
@@ -260,22 +282,21 @@ export function SocialMediaImageGenerator() {
     drawCanvas();
   }, [drawCanvas]);
 
-  const handleBgFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBgFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith('image/')) {
-        setBgImage(file);
+        setBgImage(await fileToBase64(file));
     } else if (file) {
         toast({ variant: 'destructive', title: 'Invalid file type', description: 'Please upload an image.' });
     }
   };
 
-  const handleAddOverlay = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAddOverlay = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith('image/')) {
         const newOverlay: OverlayConfig = {
             id: Date.now(),
-            file: file,
-            src: URL.createObjectURL(file),
+            src: await fileToBase64(file),
             size: 20,
             x: 50,
             y: 25,
@@ -287,7 +308,7 @@ export function SocialMediaImageGenerator() {
     }
   };
   
-  const handleOverlayChange = (id: number, newConfig: Partial<OverlayConfig>) => {
+  const handleOverlayChange = (id: number, newConfig: Partial<Omit<OverlayConfig, 'id' | 'src'>>) => {
     setOverlays(overlays.map(o => o.id === id ? {...o, ...newConfig} : o));
   }
 
@@ -303,6 +324,59 @@ export function SocialMediaImageGenerator() {
     link.href = canvas.toDataURL('image/png');
     link.click();
     toast({ title: 'Image downloaded!' });
+  };
+  
+  const saveProject = () => {
+    const projectState: ProjectState = {
+        template,
+        bgType,
+        bgColor,
+        gradient,
+        bgImage,
+        bgImageFilter,
+        overlays,
+        font,
+        headline,
+        bodyText,
+    };
+    const blob = new Blob([JSON.stringify(projectState, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'social-media-project.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    toast({ title: 'Project Saved!' });
+  };
+
+  const loadProject = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || file.type !== 'application/json') {
+        toast({ variant: 'destructive', title: 'Invalid File', description: 'Please upload a valid project JSON file.' });
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const projectState = JSON.parse(e.target?.result as string) as ProjectState;
+            setTemplate(projectState.template);
+            setBgType(projectState.bgType);
+            setBgColor(projectState.bgColor);
+            setGradient(projectState.gradient);
+            setBgImage(projectState.bgImage);
+            setBgImageFilter(projectState.bgImageFilter);
+            setOverlays(projectState.overlays);
+            setFont(projectState.font);
+            setHeadline(projectState.headline);
+            setBodyText(projectState.bodyText);
+            toast({ title: 'Project Loaded!' });
+        } catch (error) {
+            toast({ variant: 'destructive', title: 'Error Loading Project', description: 'The project file is corrupted or invalid.' });
+        }
+    };
+    reader.readAsText(file);
+    // Reset file input to allow loading the same file again
+    event.target.value = '';
   };
 
   const TextControls = ({
@@ -510,6 +584,18 @@ export function SocialMediaImageGenerator() {
                         <div className="space-y-2 pt-4 border-t">
                             <TextControls label="Body Text" config={bodyText} setConfig={setBodyText} />
                         </div>
+                    </AccordionContent>
+                </AccordionItem>
+                 <AccordionItem value="project">
+                    <AccordionTrigger className="text-lg font-semibold">5. Project</AccordionTrigger>
+                    <AccordionContent className="pt-4 space-y-4">
+                       <Button onClick={saveProject} className="w-full">
+                            <Save className="mr-2"/> Save Project
+                       </Button>
+                       <Button variant="outline" className="w-full" onClick={() => loadProjectInputRef.current?.click()}>
+                            <FolderOpen className="mr-2"/> Load Project
+                       </Button>
+                       <Input type="file" ref={loadProjectInputRef} onChange={loadProject} className="hidden" accept=".json"/>
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>
