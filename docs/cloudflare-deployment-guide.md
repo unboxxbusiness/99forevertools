@@ -1,16 +1,16 @@
 # Cloudflare Pages Deployment Guide for 99forevertools
 
 ## ⚠️ Important Note
-The build configuration MUST be set in the Cloudflare Pages dashboard, not in `wrangler.toml`. 
-Cloudflare Pages projects do not support the `[build]` section in wrangler.toml.
+**No wrangler.toml file is needed!** Cloudflare Pages projects are configured entirely through the dashboard.
+All build settings must be configured in the Cloudflare Pages dashboard interface.
 
 ## ✅ Issue Fixed
 
-The HTTP 404 error occurred because the site was not deployed yet. The build errors have been resolved:
+The HTTP 404 error occurred because the site was not deployed yet. All issues have been resolved:
 - ✅ Sitemap dynamic export issue fixed
 - ✅ Dynamic route `/r/[slug]` configuration updated
 - ✅ Build now completes successfully with all 77 pages
-- ✅ Fixed wrangler.toml configuration error
+- ✅ Removed wrangler.toml to avoid configuration conflicts
 
 ## 🚀 Deployment Options
 
@@ -49,7 +49,9 @@ The HTTP 404 error occurred because the site was not deployed yet. The build err
    - First build takes 3-5 minutes
    - Site will be live at: `https://99forevertools.pages.dev`
 
-### Option 2: Deploy with Wrangler CLI
+### Option 2: Deploy via Command Line
+
+**Note:** Since we removed `wrangler.toml`, you'll need to specify options directly:
 
 1. **Install Wrangler**
    ```powershell
@@ -61,11 +63,18 @@ The HTTP 404 error occurred because the site was not deployed yet. The build err
    wrangler login
    ```
 
-3. **Build and Deploy**
+3. **Build Your Project**
    ```powershell
    cd e:\99tools\app
-   npm run deploy
+   npm run pages:build
    ```
+
+4. **Deploy**
+   ```powershell
+   wrangler pages deploy .vercel/output/static --project-name=99forevertools
+   ```
+
+   If this is your first deployment, you'll be prompted to create the project.
 
 ### Option 3: Automatic Deployment with GitHub Actions
 
@@ -106,12 +115,14 @@ The `.github/workflows/deploy.yml` file is already configured for automatic depl
 
 ## 📝 Configuration Files Created
 
-1. **`wrangler.toml`** - Cloudflare Pages configuration
-2. **`.github/workflows/deploy.yml`** - GitHub Actions workflow for auto-deployment
-3. **`package.json`** - Added deployment scripts:
+1. **`.github/workflows/deploy.yml`** - GitHub Actions workflow for auto-deployment
+2. **`package.json`** - Added deployment scripts:
    - `npm run pages:build` - Build for Cloudflare Pages
    - `npm run preview` - Preview locally
    - `npm run deploy` - Deploy to Cloudflare
+3. **`CLOUDFLARE_SETTINGS.md`** - Quick reference for dashboard settings
+
+**Note:** `wrangler.toml` is NOT needed and has been removed to avoid conflicts.
 
 ## 🔧 Build Configuration
 
@@ -141,7 +152,16 @@ After deployment, you can add a custom domain:
 ## 🐛 Troubleshooting
 
 ### "Configuration file for Pages projects does not support 'build'" Error
-**Solution**: Remove the `[build]` section from `wrangler.toml`. The build configuration must be set in the Cloudflare Pages dashboard under "Settings" → "Builds & deployments".
+**Solution**: This has been fixed by removing `wrangler.toml`. The file is not needed for Cloudflare Pages.
+All build configuration is done through the Cloudflare dashboard.
+
+### Old Commit Being Deployed
+If Cloudflare is deploying an old commit:
+1. Go to Cloudflare Pages dashboard
+2. Click "Deployments" tab
+3. Find the latest deployment
+4. Click "Retry deployment" or "View details" → "Retry deployment"
+5. Verify it's using the latest commit from GitHub
 
 ### Build Fails
 - Check Node.js version is 18.x or 20.x

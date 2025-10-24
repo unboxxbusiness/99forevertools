@@ -1,5 +1,9 @@
 # Cloudflare Pages Build Settings - Quick Reference
 
+## ⚠️ Important: No wrangler.toml Needed!
+Cloudflare Pages projects are configured entirely through the dashboard.
+The `wrangler.toml` file has been removed to avoid conflicts.
+
 ## 📋 Copy these settings EXACTLY into Cloudflare Dashboard
 
 ### Project Settings
