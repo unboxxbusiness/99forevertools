@@ -14,7 +14,7 @@ export default function RedirectPage() {
       try {
         // Basic validation for the destination URL
         const url = new URL(destination);
-        if (['http:', 'https:'].includes(url.protocol)) {
+        if (['http:', 'https:].includes(url.protocol)) {
             window.location.replace(destination);
         } else {
             console.error("Invalid protocol for redirection.");

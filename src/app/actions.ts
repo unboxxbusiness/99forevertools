@@ -406,24 +406,24 @@ const cleanRow = (row: { [key: string]: string }): { [key: string]: string } => 
   return cleaned;
 };
 
-// Extremely basic CSV parser
+// Robust CSV parser
 const parseCSV = (content: string): { headers: string[], rows: { [key: string]: string }[] } => {
-  const lines = content.split('\n').filter(line => line && line.trim() !== '');
-  if (lines.length === 0) {
-    return { headers: [], rows: [] };
-  }
-  const headers = lines[0].split(',').map(h => h.trim());
-  const rows = lines.slice(1).map(line => {
-    const values = line.split(',');
-    const rowObject: { [key: string]: string } = {};
-    headers.forEach((header, index) => {
-      // If a value is missing for a column, default to an empty string.
-      rowObject[header] = values[index] ?? ''; 
+    const lines = content.split('\n').filter(line => line.trim() !== '');
+    if (lines.length === 0) {
+      return { headers: [], rows: [] };
+    }
+    const headers = lines[0].split(',').map(h => h.trim());
+    const rows = lines.slice(1).map(line => {
+      const values = line.split(',');
+      const rowObject: { [key: string]: string } = {};
+      headers.forEach((header, index) => {
+        // If a value is missing for a column, default to an empty string.
+        rowObject[header] = values[index] ?? ''; 
+      });
+      return rowObject;
     });
-    return rowObject;
-  });
-  return { headers, rows };
-};
+    return { headers, rows };
+  };
 
 
 export async function cleanCsvAction(values: z.infer<typeof csvSchema>) {
@@ -457,4 +457,5 @@ export async function cleanCsvAction(values: z.infer<typeof csvSchema>) {
     
 
     
+
 
