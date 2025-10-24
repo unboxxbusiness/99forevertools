@@ -422,7 +422,7 @@ const parseCSV = (content: string): { headers: string[], rows: { [key: string]: 
     const values = line.split(',');
     const rowObject: { [key: string]: string } = {};
     headers.forEach((header, index) => {
-      rowObject[header] = values[index]; // Keep as is, cleanRow will handle it.
+      rowObject[header] = values[index] ?? ''; // Ensure value is a string
     });
     return rowObject;
   });
