@@ -12,6 +12,9 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 export const metadata: Metadata = {
   title: 'Marketing ToolKit',
   description: 'Your one-stop solution for marketing tools',
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
