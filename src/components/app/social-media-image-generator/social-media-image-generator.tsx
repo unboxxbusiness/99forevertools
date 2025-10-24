@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Sparkles, PlusCircle, Grid, Save, FolderOpen } from 'lucide-react';
+import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -31,26 +31,6 @@ const fontFamilies: { [key: string]: string } = {
   mono: 'monospace',
 };
 
-const FILTERS = [
-  { name: 'None', filter: null },
-  { name: 'Grayscale', filter: new fabric.Image.filters.Grayscale() },
-  { name: 'Sepia', filter: new fabric.Image.filters.Sepia() },
-  { name: 'Vintage', filter: new fabric.Image.filters.Vintage() },
-  { name: 'Invert', filter: new fabric.Image.filters.Invert() },
-  { name: 'Lomo', filter: new fabric.Image.filters.ColorMatrix({
-    matrix: [
-      1.1, 0, 0, 0, 0,
-      0, 1.1, 0, 0, 0,
-      0, 0, 1.1, 0, 0,
-      0, 0, 0, 1, 0
-    ]
-  })},
-  { name: 'Clarity', filter: new fabric.Image.filters.Convolute({
-      matrix: [0, -1, 0, -1, 5, -1, 0, -1, 0]
-    })
-  },
-];
-
 export function SocialMediaImageGenerator() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
@@ -71,9 +51,14 @@ export function SocialMediaImageGenerator() {
         });
         fabricCanvasRef.current = canvas;
 
-        canvas.on('selection:created', (e) => setActiveObject(e.selected?.[0] || null));
-        canvas.on('selection:updated', (e) => setActiveObject(e.selected?.[0] || null));
+        const updateActiveObject = (e: fabric.IEvent) => {
+          setActiveObject(canvas.getActiveObject());
+        };
+
+        canvas.on('selection:created', updateActiveObject);
+        canvas.on('selection:updated', updateActiveObject);
         canvas.on('selection:cleared', () => setActiveObject(null));
+        canvas.on('object:modified', updateActiveObject);
         
         // Add initial text elements
         addText('Your Headline Here', {
@@ -116,7 +101,6 @@ export function SocialMediaImageGenerator() {
 
     return () => {
         window.removeEventListener('keydown', handleKeyDown);
-        // Do not dispose canvas on cleanup to maintain state on re-render
     };
   }, [initCanvas]);
 
@@ -203,6 +187,9 @@ export function SocialMediaImageGenerator() {
     if (active) {
         active.set(props);
         canvas?.renderAll();
+        // Force re-render of properties panel
+        setActiveObject(null);
+        setActiveObject(active);
     }
   }
 
@@ -237,15 +224,42 @@ export function SocialMediaImageGenerator() {
                 <div className="space-y-4">
                     <div>
                         <Label>Text Content</Label>
-                        <Textarea value={activeObject.text} onChange={(e) => updateActiveObject({ text: e.target.value })}/>
+                        <Textarea value={(activeObject as fabric.Textbox).text} onChange={(e) => updateActiveObject({ text: e.target.value })}/>
                     </div>
                      <div>
                         <Label>Font Size</Label>
-                        <Input type="number" value={activeObject.fontSize} onChange={(e) => updateActiveObject({ fontSize: parseInt(e.target.value, 10) })}/>
+                        <Input type="number" value={(activeObject as fabric.Textbox).fontSize} onChange={(e) => updateActiveObject({ fontSize: parseInt(e.target.value, 10) })}/>
                     </div>
                      <div>
                         <Label>Font Color</Label>
-                        <Input type="color" value={activeObject.fill as string} onChange={(e) => updateActiveObject({ fill: e.target.value })} className="p-1 h-10 w-full"/>
+                        <Input type="color" value={(activeObject as fabric.Textbox).fill as string} onChange={(e) => updateActiveObject({ fill: e.target.value })} className="p-1 h-10 w-full"/>
+                    </div>
+                    <div>
+                        <Label>Font Family</Label>
+                        <Select value={Object.keys(fontFamilies).find(key => fontFamilies[key] === (activeObject as fabric.Textbox).fontFamily)} onValueChange={(v) => updateActiveObject({ fontFamily: fontFamilies[v] })}>
+                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="sans">Sans Serif</SelectItem>
+                            <SelectItem value="serif">Serif</SelectItem>
+                            <SelectItem value="mono">Monospace</SelectItem>
+                          </SelectContent>
+                        </Select>
+                    </div>
+                    <div>
+                        <Label>Alignment</Label>
+                        <div className="flex gap-2">
+                           <Button variant={(activeObject as fabric.Textbox).textAlign === 'left' ? 'default' : 'outline'} size="icon" onClick={() => updateActiveObject({ textAlign: 'left' })}><AlignLeft/></Button>
+                           <Button variant={(activeObject as fabric.Textbox).textAlign === 'center' ? 'default' : 'outline'} size="icon" onClick={() => updateActiveObject({ textAlign: 'center' })}><AlignCenter/></Button>
+                           <Button variant={(activeObject as fabric.Textbox).textAlign === 'right' ? 'default' : 'outline'} size="icon" onClick={() => updateActiveObject({ textAlign: 'right' })}><AlignRight/></Button>
+                        </div>
+                    </div>
+                     <div>
+                        <Label>Line Height ({(activeObject as fabric.Textbox).lineHeight})</Label>
+                        <Slider value={[(activeObject as fabric.Textbox).lineHeight || 1]} onValueChange={(v) => updateActiveObject({ lineHeight: v[0] })} min={0.5} max={3} step={0.1} />
+                    </div>
+                     <div>
+                        <Label>Letter Spacing ({(activeObject as fabric.Textbox).charSpacing})</Label>
+                        <Slider value={[(activeObject as fabric.Textbox).charSpacing || 0]} onValueChange={(v) => updateActiveObject({ charSpacing: v[0] })} min={-200} max={800} step={10} />
                     </div>
                 </div>
             )}
@@ -302,7 +316,7 @@ export function SocialMediaImageGenerator() {
                  <AccordionItem value="elements">
                      <AccordionTrigger className="text-lg font-semibold">3. Add Elements</AccordionTrigger>
                      <AccordionContent className="pt-4 space-y-4">
-                         <Button variant="outline" className="w-full" onClick={() => addImageOverlay({ target: { files: null } } as any)}><ImageIcon className="mr-2"/> Add Image/Logo</Button>
+                         <Button variant="outline" className="w-full" onClick={() => overlayImageInputRef.current?.click()}><ImageIcon className="mr-2"/> Add Image/Logo</Button>
                          <Input type="file" ref={overlayImageInputRef} onChange={addImageOverlay} className="hidden" accept="image/*" />
                          <Button variant="outline" className="w-full" onClick={() => addText('New Text', { top: 50, fontSize: 60, fill: '#FFFFFF', fontFamily: fontFamilies.sans, textAlign: 'center' })}>
                             <Text className="mr-2"/> Add Text
@@ -331,3 +345,4 @@ export function SocialMediaImageGenerator() {
   );
 }
 
+    
