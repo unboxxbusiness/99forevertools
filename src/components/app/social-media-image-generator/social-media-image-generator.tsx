@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect, type SVGProps } from 'react';
 import { fabric } from 'fabric';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Shapes, Square, Circle, Triangle, Layers, ChevronsUp, ChevronsDown, ChevronUp, ChevronDown, ZoomIn, Save, FolderOpen, PanelLeft, LayoutTemplate, SquareMenu, PaintBucket, Wand2, Undo, Redo } from 'lucide-react';
+import { Upload, Download, Text as TextIcon, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Shapes, Square, Circle, Triangle, Layers, ChevronsUp, ChevronsDown, ChevronUp, ChevronDown, ZoomIn, Save, FolderOpen, PanelLeft, LayoutTemplate, SquareMenu, PaintBucket, Wand2, Undo, Redo } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
@@ -53,7 +53,7 @@ export function SocialMediaImageGenerator() {
   const [zoom, setZoom] = useState(1);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const [history, setHistory] = useState<string[]>([]);
+  const history = useRef<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const isSavingState = useRef(false);
 
@@ -68,44 +68,40 @@ export function SocialMediaImageGenerator() {
     }
   };
   
-  const saveState = useCallback(() => {
+  const saveState = () => {
     const canvas = fabricCanvasRef.current;
     if (!canvas || isSavingState.current) return;
     
     const jsonState = JSON.stringify(canvas.toJSON());
-    if (historyIndex < history.length - 1) {
-        const newHistory = history.slice(0, historyIndex + 1);
-        newHistory.push(jsonState);
-        setHistory(newHistory);
-        setHistoryIndex(newHistory.length - 1);
-    } else {
-        const newHistory = [...history, jsonState];
-        setHistory(newHistory);
-        setHistoryIndex(newHistory.length - 1);
-    }
-  }, [history, historyIndex]);
+    const newHistory = history.current.slice(0, historyIndex + 1);
+    newHistory.push(jsonState);
+    history.current = newHistory;
+    setHistoryIndex(newHistory.length - 1);
+  };
 
   const undo = () => {
     if (historyIndex > 0) {
         isSavingState.current = true;
         const newIndex = historyIndex - 1;
-        fabricCanvasRef.current?.loadFromJSON(history[newIndex], () => {
+        fabricCanvasRef.current?.loadFromJSON(history.current[newIndex], () => {
             fabricCanvasRef.current?.renderAll();
             setHistoryIndex(newIndex);
             updateCanvasObjects();
+            setActiveObject(null);
             isSavingState.current = false;
         });
     }
   };
 
   const redo = () => {
-    if (historyIndex < history.length - 1) {
+    if (historyIndex < history.current.length - 1) {
         isSavingState.current = true;
         const newIndex = historyIndex + 1;
-        fabricCanvasRef.current?.loadFromJSON(history[newIndex], () => {
+        fabricCanvasRef.current?.loadFromJSON(history.current[newIndex], () => {
             fabricCanvasRef.current?.renderAll();
             setHistoryIndex(newIndex);
             updateCanvasObjects();
+            setActiveObject(null);
             isSavingState.current = false;
         });
     }
@@ -135,17 +131,18 @@ export function SocialMediaImageGenerator() {
         });
         fabricCanvasRef.current = canvas;
 
-        const updateActiveObject = () => {
+        const updateActiveObjectAndSave = () => {
           setActiveObject(canvas.getActiveObject());
           updateCanvasObjects();
+          saveState();
         };
 
-        canvas.on('selection:created', updateActiveObject);
-        canvas.on('selection:updated', updateActiveObject);
+        canvas.on('selection:created', () => setActiveObject(canvas.getActiveObject()));
+        canvas.on('selection:updated', () => setActiveObject(canvas.getActiveObject()));
         canvas.on('selection:cleared', () => setActiveObject(null));
-        canvas.on('object:modified', saveState);
-        canvas.on('object:added', saveState);
-        canvas.on('object:removed', saveState);
+        canvas.on('object:modified', updateActiveObjectAndSave);
+        canvas.on('object:added', updateActiveObjectAndSave);
+        canvas.on('object:removed', updateActiveObjectAndSave);
         
         addText('Your Headline Here', {
             fontSize: 80,
@@ -164,11 +161,14 @@ export function SocialMediaImageGenerator() {
             top: canvas.getHeight() / 2,
         });
         updateCanvasObjects();
-        saveState();
+        // Initial save
+        const jsonState = JSON.stringify(canvas.toJSON());
+        history.current = [jsonState];
+        setHistoryIndex(0);
         return canvas;
     }
     return null;
-  }, [template.width, template.height, bgColor, saveState]);
+  }, [template.width, template.height, bgColor]);
 
    useEffect(() => {
     let canvas = fabricCanvasRef.current;
@@ -177,17 +177,10 @@ export function SocialMediaImageGenerator() {
     }
     
     const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.altKey && canvas) {
-            canvas.isGrabMode = true;
-            canvas.selection = false;
-            canvas.defaultCursor = 'grab';
-            canvas.renderAll();
+        if ((e.target as HTMLElement).tagName === 'INPUT' || (e.target as HTMLElement).tagName === 'TEXTAREA') {
+            return;
         }
-        if ((e.key === 'Delete' || e.key === 'Backspace') && canvas?.getActiveObject()) {
-            canvas.remove(canvas.getActiveObject()!);
-            canvas.discardActiveObject();
-            canvas.renderAll();
-        }
+
         if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
             e.preventDefault();
             undo();
@@ -195,6 +188,17 @@ export function SocialMediaImageGenerator() {
         if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
             e.preventDefault();
             redo();
+        }
+        if ((e.key === 'Delete' || e.key === 'Backspace') && canvas?.getActiveObject()) {
+            canvas.remove(canvas.getActiveObject()!);
+            canvas.discardActiveObject();
+            canvas.renderAll();
+        }
+        if (e.altKey && canvas) {
+            canvas.isGrabMode = true;
+            canvas.selection = false;
+            canvas.defaultCursor = 'grab';
+            canvas.renderAll();
         }
     };
     
@@ -506,10 +510,10 @@ export function SocialMediaImageGenerator() {
             <div className="space-y-2">
                 <Label>Layer Order</Label>
                 <div className="grid grid-cols-4 gap-1">
-                    <Button variant="outline" size="icon" onClick={sendToBack}><ChevronsDown title="Send to Back"/></Button>
-                    <Button variant="outline" size="icon" onClick={sendBackward}><ChevronDown title="Send Backward"/></Button>
-                    <Button variant="outline" size="icon" onClick={bringForward}><ChevronUp title="Bring Forward"/></Button>
-                    <Button variant="outline" size="icon" onClick={bringToFront}><ChevronsUp title="Bring to Front"/></Button>
+                    <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="outline" size="icon" onClick={sendToBack}><ChevronsDown /></Button></TooltipTrigger><TooltipContent>Send to Back</TooltipContent></Tooltip></TooltipProvider>
+                    <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="outline" size="icon" onClick={sendBackward}><ChevronDown /></Button></TooltipTrigger><TooltipContent>Send Backward</TooltipContent></Tooltip></TooltipProvider>
+                    <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="outline" size="icon" onClick={bringForward}><ChevronUp /></Button></TooltipTrigger><TooltipContent>Bring Forward</TooltipContent></Tooltip></TooltipProvider>
+                    <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="outline" size="icon" onClick={bringToFront}><ChevronsUp /></Button></TooltipTrigger><TooltipContent>Bring to Front</TooltipContent></Tooltip></TooltipProvider>
                 </div>
             </div>
             
@@ -612,7 +616,7 @@ export function SocialMediaImageGenerator() {
                         setActiveObject(obj);
                     }}
                 >
-                    {obj.type === 'textbox' && <Text className="mr-2 h-4 w-4"/>}
+                    {obj.type === 'textbox' && <TextIcon className="mr-2 h-4 w-4"/>}
                     {obj.type === 'image' && <ImageIcon className="mr-2 h-4 w-4"/>}
                     {['rect', 'circle', 'triangle'].includes(obj.type || '') && <Shapes className="mr-2 h-4 w-4"/>}
                     <span className="truncate">{getLabel()}</span>
@@ -712,7 +716,7 @@ export function SocialMediaImageGenerator() {
                          <Button variant="outline" className="w-full justify-start" onClick={() => overlayImageInputRef.current?.click()}><ImageIcon className="mr-2"/> Image/Logo</Button>
                          <Input type="file" ref={overlayImageInputRef} onChange={addImageOverlay} className="hidden" accept="image/*" />
                          <Button variant="outline" className="w-full justify-start" onClick={() => addText('New Text', { top: 50, fontSize: 60, fill: '#FFFFFF', fontFamily: fontFamilies.sans, textAlign: 'center' })}>
-                            <Text className="mr-2"/> Text
+                            <TextIcon className="mr-2"/> Text
                         </Button>
                         <div className="pt-2">
                             <Label className="text-sm font-medium">Shapes</Label>
@@ -728,7 +732,7 @@ export function SocialMediaImageGenerator() {
             <div className="flex-grow"></div>
             <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon" onClick={undo} disabled={historyIndex <= 0}><Undo/></Button>
-                <Button variant="ghost" size="icon" onClick={redo} disabled={historyIndex >= history.length - 1}><Redo/></Button>
+                <Button variant="ghost" size="icon" onClick={redo} disabled={historyIndex >= history.current.length - 1}><Redo/></Button>
                 <Button onClick={downloadImage}>
                     <Download className="mr-2" />
                     Download
