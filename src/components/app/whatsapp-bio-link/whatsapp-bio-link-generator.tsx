@@ -162,6 +162,15 @@ const generateBioPageHtml = (config: {
             text-decoration: none;
         }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var footerLink = document.getElementById("footer-link");
+            if (footerLink) {
+                var currentDomain = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+                footerLink.href = currentDomain;
+            }
+        });
+    </script>
 </head>
 <body>
     <div class="container">
@@ -176,7 +185,7 @@ const generateBioPageHtml = (config: {
         </div>
         ${socialLinksHtml}
         <footer>
-            <p>Powered by <a href="https://99forevertools.com" target="_blank">99forevertools</a></p>
+            <p>Powered by <a id="footer-link" href="https://99forevertools.com" target="_blank">99forevertools</a></p>
         </footer>
     </div>
 </body>
@@ -385,4 +394,3 @@ export function WhatsAppBioLinkGenerator() {
     </Card>
   );
 }
-
