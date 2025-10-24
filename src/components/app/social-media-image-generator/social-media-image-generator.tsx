@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Download, Text as TextIcon, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Shapes, Square, Circle, Triangle, Layers, ChevronsUp, ChevronsDown, ChevronUp, ChevronDown, ZoomIn, Save, FolderOpen, PanelLeft, LayoutTemplate, SquareMenu, PaintBucket, Wand2, Undo, Redo } from 'lucide-react';
+import { Upload, Download, Text as TextIcon, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Shapes, Square, Circle, Triangle, Layers, ChevronsUp, ChevronsDown, ChevronUp, ChevronDown, ZoomIn, Save, FolderOpen, PanelLeft, LayoutTemplate, SquareMenu, PaintBucket, Wand2, Undo, Redo, Gem, Rocket, Shield, Star, Zap, Briefcase, Building, Lightbulb, Globe, Heart, Home, Flag, Award, BarChart, Camera, Cloud, Code, Compass, Cpu, CreditCard, Database, GitBranch, Keyboard, LifeBuoy, Lock, Mail, MousePointer, Package, Phone, PieChart, Puzzle, Server, Settings, ShoppingBag, ShoppingCart, Smartphone, Speaker, Sun, Target, Terminal, ThumbsUp, Wrench, TrafficCone, Train, TreePine, TrendingUp, Truck, Umbrella, Wallet, Watch, Wind } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
@@ -32,6 +32,67 @@ const fontFamilies: { [key: string]: string } = {
   serif: 'Georgia, serif',
   mono: 'monospace',
 };
+
+const icons: { [key: string]: (props: SVGProps<SVGSVGElement>) => JSX.Element } = {
+    none: () => <></>,
+    square: (props) => <Square {...props} />,
+    circle: (props) => <Circle {...props} />,
+    triangle: (props) => <Triangle {...props} />,
+    rocket: (props) => <Rocket {...props} />,
+    zap: (props) => <Zap {...props} />,
+    gem: (props) => <Gem {...props} />,
+    shield: (props) => <Shield {...props} />,
+    star: (props) => <Star {...props} />,
+    briefcase: (props) => <Briefcase {...props} />,
+    building: (props) => <Building {...props} />,
+    lightbulb: (props) => <Lightbulb {...props} />,
+    globe: (props) => <Globe {...props} />,
+    heart: (props) => <Heart {...props} />,
+    home: (props) => <Home {...props} />,
+    flag: (props) => <Flag {...props} />,
+    award: (props) => <Award {...props} />,
+    barChart: (props) => <BarChart {...props} />,
+    camera: (props) => <Camera {...props} />,
+    cloud: (props) => <Cloud {...props} />,
+    code: (props) => <Code {...props} />,
+    compass: (props) => <Compass {...props} />,
+    cpu: (props) => <Cpu {...props} />,
+    creditCard: (props) => <CreditCard {...props} />,
+    database: (props) => <Database {...props} />,
+    gitBranch: (props) => <GitBranch {...props} />,
+    keyboard: (props) => <Keyboard {...props} />,
+    layers: (props) => <Layers {...props} />,
+    lifeBuoy: (props) => <LifeBuoy {...props} />,
+    lock: (props) => <Lock {...props} />,
+    mail: (props) => <Mail {...props} />,
+    mousePointer: (props) => <MousePointer {...props} />,
+    package: (props) => <Package {...props} />,
+    phone: (props) => <Phone {...props} />,
+    pieChart: (props) => <PieChart {...props} />,
+    puzzle: (props) => <Puzzle {...props} />,
+    server: (props) => <Server {...props} />,
+    settings: (props) => <Settings {...props} />,
+    shoppingBag: (props) => <ShoppingBag {...props} />,
+    shoppingCart: (props) => <ShoppingCart {...props} />,
+    smartphone: (props) => <Smartphone {...props} />,
+    speaker: (props) => <Speaker {...props} />,
+    sun: (props) => <Sun {...props} />,
+    target: (props) => <Target {...props} />,
+    terminal: (props) => <Terminal {...props} />,
+    thumbsUp: (props) => <ThumbsUp {...props} />,
+    wrench: (props) => <Wrench {...props} />,
+    trafficCone: (props) => <TrafficCone {...props} />,
+    train: (props) => <Train {...props} />,
+    treePine: (props) => <TreePine {...props} />,
+    trendingUp: (props) => <TrendingUp {...props} />,
+    truck: (props) => <Truck {...props} />,
+    umbrella: (props) => <Umbrella {...props} />,
+    wallet: (props) => <Wallet {...props} />,
+    watch: (props) => <Watch {...props} />,
+    wind: (props) => <Wind {...props} />,
+};
+const iconKeys = Object.keys(icons).filter(key => key !== 'none');
+
 
 const FILTERS: { name: string, matrix: number[] | null }[] = [
   { name: 'None', matrix: null },
@@ -68,16 +129,29 @@ export function SocialMediaImageGenerator() {
     }
   };
   
-  const saveState = () => {
+ const saveState = useCallback(() => {
     const canvas = fabricCanvasRef.current;
     if (!canvas || isSavingState.current) return;
     
+    isSavingState.current = true;
     const jsonState = JSON.stringify(canvas.toJSON());
+    
+    // Prevent saving the same state consecutively
+    if (history.current[historyIndex] === jsonState) {
+        isSavingState.current = false;
+        return;
+    }
+
     const newHistory = history.current.slice(0, historyIndex + 1);
     newHistory.push(jsonState);
     history.current = newHistory;
     setHistoryIndex(newHistory.length - 1);
-  };
+    
+    setTimeout(() => {
+        isSavingState.current = false;
+    }, 100);
+  }, [historyIndex]);
+
 
   const undo = () => {
     if (historyIndex > 0) {
@@ -134,15 +208,14 @@ export function SocialMediaImageGenerator() {
         const updateActiveObjectAndSave = () => {
           setActiveObject(canvas.getActiveObject());
           updateCanvasObjects();
-          saveState();
         };
 
-        canvas.on('selection:created', () => setActiveObject(canvas.getActiveObject()));
-        canvas.on('selection:updated', () => setActiveObject(canvas.getActiveObject()));
+        canvas.on('selection:created', updateActiveObjectAndSave);
+        canvas.on('selection:updated', updateActiveObjectAndSave);
         canvas.on('selection:cleared', () => setActiveObject(null));
-        canvas.on('object:modified', updateActiveObjectAndSave);
-        canvas.on('object:added', updateActiveObjectAndSave);
-        canvas.on('object:removed', updateActiveObjectAndSave);
+        canvas.on('object:modified', saveState);
+        canvas.on('object:added', saveState);
+        canvas.on('object:removed', saveState);
         
         addText('Your Headline Here', {
             fontSize: 80,
@@ -161,14 +234,11 @@ export function SocialMediaImageGenerator() {
             top: canvas.getHeight() / 2,
         });
         updateCanvasObjects();
-        // Initial save
-        const jsonState = JSON.stringify(canvas.toJSON());
-        history.current = [jsonState];
-        setHistoryIndex(0);
+        saveState();
         return canvas;
     }
     return null;
-  }, [template.width, template.height, bgColor]);
+  }, [template.width, template.height, bgColor, saveState]);
 
    useEffect(() => {
     let canvas = fabricCanvasRef.current;
@@ -335,31 +405,26 @@ export function SocialMediaImageGenerator() {
     }
   };
 
-    const addShape = (shapeType: 'rect' | 'circle' | 'triangle') => {
+    const addShape = (shapeType: string) => {
         const canvas = fabricCanvasRef.current;
         if (!canvas) return;
+        const IconComponent = icons[shapeType];
+        if (!IconComponent) return;
 
-        let shape: fabric.Object | null = null;
-        const commonProps = {
-            fill: '#E0E0E0',
-            width: 150,
-            height: 150,
-        };
-
-        if (shapeType === 'rect') {
-            shape = new fabric.Rect(commonProps);
-        } else if (shapeType === 'circle') {
-            shape = new fabric.Circle({ ...commonProps, radius: 75 });
-        } else if (shapeType === 'triangle') {
-            shape = new fabric.Triangle(commonProps);
-        }
+        const iconSvgString = new XMLSerializer().serializeToString(
+          document.querySelector(`[data-icon="${shapeType}"]`)!
+        );
         
-        if (shape) {
-            canvas.add(shape);
-            canvas.centerObject(shape);
-            canvas.setActiveObject(shape);
-            canvas.renderAll();
-        }
+        fabric.loadSVGFromString(iconSvgString, (objects, options) => {
+          const obj = fabric.util.groupSVGElements(objects, options);
+          obj.set({
+            fill: '#E0E0E0',
+          }).scaleToWidth(150);
+          canvas.add(obj);
+          canvas.centerObject(obj);
+          canvas.setActiveObject(obj);
+          canvas.renderAll();
+        });
     };
 
   const downloadImage = () => {
@@ -498,7 +563,7 @@ export function SocialMediaImageGenerator() {
     }
 
     const type = activeObject.type;
-    const isShape = ['rect', 'circle', 'triangle'].includes(type || '');
+    const isShape = activeObject instanceof fabric.Group;
 
     return (
         <div className="p-4 space-y-6">
@@ -603,6 +668,7 @@ export function SocialMediaImageGenerator() {
             const getLabel = () => {
                 if (obj.type === 'textbox') return (obj as fabric.Textbox).text?.substring(0, 20) + '...';
                 if (obj.type === 'image') return 'Image Overlay';
+                if (obj instanceof fabric.Group) return obj.name || 'Shape';
                 return obj.type || 'Object';
             }
             return (
@@ -618,7 +684,7 @@ export function SocialMediaImageGenerator() {
                 >
                     {obj.type === 'textbox' && <TextIcon className="mr-2 h-4 w-4"/>}
                     {obj.type === 'image' && <ImageIcon className="mr-2 h-4 w-4"/>}
-                    {['rect', 'circle', 'triangle'].includes(obj.type || '') && <Shapes className="mr-2 h-4 w-4"/>}
+                    {(obj instanceof fabric.Group) && <Shapes className="mr-2 h-4 w-4"/>}
                     <span className="truncate">{getLabel()}</span>
                 </Button>
             )
@@ -651,6 +717,9 @@ export function SocialMediaImageGenerator() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-2rem)] w-full bg-muted text-foreground">
+        <div style={{ display: 'none' }}>
+            {Object.entries(icons).map(([key, IconComponent]) => <IconComponent key={key} data-icon={key} />)}
+        </div>
         <header className="flex items-center justify-between px-4 py-2 bg-card text-card-foreground shadow-md z-10 print-hidden">
             <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
@@ -719,12 +788,25 @@ export function SocialMediaImageGenerator() {
                             <TextIcon className="mr-2"/> Text
                         </Button>
                         <div className="pt-2">
-                            <Label className="text-sm font-medium">Shapes</Label>
-                             <div className="grid grid-cols-3 gap-2 mt-2">
-                                <Button variant="outline" onClick={() => addShape('rect')}><Square/></Button>
-                                <Button variant="outline" onClick={() => addShape('circle')}><Circle/></Button>
-                                <Button variant="outline" onClick={() => addShape('triangle')}><Triangle/></Button>
-                             </div>
+                           <Label className="text-sm font-medium">Shapes</Label>
+                            <Select onValueChange={addShape}>
+                                <SelectTrigger>
+                                <SelectValue placeholder="Add a shape..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                {iconKeys.map((key) => {
+                                    const IconComponent = icons[key];
+                                    return (
+                                    <SelectItem key={key} value={key}>
+                                        <div className="flex items-center gap-2">
+                                        <IconComponent className="h-4 w-4" />
+                                        <span className='capitalize'>{key}</span>
+                                        </div>
+                                    </SelectItem>
+                                    );
+                                })}
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
                 </ToolbarButton>
