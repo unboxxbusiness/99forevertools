@@ -4,17 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
-import { Skeleton } from '@/components/ui/skeleton';
-
-// Dynamically import the generator component with SSR disabled
-const SocialMediaImageGenerator = dynamic(
-  () => import('@/components/app/social-media-image-generator/social-media-image-generator').then(mod => mod.SocialMediaImageGenerator),
-  { 
-    ssr: false,
-    loading: () => <div className="w-full max-w-7xl mx-auto p-8"><Skeleton className="w-full h-[600px] rounded-lg" /></div>
-  }
-);
+import { SocialMediaImageGeneratorLoader } from '@/components/app/social-media-image-generator/social-media-image-generator-loader';
 
 export const metadata: Metadata = {
   title: 'Social Media Image Generator | 99forevertools',
@@ -51,7 +41,7 @@ export default function SocialMediaImageGeneratorPage() {
             </Link>
           </Button>
         </div>
-        <SocialMediaImageGenerator />
+        <SocialMediaImageGeneratorLoader />
       </main>
     </div>
   );
