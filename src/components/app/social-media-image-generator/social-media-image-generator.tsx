@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { fabric } from 'fabric';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -33,436 +34,146 @@ const fontFamilies: { [key: string]: string } = {
 };
 
 const FILTERS = [
-  { name: 'None', style: 'none' },
-  { name: 'Grayscale', style: 'grayscale(100%)' },
-  { name: 'Sepia', style: 'sepia(100%)' },
-  { name: 'Vintage', style: 'sepia(80%) contrast(90%) brightness(110%)' },
-  { name: 'Lomo', style: 'contrast(150%) saturate(110%)' },
-  { name: 'Clarity', style: 'contrast(130%) saturate(110%)' },
+  { name: 'None', filter: null },
+  { name: 'Grayscale', filter: new fabric.Image.filters.Grayscale() },
+  { name: 'Sepia', filter: new fabric.Image.filters.Sepia() },
+  { name: 'Vintage', filter: new fabric.Image.filters.Vintage() },
+  { name: 'Invert', filter: new fabric.Image.filters.Invert() },
+  { name: 'Lomo', filter: new fabric.Image.filters.ColorMatrix({
+    matrix: [
+      1.1, 0, 0, 0, 0,
+      0, 1.1, 0, 0, 0,
+      0, 0, 1.1, 0, 0,
+      0, 0, 0, 1, 0
+    ]
+  })},
+  { name: 'Clarity', filter: new fabric.Image.filters.Convolute({
+      matrix: [0, -1, 0, -1, 5, -1, 0, -1, 0]
+    })
+  },
 ];
-
-interface TextShadow {
-    enabled: boolean;
-    color: string;
-    blur: number;
-    offsetX: number;
-    offsetY: number;
-}
-
-interface TextConfig {
-    text: string;
-    size: number;
-    color: string;
-    align: CanvasTextAlign;
-    shadow: TextShadow;
-    x: number;
-    y: number;
-}
 
 interface OverlayConfig {
     id: number;
-    src: string; // Base64 or URL
+    src: string;
+    opacity: number;
     size: number;
     x: number;
     y: number;
-    opacity: number;
 }
-
-// Full project state
-interface ProjectState {
-    template: { name: string; width: number; height: number; };
-    bgType: 'color' | 'gradient';
-    bgColor: string;
-    gradient: { from: string; to: string; };
-    bgImage: string | null; // Base64
-    bgImageFilter: string;
-    overlays: OverlayConfig[];
-    font: string;
-    headline: TextConfig;
-    bodyText: TextConfig;
-}
-
-const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = error => reject(error);
-    });
-};
 
 export function SocialMediaImageGenerator() {
-  const [template, setTemplate] = useState(TEMPLATES[0]);
-  const [bgType, setBgType] = useState<'color' | 'gradient'>('color');
-  const [bgColor, setBgColor] = useState('#1a1a1a');
-  const [gradient, setGradient] = useState({ from: '#1a1a1a', to: '#333333' });
-  const [bgImage, setBgImage] = useState<string | null>(null); // Now stores base64
-  const [bgImageFilter, setBgImageFilter] = useState('none');
-  const [overlays, setOverlays] = useState<OverlayConfig[]>([]);
-  const [font, setFont] = useState('sans');
-  const [showGrid, setShowGrid] = useState(false);
-
-  const [headline, setHeadline] = useState<TextConfig>({
-      text: 'Your Headline Here',
-      size: 80,
-      color: '#FFFFFF',
-      align: 'center',
-      x: 50,
-      y: 40,
-      shadow: {
-        enabled: true,
-        color: '#000000',
-        blur: 5,
-        offsetX: 2,
-        offsetY: 2,
-      }
-    });
-  const [bodyText, setBodyText] = useState<TextConfig>({
-      text: 'This is a great place for a short, descriptive paragraph.',
-      size: 40,
-      color: '#DDDDDD',
-      align: 'center',
-      x: 50,
-      y: 60,
-      shadow: {
-        enabled: false,
-        color: '#000000',
-        blur: 3,
-        offsetX: 1,
-        offsetY: 1,
-      }
-    });
-
-  const bgImageInputRef = useRef<HTMLInputElement>(null);
-  const overlayImageInputRef = useRef<HTMLInputElement>(null);
-  const loadProjectInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
+
+  const [template, setTemplate] = useState(TEMPLATES[0]);
+  const [bgColor, setBgColor] = useState('#1a1a1a');
+  const [font, setFont] = useState('sans');
   const { toast } = useToast();
 
-  const drawCanvas = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    canvas.width = template.width;
-    canvas.height = template.height;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    if (bgType === 'gradient') {
-        const linearGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        linearGradient.addColorStop(0, gradient.from);
-        linearGradient.addColorStop(1, gradient.to);
-        ctx.fillStyle = linearGradient;
-    } else {
-        ctx.fillStyle = bgColor;
-    }
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    const drawGrid = () => {
-        if (!showGrid) return;
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-        ctx.lineWidth = 1;
-        const gridSize = 50;
-        for (let x = 0; x < canvas.width; x += gridSize) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, canvas.height);
-            ctx.stroke();
-        }
-        for (let y = 0; y < canvas.height; y += gridSize) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(canvas.width, y);
-            ctx.stroke();
-        }
-    };
-
-    const drawBgImage = () => {
-        if (!bgImage) return Promise.resolve();
-        return new Promise<void>((resolve) => {
-            const img = new Image();
-            img.src = bgImage;
-            img.onload = () => {
-                ctx.filter = bgImageFilter;
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                ctx.filter = 'none'; // Reset filter
-                resolve();
-            };
-            img.onerror = () => resolve();
-        });
-    };
-
-    const drawOverlays = () => {
-        const overlayPromises = overlays.map(overlay => {
-            return new Promise<void>(resolve => {
-                const img = new Image();
-                img.src = overlay.src;
-                img.onload = () => {
-                    const overlayWidth = canvas.width * (overlay.size / 100);
-                    const overlayHeight = (img.height / img.width) * overlayWidth;
-                    const xPos = (canvas.width - overlayWidth) * (overlay.x / 100);
-                    const yPos = (canvas.height - overlayHeight) * (overlay.y / 100);
-                    ctx.globalAlpha = overlay.opacity;
-                    ctx.drawImage(img, xPos, yPos, overlayWidth, overlayHeight);
-                    resolve();
-                };
-                img.onerror = () => resolve();
-            });
-        });
-        return Promise.all(overlayPromises).then(() => {
-            ctx.globalAlpha = 1; // Reset global alpha
-        });
-    };
-
-    const drawText = () => {
-        const fontFamily = fontFamilies[font] || fontFamilies.sans;
-        
-        const renderText = (config: TextConfig) => {
-            const size = canvas.width * (config.size / 2000);
-            ctx.font = `bold ${size}px ${fontFamily}`;
-            ctx.fillStyle = config.color;
-            ctx.textAlign = config.align;
-
-            if (config.shadow.enabled) {
-                ctx.shadowColor = config.shadow.color;
-                ctx.shadowBlur = config.shadow.blur;
-                ctx.shadowOffsetX = config.shadow.offsetX;
-                ctx.shadowOffsetY = config.shadow.offsetY;
-            }
-
-            const xPos = (canvas.width / 100) * config.x;
-
-            wrapText(ctx, config.text, xPos, (canvas.height / 100) * config.y, canvas.width - (canvas.width * 0.1), size * 1.2);
-            
-            // Reset shadow for next element
-            ctx.shadowColor = 'transparent';
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-        }
-
-        renderText(headline);
-        renderText(bodyText);
-    };
-
-    const wrapText = (context: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) => {
-        const words = text.split(' ');
-        let line = '';
-        let lines = [];
-        for (let n = 0; n < words.length; n++) {
-            const testLine = line + words[n] + ' ';
-            const metrics = context.measureText(testLine);
-            const testWidth = metrics.width;
-            if (testWidth > maxWidth && n > 0 && context.textAlign !== 'center') {
-                lines.push(line);
-                line = words[n] + ' ';
-            } else {
-                line = testLine;
-            }
-        }
-        lines.push(line);
-
-        const totalHeight = lines.length * lineHeight;
-        let startY = y;
-
-        if (context.textAlign === 'center') {
-             startY = y - totalHeight / 2 + lineHeight / 2;
-        }
-
-        for (let i = 0; i < lines.length; i++) {
-            context.fillText(lines[i].trim(), x, startY + i * lineHeight);
-        }
-    }
-
-    drawBgImage().then(() => {
-        drawGrid(); // Draw grid after background, before overlays and text
-        drawOverlays().then(drawText);
-    });
-  }, [bgColor, bgImage, bgImageFilter, overlays, headline, bodyText, template, font, bgType, gradient, showGrid]);
-
+  // Initialize Fabric.js canvas
   useEffect(() => {
-    drawCanvas();
-  }, [drawCanvas]);
-
-  const handleBgFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (canvasRef.current && !fabricCanvasRef.current) {
+        const canvas = new fabric.Canvas(canvasRef.current, {
+            width: template.width,
+            height: template.height,
+            backgroundColor: bgColor,
+        });
+        fabricCanvasRef.current = canvas;
+    } else if (fabricCanvasRef.current) {
+        fabricCanvasRef.current.setWidth(template.width);
+        fabricCanvasRef.current.setHeight(template.height);
+        fabricCanvasRef.current.setBackgroundColor(bgColor, fabricCanvasRef.current.renderAll.bind(fabricCanvasRef.current));
+    }
+  }, [template, bgColor]);
+  
+  const handleBgFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith('image/')) {
-        setBgImage(await fileToBase64(file));
-    } else if (file) {
-        toast({ variant: 'destructive', title: 'Invalid file type', description: 'Please upload an image.' });
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const imgData = e.target?.result as string;
+            fabric.Image.fromURL(imgData, (img) => {
+                const canvas = fabricCanvasRef.current;
+                if (!canvas) return;
+                canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
+                    scaleX: canvas.width! / img.width!,
+                    scaleY: canvas.height! / img.height!,
+                });
+            });
+        };
+        reader.readAsDataURL(file);
     }
   };
 
-  const handleAddOverlay = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file && file.type.startsWith('image/')) {
-        const newOverlay: OverlayConfig = {
-            id: Date.now(),
-            src: await fileToBase64(file),
-            size: 20,
-            x: 50,
-            y: 25,
-            opacity: 1,
+  const handleAddOverlay = (event: React.ChangeEvent<HTMLInputElement>) => {
+     const file = event.target.files?.[0];
+     if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const imgData = e.target?.result as string;
+            fabric.Image.fromURL(imgData, (img) => {
+                const canvas = fabricCanvasRef.current;
+                if (!canvas) return;
+                img.scaleToWidth(canvas.width! / 4);
+                canvas.add(img);
+                canvas.centerObject(img);
+                canvas.renderAll();
+            });
         };
-        setOverlays([...overlays, newOverlay]);
-    } else if (file) {
-        toast({ variant: 'destructive', title: 'Invalid file type', description: 'Please upload an image for the overlay.' });
+        reader.readAsDataURL(file);
     }
   };
   
-  const handleOverlayChange = (id: number, newConfig: Partial<Omit<OverlayConfig, 'id' | 'src'>>) => {
-    setOverlays(overlays.map(o => o.id === id ? {...o, ...newConfig} : o));
+  const addText = (text: string, options: fabric.ITextboxOptions) => {
+      const canvas = fabricCanvasRef.current;
+      if (!canvas) return;
+      const textbox = new fabric.Textbox(text, {
+        width: canvas.width! * 0.8,
+        ...options
+      });
+      canvas.add(textbox);
+      canvas.centerObjectH(textbox);
+      if (options.top) textbox.set({ top: canvas.height! * (options.top / 100) });
+      canvas.renderAll();
   }
 
-  const removeOverlay = (id: number) => {
-    setOverlays(overlays.filter(o => o.id !== id));
-  }
+  useEffect(() => {
+     addText('Your Headline Here', {
+         fontSize: 80,
+         fill: '#FFFFFF',
+         textAlign: 'center',
+         fontFamily: fontFamilies[font],
+         top: 40,
+         fontWeight: 'bold',
+         shadow: new fabric.Shadow({ color: 'rgba(0,0,0,0.5)', blur: 5, offsetX: 2, offsetY: 2 }),
+     });
+      addText('This is a great place for a short, descriptive paragraph.', {
+         fontSize: 40,
+         fill: '#DDDDDD',
+         textAlign: 'center',
+         fontFamily: fontFamilies[font],
+         top: 60,
+     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fabricCanvasRef.current]);
 
   const downloadImage = () => {
-    const canvas = canvasRef.current;
+    const canvas = fabricCanvasRef.current;
     if (!canvas) return;
+    const dataURL = canvas.toDataURL({
+      format: 'png',
+      quality: 1,
+    });
     const link = document.createElement('a');
     link.download = `${template.name.toLowerCase().replace(/ /g, '-')}-post.png`;
-    link.href = canvas.toDataURL('image/png');
+    link.href = dataURL;
     link.click();
     toast({ title: 'Image downloaded!' });
   };
   
-  const saveProject = () => {
-    const projectState: ProjectState = {
-        template,
-        bgType,
-        bgColor,
-        gradient,
-        bgImage,
-        bgImageFilter,
-        overlays,
-        font,
-        headline,
-        bodyText,
-    };
-    const blob = new Blob([JSON.stringify(projectState, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'social-media-project.json';
-    a.click();
-    URL.revokeObjectURL(url);
-    toast({ title: 'Project Saved!' });
-  };
-
-  const loadProject = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file || file.type !== 'application/json') {
-        toast({ variant: 'destructive', title: 'Invalid File', description: 'Please upload a valid project JSON file.' });
-        return;
-    }
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        try {
-            const projectState = JSON.parse(e.target?.result as string) as ProjectState;
-            setTemplate(projectState.template);
-            setBgType(projectState.bgType);
-            setBgColor(projectState.bgColor);
-            setGradient(projectState.gradient);
-            setBgImage(projectState.bgImage);
-            setBgImageFilter(projectState.bgImageFilter);
-            setOverlays(projectState.overlays);
-            setFont(projectState.font);
-            setHeadline(projectState.headline);
-            setBodyText(projectState.bodyText);
-            toast({ title: 'Project Loaded!' });
-        } catch (error) {
-            toast({ variant: 'destructive', title: 'Error Loading Project', description: 'The project file is corrupted or invalid.' });
-        }
-    };
-    reader.readAsText(file);
-    // Reset file input to allow loading the same file again
-    event.target.value = '';
-  };
-
-  const TextControls = ({
-    label,
-    config,
-    setConfig
-  }: {
-    label: string,
-    config: TextConfig,
-    setConfig: React.Dispatch<React.SetStateAction<TextConfig>>
-  }) => (
-    <div className="space-y-4">
-        <h4 className="font-medium">{label}</h4>
-        <div className="space-y-2">
-            <Label>Text</Label>
-            <Input value={config.text} onChange={(e) => setConfig({...config, text: e.target.value})} />
-        </div>
-        <div className="space-y-2">
-            <Label>Font Size</Label>
-            <Slider value={[config.size]} onValueChange={(v) => setConfig({...config, size: v[0]})} min={20} max={200} step={1} />
-        </div>
-        <div className="space-y-2">
-            <Label>Color</Label>
-            <Input type="color" value={config.color} onChange={(e) => setConfig({...config, color: e.target.value})} className="p-1 h-10 w-full" />
-        </div>
-        <div className="space-y-2">
-            <Label>Alignment</Label>
-            <RadioGroup value={config.align} onValueChange={(v) => setConfig({...config, align: v as CanvasTextAlign})} className="flex gap-2">
-                <Label className="flex-1 text-center border rounded-md p-2 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer text-sm h-10 justify-center items-center flex">
-                    <RadioGroupItem value="left" className="sr-only" /><AlignLeft/>
-                </Label>
-                <Label className="flex-1 text-center border rounded-md p-2 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer text-sm h-10 justify-center items-center flex">
-                    <RadioGroupItem value="center" className="sr-only" /><AlignCenter/>
-                </Label>
-                <Label className="flex-1 text-center border rounded-md p-2 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer text-sm h-10 justify-center items-center flex">
-                    <RadioGroupItem value="right" className="sr-only" /><AlignRight/>
-                </Label>
-            </RadioGroup>
-        </div>
-        <Accordion type="single" collapsible>
-            <AccordionItem value="position">
-                <AccordionTrigger>Position</AccordionTrigger>
-                <AccordionContent className="pt-4 space-y-4">
-                     <div className="space-y-2">
-                        <Label>Horizontal Position ({config.x}%)</Label>
-                        <Slider value={[config.x]} onValueChange={(v) => setConfig({...config, x: v[0]})} min={0} max={100} step={1} />
-                    </div>
-                     <div className="space-y-2">
-                        <Label>Vertical Position ({config.y}%)</Label>
-                        <Slider value={[config.y]} onValueChange={(v) => setConfig({...config, y: v[0]})} min={0} max={100} step={1} />
-                    </div>
-                </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="shadow">
-                <AccordionTrigger>Shadow</AccordionTrigger>
-                <AccordionContent className="pt-4 space-y-4">
-                     <div className="flex items-center space-x-2">
-                        <Checkbox id={`shadow-enable-${label}`} checked={config.shadow.enabled} onCheckedChange={c => setConfig({...config, shadow: {...config.shadow, enabled: !!c}})} />
-                        <Label htmlFor={`shadow-enable-${label}`}>Enable Shadow</Label>
-                     </div>
-                     <div className="space-y-2">
-                        <Label>Shadow Color</Label>
-                        <Input type="color" value={config.shadow.color} onChange={e => setConfig({...config, shadow: {...config.shadow, color: e.target.value}})} className="p-1 h-10 w-full" />
-                    </div>
-                    <div className="space-y-2">
-                        <Label>Shadow Blur ({config.shadow.blur}px)</Label>
-                        <Slider value={[config.shadow.blur]} onValueChange={v => setConfig({...config, shadow: {...config.shadow, blur: v[0]}})} min={0} max={50} step={1} />
-                    </div>
-                     <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                           <Label>Offset X ({config.shadow.offsetX}px)</Label>
-                           <Input type="number" value={config.shadow.offsetX} onChange={e => setConfig({...config, shadow: {...config.shadow, offsetX: parseInt(e.target.value)}})} />
-                        </div>
-                        <div className="space-y-2">
-                           <Label>Offset Y ({config.shadow.offsetY}px)</Label>
-                           <Input type="number" value={config.shadow.offsetY} onChange={e => setConfig({...config, shadow: {...config.shadow, offsetY: parseInt(e.target.value)}})} />
-                        </div>
-                    </div>
-                </AccordionContent>
-            </AccordionItem>
-        </Accordion>
-    </div>
-  );
+  const bgImageInputRef = useRef<HTMLInputElement>(null);
+  const overlayImageInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <Card className="w-full max-w-7xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
@@ -491,78 +202,24 @@ export function SocialMediaImageGenerator() {
                     <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><Palette/>2. Background</AccordionTrigger>
                     <AccordionContent className="pt-4 space-y-4">
                         <div className="space-y-2">
-                            <Label>Type</Label>
-                            <RadioGroup value={bgType} onValueChange={(v) => setBgType(v as 'color' | 'gradient')} className="flex gap-2">
-                                <Label className="flex-1 text-center border rounded-md p-2 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer text-sm h-10 justify-center items-center flex">
-                                    <RadioGroupItem value="color" className="sr-only" /> Solid
-                                </Label>
-                                <Label className="flex-1 text-center border rounded-md p-2 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer text-sm h-10 justify-center items-center flex">
-                                    <RadioGroupItem value="gradient" className="sr-only" /> Gradient
-                                </Label>
-                            </RadioGroup>
+                            <Label htmlFor="bgColor">Solid Color</Label>
+                            <Input id="bgColor" type="color" value={bgColor} onChange={(e) => {
+                                setBgColor(e.target.value);
+                                if (fabricCanvasRef.current) {
+                                    fabricCanvasRef.current.setBackgroundColor(e.target.value, fabricCanvasRef.current.renderAll.bind(fabricCanvasRef.current));
+                                }
+                            }} className="p-1 h-10 w-full" />
                         </div>
-                        {bgType === 'color' ? (
-                            <div className="space-y-2 animate-fade-in">
-                                <Label htmlFor="bgColor">Color</Label>
-                                <Input id="bgColor" type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="p-1 h-10 w-full" />
-                            </div>
-                        ) : (
-                            <div className="space-y-2 animate-fade-in">
-                                <Label>Gradient Colors</Label>
-                                <div className="grid grid-cols-2 gap-2">
-                                    <Input type="color" value={gradient.from} onChange={e => setGradient({...gradient, from: e.target.value})} className="p-1 h-10 w-full"/>
-                                    <Input type="color" value={gradient.to} onChange={e => setGradient({...gradient, to: e.target.value})} className="p-1 h-10 w-full"/>
-                                </div>
-                            </div>
-                        )}
                         <div className="space-y-2 pt-4 border-t">
-                            <Label>Image</Label>
+                            <Label>Background Image</Label>
                             <Button variant="outline" className="w-full" onClick={() => bgImageInputRef.current?.click()}><Upload className="mr-2"/> Upload Background Image</Button>
                             <Input type="file" ref={bgImageInputRef} onChange={handleBgFileChange} className="hidden" accept="image/*" />
-                            {bgImage && (
-                                <div className="space-y-2 pt-2 animate-fade-in">
-                                    <Button variant="ghost" size="sm" className="text-destructive w-full" onClick={() => setBgImage(null)}><Trash2 className="mr-2"/>Remove Image</Button>
-                                    <Label htmlFor="bgFilter">Background Filter</Label>
-                                    <Select value={bgImageFilter} onValueChange={setBgImageFilter}>
-                                        <SelectTrigger id="bgFilter"><SelectValue /></SelectTrigger>
-                                        <SelectContent>
-                                            {FILTERS.map(f => <SelectItem key={f.name} value={f.style}>{f.name}</SelectItem>)}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            )}
                         </div>
                     </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="overlay">
                      <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><ImageIcon/>3. Overlays</AccordionTrigger>
                      <AccordionContent className="pt-4 space-y-4">
-                         {overlays.map((overlay, index) => (
-                             <div key={overlay.id} className="p-4 border rounded-lg space-y-4 animate-fade-in">
-                                 <div className="flex justify-between items-center">
-                                    <Label className="font-medium">Overlay {index + 1}</Label>
-                                    <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive" onClick={() => removeOverlay(overlay.id)}>
-                                        <Trash2 className="h-4 w-4" />
-                                    </Button>
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>Size ({overlay.size}%)</Label>
-                                    <Slider value={[overlay.size]} onValueChange={(v) => handleOverlayChange(overlay.id, {size: v[0]})} min={5} max={100} step={1} />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>Opacity ({Math.round(overlay.opacity * 100)}%)</Label>
-                                    <Slider value={[overlay.opacity]} onValueChange={(v) => handleOverlayChange(overlay.id, {opacity: v[0]})} min={0} max={1} step={0.05} />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>Horizontal Position ({overlay.x}%)</Label>
-                                    <Slider value={[overlay.x]} onValueChange={(v) => handleOverlayChange(overlay.id, {x: v[0]})} min={0} max={100} step={1} />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>Vertical Position ({overlay.y}%)</Label>
-                                    <Slider value={[overlay.y]} onValueChange={(v) => handleOverlayChange(overlay.id, {y: v[0]})} min={0} max={100} step={1} />
-                                </div>
-                             </div>
-                         ))}
                          <Button variant="outline" className="w-full" onClick={() => overlayImageInputRef.current?.click()}><PlusCircle className="mr-2"/> Add Overlay Image</Button>
                         <Input type="file" ref={overlayImageInputRef} onChange={handleAddOverlay} className="hidden" accept="image/*" />
                      </AccordionContent>
@@ -581,24 +238,9 @@ export function SocialMediaImageGenerator() {
                                 </SelectContent>
                             </Select>
                         </div>
-                        <div className="space-y-2 pt-4 border-t">
-                            <TextControls label="Headline" config={headline} setConfig={setHeadline} />
-                        </div>
-                        <div className="space-y-2 pt-4 border-t">
-                            <TextControls label="Body Text" config={bodyText} setConfig={setBodyText} />
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
-                 <AccordionItem value="project">
-                    <AccordionTrigger className="text-lg font-semibold">5. Project</AccordionTrigger>
-                    <AccordionContent className="pt-4 space-y-4">
-                       <Button onClick={saveProject} className="w-full">
-                            <Save className="mr-2"/> Save Project
-                       </Button>
-                       <Button variant="outline" className="w-full" onClick={() => loadProjectInputRef.current?.click()}>
-                            <FolderOpen className="mr-2"/> Load Project
-                       </Button>
-                       <Input type="file" ref={loadProjectInputRef} onChange={loadProject} className="hidden" accept=".json"/>
+                         <Button variant="outline" className="w-full" onClick={() => addText('New Text', { top: 50, fontSize: 60, fill: '#FFFFFF', fontFamily: fontFamilies[font], textAlign: 'center' })}>
+                            <PlusCircle className="mr-2"/> Add Text
+                        </Button>
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>
@@ -606,13 +248,9 @@ export function SocialMediaImageGenerator() {
           <div className="lg:col-span-2 space-y-4">
             <div className="flex justify-between items-center">
                 <h3 className="text-xl font-semibold">Live Preview</h3>
-                <div className="flex items-center space-x-2">
-                    <Checkbox id="show-grid" checked={showGrid} onCheckedChange={(c) => setShowGrid(!!c)} />
-                    <Label htmlFor="show-grid" className="text-sm font-medium">Show Grid</Label>
-                </div>
             </div>
             <div className="bg-muted/30 p-4 rounded-lg flex justify-center items-center">
-              <canvas ref={canvasRef} width={template.width} height={template.height} className="w-full h-auto max-w-full rounded-md shadow-lg" />
+              <canvas ref={canvasRef} className="max-w-full h-auto rounded-md shadow-lg" />
             </div>
             <Button onClick={downloadImage} className="w-full text-lg py-6">
                 <Download className="mr-2" /> Download as PNG
