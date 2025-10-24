@@ -1,6 +1,8 @@
 
 import { MetadataRoute } from 'next';
 
+export const dynamic = 'force-static';
+
 const tools = [
   '/gst-calculator',
   '/business-loan-emi-calculator',
