@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Lightbulb, Briefcase } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
+import React from 'react';
 
 type MetaTagGeneratorFormProps = {
   title: string;
@@ -17,7 +18,7 @@ type MetaTagGeneratorFormProps = {
 
 export function MetaTagGeneratorForm({ title, setTitle, description, setDescription }: MetaTagGeneratorFormProps) {
   return (
-    <>
+    <React.Fragment>
       <Card className="w-full shadow-lg bg-card border-primary/20 animate-fade-in h-full">
         <CardHeader>
           <CardTitle className="text-3xl font-bold tracking-tight">SERP Details</CardTitle>
@@ -82,6 +83,6 @@ export function MetaTagGeneratorForm({ title, setTitle, description, setDescript
             </AccordionItem>
         </Accordion>
       </div>
-    </>
+    </React.Fragment>
   );
 }

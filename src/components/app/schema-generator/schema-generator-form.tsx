@@ -8,6 +8,7 @@ import { FaqForm } from './faq-form';
 import { LocalBusinessForm } from './local-business-form';
 import { Briefcase, FileText, HelpCircle, Lightbulb } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import React from 'react';
 
 type SchemaGeneratorFormProps = {
   setSchema: (schema: string) => void;
@@ -16,7 +17,7 @@ type SchemaGeneratorFormProps = {
 export function SchemaGeneratorForm({ setSchema }: SchemaGeneratorFormProps) {
   
   return (
-    <>
+    <React.Fragment>
       <Card className="w-full shadow-lg bg-card border-primary/20 animate-fade-in">
         <CardHeader>
           <CardTitle className="text-3xl font-bold tracking-tight">Schema Markup Generator</CardTitle>
@@ -73,6 +74,6 @@ export function SchemaGeneratorForm({ setSchema }: SchemaGeneratorFormProps) {
             </AccordionItem>
         </Accordion>
       </div>
-    </>
+    </React.Fragment>
   );
 }

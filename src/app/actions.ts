@@ -418,7 +418,12 @@ const parseCSV = (content: string): { headers: string[], rows: { [key: string]: 
     const values = line.split(',');
     const rowObject: { [key: string]: string } = {};
     headers.forEach((header, index) => {
-      rowObject[header] = (values[index] || '').trim();
+      // Ensure we don't try to access an index that doesn't exist on values
+      if (index < values.length) {
+        rowObject[header] = (values[index] || '').trim();
+      } else {
+        rowObject[header] = '';
+      }
     });
     return rowObject;
   });
@@ -450,3 +455,6 @@ export async function cleanCsvAction(values: z.infer<typeof csvSchema>) {
 
 
 
+
+
+    
