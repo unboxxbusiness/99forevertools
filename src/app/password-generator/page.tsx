@@ -1,15 +1,12 @@
+
+'use client';
+import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { PasswordGeneratorForm } from '@/components/app/password-generator/password-generator-form';
 import { PasswordGeneratorResults } from '@/components/app/password-generator/password-generator-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Secure Password Generator | 99forevertools',
-  description: 'Generate strong, secure, and random passwords. Customize length and character types (uppercase, numbers, symbols).',
-};
 
 const schema = {
   "@context": "https://schema.org",
@@ -25,7 +22,6 @@ const schema = {
 };
 
 function PasswordGeneratorWrapper() {
-  'use client';
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
