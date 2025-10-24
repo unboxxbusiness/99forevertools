@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Shapes, Square, Circle, Triangle, Layers, ChevronsUp, ChevronsDown, ChevronUp, ChevronDown, ZoomIn, Save, FolderOpen, PanelLeft, LayoutTemplate, SquareMenu, PaintBucket, Wand2 } from 'lucide-react';
+import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Shapes, Square, Circle, Triangle, Layers, ChevronsUp, ChevronsDown, ChevronUp, ChevronDown, ZoomIn, Save, FolderOpen, PanelLeft, LayoutTemplate, SquareMenu, PaintBucket, Wand2, Undo, Redo } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
@@ -53,6 +53,10 @@ export function SocialMediaImageGenerator() {
   const [zoom, setZoom] = useState(1);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+  const [history, setHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const isSavingState = useRef(false);
+
   const { toast } = useToast();
   
   const projectFileInputRef = useRef<HTMLInputElement>(null);
@@ -61,6 +65,49 @@ export function SocialMediaImageGenerator() {
     const canvas = fabricCanvasRef.current;
     if (canvas) {
       setCanvasObjects(canvas.getObjects());
+    }
+  };
+  
+  const saveState = useCallback(() => {
+    const canvas = fabricCanvasRef.current;
+    if (!canvas || isSavingState.current) return;
+    
+    const jsonState = JSON.stringify(canvas.toJSON());
+    if (historyIndex < history.length - 1) {
+        const newHistory = history.slice(0, historyIndex + 1);
+        newHistory.push(jsonState);
+        setHistory(newHistory);
+        setHistoryIndex(newHistory.length - 1);
+    } else {
+        const newHistory = [...history, jsonState];
+        setHistory(newHistory);
+        setHistoryIndex(newHistory.length - 1);
+    }
+  }, [history, historyIndex]);
+
+  const undo = () => {
+    if (historyIndex > 0) {
+        isSavingState.current = true;
+        const newIndex = historyIndex - 1;
+        fabricCanvasRef.current?.loadFromJSON(history[newIndex], () => {
+            fabricCanvasRef.current?.renderAll();
+            setHistoryIndex(newIndex);
+            updateCanvasObjects();
+            isSavingState.current = false;
+        });
+    }
+  };
+
+  const redo = () => {
+    if (historyIndex < history.length - 1) {
+        isSavingState.current = true;
+        const newIndex = historyIndex + 1;
+        fabricCanvasRef.current?.loadFromJSON(history[newIndex], () => {
+            fabricCanvasRef.current?.renderAll();
+            setHistoryIndex(newIndex);
+            updateCanvasObjects();
+            isSavingState.current = false;
+        });
     }
   };
 
@@ -96,9 +143,9 @@ export function SocialMediaImageGenerator() {
         canvas.on('selection:created', updateActiveObject);
         canvas.on('selection:updated', updateActiveObject);
         canvas.on('selection:cleared', () => setActiveObject(null));
-        canvas.on('object:modified', updateActiveObject);
-        canvas.on('object:added', updateCanvasObjects);
-        canvas.on('object:removed', updateCanvasObjects);
+        canvas.on('object:modified', saveState);
+        canvas.on('object:added', saveState);
+        canvas.on('object:removed', saveState);
         
         addText('Your Headline Here', {
             fontSize: 80,
@@ -117,10 +164,11 @@ export function SocialMediaImageGenerator() {
             top: canvas.getHeight() / 2,
         });
         updateCanvasObjects();
+        saveState();
         return canvas;
     }
     return null;
-  }, [template.width, template.height, bgColor]);
+  }, [template.width, template.height, bgColor, saveState]);
 
    useEffect(() => {
     let canvas = fabricCanvasRef.current;
@@ -139,6 +187,14 @@ export function SocialMediaImageGenerator() {
             canvas.remove(canvas.getActiveObject()!);
             canvas.discardActiveObject();
             canvas.renderAll();
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+            e.preventDefault();
+            undo();
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
+            e.preventDefault();
+            redo();
         }
     };
     
@@ -406,6 +462,7 @@ export function SocialMediaImageGenerator() {
             canvas.loadFromJSON(json, () => {
                 canvas.renderAll();
                 updateCanvasObjects();
+                saveState();
                 toast({ title: 'Project loaded!' });
             });
         }
@@ -565,13 +622,13 @@ export function SocialMediaImageGenerator() {
     </div>
   )
 
-  const ToolbarButton = ({ label, icon, children }: { label: string, icon: React.ReactNode, children: React.ReactNode }) => (
+  const ToolbarButton = ({ label, icon, children, disabled = false }: { label: string, icon: React.ReactNode, children: React.ReactNode, disabled?: boolean }) => (
     <Popover>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <PopoverTrigger asChild>
-              <Button variant="ghost" className="flex items-center gap-2">
+              <Button variant="ghost" className="flex items-center gap-2" disabled={disabled}>
                 {icon}
                 <span className="hidden sm:inline">{label}</span>
               </Button>
@@ -670,6 +727,8 @@ export function SocialMediaImageGenerator() {
             </nav>
             <div className="flex-grow"></div>
             <div className="flex items-center gap-2">
+                <Button variant="ghost" size="icon" onClick={undo} disabled={historyIndex <= 0}><Undo/></Button>
+                <Button variant="ghost" size="icon" onClick={redo} disabled={historyIndex >= history.length - 1}><Redo/></Button>
                 <Button onClick={downloadImage}>
                     <Download className="mr-2" />
                     Download
