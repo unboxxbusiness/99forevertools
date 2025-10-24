@@ -1,15 +1,13 @@
+
+'use client';
+
+import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { QrCodeGeneratorForm, type QrCodeConfig } from '@/components/app/qr-code-generator/qr-code-generator-form';
 import { QrCodeGeneratorResults } from '@/components/app/qr-code-generator/qr-code-generator-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Free QR Code Generator | 99forevertools',
-  description: 'Instantly create and customize a downloadable QR code for a URL, Wi-Fi network, vCard contact, or UPI payment.',
-};
 
 const schema = {
   "@context": "https://schema.org",
@@ -25,7 +23,6 @@ const schema = {
 };
 
 function QrCodeGeneratorWrapper() {
-  'use client';
   const [qrConfig, setQrConfig] = useState<QrCodeConfig>({
     type: 'url',
     value: 'https://google.com',
