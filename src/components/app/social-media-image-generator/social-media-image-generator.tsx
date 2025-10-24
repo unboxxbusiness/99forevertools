@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
+import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Shapes, Square, Circle, Triangle, Layers, ChevronsUp, ChevronsDown, ChevronUp, ChevronDown } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -38,8 +38,16 @@ export function SocialMediaImageGenerator() {
   const [template, setTemplate] = useState(TEMPLATES[0]);
   const [bgColor, setBgColor] = useState('#1a1a1a');
   const [activeObject, setActiveObject] = useState<fabric.Object | null>(null);
+  const [canvasObjects, setCanvasObjects] = useState<fabric.Object[]>([]);
 
   const { toast } = useToast();
+
+  const updateCanvasObjects = () => {
+    const canvas = fabricCanvasRef.current;
+    if (canvas) {
+      setCanvasObjects(canvas.getObjects());
+    }
+  };
 
   const initCanvas = useCallback(() => {
     if (canvasRef.current) {
@@ -51,14 +59,17 @@ export function SocialMediaImageGenerator() {
         });
         fabricCanvasRef.current = canvas;
 
-        const updateActiveObject = (e: fabric.IEvent) => {
+        const updateActiveObject = () => {
           setActiveObject(canvas.getActiveObject());
+          updateCanvasObjects();
         };
 
         canvas.on('selection:created', updateActiveObject);
         canvas.on('selection:updated', updateActiveObject);
         canvas.on('selection:cleared', () => setActiveObject(null));
         canvas.on('object:modified', updateActiveObject);
+        canvas.on('object:added', updateCanvasObjects);
+        canvas.on('object:removed', updateCanvasObjects);
         
         // Add initial text elements
         addText('Your Headline Here', {
@@ -77,7 +88,7 @@ export function SocialMediaImageGenerator() {
             fontFamily: fontFamilies.sans,
             top: canvas.getHeight() / 2,
         });
-
+        updateCanvasObjects();
         return canvas;
     }
     return null;
@@ -164,6 +175,33 @@ export function SocialMediaImageGenerator() {
     }
   };
 
+    const addShape = (shapeType: 'rect' | 'circle' | 'triangle') => {
+        const canvas = fabricCanvasRef.current;
+        if (!canvas) return;
+
+        let shape: fabric.Object | null = null;
+        const commonProps = {
+            fill: '#E0E0E0',
+            width: 150,
+            height: 150,
+        };
+
+        if (shapeType === 'rect') {
+            shape = new fabric.Rect(commonProps);
+        } else if (shapeType === 'circle') {
+            shape = new fabric.Circle({ ...commonProps, radius: 75 });
+        } else if (shapeType === 'triangle') {
+            shape = new fabric.Triangle(commonProps);
+        }
+        
+        if (shape) {
+            canvas.add(shape);
+            canvas.centerObject(shape);
+            canvas.setActiveObject(shape);
+            canvas.renderAll();
+        }
+    };
+
   const downloadImage = () => {
     const canvas = fabricCanvasRef.current;
     if (!canvas) return;
@@ -202,6 +240,46 @@ export function SocialMediaImageGenerator() {
     }
   };
 
+  const bringForward = () => {
+    const canvas = fabricCanvasRef.current;
+    if(canvas && activeObject) {
+        canvas.bringForward(activeObject);
+        canvas.discardActiveObject();
+        canvas.renderAll();
+        updateCanvasObjects();
+    }
+  }
+
+  const sendBackward = () => {
+    const canvas = fabricCanvasRef.current;
+    if(canvas && activeObject) {
+        canvas.sendBackwards(activeObject);
+        canvas.discardActiveObject();
+        canvas.renderAll();
+        updateCanvasObjects();
+    }
+  }
+
+  const bringToFront = () => {
+    const canvas = fabricCanvasRef.current;
+    if(canvas && activeObject) {
+        canvas.bringToFront(activeObject);
+        canvas.discardActiveObject();
+        canvas.renderAll();
+        updateCanvasObjects();
+    }
+  }
+
+  const sendToBack = () => {
+    const canvas = fabricCanvasRef.current;
+    if(canvas && activeObject) {
+        canvas.sendToBack(activeObject);
+        canvas.discardActiveObject();
+        canvas.renderAll();
+        updateCanvasObjects();
+    }
+  }
+
   const PropertiesPanel = () => {
     if (!activeObject) {
       return (
@@ -212,12 +290,23 @@ export function SocialMediaImageGenerator() {
     }
 
     const type = activeObject.type;
+    const isShape = ['rect', 'circle', 'triangle'].includes(type || '');
 
     return (
         <div className="p-4 space-y-6">
             <div className="flex justify-between items-center">
                 <h3 className="font-semibold text-lg capitalize">{type} Properties</h3>
                  <Button variant="destructive" size="sm" onClick={deleteActiveObject}><Trash2 className="mr-2 h-4 w-4"/> Delete</Button>
+            </div>
+
+            <div className="space-y-2">
+                <Label>Layer Order</Label>
+                <div className="grid grid-cols-4 gap-1">
+                    <Button variant="outline" size="icon" onClick={sendToBack}><ChevronsDown title="Send to Back"/></Button>
+                    <Button variant="outline" size="icon" onClick={sendBackward}><ChevronDown title="Send Backward"/></Button>
+                    <Button variant="outline" size="icon" onClick={bringForward}><ChevronUp title="Bring Forward"/></Button>
+                    <Button variant="outline" size="icon" onClick={bringToFront}><ChevronsUp title="Bring to Front"/></Button>
+                </div>
             </div>
             
             {activeObject instanceof fabric.Textbox && (
@@ -254,7 +343,7 @@ export function SocialMediaImageGenerator() {
                         </div>
                     </div>
                      <div>
-                        <Label>Line Height ({(activeObject as fabric.Textbox).lineHeight})</Label>
+                        <Label>Line Height ({(activeObject as fabric.Textbox).lineHeight?.toFixed(1)})</Label>
                         <Slider value={[(activeObject as fabric.Textbox).lineHeight || 1]} onValueChange={(v) => updateActiveObject({ lineHeight: v[0] })} min={0.5} max={3} step={0.1} />
                     </div>
                      <div>
@@ -264,8 +353,14 @@ export function SocialMediaImageGenerator() {
                 </div>
             )}
             
-            {activeObject instanceof fabric.Image && (
+            {(activeObject instanceof fabric.Image || isShape) && (
                  <div className="space-y-4">
+                    {isShape && (
+                         <div>
+                            <Label>Color</Label>
+                            <Input type="color" value={activeObject.fill as string} onChange={(e) => updateActiveObject({ fill: e.target.value })} className="p-1 h-10 w-full"/>
+                        </div>
+                    )}
                     <div>
                         <Label>Opacity</Label>
                         <Slider value={[activeObject.opacity || 1]} onValueChange={(v) => updateActiveObject({ opacity: v[0] })} min={0} max={1} step={0.05} />
@@ -276,6 +371,36 @@ export function SocialMediaImageGenerator() {
     )
   }
 
+  const LayersPanel = () => (
+    <div className="space-y-2">
+        {canvasObjects.slice().reverse().map((obj, index) => {
+            const isActive = activeObject === obj;
+            const getLabel = () => {
+                if (obj.type === 'textbox') return (obj as fabric.Textbox).text?.substring(0, 20) + '...';
+                if (obj.type === 'image') return 'Image Overlay';
+                return obj.type || 'Object';
+            }
+            return (
+                <Button 
+                    key={index}
+                    variant={isActive ? "secondary" : "ghost"}
+                    className="w-full justify-start h-10"
+                    onClick={() => {
+                        fabricCanvasRef.current?.setActiveObject(obj);
+                        fabricCanvasRef.current?.renderAll();
+                        setActiveObject(obj);
+                    }}
+                >
+                    {obj.type === 'textbox' && <Text className="mr-2 h-4 w-4"/>}
+                    {obj.type === 'image' && <ImageIcon className="mr-2 h-4 w-4"/>}
+                    {['rect', 'circle', 'triangle'].includes(obj.type || '') && <Shapes className="mr-2 h-4 w-4"/>}
+                    <span className="truncate">{getLabel()}</span>
+                </Button>
+            )
+        })}
+    </div>
+  )
+
   return (
     <Card className="w-full max-w-7xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
       <CardHeader className="text-center">
@@ -285,7 +410,7 @@ export function SocialMediaImageGenerator() {
       <CardContent>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1 space-y-6">
-            <Accordion type="multiple" defaultValue={['template', 'background']} className="w-full">
+            <Accordion type="multiple" defaultValue={['template', 'background', 'layers']} className="w-full">
                 <AccordionItem value="template">
                     <AccordionTrigger className="text-lg font-semibold">1. Template</AccordionTrigger>
                     <AccordionContent className="pt-4">
@@ -293,7 +418,7 @@ export function SocialMediaImageGenerator() {
                             {TEMPLATES.map(t => (
                                 <Label key={t.name} className="flex items-center gap-2 border rounded-md p-3 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer">
                                     <RadioGroupItem value={t.name} />
-                                    {t.name} <span className='text-xs text-muted-foreground'>({t.width}x{t.height})</span>
+                                    <span className="text-sm">{t.name} <span className='text-xs text-muted-foreground'>({t.width}x{t.height})</span></span>
                                 </Label>
                             ))}
                         </RadioGroup>
@@ -321,10 +446,24 @@ export function SocialMediaImageGenerator() {
                          <Button variant="outline" className="w-full" onClick={() => addText('New Text', { top: 50, fontSize: 60, fill: '#FFFFFF', fontFamily: fontFamilies.sans, textAlign: 'center' })}>
                             <Text className="mr-2"/> Add Text
                         </Button>
+                        <div className="space-y-2 pt-4 border-t">
+                             <Label>Add Shape</Label>
+                             <div className="grid grid-cols-3 gap-2">
+                                <Button variant="outline" onClick={() => addShape('rect')}><Square/></Button>
+                                <Button variant="outline" onClick={() => addShape('circle')}><Circle/></Button>
+                                <Button variant="outline" onClick={() => addShape('triangle')}><Triangle/></Button>
+                             </div>
+                        </div>
                      </AccordionContent>
                 </AccordionItem>
+                <AccordionItem value="layers">
+                    <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><Layers/>4. Layers</AccordionTrigger>
+                    <AccordionContent className="pt-4">
+                        <LayersPanel/>
+                    </AccordionContent>
+                </AccordionItem>
                  <AccordionItem value="properties">
-                     <AccordionTrigger className="text-lg font-semibold">4. Properties</AccordionTrigger>
+                     <AccordionTrigger className="text-lg font-semibold">5. Properties</AccordionTrigger>
                      <AccordionContent>
                          <PropertiesPanel />
                      </AccordionContent>
@@ -344,5 +483,3 @@ export function SocialMediaImageGenerator() {
     </Card>
   );
 }
-
-    
