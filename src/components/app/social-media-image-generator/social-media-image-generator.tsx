@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Shapes, Square, Circle, Triangle, Layers, ChevronsUp, ChevronsDown, ChevronUp, ChevronDown, ZoomIn, Save, FolderOpen, PanelLeft, LayoutTemplate, SquareMenu, PaintBucket } from 'lucide-react';
+import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft, AlignCenter, AlignRight, Shapes, Square, Circle, Triangle, Layers, ChevronsUp, ChevronsDown, ChevronUp, ChevronDown, ZoomIn, Save, FolderOpen, PanelLeft, LayoutTemplate, SquareMenu, PaintBucket, Wand2 } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
@@ -32,6 +32,15 @@ const fontFamilies: { [key: string]: string } = {
   serif: 'Georgia, serif',
   mono: 'monospace',
 };
+
+const FILTERS: { name: string, matrix: number[] | null }[] = [
+  { name: 'None', matrix: null },
+  { name: 'Grayscale', matrix: [0.33, 0.33, 0.33, 0, 0, 0.33, 0.33, 0.33, 0, 0, 0.33, 0.33, 0.33, 0, 0, 0, 0, 0, 1, 0] },
+  { name: 'Sepia', matrix: [0.393, 0.769, 0.189, 0, 0, 0.349, 0.686, 0.168, 0, 0, 0.272, 0.534, 0.131, 0, 0, 0, 0, 0, 1, 0] },
+  { name: 'Invert', matrix: [-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0] },
+  { name: 'Vintage', matrix: [0.627, 0.320, -0.039, 0, 0, 0.025, 0.644, 0.032, 0, 0, 0.046, -0.085, 0.524, 0, 0, 0, 0, 0, 1, 0] },
+  { name: 'Kodachrome', matrix: [1.128, -0.396, -0.039, 0, 0, -0.164, 1.083, -0.054, 0, 0, -0.167, -0.56, 1.601, 0, 0, 0, 0, 0, 1, 0] },
+];
 
 export function SocialMediaImageGenerator() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -74,8 +83,8 @@ export function SocialMediaImageGenerator() {
             height: template.height,
             backgroundColor: bgColor,
             selection: true,
-            fireRightClick: true, // Enable right-click
-            stopContextMenu: true, // Prevent default browser context menu
+            fireRightClick: true,
+            stopContextMenu: true,
         });
         fabricCanvasRef.current = canvas;
 
@@ -403,6 +412,20 @@ export function SocialMediaImageGenerator() {
     };
     reader.readAsText(file);
   }
+  
+  const applyFilter = (filter: (typeof FILTERS)[number]) => {
+    const obj = fabricCanvasRef.current?.getActiveObject();
+    if (obj instanceof fabric.Image) {
+        obj.filters = []; // Clear existing filters
+        if (filter.matrix) {
+            obj.filters.push(new fabric.Image.filters.ColorMatrix({
+                matrix: filter.matrix
+            }));
+        }
+        obj.applyFilters();
+        fabricCanvasRef.current?.renderAll();
+    }
+  };
 
   const PropertiesPanel = () => {
     if (!activeObject) {
@@ -477,14 +500,31 @@ export function SocialMediaImageGenerator() {
                 </div>
             )}
             
-            {(activeObject instanceof fabric.Image || isShape) && (
+            {activeObject instanceof fabric.Image && (
                  <div className="space-y-4">
-                    {isShape && (
-                         <div>
-                            <Label>Color</Label>
-                            <Input type="color" value={activeObject.fill as string} onChange={(e) => updateActiveObject({ fill: e.target.value })} className="p-1 h-10 w-full"/>
+                    <div>
+                        <Label>Opacity</Label>
+                        <Slider value={[activeObject.opacity || 1]} onValueChange={(v) => updateActiveObject({ opacity: v[0] })} min={0} max={1} step={0.05} />
+                    </div>
+                    <div>
+                      <Label>Filters</Label>
+                        <div className="grid grid-cols-3 gap-2">
+                          {FILTERS.map(filter => (
+                            <Button key={filter.name} variant="outline" size="sm" onClick={() => applyFilter(filter)}>
+                              {filter.name}
+                            </Button>
+                          ))}
                         </div>
-                    )}
+                    </div>
+                </div>
+            )}
+            
+            {isShape && (
+                 <div className="space-y-4">
+                    <div>
+                        <Label>Color</Label>
+                        <Input type="color" value={activeObject.fill as string} onChange={(e) => updateActiveObject({ fill: e.target.value })} className="p-1 h-10 w-full"/>
+                    </div>
                     <div>
                         <Label>Opacity</Label>
                         <Slider value={[activeObject.opacity || 1]} onValueChange={(v) => updateActiveObject({ opacity: v[0] })} min={0} max={1} step={0.05} />
