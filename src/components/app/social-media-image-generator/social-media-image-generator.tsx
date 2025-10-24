@@ -13,8 +13,6 @@ import { Upload, Download, Text, Image as ImageIcon, Palette, Trash2, AlignLeft,
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Checkbox } from '@/components/ui/checkbox';
-
 
 const TEMPLATES = [
     { name: 'Instagram Post', width: 1080, height: 1080 },
@@ -53,40 +51,84 @@ const FILTERS = [
   },
 ];
 
-interface OverlayConfig {
-    id: number;
-    src: string;
-    opacity: number;
-    size: number;
-    x: number;
-    y: number;
-}
-
 export function SocialMediaImageGenerator() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
-
+  
   const [template, setTemplate] = useState(TEMPLATES[0]);
   const [bgColor, setBgColor] = useState('#1a1a1a');
-  const [font, setFont] = useState('sans');
+  const [activeObject, setActiveObject] = useState<fabric.Object | null>(null);
+
   const { toast } = useToast();
 
-  // Initialize Fabric.js canvas
-  useEffect(() => {
-    if (canvasRef.current && !fabricCanvasRef.current) {
+  const initCanvas = useCallback(() => {
+    if (canvasRef.current) {
         const canvas = new fabric.Canvas(canvasRef.current, {
             width: template.width,
             height: template.height,
             backgroundColor: bgColor,
+            selection: true,
         });
         fabricCanvasRef.current = canvas;
-    } else if (fabricCanvasRef.current) {
-        fabricCanvasRef.current.setWidth(template.width);
-        fabricCanvasRef.current.setHeight(template.height);
-        fabricCanvasRef.current.setBackgroundColor(bgColor, fabricCanvasRef.current.renderAll.bind(fabricCanvasRef.current));
+
+        canvas.on('selection:created', (e) => setActiveObject(e.selected?.[0] || null));
+        canvas.on('selection:updated', (e) => setActiveObject(e.selected?.[0] || null));
+        canvas.on('selection:cleared', () => setActiveObject(null));
+        
+        // Add initial text elements
+        addText('Your Headline Here', {
+            fontSize: 80,
+            fill: '#FFFFFF',
+            textAlign: 'center',
+            fontFamily: fontFamilies.sans,
+            top: canvas.getHeight() / 3,
+            fontWeight: 'bold',
+            shadow: new fabric.Shadow({ color: 'rgba(0,0,0,0.5)', blur: 5, offsetX: 2, offsetY: 2 }),
+        });
+        addText('This is a great place for a short, descriptive paragraph.', {
+            fontSize: 40,
+            fill: '#DDDDDD',
+            textAlign: 'center',
+            fontFamily: fontFamilies.sans,
+            top: canvas.getHeight() / 2,
+        });
+
+        return canvas;
+    }
+    return null;
+  }, [template.width, template.height, bgColor]);
+
+   useEffect(() => {
+    let canvas = fabricCanvasRef.current;
+    if (!canvas) {
+      canvas = initCanvas();
+    }
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+        if ((e.key === 'Delete' || e.key === 'Backspace') && canvas?.getActiveObject()) {
+            canvas.remove(canvas.getActiveObject()!);
+            canvas.discardActiveObject();
+            canvas.renderAll();
+        }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        // Do not dispose canvas on cleanup to maintain state on re-render
+    };
+  }, [initCanvas]);
+
+  useEffect(() => {
+    const canvas = fabricCanvasRef.current;
+    if (canvas) {
+      canvas.setWidth(template.width);
+      canvas.setHeight(template.height);
+      canvas.setBackgroundColor(bgColor, canvas.renderAll.bind(canvas));
     }
   }, [template, bgColor]);
-  
+
   const handleBgFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith('image/')) {
@@ -106,7 +148,19 @@ export function SocialMediaImageGenerator() {
     }
   };
 
-  const handleAddOverlay = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const addText = (text: string, options: fabric.ITextboxOptions) => {
+      const canvas = fabricCanvasRef.current;
+      if (!canvas) return;
+      const textbox = new fabric.Textbox(text, {
+        width: canvas.width! * 0.8,
+        ...options
+      });
+      canvas.add(textbox);
+      canvas.centerObject(textbox);
+      canvas.renderAll();
+  }
+  
+  const addImageOverlay = (event: React.ChangeEvent<HTMLInputElement>) => {
      const file = event.target.files?.[0];
      if (file && file.type.startsWith('image/')) {
         const reader = new FileReader();
@@ -118,47 +172,13 @@ export function SocialMediaImageGenerator() {
                 img.scaleToWidth(canvas.width! / 4);
                 canvas.add(img);
                 canvas.centerObject(img);
+                canvas.setActiveObject(img);
                 canvas.renderAll();
             });
         };
         reader.readAsDataURL(file);
     }
   };
-  
-  const addText = (text: string, options: fabric.ITextboxOptions) => {
-      const canvas = fabricCanvasRef.current;
-      if (!canvas) return;
-      const textbox = new fabric.Textbox(text, {
-        width: canvas.width! * 0.8,
-        ...options
-      });
-      canvas.add(textbox);
-      canvas.centerObjectH(textbox);
-      if (options.top) textbox.set({ top: canvas.height! * (options.top / 100) });
-      canvas.renderAll();
-  }
-
-  useEffect(() => {
-     if(fabricCanvasRef.current) {
-        addText('Your Headline Here', {
-            fontSize: 80,
-            fill: '#FFFFFF',
-            textAlign: 'center',
-            fontFamily: fontFamilies[font],
-            top: 40,
-            fontWeight: 'bold',
-            shadow: new fabric.Shadow({ color: 'rgba(0,0,0,0.5)', blur: 5, offsetX: 2, offsetY: 2 }),
-        });
-        addText('This is a great place for a short, descriptive paragraph.', {
-            fontSize: 40,
-            fill: '#DDDDDD',
-            textAlign: 'center',
-            fontFamily: fontFamilies[font],
-            top: 60,
-        });
-     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fabricCanvasRef.current]);
 
   const downloadImage = () => {
     const canvas = fabricCanvasRef.current;
@@ -176,6 +196,71 @@ export function SocialMediaImageGenerator() {
   
   const bgImageInputRef = useRef<HTMLInputElement>(null);
   const overlayImageInputRef = useRef<HTMLInputElement>(null);
+  
+  const updateActiveObject = (props: any) => {
+    const canvas = fabricCanvasRef.current;
+    const active = canvas?.getActiveObject();
+    if (active) {
+        active.set(props);
+        canvas?.renderAll();
+    }
+  }
+
+  const deleteActiveObject = () => {
+    const canvas = fabricCanvasRef.current;
+    if (canvas && activeObject) {
+      canvas.remove(activeObject);
+      canvas.discardActiveObject();
+      canvas.renderAll();
+    }
+  };
+
+  const PropertiesPanel = () => {
+    if (!activeObject) {
+      return (
+        <div className="p-4 text-center text-muted-foreground">
+          <p>Select an object on the canvas to see its properties.</p>
+        </div>
+      );
+    }
+
+    const type = activeObject.type;
+
+    return (
+        <div className="p-4 space-y-6">
+            <div className="flex justify-between items-center">
+                <h3 className="font-semibold text-lg capitalize">{type} Properties</h3>
+                 <Button variant="destructive" size="sm" onClick={deleteActiveObject}><Trash2 className="mr-2 h-4 w-4"/> Delete</Button>
+            </div>
+            
+            {activeObject instanceof fabric.Textbox && (
+                <div className="space-y-4">
+                    <div>
+                        <Label>Text Content</Label>
+                        <Textarea value={activeObject.text} onChange={(e) => updateActiveObject({ text: e.target.value })}/>
+                    </div>
+                     <div>
+                        <Label>Font Size</Label>
+                        <Input type="number" value={activeObject.fontSize} onChange={(e) => updateActiveObject({ fontSize: parseInt(e.target.value, 10) })}/>
+                    </div>
+                     <div>
+                        <Label>Font Color</Label>
+                        <Input type="color" value={activeObject.fill as string} onChange={(e) => updateActiveObject({ fill: e.target.value })} className="p-1 h-10 w-full"/>
+                    </div>
+                </div>
+            )}
+            
+            {activeObject instanceof fabric.Image && (
+                 <div className="space-y-4">
+                    <div>
+                        <Label>Opacity</Label>
+                        <Slider value={[activeObject.opacity || 1]} onValueChange={(v) => updateActiveObject({ opacity: v[0] })} min={0} max={1} step={0.05} />
+                    </div>
+                </div>
+            )}
+        </div>
+    )
+  }
 
   return (
     <Card className="w-full max-w-7xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
@@ -184,9 +269,9 @@ export function SocialMediaImageGenerator() {
         <CardDescription>Create professional graphics for your social media platforms.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1 space-y-6">
-            <Accordion type="multiple" defaultValue={['template', 'background', 'text']} className="w-full">
+            <Accordion type="multiple" defaultValue={['template', 'background']} className="w-full">
                 <AccordionItem value="template">
                     <AccordionTrigger className="text-lg font-semibold">1. Template</AccordionTrigger>
                     <AccordionContent className="pt-4">
@@ -205,61 +290,44 @@ export function SocialMediaImageGenerator() {
                     <AccordionContent className="pt-4 space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="bgColor">Solid Color</Label>
-                            <Input id="bgColor" type="color" value={bgColor} onChange={(e) => {
-                                setBgColor(e.target.value);
-                                if (fabricCanvasRef.current) {
-                                    fabricCanvasRef.current.setBackgroundColor(e.target.value, fabricCanvasRef.current.renderAll.bind(fabricCanvasRef.current));
-                                }
-                            }} className="p-1 h-10 w-full" />
+                            <Input id="bgColor" type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="p-1 h-10 w-full" />
                         </div>
                         <div className="space-y-2 pt-4 border-t">
                             <Label>Background Image</Label>
-                            <Button variant="outline" className="w-full" onClick={() => bgImageInputRef.current?.click()}><Upload className="mr-2"/> Upload Background Image</Button>
+                            <Button variant="outline" className="w-full" onClick={() => bgImageInputRef.current?.click()}><Upload className="mr-2"/> Upload Background</Button>
                             <Input type="file" ref={bgImageInputRef} onChange={handleBgFileChange} className="hidden" accept="image/*" />
                         </div>
                     </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="overlay">
-                     <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><ImageIcon/>3. Overlays</AccordionTrigger>
+                 <AccordionItem value="elements">
+                     <AccordionTrigger className="text-lg font-semibold">3. Add Elements</AccordionTrigger>
                      <AccordionContent className="pt-4 space-y-4">
-                         <Button variant="outline" className="w-full" onClick={() => overlayImageInputRef.current?.click()}><PlusCircle className="mr-2"/> Add Overlay Image</Button>
-                        <Input type="file" ref={overlayImageInputRef} onChange={handleAddOverlay} className="hidden" accept="image/*" />
+                         <Button variant="outline" className="w-full" onClick={() => addImageOverlay({ target: { files: null } } as any)}><ImageIcon className="mr-2"/> Add Image/Logo</Button>
+                         <Input type="file" ref={overlayImageInputRef} onChange={addImageOverlay} className="hidden" accept="image/*" />
+                         <Button variant="outline" className="w-full" onClick={() => addText('New Text', { top: 50, fontSize: 60, fill: '#FFFFFF', fontFamily: fontFamilies.sans, textAlign: 'center' })}>
+                            <Text className="mr-2"/> Add Text
+                        </Button>
                      </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="text">
-                    <AccordionTrigger className="text-lg font-semibold flex items-center gap-2"><Text/>4. Text</AccordionTrigger>
-                    <AccordionContent className="pt-4 space-y-6">
-                        <div className="space-y-2">
-                            <Label htmlFor="font">Font Family</Label>
-                            <Select value={font} onValueChange={setFont}>
-                                <SelectTrigger id="font"><SelectValue /></SelectTrigger>
-                                <SelectContent>
-                                <SelectItem value="sans">Sans Serif</SelectItem>
-                                <SelectItem value="serif">Serif</SelectItem>
-                                <SelectItem value="mono">Monospace</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                         <Button variant="outline" className="w-full" onClick={() => addText('New Text', { top: 50, fontSize: 60, fill: '#FFFFFF', fontFamily: fontFamilies[font], textAlign: 'center' })}>
-                            <PlusCircle className="mr-2"/> Add Text
-                        </Button>
-                    </AccordionContent>
+                 <AccordionItem value="properties">
+                     <AccordionTrigger className="text-lg font-semibold">4. Properties</AccordionTrigger>
+                     <AccordionContent>
+                         <PropertiesPanel />
+                     </AccordionContent>
                 </AccordionItem>
             </Accordion>
-          </div>
-          <div className="lg:col-span-2 space-y-4">
-            <div className="flex justify-between items-center">
-                <h3 className="text-xl font-semibold">Live Preview</h3>
-            </div>
-            <div className="bg-muted/30 p-4 rounded-lg flex justify-center items-center">
-              <canvas ref={canvasRef} className="max-w-full h-auto rounded-md shadow-lg" />
-            </div>
-            <Button onClick={downloadImage} className="w-full text-lg py-6">
+             <Button onClick={downloadImage} className="w-full text-lg py-6">
                 <Download className="mr-2" /> Download as PNG
             </Button>
+          </div>
+          <div className="lg:col-span-3 space-y-4">
+            <div className="bg-muted/30 p-4 rounded-lg flex justify-center items-center overflow-auto">
+              <canvas ref={canvasRef} className="rounded-md shadow-lg" />
+            </div>
           </div>
         </div>
       </CardContent>
     </Card>
   );
 }
+
