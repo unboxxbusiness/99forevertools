@@ -16,7 +16,7 @@ type SchemaGeneratorFormProps = {
 export function SchemaGeneratorForm({ setSchema }: SchemaGeneratorFormProps) {
   
   return (
-    <div className="w-full space-y-8 animate-fade-in">
+    <>
       <Card className="w-full shadow-lg bg-card border-primary/20 animate-fade-in">
         <CardHeader>
           <CardTitle className="text-3xl font-bold tracking-tight">Schema Markup Generator</CardTitle>
@@ -73,6 +73,6 @@ export function SchemaGeneratorForm({ setSchema }: SchemaGeneratorFormProps) {
             </AccordionItem>
         </Accordion>
       </div>
-    </div>
+    </>
   );
 }

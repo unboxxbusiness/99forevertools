@@ -17,7 +17,7 @@ type MetaTagGeneratorFormProps = {
 
 export function MetaTagGeneratorForm({ title, setTitle, description, setDescription }: MetaTagGeneratorFormProps) {
   return (
-    <div className='space-y-8'>
+    <>
       <Card className="w-full shadow-lg bg-card border-primary/20 animate-fade-in h-full">
         <CardHeader>
           <CardTitle className="text-3xl font-bold tracking-tight">SERP Details</CardTitle>
@@ -82,6 +82,6 @@ export function MetaTagGeneratorForm({ title, setTitle, description, setDescript
             </AccordionItem>
         </Accordion>
       </div>
-    </div>
+    </>
   );
 }

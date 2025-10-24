@@ -418,7 +418,7 @@ const parseCSV = (content: string): { headers: string[], rows: { [key: string]: 
     const values = line.split(',');
     const rowObject: { [key: string]: string } = {};
     headers.forEach((header, index) => {
-      rowObject[header] = values[index] ? values[index].trim() : '';
+      rowObject[header] = (values[index] || '').trim();
     });
     return rowObject;
   });
@@ -442,6 +442,7 @@ export async function cleanCsvAction(values: z.infer<typeof csvSchema>) {
     }
 }
     
+
 
 
 
