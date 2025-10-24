@@ -84,6 +84,8 @@ export default function Home() {
       )
     }))
     .filter(category => category.tools.length > 0);
+    
+  const slugify = (text: string) => text.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and');
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
@@ -123,7 +125,7 @@ export default function Home() {
         {filteredCategories.length > 0 ? (
           <div className="space-y-16 pb-24">
             {filteredCategories.map((category) => (
-              <section key={category.category} className="animate-fade-in">
+              <section key={category.category} id={slugify(category.category)} className="animate-fade-in scroll-mt-20">
                 <h2 className="text-2xl font-bold tracking-tight mb-6 flex items-center">
                   {iconMap[category.icon]}
                   {category.category}

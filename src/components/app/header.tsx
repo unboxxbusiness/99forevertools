@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button';
 import { allTools } from '@/lib/tools';
-import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
 const iconMap: { [key: string]: React.ReactNode } = {
@@ -24,10 +23,9 @@ const iconMap: { [key: string]: React.ReactNode } = {
     Users: <Users className="mr-2 h-4 w-4" />,
 };
 
+const slugify = (text: string) => text.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and');
+
 export function Header() {
-  const searchParams = useSearchParams();
-  const category = searchParams.get('category');
-  
   return (
     <header className="sticky top-0 z-50 w-full print-hidden">
         <div className="bg-primary text-primary-foreground">
@@ -43,7 +41,7 @@ export function Header() {
         </div>
         <div className="border-b border-border/50 bg-background/90 backdrop-blur-sm">
             <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
-                <Link href={category ? `/?category=${encodeURIComponent(category)}` : "/"} className="flex items-center gap-3">
+                <Link href="/" className="flex items-center gap-3">
                 <Layers className="h-7 w-7 text-primary" />
                 <h1 className="text-2xl font-bold tracking-tighter text-foreground">
                     99forevertools
@@ -59,7 +57,7 @@ export function Header() {
                         <DropdownMenuContent>
                             {allTools.map((category) => (
                                 <DropdownMenuItem key={category.category} asChild>
-                                    <Link href={`/?category=${encodeURIComponent(category.category)}`}>
+                                    <Link href={`/#${slugify(category.category)}`}>
                                         {iconMap[category.icon]}
                                         {category.category}
                                     </Link>
@@ -73,5 +71,3 @@ export function Header() {
     </header>
   );
 }
-
-    
