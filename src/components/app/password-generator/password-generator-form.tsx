@@ -14,8 +14,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, KeyRound, Lightbulb, Briefcase } from 'lucide-react';
-import { generatePasswordAction } from '@/app/actions';
+import { KeyRound, Lightbulb, Briefcase } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -55,18 +54,24 @@ export function PasswordGeneratorForm({ setPassword, setIsLoading, setHasGenerat
     setPassword('');
 
     try {
-      const result = await generatePasswordAction(values);
+      const { length, includeUppercase, includeNumbers, includeSymbols } = values;
+      const lowerCaseChars = 'abcdefghijklmnopqrstuvwxyz';
+      const upperCaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const numberChars = '0123456789';
+      const symbolChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
 
-      if (result.error) {
-        toast({
-          variant: 'destructive',
-          title: 'An error occurred',
-          description: result.error,
-        });
-        setPassword('');
-      } else {
-        setPassword(result.data || '');
+      let charSet = lowerCaseChars;
+      if (includeUppercase) charSet += upperCaseChars;
+      if (includeNumbers) charSet += numberChars;
+      if (includeSymbols) charSet += symbolChars;
+
+      let generatedPassword = '';
+      for (let i = 0; i < length; i++) {
+          const randomIndex = Math.floor(Math.random() * charSet.length);
+          generatedPassword += charSet[randomIndex];
       }
+      setPassword(generatedPassword);
+
     } catch (e) {
       toast({
         variant: 'destructive',
@@ -75,7 +80,8 @@ export function PasswordGeneratorForm({ setPassword, setIsLoading, setHasGenerat
       });
       setPassword('');
     } finally {
-      setIsLoading(false);
+      // Short delay to simulate generation
+      setTimeout(() => setIsLoading(false), 300);
     }
   }
 
@@ -151,14 +157,10 @@ export function PasswordGeneratorForm({ setPassword, setIsLoading, setHasGenerat
             </div>
             
             <Button type="submit" disabled={isSubmitting} className="w-full text-lg py-6">
-              {isSubmitting ? (
-                <Loader2 className="animate-spin" />
-              ) : (
                 <>
                   <KeyRound className="mr-2 h-5 w-5" />
                   Generate Password
                 </>
-              )}
             </Button>
           </form>
         </Form>

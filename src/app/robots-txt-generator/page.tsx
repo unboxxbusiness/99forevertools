@@ -1,6 +1,6 @@
 
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Header } from '@/components/app/header';
 import { RobotsTxtGeneratorForm, type RobotsConfig } from '@/components/app/robots-txt-generator-form';
 import { RobotsTxtGeneratorResults } from '@/components/app/robots-txt-generator-results';
@@ -27,40 +27,38 @@ function RobotsTxtGeneratorWrapper() {
     sitemap: '',
     customRules: [{ userAgent: '*', rule: 'disallow', path: '' }],
   });
-  const [robotsTxt, setRobotsTxt] = useState('');
 
-  useEffect(() => {
-    let content = '';
-    const rulesByAgent: { [key: string]: string[] } = {};
+  let content = '';
+  const rulesByAgent: { [key: string]: string[] } = {};
 
-    if (config.defaultPolicy === 'disallowAll') {
-      content += 'User-agent: *\nDisallow: /\n\n';
-    } else {
-      content += 'User-agent: *\nAllow: /\n\n';
-    }
+  if (config.defaultPolicy === 'disallowAll') {
+    content += 'User-agent: *\nDisallow: /\n\n';
+  } else {
+    content += 'User-agent: *\nAllow: /\n\n';
+  }
 
-    config.customRules.forEach(r => {
-      if (r.userAgent && r.path) {
-        if (!rulesByAgent[r.userAgent]) {
-          rulesByAgent[r.userAgent] = [];
-        }
-        const formattedRule = r.rule === 'allow' ? 'Allow' : 'Disallow';
-        rulesByAgent[r.userAgent].push(`${formattedRule}: ${r.path}`);
+  config.customRules.forEach(r => {
+    if (r.userAgent && r.path) {
+      if (!rulesByAgent[r.userAgent]) {
+        rulesByAgent[r.userAgent] = [];
       }
-    });
-
-    for (const agent in rulesByAgent) {
-      content += `User-agent: ${agent}\n`;
-      content += rulesByAgent[agent].join('\n');
-      content += '\n\n';
+      const formattedRule = r.rule === 'allow' ? 'Allow' : 'Disallow';
+      rulesByAgent[r.userAgent].push(`${formattedRule}: ${r.path}`);
     }
+  });
 
-    if (config.sitemap) {
-      content += `Sitemap: ${config.sitemap}\n`;
-    }
+  for (const agent in rulesByAgent) {
+    content += `User-agent: ${agent}\n`;
+    content += rulesByAgent[agent].join('\n');
+    content += '\n\n';
+  }
 
-    setRobotsTxt(content.trim());
-  }, [config]);
+  if (config.sitemap) {
+    content += `Sitemap: ${config.sitemap}\n`;
+  }
+
+  const robotsTxt = content.trim();
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
       <RobotsTxtGeneratorForm config={config} setConfig={setConfig} />

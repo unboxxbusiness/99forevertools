@@ -20,37 +20,6 @@ export async function generateLoremIpsumAction(values: { paragraphs: number }) {
   }
 }
 
-const passwordSchema = z.object({
-    length: z.number(),
-    includeUppercase: z.boolean(),
-    includeNumbers: z.boolean(),
-    includeSymbols: z.boolean(),
-});
-
-export async function generatePasswordAction(values: z.infer<typeof passwordSchema>) {
-    try {
-        const { length, includeUppercase, includeNumbers, includeSymbols } = values;
-        const lowerCaseChars = 'abcdefghijklmnopqrstuvwxyz';
-        const upperCaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        const numberChars = '0123456789';
-        const symbolChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
-
-        let charSet = lowerCaseChars;
-        if (includeUppercase) charSet += upperCaseChars;
-        if (includeNumbers) charSet += numberChars;
-        if (includeSymbols) charSet += symbolChars;
-
-        let password = '';
-        for (let i = 0; i < length; i++) {
-            const randomIndex = Math.floor(Math.random() * charSet.length);
-            password += charSet[randomIndex];
-        }
-        return { data: password };
-    } catch (error) {
-        return { error: 'Failed to generate password.' };
-    }
-}
-
 const termsSchema = z.object({
   companyName: z.string(),
   websiteName: z.string(),
@@ -464,6 +433,7 @@ export async function cleanCsvAction(values: z.infer<typeof csvSchema>) {
     
 
     
+
 
 
 
