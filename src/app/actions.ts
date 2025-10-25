@@ -2,20 +2,18 @@
 'use server';
 
 import { z } from 'zod';
-import { loremIpsum } from 'lorem-ipsum';
 import { JSDOM } from 'jsdom';
 import css from 'css';
 
+const loremIpsumText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
 export async function generateLoremIpsumAction(values: { paragraphs: number }) {
   try {
-    const text = loremIpsum({
-      count: values.paragraphs,
-      units: 'paragraphs',
-      paragraphLowerBound: 3,
-      paragraphUpperBound: 7,
-      sentenceLowerBound: 5,
-      sentenceUpperBound: 15,
-    });
+    const { paragraphs } = values;
+    if (paragraphs <= 0) {
+      return { data: '' };
+    }
+    const text = Array(paragraphs).fill(loremIpsumText).join('\n\n');
     return { data: text };
   } catch (error) {
     return { error: 'Failed to generate Lorem Ipsum text.' };
@@ -417,7 +415,6 @@ const parseCSV = (content: string): { headers: string[], rows: { [key: string]: 
       const values = line.split(',');
       const rowObject: { [key: string]: string } = {};
       headers.forEach((header, index) => {
-        // If a value is missing for a column, default to an empty string.
         rowObject[header] = values[index] ?? ''; 
       });
       return rowObject;
@@ -467,6 +464,7 @@ export async function cleanCsvAction(values: z.infer<typeof csvSchema>) {
     
 
     
+
 
 
 
