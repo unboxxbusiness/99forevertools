@@ -72,7 +72,8 @@ const tools = [
   '/upi-qr-code-generator',
   '/manual-sales-tracker',
   '/instagram-profile-photo-maker',
-  '/social-media-image-generator',
+  '/hindi-typing',
+  '/hinglish-typing',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

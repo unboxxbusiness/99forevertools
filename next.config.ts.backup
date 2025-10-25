@@ -1,0 +1,93 @@
+import type {NextConfig} from 'next';
+
+const nextConfig: NextConfig = {
+  /* config options here */
+  // Removed output: 'export' to support dynamic routes
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  webpack: (config, { isServer, webpack }) => {
+    // Fix for @huggingface/transformers and onnxruntime-web
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'sharp$': false,
+      'onnxruntime-node$': false,
+    };
+
+    // Exclude server-only modules from client bundle
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        path: false,
+        crypto: false,
+        module: false,
+      };
+    }
+
+    // Handle WASM and worker files
+    config.module.rules.push({
+      test: /\.wasm$/,
+      type: 'asset/resource',
+    });
+
+    // Fix for ES modules
+    config.module.rules.push({
+      test: /\.m?js$/,
+      type: 'javascript/auto',
+      resolve: {
+        fullySpecified: false,
+      },
+    });
+
+    // Fix import.meta.url in @huggingface/transformers
+    config.module.rules.unshift({
+      test: /transformers\.js$/,
+      loader: 'string-replace-loader',
+      options: {
+        multiple: [
+          {
+            search: 'new URL("./", import.meta.url)',
+            replace: '(typeof document !== "undefined" ? document.baseURI : "/")',
+            flags: 'g'
+          },
+          {
+            search: '__webpack_require__.b = new URL',
+            replace: '__webpack_require__.b = typeof document !== "undefined" ? document.baseURI : new URL',
+            flags: 'g'
+          }
+        ]
+      }
+    });
+
+    return config;
+  },
+  images: {
+    // unoptimized: true, // Only needed for static export
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
+};
+
+export default nextConfig;

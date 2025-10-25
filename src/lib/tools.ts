@@ -1,12 +1,12 @@
 
-import { Star, CalculatorIcon, Search, Paintbrush, Image, MessageSquare, Users, Bot, FileText, Percent, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, Lightbulb, PartyPopper, TrendingUp, MapPin, Hash, PenSquare, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as LinkIcon, Activity, ExternalLink, Camera, Code, Network, Gift, FileJson, TestTube2, Mail, Clock, Binary, MessageSquarePlus, BookOpen, IndianRupee, User as UserIcon } from 'lucide-react';
+import { Star, CalculatorIcon, Search, Paintbrush, Image, MessageSquare, Users, Bot, FileText, Percent, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, Lightbulb, PartyPopper, TrendingUp, MapPin, Hash, PenSquare, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as LinkIcon, Activity, ExternalLink, Camera, Code, Network, Gift, FileJson, TestTube2, Mail, Clock, Binary, MessageSquarePlus, BookOpen, IndianRupee, User as UserIcon, Sparkles } from 'lucide-react';
 
 export const allTools = [
   {
     category: 'Featured',
     icon: 'Star',
     tools: [
-        { href: '/social-media-image-generator', title: 'Social Media Image Generator', description: 'Create images for your social media posts.', icon: 'Image' },
+  { href: '/hinglish-typing', title: 'Indian Language Typing Workspace', description: 'Real-time transliteration across 23+ Indian language scripts.', icon: 'FileText' },
         { href: '/logo-maker', title: 'Advanced Logo Maker', description: 'Create a simple, text-based logo for your business.', icon: 'Palette' },
         { href: '/manual-sales-tracker', title: 'Manual Sales Tracker', description: 'A simple dashboard to manually track your daily sales revenue.', icon: 'IndianRupee' },
         { href: '/invoice-generator', title: 'Shareable Invoice Generator', description: 'Generate a professional invoice to print, save as PDF, and share.', icon: 'FileText' },
@@ -49,6 +49,8 @@ export const allTools = [
       { href: '/robots-txt-generator', title: 'Robots.txt Generator', description: 'Create a robots.txt file for search engine crawlers.', icon: 'Bot' },
       { href: '/schema-generator', title: 'Schema Markup Generator', description: 'Generate structured data for articles, FAQs, and more.', icon: 'FileJson' },
       { href: '/utm-link-builder', title: 'UTM Link Builder', description: 'Create URLs with UTM parameters for tracking.', icon: 'LinkIcon' },
+  { href: '/hindi-typing', title: 'Hindi Typing Tool', description: 'Type in Hindi using an on-screen Devanagari keyboard.', icon: 'FileText' },
+  { href: '/hinglish-typing', title: 'Indian Language Typing Workspace', description: 'Real-time transliteration across 23+ Indian language scripts.', icon: 'FileText' },
     ]
   },
   {
@@ -61,13 +63,13 @@ export const allTools = [
       { href: '/logo-maker', title: 'Advanced Logo Maker', description: 'Create a simple, text-based logo for your business.', icon: 'Palette' },
       { href: '/color-palette-generator', title: 'Color Palette Generator', description: 'Generate accessible color schemes from a base color.', icon: 'Palette' },
       { href: '/email-signature-generator', title: 'Email Signature Generator', description: 'Create a professional HTML email signature.', icon: 'PenSquare' },
-      { href: '/social-media-image-generator', title: 'Social Media Image Generator', description: 'Create images for your social media posts.', icon: 'Image' },
     ]
   },
   {
     category: 'Image Tools',
     icon: 'Image',
     tools: [
+        { href: '/background-remover', title: 'AI Background Remover', description: 'Remove backgrounds locally with an on-device AI model.', icon: 'Sparkles' },
         { href: '/image-compressor', title: 'Image Compressor', description: 'Reduce image file sizes for faster web loading.', icon: 'Image' },
         { href: '/image-resizer', title: 'Image Resizer', description: 'Resize images to specific dimensions.', icon: 'Crop' },
         { href: '/watermark-adder', title: 'Watermark Adder', description: 'Add a text or image watermark to your pictures.', icon: 'Layers' },
