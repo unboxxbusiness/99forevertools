@@ -1,347 +1,311 @@
 'use client';
 
-import { useState, useRef, useCallback, type SVGProps } from 'react';
+import { useState, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { Download, Gem, Rocket, Shield, Star, Zap, Briefcase, Building, Lightbulb, Globe, Heart, Home, Flag, Award, BarChart, Camera, Cloud, Code, Compass, Cpu, CreditCard, Database, GitBranch, Keyboard, Layers, LifeBuoy, Lock, Mail, MousePointer, Package, Phone, PieChart, Puzzle, Server, Settings, ShoppingBag, ShoppingCart, Smartphone, Speaker, Sun, Target, Terminal, ThumbsUp, Wrench, TrafficCone, Train, TreePine, TrendingUp, Truck, Umbrella, Wallet, Watch, Wind } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-
-const fontFamilies: { [key: string]: string } = {
-  sans: 'Inter, sans-serif',
-  serif: 'Georgia, serif',
-  mono: 'monospace',
-};
-
-const icons: { [key: string]: (props: SVGProps<SVGSVGElement>) => JSX.Element } = {
-    none: () => <></>,
-    rocket: (props) => <Rocket {...props} />,
-    zap: (props) => <Zap {...props} />,
-    gem: (props) => <Gem {...props} />,
-    shield: (props) => <Shield {...props} />,
-    star: (props) => <Star {...props} />,
-    briefcase: (props) => <Briefcase {...props} />,
-    building: (props) => <Building {...props} />,
-    lightbulb: (props) => <Lightbulb {...props} />,
-    globe: (props) => <Globe {...props} />,
-    heart: (props) => <Heart {...props} />,
-    home: (props) => <Home {...props} />,
-    flag: (props) => <Flag {...props} />,
-    award: (props) => <Award {...props} />,
-    barChart: (props) => <BarChart {...props} />,
-    camera: (props) => <Camera {...props} />,
-    cloud: (props) => <Cloud {...props} />,
-    code: (props) => <Code {...props} />,
-    compass: (props) => <Compass {...props} />,
-    cpu: (props) => <Cpu {...props} />,
-    creditCard: (props) => <CreditCard {...props} />,
-    database: (props) => <Database {...props} />,
-    gitBranch: (props) => <GitBranch {...props} />,
-    keyboard: (props) => <Keyboard {...props} />,
-    layers: (props) => <Layers {...props} />,
-    lifeBuoy: (props) => <LifeBuoy {...props} />,
-    lock: (props) => <Lock {...props} />,
-    mail: (props) => <Mail {...props} />,
-    mousePointer: (props) => <MousePointer {...props} />,
-    package: (props) => <Package {...props} />,
-    phone: (props) => <Phone {...props} />,
-    pieChart: (props) => <PieChart {...props} />,
-    puzzle: (props) => <Puzzle {...props} />,
-    server: (props) => <Server {...props} />,
-    settings: (props) => <Settings {...props} />,
-    shoppingBag: (props) => <ShoppingBag {...props} />,
-    shoppingCart: (props) => <ShoppingCart {...props} />,
-    smartphone: (props) => <Smartphone {...props} />,
-    speaker: (props) => <Speaker {...props} />,
-    sun: (props) => <Sun {...props} />,
-    target: (props) => <Target {...props} />,
-    terminal: (props) => <Terminal {...props} />,
-    thumbsUp: (props) => <ThumbsUp {...props} />,
-    wrench: (props) => <Wrench {...props} />,
-    trafficCone: (props) => <TrafficCone {...props} />,
-    train: (props) => <Train {...props} />,
-    treePine: (props) => <TreePine {...props} />,
-    trendingUp: (props) => <TrendingUp {...props} />,
-    truck: (props) => <Truck {...props} />,
-    umbrella: (props) => <Umbrella {...props} />,
-    wallet: (props) => <Wallet {...props} />,
-    watch: (props) => <Watch {...props} />,
-    wind: (props) => <Wind {...props} />,
-};
-const iconKeys = Object.keys(icons);
-
-type Layout = 'icon-top' | 'icon-left';
-type Shape = 'square' | 'rounded' | 'circle';
+import { Download, Copy, Check, Rocket, Zap, Gem, Shield, Star, Briefcase, Building, Lightbulb, Globe, Heart, Home, Flag, Award, BarChart, Camera, Cloud, Code, Compass, Cpu, CreditCard, Database, GitBranch, Keyboard, Layers, LifeBuoy, Lock, Mail, MousePointer, Package, Phone, PieChart, Puzzle, Server, Settings, ShoppingBag, ShoppingCart, Smartphone, Speaker, Sun, Target, Terminal, ThumbsUp, Wrench, TrafficCone, Train, TreePine, TrendingUp, Truck, Umbrella, Wallet, Watch, Wind } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 export function LogoMaker() {
-  const [businessName, setBusinessName] = useState('Acme Inc');
-  const [tagline, setTagline] = useState('Quality Goods');
-  const [font, setFont] = useState('sans');
-  const [bgColor, setBgColor] = useState('#1a1a1a');
-  const [textColor, setTextColor] = useState('#ffffff');
-  const [selectedIcon, setSelectedIcon] = useState('rocket');
-  const [layout, setLayout] = useState<Layout>('icon-top');
-  const [shape, setShape] = useState<Shape>('rounded');
-  const [fontSize, setFontSize] = useState(32);
-  const [taglineFontSize, setTaglineFontSize] = useState(12);
-  const [padding, setPadding] = useState(20);
-  const [iconTextSpacing, setIconTextSpacing] = useState(8);
-  
-  const svgRef = useRef<SVGSVGElement>(null);
+  const [name, setName] = useState('99forevertools');
+  const [tagline, setTagline] = useState('Professional Tools');
+  const [font, setFont] = useState('poppins');
+  const [bg, setBg] = useState('#ffffff');
+  const [text, setText] = useState('#1F2937');
+  const [icon, setIcon] = useState('zap');
+  const [layout, setLayout] = useState('left');
+  const [shape, setShape] = useState('rounded');
+  const [fontSize, setFontSize] = useState(28);
+  const [tagSize, setTagSize] = useState(14);
+  const [pad, setPad] = useState(24);
+  const [iconSize, setIconSize] = useState(56);
+  const [spacing, setSpacing] = useState(16);
+  const [grad, setGrad] = useState(false);
+  const [angle, setAngle] = useState(45);
+  const [color1, setColor1] = useState('#3B82F6');
+  const [color2, setColor2] = useState('#1E40AF');
+  const [iconColor, setIconColor] = useState('#3B82F6');
+  const [border, setBorder] = useState(false);
+  const [bw, setBw] = useState(2);
+  const [bc, setBc] = useState('#E5E7EB');
+  const [copied, setCopied] = useState(false);
+
+  const svgRef = useRef(null);
   const { toast } = useToast();
 
-  const downloadSVG = () => {
+  const fonts = {
+    inter: 'Inter, sans-serif',
+    poppins: '"Poppins", sans-serif',
+    playfair: '"Playfair Display", serif',
+    georgia: 'Georgia, serif',
+    mono: 'Courier New, monospace',
+  };
+
+  const palettes = [
+    { name: 'Modern', primary: '#3B82F6', secondary: '#1E40AF' },
+    { name: 'Vibrant', primary: '#EC4899', secondary: '#BE185D' },
+    { name: 'Nature', primary: '#10B981', secondary: '#059669' },
+    { name: 'Sunset', primary: '#F97316', secondary: '#EA580C' },
+    { name: 'Ocean', primary: '#0EA5E9', secondary: '#0369A1' },
+    { name: 'Dark', primary: '#1F2937', secondary: '#111827' },
+    { name: 'Luxury', primary: '#7C3AED', secondary: '#5B21B6' },
+    { name: 'Fire', primary: '#EF4444', secondary: '#DC2626' },
+  ];
+
+  const icons = {
+    rocket: Rocket, zap: Zap, gem: Gem, shield: Shield, star: Star,
+    briefcase: Briefcase, building: Building, lightbulb: Lightbulb,
+    globe: Globe, heart: Heart, home: Home, flag: Flag, award: Award,
+    barChart: BarChart, camera: Camera, cloud: Cloud, code: Code,
+    compass: Compass, cpu: Cpu, creditCard: CreditCard, database: Database,
+    gitBranch: GitBranch, keyboard: Keyboard, layers: Layers,
+    lifeBuoy: LifeBuoy, lock: Lock, mail: Mail, mousePointer: MousePointer,
+    package: Package, phone: Phone, pieChart: PieChart, puzzle: Puzzle,
+    server: Server, settings: Settings, shoppingBag: ShoppingBag,
+    shoppingCart: ShoppingCart, smartphone: Smartphone, speaker: Speaker,
+    sun: Sun, target: Target, terminal: Terminal, thumbsUp: ThumbsUp,
+    wrench: Wrench, trafficCone: TrafficCone, train: Train, treePine: TreePine,
+    trendingUp: TrendingUp, truck: Truck, umbrella: Umbrella, wallet: Wallet,
+    watch: Watch, wind: Wind,
+  };
+
+  const handleDownloadSVG = () => {
     if (!svgRef.current) return;
-    const svgData = new XMLSerializer().serializeToString(svgRef.current);
-    const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+    const svg = new XMLSerializer().serializeToString(svgRef.current);
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'logo.svg';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = name.replace(/\s+/g, '-').toLowerCase() + '.svg';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     URL.revokeObjectURL(url);
     toast({ title: 'SVG downloaded!' });
   };
 
-  const downloadPNG = () => {
+  const handleDownloadPNG = (size) => {
     if (!svgRef.current) return;
-    const svgData = new XMLSerializer().serializeToString(svgRef.current);
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
+    const svg = new XMLSerializer().serializeToString(svgRef.current);
     const img = new Image();
-    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(svgBlob);
-
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
     img.onload = () => {
-      canvas.width = 512;
-      canvas.height = 512;
-      ctx.drawImage(img, 0, 0, 512, 512);
-      URL.revokeObjectURL(url);
-
-      const pngUrl = canvas.toDataURL('image/png');
-      const a = document.createElement('a');
-      a.href = pngUrl;
-      a.download = 'logo.png';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      toast({ title: 'PNG downloaded!' });
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      ctx.drawImage(img, 0, 0, size, size);
+      const url = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = name.replace(/\s+/g, '-').toLowerCase() + '-' + size + '.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast({ title: 'PNG ' + size + 'x' + size + ' downloaded!' });
     };
-
-    img.src = url;
+    img.src = URL.createObjectURL(blob);
   };
 
-  const fontFamily = fontFamilies[font] || fontFamilies.sans;
-  const IconComponent = icons[selectedIcon];
+  const handleCopyCode = () => {
+    if (!svgRef.current) return;
+    const svg = new XMLSerializer().serializeToString(svgRef.current);
+    navigator.clipboard.writeText(svg).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+      toast({ title: 'SVG copied!' });
+    });
+  };
 
-  const renderLogoContent = () => {
-    const iconSize = fontSize * 1.2;
-    
-    // Base positions
-    let iconX = (100 - iconSize) / 2;
-    let iconY = 0;
-    let textX = 50;
-    let textY = iconSize + iconTextSpacing;
-    let textAnchor: 'middle' | 'start' = 'middle';
-
-    if (layout === 'icon-left') {
-        const totalContentWidth = iconSize + iconTextSpacing + (businessName.length * fontSize * 0.6); // Approximation
-        const startX = (100 - totalContentWidth) / 2;
-        iconX = startX;
-        iconY = (100 - iconSize) / 2;
-        textX = startX + iconSize + iconTextSpacing;
-        textY = 50;
-        textAnchor = 'start';
-    }
-
-    return (
-      <g>
-        {selectedIcon !== 'none' && <IconComponent color={textColor} x={iconX} y={iconY} width={iconSize} height={iconSize} />}
-        <text
-            x={textX}
-            y={textY}
-            textAnchor={textAnchor}
-            dominantBaseline="central"
-            fill={textColor}
-            fontSize={fontSize}
-            fontFamily={fontFamily}
-            fontWeight="bold"
-        >
-            {businessName}
-        </text>
-        {tagline && (
-             <text
-                x={textX}
-                y={textY + fontSize * 0.8}
-                textAnchor={textAnchor}
-                dominantBaseline="central"
-                fill={textColor}
-                fontSize={taglineFontSize}
-                fontFamily={fontFamily}
-                opacity="0.9"
-            >
-                {tagline}
-            </text>
-        )}
-      </g>
-    )
-  }
+  const w = 100 + pad * 2;
+  const h = 100 + pad * 2;
+  const IconComponent = icons[icon];
+  const fontFamily = fonts[font];
+  const br = shape === 'square' ? 0 : shape === 'circle' ? 50 + pad : 20;
+  const gx = 50 + 50 * Math.cos((angle * Math.PI) / 180);
+  const gy = 50 + 50 * Math.sin((angle * Math.PI) / 180);
 
   return (
-    <Card className="w-full max-w-6xl mx-auto shadow-lg bg-card border-primary/20 animate-fade-in">
-      <CardHeader className="text-center">
-        <CardTitle className="text-3xl font-bold tracking-tight">Advanced Logo Maker</CardTitle>
-        <CardDescription>
-          Create a simple, text-based logo for your business with more options.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Controls */}
-          <div className="lg:col-span-1 space-y-6">
-            <div className="space-y-4 p-4 border rounded-lg">
-                <h3 className="font-semibold text-lg">Content</h3>
-                <div>
-                    <Label htmlFor="businessName">Business Name</Label>
-                    <Input id="businessName" value={businessName} onChange={(e) => setBusinessName(e.target.value)} />
-                </div>
-                 <div>
-                    <Label htmlFor="tagline">Tagline (Optional)</Label>
-                    <Input id="tagline" value={tagline} onChange={(e) => setTagline(e.target.value)} placeholder="Your company slogan" />
-                </div>
-                 <div>
-                    <Label htmlFor="icon">Icon</Label>
-                    <Select value={selectedIcon} onValueChange={setSelectedIcon}>
-                        <SelectTrigger id="icon"><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                            {iconKeys.map(key => <SelectItem key={key} value={key} className="capitalize">{key}</SelectItem>)}
-                        </SelectContent>
-                    </Select>
-                </div>
-            </div>
+    <div className="w-full space-y-6">
+      <Card className="shadow-lg border-primary/10">
+        <CardHeader>
+          <CardTitle className="text-3xl font-bold">Professional Logo Maker</CardTitle>
+          <CardDescription>Create logos with gradients, borders, multiple layouts, and export.</CardDescription>
+        </CardHeader>
+      </Card>
 
-            <div className="space-y-4 p-4 border rounded-lg">
-                <h3 className="font-semibold text-lg">Styling</h3>
-                 <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <Label htmlFor="font">Font Family</Label>
-                        <Select value={font} onValueChange={setFont}>
-                            <SelectTrigger id="font"><SelectValue /></SelectTrigger>
-                            <SelectContent>
-                            <SelectItem value="sans">Sans Serif</SelectItem>
-                            <SelectItem value="serif">Serif</SelectItem>
-                            <SelectItem value="mono">Monospace</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <div>
-                        <Label>Font Size: {fontSize}px</Label>
-                        <Slider value={[fontSize]} onValueChange={(v) => setFontSize(v[0])} min={10} max={50} step={1} />
-                    </div>
-                </div>
-                <div>
-                    <Label>Tagline Size: {taglineFontSize}px</Label>
-                    <Slider value={[taglineFontSize]} onValueChange={(v) => setTaglineFontSize(v[0])} min={6} max={30} step={1} disabled={!tagline} />
-                </div>
-                 <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <Label htmlFor="bgColor">Background</Label>
-                        <Input id="bgColor" type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="p-1 h-10"/>
-                    </div>
-                    <div>
-                        <Label htmlFor="textColor">Text & Icon</Label>
-                        <Input id="textColor" type="color" value={textColor} onChange={(e) => setTextColor(e.target.value)} className="p-1 h-10"/>
-                    </div>
-                </div>
-            </div>
-            
-            <div className="space-y-4 p-4 border rounded-lg">
-                 <h3 className="font-semibold text-lg">Layout</h3>
-                 <div className="space-y-2">
-                    <Label>Shape</Label>
-                    <RadioGroup value={shape} onValueChange={(v) => setShape(v as Shape)} className="flex gap-2">
-                        <Label className="flex-1 text-center border rounded-md p-2 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer text-sm h-10 justify-center items-center flex">
-                            <RadioGroupItem value="square" className="sr-only" /> Square
-                        </Label>
-                        <Label className="flex-1 text-center border rounded-md p-2 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer text-sm h-10 justify-center items-center flex">
-                            <RadioGroupItem value="rounded" className="sr-only" /> Rounded
-                        </Label>
-                        <Label className="flex-1 text-center border rounded-md p-2 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer text-sm h-10 justify-center items-center flex">
-                            <RadioGroupItem value="circle" className="sr-only" /> Circle
-                        </Label>
-                    </RadioGroup>
-                </div>
-                 <div className="space-y-2">
-                    <Label>Icon Position</Label>
-                    <RadioGroup value={layout} onValueChange={(v) => setLayout(v as Layout)} className="flex gap-2">
-                        <Label className="flex-1 text-center border rounded-md p-2 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer text-sm h-10 justify-center items-center flex">
-                            <RadioGroupItem value="icon-top" className="sr-only" /> Icon Top
-                        </Label>
-                        <Label className="flex-1 text-center border rounded-md p-2 has-[:checked]:bg-primary/20 has-[:checked]:border-primary cursor-pointer text-sm h-10 justify-center items-center flex">
-                            <RadioGroupItem value="icon-left" className="sr-only" /> Icon Left
-                        </Label>
-                    </RadioGroup>
-                </div>
-                <div>
-                    <Label>Padding: {padding}px</Label>
-                    <Slider value={[padding]} onValueChange={(v) => setPadding(v[0])} min={0} max={50} step={1} />
-                </div>
-                <div>
-                    <Label>Icon-Text Spacing: {iconTextSpacing}px</Label>
-                    <Slider value={[iconTextSpacing]} onValueChange={(v) => setIconTextSpacing(v[0])} min={0} max={30} step={1} />
-                </div>
-            </div>
-
-             <div className="space-y-2 border-t pt-6">
-                <Button onClick={downloadPNG} className="w-full">
-                    <Download className="mr-2 h-4 w-4" />
-                    Download PNG (512x512)
-                </Button>
-                <Button onClick={downloadSVG} variant="secondary" className="w-full">
-                    <Download className="mr-2 h-4 w-4" />
-                    Download SVG
-                </Button>
-             </div>
-          </div>
-
-          {/* Preview */}
-          <div className="lg:col-span-2 bg-muted/30 p-8 rounded-lg flex flex-col items-center justify-center space-y-8">
-            <div className="w-80 h-80 shadow-lg">
-                <svg
-                    ref={svgRef}
-                    width="100%"
-                    height="100%"
-                    viewBox={`0 0 ${100 + padding * 2} ${100 + padding * 2}`}
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <rect 
-                        width={100 + padding * 2} 
-                        height={100 + padding * 2} 
-                        fill={bgColor}
-                        rx={shape === 'rounded' ? 20 : (shape === 'circle' ? (50 + padding) : 0)}
-                    />
-                    <g transform={`translate(${padding} ${padding})`}>
-                       {renderLogoContent()}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <Card className="shadow-lg border-primary/10">
+            <CardContent className="pt-6">
+              <div className="flex flex-col items-center space-y-6">
+                <div className="w-full aspect-square max-w-md bg-gradient-to-br from-muted/30 to-muted/50 rounded-2xl p-8 flex items-center justify-center shadow-inner border border-border/40">
+                  <svg ref={svgRef} width="100%" height="100%" viewBox={'0 0 ' + w + ' ' + h} xmlns="http://www.w3.org/2000/svg" className="drop-shadow-lg">
+                    {!grad ? (
+                      <rect width={w} height={h} fill={bg} rx={br} stroke={border ? bc : 'none'} strokeWidth={border ? bw : 0} />
+                    ) : (
+                      <>
+                        <defs>
+                          <linearGradient id="lg" x1="50%" y1="50%" x2={gx + '%'} y2={gy + '%'}>
+                            <stop offset="0%" stopColor={color1} />
+                            <stop offset="100%" stopColor={color2} />
+                          </linearGradient>
+                        </defs>
+                        <rect width={w} height={h} fill="url(#lg)" rx={br} stroke={border ? bc : 'none'} strokeWidth={border ? bw : 0} />
+                      </>
+                    )}
+                    <g transform={'translate(' + pad + ' ' + pad + ')'}>
+                      {layout !== 'only' && (
+                        <>
+                          <text x={layout === 'left' ? 15 + iconSize + spacing : layout === 'right' ? 15 : 50} y={layout === 'left' || layout === 'right' ? 50 : 55} textAnchor={layout === 'left' || layout === 'right' ? 'start' : 'middle'} dominantBaseline="middle" fill={text} fontSize={fontSize} fontFamily={fontFamily} fontWeight="700">
+                            {name}
+                          </text>
+                          {tagline && (
+                            <text x={layout === 'left' ? 15 + iconSize + spacing : layout === 'right' ? 15 : 50} y={layout === 'left' || layout === 'right' ? 50 + fontSize * 0.65 : 55 + fontSize * 0.65} textAnchor={layout === 'left' || layout === 'right' ? 'start' : 'middle'} dominantBaseline="middle" fill={text} fontSize={tagSize} fontFamily={fontFamily} opacity="0.8">
+                              {tagline}
+                            </text>
+                          )}
+                        </>
+                      )}
+                      {IconComponent && (
+                        <g transform={'translate(' + (layout === 'left' ? 15 : layout === 'right' ? 85 - iconSize : 50 - iconSize / 2) + ' ' + (layout === 'left' || layout === 'right' ? 50 - iconSize / 2 : layout === 'only' ? 50 - iconSize / 2 : 10) + ')'}>
+                          <IconComponent color={iconColor} width={iconSize} height={iconSize} />
+                        </g>
+                      )}
                     </g>
-                </svg>
-            </div>
-            <div className="text-center w-full max-w-xs space-y-4">
-                <h3 className="text-2xl font-bold p-2" style={{ fontFamily, color: textColor, backgroundColor: bgColor }}>
-                    {businessName}
-                </h3>
-                 {tagline && <p className="text-sm p-2" style={{ fontFamily, color: textColor, backgroundColor: bgColor }}>{tagline}</p>}
-            </div>
-          </div>
+                  </svg>
+                </div>
+
+                <div className="w-full grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <Button onClick={() => handleDownloadPNG(256)} variant="outline" size="sm" className="text-xs"><Download className="w-3 h-3 mr-1" /> 256</Button>
+                  <Button onClick={() => handleDownloadPNG(512)} size="sm" className="text-xs"><Download className="w-3 h-3 mr-1" /> 512</Button>
+                  <Button onClick={() => handleDownloadPNG(1024)} variant="outline" size="sm" className="text-xs"><Download className="w-3 h-3 mr-1" /> 1024</Button>
+                  <Button onClick={handleDownloadSVG} variant="outline" size="sm" className="text-xs"><Download className="w-3 h-3 mr-1" /> SVG</Button>
+                </div>
+
+                <Button onClick={handleCopyCode} variant="ghost" className="w-full">{copied ? <><Check className="w-4 h-4 mr-2" />Copied!</> : <><Copy className="w-4 h-4 mr-2" />Copy SVG</>}</Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </CardContent>
-    </Card>
+
+        <div className="lg:col-span-1">
+          <Card className="shadow-lg border-primary/10 sticky top-20 max-h-[calc(100vh-120px)] overflow-y-auto">
+            <CardContent className="pt-6">
+              <Tabs defaultValue="content" className="w-full">
+                <TabsList className="grid w-full grid-cols-3 mb-4">
+                  <TabsTrigger value="content" className="text-xs">Content</TabsTrigger>
+                  <TabsTrigger value="design" className="text-xs">Design</TabsTrigger>
+                  <TabsTrigger value="layout" className="text-xs">Layout</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="content" className="space-y-4">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium">Business Name</Label>
+                    <Input value={name} onChange={e => setName(e.target.value)} maxLength={30} placeholder="Your brand" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium">Tagline</Label>
+                    <Input value={tagline} onChange={e => setTagline(e.target.value)} maxLength={50} placeholder="Your slogan" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium">Icon</Label>
+                    <Select value={icon} onValueChange={setIcon}>
+                      <SelectTrigger className="text-sm"><SelectValue /></SelectTrigger>
+                      <SelectContent className="max-h-64">{Object.keys(icons).map(k => (<SelectItem key={k} value={k} className="capitalize">{k}</SelectItem>))}</SelectContent>
+                    </Select>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="design" className="space-y-4">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium mb-2 block">Color Palettes</Label>
+                    <div className="grid grid-cols-4 gap-2">
+                      {palettes.map(p => (<button key={p.name} onClick={() => { setText(p.primary); setIconColor(p.primary); setColor1(p.primary); setColor2(p.secondary); }} className="h-10 rounded-lg border-2 border-border hover:border-primary transition-all" style={{ background: 'linear-gradient(135deg, ' + p.primary + ', ' + p.secondary + ')' }} title={p.name} />))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium">Font Family</Label>
+                    <Select value={font} onValueChange={setFont}>
+                      <SelectTrigger className="text-sm"><SelectValue /></SelectTrigger>
+                      <SelectContent>{Object.keys(fonts).map(k => (<SelectItem key={k} value={k} className="capitalize">{k}</SelectItem>))}</SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2"><Label className="text-sm font-medium">Name Size: {fontSize}px</Label><Slider value={[fontSize]} onValueChange={v => setFontSize(v[0])} min={14} max={48} step={1} /></div>
+                  <div className="space-y-2"><Label className="text-sm font-medium">Tagline Size: {tagSize}px</Label><Slider value={[tagSize]} onValueChange={v => setTagSize(v[0])} min={8} max={24} step={1} /></div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-2"><Label className="text-xs font-medium">Background</Label><Input type="color" value={bg} onChange={e => setBg(e.target.value)} className="h-10 cursor-pointer" /></div>
+                    <div className="space-y-2"><Label className="text-xs font-medium">Text Color</Label><Input type="color" value={text} onChange={e => setText(e.target.value)} className="h-10 cursor-pointer" /></div>
+                  </div>
+
+                  <div className="space-y-2"><Label className="text-sm font-medium">Icon Color</Label><Input type="color" value={iconColor} onChange={e => setIconColor(e.target.value)} className="h-10 w-full cursor-pointer" /></div>
+
+                  <div className="flex items-center gap-2 pt-2 border-t">
+                    <input type="checkbox" id="grad-toggle" checked={grad} onChange={e => setGrad(e.target.checked)} className="w-4 h-4 rounded" />
+                    <Label htmlFor="grad-toggle" className="text-sm font-medium cursor-pointer">Enable Gradient</Label>
+                  </div>
+
+                  {grad && (
+                    <div className="space-y-3 pt-2">
+                      <div><Label className="text-xs">Angle: {angle}°</Label><Slider value={[angle]} onValueChange={v => setAngle(v[0])} min={0} max={360} step={15} /></div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div><Label className="text-xs">Color 1</Label><Input type="color" value={color1} onChange={e => setColor1(e.target.value)} className="h-8 w-full cursor-pointer" /></div>
+                        <div><Label className="text-xs">Color 2</Label><Input type="color" value={color2} onChange={e => setColor2(e.target.value)} className="h-8 w-full cursor-pointer" /></div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex items-center gap-2 pt-2 border-t">
+                    <input type="checkbox" id="border-toggle" checked={border} onChange={e => setBorder(e.target.checked)} className="w-4 h-4 rounded" />
+                    <Label htmlFor="border-toggle" className="text-sm font-medium cursor-pointer">Add Border</Label>
+                  </div>
+
+                  {border && (
+                    <div className="space-y-3 pt-2">
+                      <div><Label className="text-xs">Width: {bw}px</Label><Slider value={[bw]} onValueChange={v => setBw(v[0])} min={1} max={8} step={1} /></div>
+                      <div><Label className="text-xs">Border Color</Label><Input type="color" value={bc} onChange={e => setBc(e.target.value)} className="h-8 w-full cursor-pointer" /></div>
+                    </div>
+                  )}
+                </TabsContent>
+
+                <TabsContent value="layout" className="space-y-4">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium">Shape</Label>
+                    <RadioGroup value={shape} onValueChange={v => setShape(v)}>
+                      <div className="grid grid-cols-3 gap-2">
+                        {['square', 'rounded', 'circle'].map(s => (<Label key={s} className="text-center border rounded-lg p-2 has-[:checked]:bg-primary/10 has-[:checked]:border-primary cursor-pointer text-xs h-10 flex items-center justify-center"><RadioGroupItem value={s} className="sr-only" /><span className="capitalize">{s}</span></Label>))}
+                      </div>
+                    </RadioGroup>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium">Icon Position</Label>
+                    <RadioGroup value={layout} onValueChange={v => setLayout(v)}>
+                      <div className="grid grid-cols-2 gap-2">
+                        {['top', 'left', 'right', 'only'].map(l => (<Label key={l} className="text-center border rounded-lg p-2 has-[:checked]:bg-primary/10 has-[:checked]:border-primary cursor-pointer text-xs h-10 flex items-center justify-center"><RadioGroupItem value={l} className="sr-only" /><span className="capitalize">{l}</span></Label>))}
+                      </div>
+                    </RadioGroup>
+                  </div>
+
+                  <div className="space-y-2"><Label className="text-sm font-medium">Icon Size: {iconSize}px</Label><Slider value={[iconSize]} onValueChange={v => setIconSize(v[0])} min={24} max={80} step={2} /></div>
+                  <div className="space-y-2"><Label className="text-sm font-medium">Padding: {pad}px</Label><Slider value={[pad]} onValueChange={v => setPad(v[0])} min={0} max={40} step={2} /></div>
+                  <div className="space-y-2"><Label className="text-sm font-medium">Icon-Text Spacing: {spacing}px</Label><Slider value={[spacing]} onValueChange={v => setSpacing(v[0])} min={0} max={32} step={2} /></div>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
   );
 }

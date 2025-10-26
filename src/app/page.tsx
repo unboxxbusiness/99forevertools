@@ -3,6 +3,7 @@
 
 import { useState, type ComponentType } from 'react';
 import { Header } from '@/components/app/header';
+import { CategoryNav } from '@/components/app/category-nav';
 import { ToolCard } from '@/components/app/tool-card';
 import { Input } from '@/components/ui/input';
 import { allTools } from '@/lib/tools';
@@ -90,69 +91,87 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
-      <main className="flex-grow container mx-auto px-3 xs:px-4 sm:px-4">
-        <div className="py-8 xs:py-10 sm:py-12 md:py-20 lg:py-32 text-center animate-fade-in relative">
-          <div 
-            className="absolute inset-0 -z-10" 
-            style={{
-              backgroundImage: 'radial-gradient(circle at 50% 30%, hsl(var(--primary) / 0.1), transparent 60%)'
-            }}
-          />
-          <h1 className="text-2xl xs:text-3xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tighter text-primary leading-tight px-2">
-            Free Tools for Small Business Growth
-          </h1>
-          <p className="mt-2 xs:mt-3 sm:mt-3 md:mt-4 max-w-2xl mx-auto text-sm xs:text-base sm:text-base md:text-lg text-muted-foreground px-3 sm:px-2 leading-relaxed">
-            A collection of powerful, simple tools to supercharge your marketing, finance, and sales efforts.
-          </p>
-           <p className="mt-4 xs:mt-5 sm:mt-6 md:mt-8 text-sm xs:text-base sm:text-base md:text-lg font-semibold px-2">
-              Explore our collection of {totalTools}+ powerful tools
-          </p>
-          <div className="mt-2 xs:mt-3 sm:mt-2 md:mt-4 max-w-xl mx-auto relative px-3 sm:px-2">
-            <Search className="absolute left-6 xs:left-6 sm:left-6 md:left-4 top-1/2 -translate-y-1/2 h-4 w-4 xs:h-5 xs:w-5 sm:h-5 sm:w-5 text-muted-foreground flex-shrink-0" />
-            <Input
-              type="search"
-              placeholder="Search for your perfect tool..."
-              className="h-10 xs:h-11 sm:h-11 md:h-12 text-sm xs:text-sm sm:text-sm md:text-lg pl-10 xs:pl-12 sm:pl-12 pr-4 bg-background/50 backdrop-blur-sm"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+      <CategoryNav />
+      <main className="flex-grow">
+        <section className="relative px-3 xs:px-4 sm:px-6 md:px-8 lg:px-10 pt-10 xs:pt-12 sm:pt-14 md:pt-20 lg:pt-24">
+          <div className="container mx-auto">
+            <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-gradient-to-br from-background via-background to-primary/5 px-4 xs:px-6 sm:px-8 md:px-12 py-10 xs:py-12 sm:py-14 md:py-16 lg:py-20 shadow-[0_30px_70px_-40px_rgba(15,23,42,0.35)]">
+              <div className="absolute -left-10 top-16 h-44 w-44 rounded-full bg-primary/10 blur-3xl" />
+              <div className="absolute -right-16 -bottom-10 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
+              <div className="relative mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
+                <p className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background/40 px-4 py-1 text-xs xs:text-sm font-semibold text-primary shadow-sm backdrop-blur">
+                  Explore our collection of {totalTools}+ powerful tools
+                </p>
+                <h1 className="text-3xl xs:text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-tight">
+                  Free Tools for Small Business Growth
+                </h1>
+                <p className="max-w-2xl text-sm xs:text-base sm:text-base md:text-lg text-muted-foreground">
+                  A collection of powerful, simple tools to supercharge your marketing, finance, and sales efforts.
+                </p>
+                <div className="relative mt-2 w-full max-w-2xl">
+                  <div className="absolute inset-0 rounded-2xl border border-primary/15 bg-background/70 backdrop-blur" />
+                  <div className="relative flex items-center gap-3 rounded-2xl px-4 py-3 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.45)]">
+                    <Search className="h-5 w-5 text-primary" />
+                    <Input
+                      type="search"
+                      placeholder="Search for your perfect tool..."
+                      className="h-10 flex-1 border-none bg-transparent p-0 text-sm xs:text-sm sm:text-base md:text-lg focus-visible:ring-0"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <p className="text-[11px] xs:text-xs sm:text-xs md:text-sm text-muted-foreground">
+                  No registration required  &bull;  100% free  &bull;  More Tools Coming Soon
+                </p>
+              </div>
+            </div>
           </div>
-          <p className="mt-2 xs:mt-3 sm:mt-3 md:mt-4 text-[10px] xs:text-xs sm:text-xs md:text-sm text-muted-foreground px-3 sm:px-2">
-            No registration required  &bull;  100% free  &bull;  More Tools Coming Soon
-          </p>
-        </div>
+        </section>
 
-        {filteredCategories.length > 0 ? (
-          <div className="space-y-8 xs:space-y-10 sm:space-y-12 md:space-y-16 pb-16 xs:pb-20 sm:pb-24">
-            {filteredCategories.map((category) => (
-              <section key={category.category} id={slugify(category.category)} className="animate-fade-in scroll-mt-16 xs:scroll-mt-20 sm:scroll-mt-20">
-                <h2 className="text-lg xs:text-xl sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-tight mb-3 xs:mb-4 sm:mb-4 md:mb-6 flex items-center gap-1.5 xs:gap-2 sm:gap-2 md:gap-3 px-1">
-                  {renderIcon(category.icon, 'mr-2 h-5 w-5')}
-                  <span className="truncate">{category.category}</span>
-                </h2>
-                <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 xs:gap-3 sm:gap-3 md:gap-4">
-                  {category.tools.map((tool, index) => (
-                    <div key={`${tool.href}-${index}`}>
+        {/* Spacing between hero and featured sections */}
+        <div className="h-8 xs:h-10 sm:h-12 md:h-14 lg:h-16" />
+
+  <section className="container mx-auto px-3 xs:px-4 sm:px-6 md:px-8 lg:px-10 pb-16 xs:pb-20 sm:pb-20 md:pb-24 lg:pb-28">
+          {filteredCategories.length > 0 ? (
+            <div className="space-y-10 xs:space-y-12 sm:space-y-16 md:space-y-20">
+              {filteredCategories.map((category) => (
+                <section
+                  key={category.category}
+                  id={slugify(category.category)}
+                  className="group relative scroll-mt-24 xs:scroll-mt-28 sm:scroll-mt-32 md:scroll-mt-36 lg:scroll-mt-40"
+                >
+                  <div className="mb-6 flex flex-wrap items-center gap-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                      {renderIcon(category.icon, 'h-5 w-5')}
+                    </span>
+                    <h2 className="text-xl xs:text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
+                      {category.category}
+                    </h2>
+                  </div>
+                  <div className="grid grid-cols-1 gap-3 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
+                    {category.tools.map((tool, index) => (
                       <ToolCard
+                        key={`${tool.href}-${index}`}
                         href={tool.href}
                         title={tool.title}
                         description={tool.description}
-                        icon={renderIcon(tool.icon, 'w-8 h-8')}
+                        icon={renderIcon(tool.icon, 'h-7 w-7')}
                       />
-                    </div>
-                  ))}
-                </div>
-              </section>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-8 xs:py-10 sm:py-12 md:py-16 border-2 border-dashed rounded-lg border-muted mx-2 xs:mx-3 sm:mx-2">
-            <h3 className="mt-4 text-base xs:text-lg sm:text-lg font-medium">No tools found</h3>
-            <p className="mt-1 text-xs xs:text-sm sm:text-sm text-muted-foreground">
-              Try adjusting your search.
-            </p>
-          </div>
-        )}
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          ) : (
+            <div className="mx-auto mt-10 max-w-xl rounded-2xl border border-dashed border-muted bg-background/80 p-8 text-center shadow-sm">
+              <h3 className="text-lg font-semibold text-foreground">No tools found</h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Try adjusting your search.
+              </p>
+            </div>
+          )}
+        </section>
       </main>
     </div>
   );
