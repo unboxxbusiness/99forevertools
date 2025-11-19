@@ -170,7 +170,7 @@ export function Header({ className }: { className?: string }) {
                 <Accordion type="single" collapsible className="w-full mt-8">
                   {allTools.map((category) => (
                     <AccordionItem value={category.category} key={category.category}>
-                      <AccordionTrigger className="font-semibold">{category.category}</AccordionTrigger>
+                      <AccordionTrigger className="font-semibold text-sm">{category.category}</AccordionTrigger>
                       <AccordionContent>
                         <div className="flex flex-col gap-2 pl-4">
                          {category.tools.map((tool) => (
