@@ -46,7 +46,7 @@ export const Header = () => {
                                         <Menu />
                                     </Button>
                                 </SheetTrigger>
-                                <SheetContent side="left">
+                                <SheetContent side="right">
                                      <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                                      <ul className="space-y-6 text-base pt-8">
                                         {menuItems.map((item, index) => (
