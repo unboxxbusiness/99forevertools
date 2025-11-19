@@ -27,7 +27,6 @@ const tools = [
   '/case-converter',
   '/hashtag-generator',
   '/robots-txt-generator',
-  '/schema-generator',
   '/utm-link-builder',
   '/invoice-generator',
   '/business-slogan-generator',

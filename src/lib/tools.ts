@@ -47,7 +47,6 @@ export const allTools = [
       { href: '/case-converter', title: 'Case Converter', description: 'Convert text to different letter cases.', icon: 'CaseSensitive' },
       { href: '/hashtag-generator', title: 'Hashtag Generator', description: 'Suggest relevant hashtags for social media.', icon: 'Hash' },
       { href: '/robots-txt-generator', title: 'Robots.txt Generator', description: 'Create a robots.txt file for search engine crawlers.', icon: 'Bot' },
-      { href: '/schema-generator', title: 'Schema Markup Generator', description: 'Generate structured data for articles, FAQs, and more.', icon: 'FileJson' },
       { href: '/utm-link-builder', title: 'UTM Link Builder', description: 'Create URLs with UTM parameters for tracking.', icon: 'LinkIcon' },
     ]
   },
@@ -117,5 +116,3 @@ export const allTools = [
     ]
   },
 ];
-
-    
