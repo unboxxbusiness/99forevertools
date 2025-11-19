@@ -1,33 +1,69 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { Share2, Facebook, Twitter, Linkedin, Link as LinkIcon } from 'lucide-react';
+import * as React from 'react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import {
+  Facebook,
+  Instagram,
+  Linkedin,
+  Moon,
+  Send,
+  Sun,
+  Twitter,
+  Share2,
+  Link as LinkIcon,
+} from 'lucide-react';
+import { Logo } from '@/components/logo';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { usePathname } from 'next/navigation';
+} from '../ui/dropdown-menu';
 import { OfferCtaFooter } from './offer-cta-footer';
-import { Logo } from '../logo';
 
-const footerLinks = [
-    { title: 'Terms of Use', href: '/terms-of-use' },
-    { title: 'Privacy Policy', href: '/privacy-policy' },
-    { title: 'Refund Policy', href: '/refund-policy' },
-]
+const quickLinks = [
+  { title: 'Calculators', href: '/#calculators' },
+  { title: 'Content & SEO', href: '/#content-and-seo' },
+  { title: 'Branding & Design', href: '/#branding-and-design' },
+  { title: 'Image Tools', href: '/#image-tools' },
+  { title: 'WhatsApp', href: '/#whatsapp-tools' },
+];
+
+const legalLinks = [
+  { title: 'Terms of Use', href: '/terms-of-use' },
+  { title: 'Privacy Policy', href: '/privacy-policy' },
+  { title: 'Refund Policy', href: '/refund-policy' },
+];
 
 export function Footer() {
-  const { toast } = useToast();
-  const [pageUrl, setPageUrl] = useState('');
+  const [isDarkMode, setIsDarkMode] = React.useState(true);
   const pathname = usePathname();
+  const { toast } = useToast();
+  const [pageUrl, setPageUrl] = React.useState('');
 
-  useEffect(() => {
+  React.useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
+  React.useEffect(() => {
     setPageUrl(window.location.href);
   }, [pathname]);
 
@@ -39,63 +75,133 @@ export function Footer() {
       });
     });
   };
-  
+
   const socialShareLinks = {
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`,
-    twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}`,
-    linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(pageUrl)}`,
-  }
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+      pageUrl
+    )}`,
+    twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+      pageUrl
+    )}`,
+    linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
+      pageUrl
+    )}`,
+  };
 
   return (
-    <footer className="border-t border-border/50 print-hidden">
+    <footer className="relative border-t bg-background text-foreground transition-colors duration-300 print-hidden">
       {pathname !== '/offer' && <OfferCtaFooter />}
-        <div className="mx-auto max-w-5xl px-6 py-16 md:py-24">
-             <Link
-                href="/"
-                aria-label="go home"
-                className="mx-auto block size-fit">
-                <Logo />
-            </Link>
-             <div className="my-8 flex flex-wrap justify-center gap-6 text-sm">
-                {footerLinks.map((link, index) => (
-                    <Link
-                        key={index}
-                        href={link.href}
-                        className="text-muted-foreground hover:text-primary block duration-150">
-                        <span>{link.title}</span>
-                    </Link>
-                ))}
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary p-0 h-auto">
-                        <Share2 className="mr-2 h-4 w-4" />
-                        Share
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent side="top">
-                        <DropdownMenuItem asChild>
-                            <a href={socialShareLinks.facebook} target="_blank" rel="noopener noreferrer">
-                                <Facebook className="mr-2 h-4 w-4"/>Facebook
-                            </a>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <a href={socialShareLinks.twitter} target="_blank" rel="noopener noreferrer">
-                                <Twitter className="mr-2 h-4 w-4"/>Twitter
-                            </a>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <a href={socialShareLinks.linkedin} target="_blank" rel="noopener noreferrer">
-                                <Linkedin className="mr-2 h-4 w-4"/>LinkedIn
-                            </a>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={handleCopyLink}>
-                            <LinkIcon className="mr-2 h-4 w-4"/>Copy Link
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+      <div className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+          <div className="relative">
+            <div className="mb-4">
+              <Logo />
             </div>
-            <span className="text-muted-foreground block text-center text-sm"> © {new Date().getFullYear()} 99forevertools, All rights reserved</span>
+            <p className="mb-6 text-muted-foreground">
+              A collection of 100% free, powerful tools to supercharge your
+              marketing, finance, and sales efforts.
+            </p>
+          </div>
+          <div>
+            <h3 className="mb-4 text-lg font-semibold">Quick Links</h3>
+            <nav className="space-y-2 text-sm">
+              {quickLinks.map((link) => (
+                <a
+                  key={link.title}
+                  href={link.href}
+                  className="block transition-colors hover:text-primary"
+                >
+                  {link.title}
+                </a>
+              ))}
+            </nav>
+          </div>
+          <div>
+            <h3 className="mb-4 text-lg font-semibold">Contact Us</h3>
+            <address className="space-y-2 text-sm not-italic text-muted-foreground">
+              <p>Delhi, India</p>
+              <p>Email: info@foreversite.shop</p>
+            </address>
+          </div>
+          <div className="relative">
+            <h3 className="mb-4 text-lg font-semibold">Share & Settings</h3>
+            <div className="mb-6 flex space-x-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="icon" className="rounded-full">
+                    <Share2 className="h-4 w-4" />
+                    <span className="sr-only">Share</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent side="top">
+                  <DropdownMenuItem asChild>
+                    <a
+                      href={socialShareLinks.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Facebook className="mr-2 h-4 w-4" />
+                      Facebook
+                    </a>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <a
+                      href={socialShareLinks.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Twitter className="mr-2 h-4 w-4" />
+                      Twitter
+                    </a>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <a
+                      href={socialShareLinks.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Linkedin className="mr-2 h-4 w-4" />
+                      LinkedIn
+                    </a>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleCopyLink}>
+                    <LinkIcon className="mr-2 h-4 w-4" />
+                    Copy Link
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Sun className="h-4 w-4" />
+              <Switch
+                id="dark-mode"
+                checked={isDarkMode}
+                onCheckedChange={setIsDarkMode}
+              />
+              <Moon className="h-4 w-4" />
+              <Label htmlFor="dark-mode" className="sr-only">
+                Toggle dark mode
+              </Label>
+            </div>
+          </div>
         </div>
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 text-center md:flex-row">
+          <p className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} 99forevertools. All rights reserved.
+          </p>
+          <nav className="flex flex-wrap justify-center gap-4 text-sm">
+            {legalLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="transition-colors hover:text-primary"
+              >
+                {link.title}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </div>
     </footer>
   );
 }
