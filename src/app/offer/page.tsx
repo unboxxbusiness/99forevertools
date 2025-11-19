@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { TimelineContent } from "@/components/ui/timeline-animation";
 import { VerticalCutReveal } from "@/components/ui/vertical-cut-reveal";
-import { AlertTriangle, ArrowRight, CheckCircle, Clock, PlayCircle, Rocket, Search, Smartphone, Sparkles, Star, Trophy, Zap, CheckCheck } from "lucide-react";
+import { AlertTriangle, ArrowRight, CheckCircle, Clock, PlayCircle, Rocket, Search, Smartphone, Sparkles, Star, Trophy, Zap, CheckCheck, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
 import Image from 'next/image';
@@ -33,45 +33,34 @@ export default function OfferPage() {
 
   return (
     <div className="bg-background text-foreground" ref={pageRef}>
-        <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-24 sm:py-32 lg:px-8">
-             <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(125%_125%_at_50%_10%,#000_40%,#243A73_100%)]"></div>
-            <div className="mx-auto max-w-5xl">
-                <TimelineContent className="flex justify-center items-center gap-2 text-yellow-400">
-                    <AlertTriangle className="h-5 w-5" />
-                    <h2 className="text-lg font-semibold uppercase tracking-wider">
-                       This Special Launch Offer Is Ending Soon
-                    </h2>
-                </TimelineContent>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mt-8">
-                     <div className="relative">
-                         <div className="bg-gradient-to-b from-primary/30 to-transparent rounded-2xl p-px">
-                            <div className="w-full aspect-video bg-black rounded-[15px] flex items-center justify-center flex-col gap-2">
-                               <PlayCircle className="h-16 w-16 text-primary" />
-                               <p className="text-primary/70">▶️ Press PLAY on the video below</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="text-center lg:text-left">
-                        <h1 className="text-3xl font-bold tracking-tight text-white sm:text-5xl">
-                          Unlock Your Own 24/7 Lead-Generation Machine… For A Single One-Time Payment
-                        </h1>
-                        <TimelineContent
-                            as="p"
-                            className="mt-6 text-lg leading-8 text-gray-300"
-                        >
-                            (Never Pay Monthly Fees Again!)
-                        </TimelineContent>
-                         <TimelineContent className="mt-10 flex flex-col items-center lg:items-start justify-center gap-y-6">
-                            <Button asChild size="lg" className="w-full max-w-md text-lg h-14 bg-green-600 text-white hover:bg-green-700">
-                                <a href={whatsAppUrl} target="_blank" rel="noopener noreferrer">
-                                    Book Offer Now
-                                </a>
-                            </Button>
-                        </TimelineContent>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <section className="py-16 md:py-24">
+             <div className="mx-auto max-w-5xl space-y-8 px-6 md:space-y-12">
+                 <Image
+                     className="rounded-lg"
+                     src="https://picsum.photos/seed/offer-hero/1200/600"
+                     alt="Modern website on a laptop"
+                     height="600"
+                     width="1200"
+                     data-ai-hint="website laptop"
+                     loading="lazy"
+                 />
+                  <div className="grid gap-6 md:grid-cols-2 md:gap-12">
+                     <h2 className="text-4xl font-medium">Unlock Your Own 24/7 Lead-Generation Machine… For A Single One-Time Payment</h2>
+                     <div className="space-y-6">
+                         <p className="text-muted-foreground">(Never Pay Monthly Fees Again!)</p>
+                          <Button
+                             asChild
+                             size="lg"
+                             className="gap-1 h-12 text-lg">
+                             <a href={whatsAppUrl} target="_blank" rel="noopener noreferrer">
+                                 <span>Book Offer Now</span>
+                                 <ChevronRight className="size-4" />
+                             </a>
+                         </Button>
+                     </div>
+                 </div>
+             </div>
+         </section>
 
         <div className="py-24 px-4 max-w-5xl mx-auto space-y-16">
             <div className="text-center">
@@ -205,6 +194,3 @@ export default function OfferPage() {
     </div>
   );
 }
-    
-
-    
