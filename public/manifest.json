@@ -1,0 +1,11 @@
+{
+  "name": "Advanced Hindi Typing",
+  "short_name": "Hindi Typing",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0b0b",
+  "theme_color": "#0b0b0b",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "192x192", "type": "image/svg+xml" }
+  ]
+}

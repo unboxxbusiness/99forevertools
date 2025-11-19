@@ -14,16 +14,27 @@ type ToolCardProps = {
 export function ToolCard({ href, title, description, icon }: ToolCardProps) {
   return (
     <Link href={href} className="group block h-full">
-      <Card className="h-full bg-card hover:border-primary/50 transition-colors duration-300 ease-in-out hover:shadow-2xl hover:shadow-primary/10 p-6 flex flex-col items-start gap-4">
-          <div className="p-3 rounded-lg bg-primary/10 text-primary">
+      <Card className="relative flex h-full flex-col gap-3 overflow-hidden rounded-2xl border border-border/60 bg-card/95 p-4 xs:p-5 md:p-6 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-primary/60 hover:shadow-xl hover:shadow-primary/15">
+        <div className="absolute inset-0 rounded-[inherit] bg-gradient-to-br from-primary/0 via-primary/5 to-primary/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        <div className="relative flex items-center gap-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary/20">
             {icon}
           </div>
-          <div className='flex flex-col'>
-            <CardTitle className="text-lg font-bold">{title}</CardTitle>
-            <CardDescription className="mt-1 text-muted-foreground text-sm">
+          <div className="flex flex-col min-w-0">
+            <CardTitle className="text-sm xs:text-base sm:text-base md:text-lg font-semibold leading-tight text-foreground">
+              {title}
+            </CardTitle>
+            <CardDescription className="mt-1 text-[11px] xs:text-xs sm:text-xs md:text-sm text-muted-foreground">
               {description}
             </CardDescription>
           </div>
+        </div>
+        <span
+          aria-hidden
+          className="relative mt-auto inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary transition-all duration-300 group-hover:translate-x-1 group-hover:bg-primary/20"
+        >
+          →
+        </span>
       </Card>
     </Link>
   );

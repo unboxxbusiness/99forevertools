@@ -3,7 +3,6 @@
 
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import {
@@ -16,11 +15,13 @@ import {
   Twitter,
   Share2,
   Link as LinkIcon,
+  Rocket,
 } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
+import { FooterOffer } from './footer-offer';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -88,15 +89,12 @@ export function Footer() {
   }
 
   return (
-    <footer className="relative border-t bg-background text-foreground transition-colors duration-300 print-hidden">
-      {pathname !== '/offer' && <OfferCtaFooter />}
+    <footer className="border-t border-border/50 print-hidden">
+      {pathname !== '/offer' && <FooterOffer />}
       <div className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="relative">
-             <div className="mb-4">
-              <Logo />
-            </div>
-            <p className="text-muted-foreground">
+             <p className="text-muted-foreground">
               A collection of free tools to supercharge your business growth.
             </p>
           </div>

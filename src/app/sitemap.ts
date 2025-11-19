@@ -1,6 +1,8 @@
 
 import { MetadataRoute } from 'next';
 
+export const dynamic = 'force-static';
+
 const tools = [
   '/gst-calculator',
   '/business-loan-emi-calculator',
@@ -68,10 +70,11 @@ const tools = [
   '/photo-filter-studio',
   '/manual-sales-tracker',
   '/instagram-profile-photo-maker',
-  '/social-media-image-generator',
   '/terms-of-use',
   '/privacy-policy',
   '/refund-policy',
+  '/hindi-typing',
+  '/hinglish-typing',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

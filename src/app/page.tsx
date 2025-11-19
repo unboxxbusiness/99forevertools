@@ -1,76 +1,78 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, type ComponentType } from 'react';
 import { Header } from '@/components/app/header';
+import { CategoryNav } from '@/components/app/category-nav';
 import { ToolCard } from '@/components/app/tool-card';
 import { Input } from '@/components/ui/input';
 import { allTools } from '@/lib/tools';
-import { Search, Star, CalculatorIcon, Paintbrush, Image, MessageSquare, Users, Bot, FileText, Percent, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, Lightbulb, PartyPopper, TrendingUp, MapPin, Hash, PenSquare, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as LinkIcon, Activity, ExternalLink, Camera, Code, Network, Gift, FileJson, TestTube2, Mail, Clock, Binary, MessageSquarePlus, BookOpen, IndianRupee, User as UserIcon } from 'lucide-react';
+import { Search, Star, CalculatorIcon, Paintbrush, Image, MessageSquare, Users, Bot, FileText, Percent, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, Lightbulb, PartyPopper, TrendingUp, MapPin, Hash, PenSquare, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as LinkIcon, Activity, ExternalLink, Camera, Code, Network, Gift, FileJson, TestTube2, Mail, Clock, Binary, MessageSquarePlus, BookOpen, IndianRupee, User as UserIcon, Sparkles } from 'lucide-react';
 import React from 'react';
 import { HeroPill } from '@/components/ui/hero-pill';
 
-const iconMap: { [key: string]: React.ReactNode } = {
-    Star: <Star className="mr-2 h-5 w-5" />,
-    CalculatorIcon: <CalculatorIcon className="mr-2 h-5 w-5" />,
-    Search: <Search className="mr-2 h-5 w-5" />,
-    Paintbrush: <Paintbrush className="mr-2 h-5 w-5" />,
-    Image: <Image className="mr-2 h-5 w-5" />,
-    MessageSquare: <MessageSquare className="mr-2 h-5 w-5" />,
-    Users: <Users className="mr-2 h-5 w-5" />,
-    Bot: <Bot className="mr-2 h-4 w-4" />,
-    FileText: <FileText className="mr-2 h-4 w-4" />,
-    Percent: <Percent className="mr-2 h-4 w-4" />,
-    Briefcase: <Briefcase className="mr-2 h-4 w-4" />,
-    CircleDollarSign: <CircleDollarSign className="mr-2 h-4 w-4" />,
-    Scale: <Scale className="mr-2 h-4 w-4" />,
-    Calculator: <Calculator className="mr-2 h-4 w-4" />,
-    HomeIcon: <HomeIcon className="mr-2 h-4 w-4" />,
-    Landmark: <Landmark className="mr-2 h-4 w-4" />,
-    TicketPercent: <TicketPercent className="mr-2 h-4 w-4" />,
-    Scaling: <Scaling className="mr-2 h-4 w-4" />,
-    QrCode: <QrCode className="mr-2 h-4 w-4" />,
-    Lightbulb: <Lightbulb className="mr-2 h-4 w-4" />,
-    PartyPopper: <PartyPopper className="mr-2 h-4 w-4" />,
-    TrendingUp: <TrendingUp className="mr-2 h-4 w-4" />,
-    MapPin: <MapPin className="mr-2 h-4 w-4" />,
-    Hash: <Hash className="mr-2 h-4 w-4" />,
-    PenSquare: <PenSquare className="mr-2 h-4 w-4" />,
-    Crop: <Crop className="mr-2 h-4 w-4" />,
-    Palette: <Palette className="mr-2 h-4 w-4" />,
-    Layers: <Layers className="mr-2 h-4 w-4" />,
-    GitCompareArrows: <GitCompareArrows className="mr-2 h-4 w-4" />,
-    Clapperboard: <Clapperboard className="mr-2 h-4 w-4" />,
-    Contact: <Contact className="mr-2 h-4 w-4" />,
-    PlaySquare: <PlaySquare className="mr-2 h-4 w-4" />,
-    CaseSensitive: <CaseSensitive className="mr-2 h-4 w-4" />,
-    Shield: <Shield className="mr-2 h-4 w-4" />,
-    Info: <Info className="mr-2 h-4 w-4" />,
-    Pilcrow: <Pilcrow className="mr-2 h-4 w-4" />,
-    Volume2: <Volume2 className="mr-2 h-4 w-4" />,
-    AudioLines: <AudioLines className="mr-2 h-4 w-4" />,
-    LinkIcon: <LinkIcon className="mr-2 h-4 w-4" />,
-    Activity: <Activity className="mr-2 h-4 w-4" />,
-    ExternalLink: <ExternalLink className="mr-2 h-4 w-4" />,
-    Camera: <Camera className="mr-2 h-4 w-4" />,
-    Code: <Code className="mr-2 h-4 w-4" />,
-    Network: <Network className="mr-2 h-4 w-4" />,
-    Gift: <Gift className="mr-2 h-4 w-4" />,
-    FileJson: <FileJson className="mr-2 h-4 w-4" />,
-    TestTube2: <TestTube2 className="mr-2 h-4 w-4" />,
-    Mail: <Mail className="mr-2 h-4 w-4" />,
-    Clock: <Clock className="mr-2 h-4 w-4" />,
-    Binary: <Binary className="mr-2 h-4 w-4" />,
-    MessageSquarePlus: <MessageSquarePlus className="mr-2 h-4 w-4" />,
-    BookOpen: <BookOpen className="mr-2 h-4 w-4" />,
-    IndianRupee: <IndianRupee className="mr-2 h-4 w-4" />,
-    UserIcon: <UserIcon className="mr-2 h-4 w-4" />,
+const iconComponents: Record<string, ComponentType<{ className?: string }>> = {
+  Star,
+  CalculatorIcon,
+  Search,
+  Paintbrush,
+  Image,
+  MessageSquare,
+  Users,
+  Bot,
+  FileText,
+  Percent,
+  Briefcase,
+  CircleDollarSign,
+  Scale,
+  Calculator,
+  HomeIcon,
+  Landmark,
+  TicketPercent,
+  Scaling,
+  QrCode,
+  Lightbulb,
+  PartyPopper,
+  TrendingUp,
+  MapPin,
+  Hash,
+  PenSquare,
+  Crop,
+  Palette,
+  Layers,
+  GitCompareArrows,
+  Clapperboard,
+  Contact,
+  PlaySquare,
+  CaseSensitive,
+  Shield,
+  Info,
+  Pilcrow,
+  Volume2,
+  AudioLines,
+  LinkIcon,
+  Activity,
+  ExternalLink,
+  Camera,
+  Code,
+  Network,
+  Gift,
+  FileJson,
+  TestTube2,
+  Mail,
+  Clock,
+  Binary,
+  MessageSquarePlus,
+  BookOpen,
+  IndianRupee,
+  UserIcon,
+  Sparkles,
 };
 
-const toolIconMap: { [key: string]: React.ReactNode } = Object.entries(iconMap).reduce((acc, [key, value]) => {
-    acc[key] = React.cloneElement(value as React.ReactElement, { className: "w-8 h-8" });
-    return acc;
-}, {} as { [key: string]: React.ReactNode });
+const renderIcon = (name: string, className: string) => {
+  const IconComponent = iconComponents[name] ?? iconComponents['Star'];
+  return <IconComponent className={className} />;
+};
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -91,76 +93,89 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
-      <main className="flex-grow container mx-auto px-4">
-        <div className="py-20 md:py-32 text-center animate-fade-in relative">
-          <div 
-            className="absolute inset-0 -z-10" 
-            style={{
-              backgroundImage: 'radial-gradient(circle at 50% 30%, hsl(var(--primary) / 0.1), transparent 60%)'
-            }}
-          />
-           <div className="flex justify-center mb-8">
-            <HeroPill 
-                href="/offer"
-                announcement="Limited Time Deal"
-                label="Get a Lifetime Website for just ₹8,300!"
-            />
-        </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-primary">
-            Free Tools for Small Business Growth
-          </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-            A collection of powerful, simple tools to supercharge your marketing, finance, and sales efforts.
-          </p>
-           <p className="mt-8 text-lg font-semibold">
-              Explore our collection of {totalTools}+ powerful tools
-          </p>
-          <div className="mt-2 max-w-xl mx-auto relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search for your perfect tool..."
-              className="h-12 text-lg pl-12 bg-background/50 backdrop-blur-sm"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+      <CategoryNav />
+      <main className="flex-grow">
+        <section className="relative px-3 xs:px-4 sm:px-6 md:px-8 lg:px-10 pt-10 xs:pt-12 sm:pt-14 md:pt-20 lg:pt-24">
+          <div className="container mx-auto">
+            <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-gradient-to-br from-background via-background to-primary/5 px-4 xs:px-6 sm:px-8 md:px-12 py-10 xs:py-12 sm:py-14 md:py-16 lg:py-20 shadow-[0_30px_70px_-40px_rgba(15,23,42,0.35)]">
+              <div className="absolute -left-10 top-16 h-44 w-44 rounded-full bg-primary/10 blur-3xl" />
+              <div className="absolute -right-16 -bottom-10 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
+              <div className="relative mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
+                 <HeroPill 
+                    href="/offer"
+                    announcement="Limited Time Deal"
+                    label="Get a Lifetime Website for just ₹8,300!"
+                />
+                <h1 className="text-3xl xs:text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-tight">
+                  Free Tools for Small Business Growth
+                </h1>
+                <p className="max-w-2xl text-sm xs:text-base sm:text-base md:text-lg text-muted-foreground">
+                  A collection of powerful, simple tools to supercharge your marketing, finance, and sales efforts.
+                </p>
+                <div className="relative mt-2 w-full max-w-2xl">
+                  <div className="absolute inset-0 rounded-2xl border border-primary/15 bg-background/70 backdrop-blur" />
+                  <div className="relative flex items-center gap-3 rounded-2xl px-4 py-3 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.45)]">
+                    <Search className="h-5 w-5 text-primary" />
+                    <Input
+                      type="search"
+                      placeholder="Search for your perfect tool..."
+                      className="h-10 flex-1 border-none bg-transparent p-0 text-sm xs:text-sm sm:text-base md:text-lg focus-visible:ring-0"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <p className="text-[11px] xs:text-xs sm:text-xs md:text-sm text-muted-foreground">
+                  No registration required  &bull;  100% free  &bull;  More Tools Coming Soon
+                </p>
+              </div>
+            </div>
           </div>
-          <p className="mt-4 text-xs text-muted-foreground">
-            No registration required  &bull;  100% free  &bull;  More Tools Coming Soon
-          </p>
-        </div>
+        </section>
 
-        {filteredCategories.length > 0 ? (
-          <div className="space-y-16 pb-24">
-            {filteredCategories.map((category) => (
-              <section key={category.category} id={slugify(category.category)} className="animate-fade-in scroll-mt-20">
-                <h2 className="text-2xl font-bold tracking-tight mb-6 flex items-center">
-                  {iconMap[category.icon]}
-                  {category.category}
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                  {category.tools.map((tool, index) => (
-                    <div key={`${tool.href}-${index}`}>
+        {/* Spacing between hero and featured sections */}
+        <div className="h-8 xs:h-10 sm:h-12 md:h-14 lg:h-16" />
+
+  <section className="container mx-auto px-3 xs:px-4 sm:px-6 md:px-8 lg:px-10 pb-16 xs:pb-20 sm:pb-20 md:pb-24 lg:pb-28">
+          {filteredCategories.length > 0 ? (
+            <div className="space-y-10 xs:space-y-12 sm:space-y-16 md:space-y-20">
+              {filteredCategories.map((category) => (
+                <section
+                  key={category.category}
+                  id={slugify(category.category)}
+                  className="group relative scroll-mt-24 xs:scroll-mt-28 sm:scroll-mt-32 md:scroll-mt-36 lg:scroll-mt-40"
+                >
+                  <div className="mb-6 flex flex-wrap items-center gap-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                      {renderIcon(category.icon, 'h-5 w-5')}
+                    </span>
+                    <h2 className="text-xl xs:text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
+                      {category.category}
+                    </h2>
+                  </div>
+                  <div className="grid grid-cols-1 gap-3 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
+                    {category.tools.map((tool, index) => (
                       <ToolCard
+                        key={`${tool.href}-${index}`}
                         href={tool.href}
                         title={tool.title}
                         description={tool.description}
-                        icon={toolIconMap[tool.icon]}
+                        icon={renderIcon(tool.icon, 'h-7 w-7')}
                       />
-                    </div>
-                  ))}
-                </div>
-              </section>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16 border-2 border-dashed rounded-lg border-muted">
-            <h3 className="mt-4 text-lg font-medium">No tools found</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Try adjusting your search.
-            </p>
-          </div>
-        )}
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          ) : (
+            <div className="mx-auto mt-10 max-w-xl rounded-2xl border border-dashed border-muted bg-background/80 p-8 text-center shadow-sm">
+              <h3 className="text-lg font-semibold text-foreground">No tools found</h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Try adjusting your search.
+              </p>
+            </div>
+          )}
+        </section>
       </main>
     </div>
   );

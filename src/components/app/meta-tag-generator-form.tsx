@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -63,7 +64,7 @@ export function MetaTagGeneratorForm({ title, setTitle, description, setDescript
                         <li>Enter the meta description (aim for under 155 characters).</li>
                         <li>The tool provides a live preview of how your page will likely appear in a Google search result.</li>
                         <li>It also generates the necessary HTML meta tags for you to copy.</li>
-                        <li>Paste these tags into the `&lt;head&gt;` section of your website's HTML.</li>
+                        <li>Paste these tags into the &lt;head&gt; section of your website's HTML.</li>
                     </ol>
                 </AccordionContent>
             </AccordionItem>

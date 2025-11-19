@@ -112,28 +112,6 @@ Location: Delhi, India
 
 ---
 
-## Suggested Marketing Copy (Optional)
-
-Hero Headline:  
-Get Your Business Website with Lifetime Hosting (One-Time Payment Only)
-
-Subheadline:  
-Professional, mobile-ready, SEO-friendly. Pay once, own it forever.
-
-CTA Button:  
-Get My Lifetime Website – INR 8,300
-
----
-
-## Developer Notes
-- Use optimized SEO structure
-- Ensure accessible, responsive design
-- Optimize images and caching
-- Provide instructions for DNS domain connection
-- Include guide for basic content editing
-
----
-
 ## Ready to Launch?
 Visit the website: https://99foreversite.shop  
 Contact support: info@foreversite.shop

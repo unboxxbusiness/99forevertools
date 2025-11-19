@@ -9,6 +9,16 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '475px',
+        // Add custom breakpoints for comprehensive responsive design
+        'tiny': '320px',
+        'mobile': '480px',
+        'tablet': '768px',
+        'laptop': '1024px',
+        'desktop': '1280px',
+        '2xl': '1536px',
+      },
       fontFamily: {
         sans: ['var(--font-inter)', 'sans-serif'],
         body: ['var(--font-inter)', 'sans-serif'],

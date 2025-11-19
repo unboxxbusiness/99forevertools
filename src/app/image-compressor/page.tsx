@@ -6,21 +6,29 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Free Image Compressor | 99forevertools',
-  description: 'Reduce image file sizes for faster web loading and sharing. Compress JPG, PNG, and other formats online.',
+  title: 'Advanced Image Compressor - Batch Compress & Resize | 99forevertools',
+  description: 'Powerful image compression tool with batch processing, resizing, and format conversion. Compress JPG, PNG, WebP images online. Multiple files supported.',
 };
 
 const schema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Image Compressor",
+  "name": "Advanced Image Compressor",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Web",
-  "description": "A free tool to reduce image file sizes for faster web loading and sharing. Compresses JPG, PNG, and other formats.",
+  "description": "A powerful free tool to compress, resize, and convert images in batch. Supports JPG, PNG, WebP formats with advanced compression modes.",
   "offers": {
     "@type": "Offer",
     "price": "0"
-  }
+  },
+  "featureList": [
+    "Batch image compression",
+    "Image resizing and scaling",
+    "Format conversion (JPG, PNG, WebP)",
+    "Multiple compression modes",
+    "Before/after comparison",
+    "Drag and drop support"
+  ]
 };
 
 export default function ImageCompressorPage() {
