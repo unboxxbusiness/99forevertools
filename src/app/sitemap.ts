@@ -73,6 +73,7 @@ const tools = [
   '/social-media-image-generator',
   '/terms-of-use',
   '/privacy-policy',
+  '/refund-policy',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

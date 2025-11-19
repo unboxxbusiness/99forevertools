@@ -53,6 +53,9 @@ export function Footer() {
             <Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary">
               Privacy Policy
             </Link>
+            <Link href="/refund-policy" className="text-sm text-muted-foreground hover:text-primary">
+              Refund Policy
+            </Link>
         </div>
         <p className="text-sm text-muted-foreground order-last sm:order-none">
           &copy; {new Date().getFullYear()} 99forevertools. All rights reserved.
