@@ -7,12 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import {
   Facebook,
   Instagram,
   Linkedin,
@@ -37,11 +31,11 @@ import { OfferCtaFooter } from './offer-cta-footer';
 import { useTheme } from 'next-themes';
 
 const quickLinks = [
-  { title: 'Calculators', href: '#calculators' },
-  { title: 'Content & SEO', href: '#content-and-seo' },
-  { title: 'Branding & Design', href: '#branding-and-design' },
-  { title: 'Image Tools', href: '#image-tools' },
-  { title: 'WhatsApp', href: '#whatsapp-tools' },
+  { title: 'Calculators', href: '/#calculators' },
+  { title: 'Content & SEO', href: '/#content-and-seo' },
+  { title: 'Branding & Design', href: '/#branding-and-design' },
+  { title: 'Image Tools', href: '/#image-tools' },
+  { title: 'WhatsApp', href: '/#whatsapp-tools' },
 ];
 
 const legalLinks = [
@@ -52,11 +46,13 @@ const legalLinks = [
 
 export function Footer() {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
   const pathname = usePathname();
   const { toast } = useToast();
   const [pageUrl, setPageUrl] = React.useState('');
 
   React.useEffect(() => {
+    setMounted(true);
     setPageUrl(window.location.href);
   }, [pathname]);
 
@@ -80,6 +76,16 @@ export function Footer() {
       pageUrl
     )}`,
   };
+  
+  const handleNewsletterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    toast({
+      title: 'Subscribed!',
+      description: 'Thanks for joining our newsletter.',
+    });
+    const form = e.target as HTMLFormElement;
+    form.reset();
+  }
 
   return (
     <footer className="relative border-t bg-background text-foreground transition-colors duration-300 print-hidden">
@@ -87,13 +93,28 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="relative">
-            <div className="mb-4">
+             <div className="mb-4">
               <Logo />
             </div>
             <p className="mb-6 text-muted-foreground">
-              A collection of 100% free, powerful tools to supercharge your
-              marketing, finance, and sales efforts.
+              Join our newsletter for the latest updates and exclusive offers.
             </p>
+            <form className="relative" onSubmit={handleNewsletterSubmit}>
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                className="pr-12 backdrop-blur-sm"
+                required
+              />
+              <Button
+                type="submit"
+                size="icon"
+                className="absolute right-1 top-1 h-8 w-8 rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105"
+              >
+                <Send className="h-4 w-4" />
+                <span className="sr-only">Subscribe</span>
+              </Button>
+            </form>
           </div>
           <div>
             <h3 className="mb-4 text-lg font-semibold">Quick Links</h3>
@@ -101,7 +122,7 @@ export function Footer() {
               {quickLinks.map((link) => (
                 <a
                   key={link.title}
-                  href={`/${link.href}`}
+                  href={link.href}
                   className="block transition-colors hover:text-primary"
                 >
                   {link.title}
@@ -118,64 +139,65 @@ export function Footer() {
           </div>
           <div className="relative">
             <h3 className="mb-4 text-lg font-semibold">Share & Settings</h3>
-            <div className="mb-6 flex space-x-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon" className="rounded-full">
-                    <Share2 className="h-4 w-4" />
-                    <span className="sr-only">Share</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent side="top">
-                  <DropdownMenuItem asChild>
-                    <a
-                      href={socialShareLinks.facebook}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Facebook className="mr-2 h-4 w-4" />
-                      Facebook
-                    </a>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <a
-                      href={socialShareLinks.twitter}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Twitter className="mr-2 h-4 w-4" />
-                      Twitter
-                    </a>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <a
-                      href={socialShareLinks.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Linkedin className="mr-2 h-4 w-4" />
-                      LinkedIn
-                    </a>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleCopyLink}>
-                    <LinkIcon className="mr-2 h-4 w-4" />
-                    Copy Link
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+             <div className="mb-6 flex space-x-2">
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="rounded-full">
+                        <Share2 className="h-4 w-4" />
+                    </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent side="top">
+                    <DropdownMenuItem asChild>
+                        <a
+                        href={socialShareLinks.facebook}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >
+                        <Facebook className="mr-2 h-4 w-4" />
+                        Facebook
+                        </a>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <a
+                        href={socialShareLinks.twitter}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >
+                        <Twitter className="mr-2 h-4 w-4" />
+                        Twitter
+                        </a>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <a
+                        href={socialShareLinks.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >
+                        <Linkedin className="mr-2 h-4 w-4" />
+                        LinkedIn
+                        </a>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleCopyLink}>
+                        <LinkIcon className="mr-2 h-4 w-4" />
+                        Copy Link
+                    </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </div>
-            <div className="flex items-center space-x-2">
-              <Sun className="h-4 w-4" />
-              <Switch
-                id="dark-mode"
-                checked={theme === 'dark'}
-                onCheckedChange={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              />
-              <Moon className="h-4 w-4" />
-              <Label htmlFor="dark-mode" className="sr-only">
-                Toggle dark mode
-              </Label>
-            </div>
+             {mounted && (
+                <div className="flex items-center space-x-2">
+                    <Sun className="h-4 w-4" />
+                    <Switch
+                        id="dark-mode"
+                        checked={theme === 'dark'}
+                        onCheckedChange={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                    />
+                    <Moon className="h-4 w-4" />
+                    <Label htmlFor="dark-mode" className="sr-only">
+                        Toggle dark mode
+                    </Label>
+                </div>
+            )}
           </div>
         </div>
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 text-center md:flex-row">
