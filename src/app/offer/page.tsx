@@ -3,32 +3,22 @@
 import { Button } from "@/components/ui/button";
 import { TimelineContent } from "@/components/ui/timeline-animation";
 import { VerticalCutReveal } from "@/components/ui/vertical-cut-reveal";
-import { AlertTriangle, ArrowRight, CheckCircle, Clock, PlayCircle, Rocket, Search, Smartphone, Sparkles, Star, Trophy, Zap, CheckCheck, ChevronRight } from "lucide-react";
+import { AlertTriangle, ArrowRight, CheckCircle, Clock, PlayCircle, Rocket, Search, Smartphone, Sparkles, Star, Trophy, Zap, CheckCheck, ChevronRight, Moon, Briefcase, Activity, DraftingCompass, Mail } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
 import Image from 'next/image';
 
 export default function OfferPage() {
-  const features = [
-    { text: "Lifetime Hosting (never pay again — ever)", icon: <Zap/> },
-    { text: "Custom Domain Setup Included", icon: <CheckCircle/> },
-    { text: "Mobile-Responsive & Conversion-Optimized", icon: <Smartphone/> },
-    { text: "SEO-Ready Structure to Rank Fast", icon: <Search/> },
-    { text: "Up to 5 Premium-Designed Pages", icon: <Trophy/> },
-    { text: "Lead Capture Forms Installed", icon: <CheckCircle/> },
-    { text: "All Social Media Links Added", icon: <Sparkles/> },
-    { text: "No Monthly or Yearly Fees — Permanent Access", icon: <Clock/> },
-  ];
 
   const whatsAppUrl = "https://wa.me/918851481785?text=Hi!%20I'm%20interested%20in%20the%20Lifetime%20Website%20Offer%20for%20%E2%82%B98,300.";
   const pageRef = useRef<HTMLDivElement>(null);
 
   const listFeatures = [
-    "Works even while you're asleep 🌙",
-    "Built using proven conversion principles 🚀",
-    "Fully responsive on all devices 📱",
-    "Loads fast (Google LOVES this) ⚡",
-    "Instantly boosts your brand image 💼",
+    { text: "Works even while you're asleep", icon: <Moon />},
+    { text: "Built using proven conversion principles", icon: <Rocket />},
+    { text: "Fully responsive on all devices", icon: <Smartphone />},
+    { text: "Loads fast (Google LOVES this)", icon: <Zap />},
+    { text: "Instantly boosts your brand image", icon: <Briefcase />},
   ]
 
   return (
@@ -63,50 +53,33 @@ export default function OfferPage() {
              </div>
          </section>
 
+        <section className="py-16 md:py-32">
+             <div className="mx-auto max-w-6xl px-6">
+                 <div className="grid items-center gap-12 md:grid-cols-2 md:gap-12 lg:grid-cols-5 lg:gap-24">
+                     <div className="lg:col-span-2">
+                         <div className="md:pr-6 lg:pr-0">
+                             <h2 className="text-4xl font-semibold lg:text-5xl">Here’s EXACTLY What You Get</h2>
+                             <p className="mt-6 text-muted-foreground">This isn’t just a website… It’s a customer-acquisition system designed to convert visitors into paying clients day and night.</p>
+                         </div>
+                         <ul className="mt-8 divide-y border-y">
+                            {listFeatures.map((feature, i) => (
+                                <li key={i} className="flex items-center gap-3 py-3">
+                                    <div className="text-primary">{feature.icon}</div>
+                                    {feature.text}
+                                </li>
+                            ))}
+                         </ul>
+                     </div>
+                     <div className="border-border/50 relative rounded-3xl border p-3 lg:col-span-3">
+                         <div className="bg-linear-to-b aspect-w-4 aspect-h-3 relative rounded-2xl from-zinc-300 to-transparent p-px dark:from-zinc-700">
+                             <Image src="https://picsum.photos/seed/offer1/1207/929" className="rounded-[15px] shadow" alt="payments illustration light" layout="fill" objectFit="cover" />
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </section>
         <div className="py-24 px-4 max-w-5xl mx-auto space-y-16">
-            <div className="text-center">
-                 <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                    Here’s EXACTLY What You Get When You Order TODAY…
-                 </h2>
-            </div>
-            
             <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <TimelineContent
-                        as="div"
-                        className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-primary"
-                    >
-                        <Star className="h-5 w-5" />
-                        <span className="font-semibold">ITEM #1</span>
-                    </TimelineContent>
-                    <TimelineContent
-                        as="h3"
-                        className="text-3xl font-bold mt-4"
-                    >
-                      A Professional Lead-Generation Website
-                    </TimelineContent>
-                    <TimelineContent
-                        as="p"
-                        className="text-muted-foreground mt-2"
-                    >
-                        This isn’t just a website… It’s a customer-acquisition system designed to convert visitors into paying clients day and night.
-                    </TimelineContent>
-                    <ul className="space-y-3 pt-4">
-                        {listFeatures.map((feature, i) => (
-                           <TimelineContent
-                            key={i}
-                            as="li"
-                            className="flex items-center gap-3"><CheckCheck className="h-5 w-5 text-primary" /><span>{feature}</span></TimelineContent>
-                        ))}
-                    </ul>
-                    <TimelineContent as="p" className="text-lg font-semibold pt-4">Real Value: <span className="line-through text-muted-foreground">₹15,000</span></TimelineContent>
-                </div>
-                <div>
-                    <Image src="https://picsum.photos/seed/offer1/600/500" alt="Professional Website Mockup" className="rounded-lg shadow-xl" data-ai-hint="website mockup" width={600} height={500} />
-                </div>
-            </div>
-
-             <div className="grid md:grid-cols-2 gap-12 items-center">
                  <div className="order-2 md:order-1">
                     <Image src="https://picsum.photos/seed/offer2/600/500" alt="Secure Hosting Graphic" className="rounded-lg shadow-xl" data-ai-hint="server security" width={600} height={500} />
                 </div>
@@ -143,7 +116,7 @@ export default function OfferPage() {
                  <div className="pt-4">
                     <Button asChild size="lg" className="w-full max-w-md text-lg h-14 bg-green-600 text-white hover:bg-green-700 shadow-lg">
                         <a href={whatsAppUrl} target="_blank" rel="noopener noreferrer">
-                            Book Offer Now
+                           Book Offer Now
                         </a>
                     </Button>
                     <p className="text-xs text-muted-foreground mt-2">Click the button to secure your lifetime deal.</p>
@@ -171,7 +144,16 @@ export default function OfferPage() {
                     </h2>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {features.map((feature) => (
+                    {[
+                        { text: "Lifetime Hosting (never pay again — ever)", icon: <Zap/> },
+                        { text: "Custom Domain Setup Included", icon: <CheckCircle/> },
+                        { text: "Mobile-Responsive & Conversion-Optimized", icon: <Smartphone/> },
+                        { text: "SEO-Ready Structure to Rank Fast", icon: <Search/> },
+                        { text: "Up to 5 Premium-Designed Pages", icon: <Trophy/> },
+                        { text: "Lead Capture Forms Installed", icon: <CheckCircle/> },
+                        { text: "All Social Media Links Added", icon: <Sparkles/> },
+                        { text: "No Monthly or Yearly Fees — Permanent Access", icon: <Clock/> },
+                    ].map((feature) => (
                         <div key={feature.text} className="bg-card border border-border rounded-lg p-4 flex items-start gap-3">
                              <div className="text-primary mt-1">{feature.icon}</div>
                             <span>{feature.text}</span>
