@@ -15,6 +15,8 @@ export default function OfferPage() {
     { text: "No Monthly or Yearly Fees — Permanent Access", icon: <Clock/> },
   ];
 
+  const whatsAppUrl = "https://wa.me/918851481785?text=Hi!%20I'm%20interested%20in%20the%20Lifetime%20Website%20Offer%20for%20₹8,300.";
+
   return (
     <div className="bg-background text-foreground animate-fade-in">
         <div className="relative isolate overflow-hidden bg-gray-900">
@@ -39,11 +41,11 @@ export default function OfferPage() {
                            <PlayCircle className="h-16 w-16 text-primary" />
                            <p className="text-primary/70">▶️ Press PLAY on the video below to discover how this can change your business…</p>
                         </div>
-                         <Link href="#pricing" className="w-full">
-                            <Button size="lg" className="w-full max-w-md text-lg h-14 bg-green-600 text-white hover:bg-green-700">
+                         <Button asChild size="lg" className="w-full max-w-md text-lg h-14 bg-green-600 text-white hover:bg-green-700">
+                            <a href={whatsAppUrl} target="_blank" rel="noopener noreferrer">
                                 🎉 YES! I Want This Offer!
-                            </Button>
-                        </Link>
+                            </a>
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -105,8 +107,10 @@ export default function OfferPage() {
                  <p className="text-muted-foreground max-w-md mx-auto">(One-Time $99 — No Monthly Fees. No Renewals. Nothing Ever Again.)</p>
                  <p className="text-green-400 font-semibold text-xl">🎉 You save over 60% instantly — and avoid lifetime hosting costs.</p>
                  <div className="pt-4">
-                    <Button size="lg" className="w-full max-w-md text-lg h-14 bg-green-600 text-white hover:bg-green-700 shadow-lg">
-                        🟢 GET INSTANT ACCESS NOW <ArrowRight className="ml-2 h-5 w-5"/>
+                    <Button asChild size="lg" className="w-full max-w-md text-lg h-14 bg-green-600 text-white hover:bg-green-700 shadow-lg">
+                        <a href={whatsAppUrl} target="_blank" rel="noopener noreferrer">
+                            🟢 GET INSTANT ACCESS NOW <ArrowRight className="ml-2 h-5 w-5"/>
+                        </a>
                     </Button>
                     <p className="text-xs text-muted-foreground mt-2">Click the button to secure your lifetime deal.</p>
                  </div>
@@ -146,8 +150,10 @@ export default function OfferPage() {
                  <p className="text-yellow-400 font-bold text-lg flex items-center justify-center gap-2"><Clock /> IMPORTANT: This Price Will Increase Soon</p>
                  <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">This is a limited-time launch offer. Once the timer hits zero or the slots are gone, the one-time pricing disappears — forever. Most website owners pay monthly… for years. You pay once and own it for life.</p>
                  <div className="mt-8">
-                     <Button size="lg" className="w-full max-w-lg text-xl h-16 bg-red-600 text-white hover:bg-red-700 shadow-lg">
-                        🔥 YES! I Want Instant Access — One-Time ₹8,300 Only
+                     <Button asChild size="lg" className="w-full max-w-lg text-xl h-16 bg-red-600 text-white hover:bg-red-700 shadow-lg">
+                        <a href={whatsAppUrl} target="_blank" rel="noopener noreferrer">
+                            🔥 YES! I Want Instant Access — One-Time ₹8,300 Only
+                        </a>
                     </Button>
                  </div>
             </div>
@@ -155,3 +161,4 @@ export default function OfferPage() {
     </div>
   );
 }
+    
