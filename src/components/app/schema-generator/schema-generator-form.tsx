@@ -17,7 +17,7 @@ type SchemaGeneratorFormProps = {
 export function SchemaGeneratorForm({ setSchema }: SchemaGeneratorFormProps) {
   
   return (
-    <div>
+    <div className='space-y-8'>
       <Card className="w-full shadow-lg bg-card border-primary/20 animate-fade-in">
         <CardHeader>
           <CardTitle className="text-3xl font-bold tracking-tight">Schema Markup Generator</CardTitle>
