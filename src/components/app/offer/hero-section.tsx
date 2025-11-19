@@ -21,10 +21,10 @@ export function HeroSection({ whatsAppUrl }: HeroSectionProps) {
           loading="lazy"
         />
         <div className="grid gap-6 md:grid-cols-2 md:gap-12">
-          <h2 className="text-4xl font-medium">Unlock Your Own 24/7 Lead-Generation Machine… For A Single One-Time Payment</h2>
+          <h2 className="text-fluid-h2 font-medium">Unlock Your Own 24/7 Lead-Generation Machine… For A Single One-Time Payment</h2>
           <div className="space-y-6">
-            <p className="font-semibold text-primary">This is a limited-time launch offer.</p>
-            <p className="text-muted-foreground">(Never Pay Monthly Fees Again!)</p>
+            <p className="font-semibold text-primary text-fluid-lg">This is a limited-time launch offer.</p>
+            <p className="text-muted-foreground text-fluid-base">(Never Pay Monthly Fees Again!)</p>
             <Button
               asChild
               size="lg"

@@ -33,10 +33,10 @@ export function FeaturesSection() {
                 <div className="grid items-center gap-12 md:grid-cols-2 md:gap-12 lg:grid-cols-5 lg:gap-24">
                     <div className="lg:col-span-2">
                         <div className="md:pr-6 lg:pr-0">
-                            <h2 className="text-4xl font-semibold lg:text-5xl">⭐ ITEM #1: A Professional Lead-Generation Website</h2>
-                            <p className="mt-6 text-muted-foreground">This isn’t just a website… It’s a customer-acquisition system designed to convert visitors into paying clients day and night.</p>
+                            <h2 className="text-fluid-h2 font-semibold">⭐ ITEM #1: A Professional Lead-Generation Website</h2>
+                            <p className="mt-6 text-muted-foreground text-fluid-base">This isn’t just a website… It’s a customer-acquisition system designed to convert visitors into paying clients day and night.</p>
                         </div>
-                        <ul className="mt-8 divide-y border-y *:flex *:items-center *:gap-3 *:py-3">
+                        <ul className="mt-8 divide-y border-y text-fluid-base *:flex *:items-center *:gap-3 *:py-3">
                             {features.map((feature, index) => (
                                 <li key={index}>
                                     {feature.icon}

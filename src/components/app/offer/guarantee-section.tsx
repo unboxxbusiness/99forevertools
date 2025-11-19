@@ -10,8 +10,8 @@ export function GuaranteeSection() {
                 </div>
             </div>
             <div className="md:col-span-2">
-                <h3 className="text-2xl font-bold">Your 100% Satisfaction Promise</h3>
-                <p className="mt-2 text-muted-foreground">
+                <h3 className="text-fluid-h3 font-bold">Your 100% Satisfaction Promise</h3>
+                <p className="mt-2 text-muted-foreground text-fluid-base">
                     You’re fully protected. If you’re not absolutely in love with your new website, we’ll revise it, polish it, and adjust it until you are. No risk. No stress. You either LOVE your website… or we work until you do.
                 </p>
             </div>

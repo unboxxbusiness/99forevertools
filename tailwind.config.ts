@@ -15,6 +15,14 @@ export default {
         headline: ['var(--font-inter)', 'sans-serif'],
         code: ['monospace'],
       },
+      fontSize: {
+        'fluid-h1': 'clamp(2.5rem, 6vw, 4.5rem)',
+        'fluid-h2': 'clamp(2rem, 5vw, 3rem)',
+        'fluid-h3': 'clamp(1.5rem, 4vw, 2.25rem)',
+        'fluid-xl': 'clamp(1.125rem, 2.5vw, 1.5rem)',
+        'fluid-lg': 'clamp(1rem, 2vw, 1.25rem)',
+        'fluid-base': 'clamp(0.9rem, 1.5vw, 1rem)',
+      },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

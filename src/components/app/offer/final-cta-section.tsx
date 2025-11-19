@@ -66,7 +66,7 @@ export function FinalCTASection({ whatsAppUrl }: FinalCTASectionProps) {
     return (
         <>
             <div className="text-center">
-                <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                <h2 className="text-fluid-h2 font-bold tracking-tight text-white">
                     Why Smart Business Owners Jump On This Immediately
                 </h2>
             </div>
@@ -77,8 +77,8 @@ export function FinalCTASection({ whatsAppUrl }: FinalCTASectionProps) {
             </div>
 
             <div className="text-center border-t border-border pt-16">
-                 <p className="text-yellow-400 font-bold text-lg flex items-center justify-center gap-2"><Clock /> IMPORTANT: This Price Will Increase Soon</p>
-                 <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">This is a limited-time launch offer. Once the timer hits zero or the slots are gone, the one-time pricing disappears — forever. Most website owners pay monthly… for years. You pay once and own it for life.</p>
+                 <p className="text-yellow-400 font-bold text-fluid-lg flex items-center justify-center gap-2"><Clock /> IMPORTANT: This Price Will Increase Soon</p>
+                 <p className="text-muted-foreground mt-2 max-w-2xl mx-auto text-fluid-base">This is a limited-time launch offer. Once the timer hits zero or the slots are gone, the one-time pricing disappears — forever. Most website owners pay monthly… for years. You pay once and own it for life.</p>
                  <div className="mt-8">
                      <Button asChild size="lg" className="w-full max-w-lg text-xl h-16 bg-red-600 text-white hover:bg-red-700 shadow-lg">
                         <a href={whatsAppUrl} target="_blank" rel="noopener noreferrer">
