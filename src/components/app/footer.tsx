@@ -56,11 +56,8 @@ export function Footer() {
   const [pageUrl, setPageUrl] = React.useState('');
 
   React.useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    // This effect is no longer controlling the theme, but can be kept for local state if needed.
+    // The actual theme change is now handled by a theme provider.
   }, [isDarkMode]);
 
   React.useEffect(() => {
