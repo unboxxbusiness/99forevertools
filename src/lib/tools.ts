@@ -6,14 +6,14 @@ export const allTools = [
     category: 'Featured',
     icon: 'Star',
     tools: [
-  { href: '/hinglish-typing', title: 'Indian Language Typing Workspace', description: 'Real-time transliteration across 23+ Indian language scripts.', icon: 'FileText' },
-        { href: '/logo-maker', title: 'Advanced Logo Maker', description: 'Create a simple, text-based logo for your business.', icon: 'Palette' },
-        { href: '/manual-sales-tracker', title: 'Manual Sales Tracker', description: 'A simple dashboard to manually track your daily sales revenue.', icon: 'IndianRupee' },
-        { href: '/invoice-generator', title: 'Shareable Invoice Generator', description: 'Generate a professional invoice to print, save as PDF, and share.', icon: 'FileText' },
+      { href: '/hinglish-typing', title: 'Indian Language Typing Workspace', description: 'Real-time transliteration across 23+ Indian language scripts.', icon: 'FileText' },
+      { href: '/logo-maker', title: 'Advanced Logo Maker', description: 'Create a simple, text-based logo for your business.', icon: 'Palette' },
+      { href: '/manual-sales-tracker', title: 'Manual Sales Tracker', description: 'A simple dashboard to manually track your daily sales revenue.', icon: 'IndianRupee' },
+      { href: '/invoice-generator', title: 'Shareable Invoice Generator', description: 'Generate a professional invoice to print, save as PDF, and share.', icon: 'FileText' },
     ]
   },
   {
-    category: 'Calculators',
+    category: 'Financial Calculators',
     icon: 'CalculatorIcon',
     tools: [
       { href: '/gst-calculator', title: 'GST Calculator', description: 'Calculate GST amounts for any price.', icon: 'Percent' },
@@ -33,39 +33,51 @@ export const allTools = [
     ]
   },
   {
-    category: 'Content & SEO',
+    category: 'Content & Writing',
+    icon: 'FileText',
+    tools: [
+        { href: '/about-us-generator', title: 'About Us Page Generator', description: 'Help businesses write a simple "About Us" section.', icon: 'Info' },
+        { href: '/lorem-ipsum-generator', title: 'Lorem Ipsum Generator', description: 'Generate placeholder text for your mockups.', icon: 'Pilcrow' },
+        { href: '/word-counter', title: 'Word & Character Counter', description: 'Count words, characters, sentences, and paragraphs.', icon: 'FileText' },
+        { href: '/case-converter', title: 'Case Converter', description: 'Convert text to different letter cases.', icon: 'CaseSensitive' },
+        { href: '/hindi-typing', title: 'Hindi Typing Tool', description: 'Type in Hindi using an on-screen Devanagari keyboard.', icon: 'FileText' },
+        { href: '/hinglish-typing', title: 'Indian Language Typing Workspace', description: 'Real-time transliteration across 23+ Indian language scripts.', icon: 'FileText' },
+        { href: '/text-to-speech', title: 'Text to Speech', description: 'Convert text passages into spoken audio.', icon: 'Volume2' },
+        { href: '/readability-checker', title: 'Readability Checker', description: 'Calculate the Flesch-Kincaid readability score.', icon: 'FileText' },
+    ]
+  },
+  {
+    category: 'SEO & Marketing',
     icon: 'Search',
     tools: [
-      { href: '/about-us-generator', title: 'About Us Page Generator', description: 'Help businesses write a simple "About Us" section.', icon: 'Info' },
       { href: '/meta-tag-generator', title: 'SERP Preview Tool', description: 'Preview meta tags on a Google search result page.', icon: 'Search' },
       { href: '/headline-analyzer', title: 'Headline Analyzer', description: 'Score a headline on length, sentiment, and keywords.', icon: 'Activity' },
       { href: '/keyword-density-checker', title: 'Keyword Density Checker', description: 'Check the density of a keyword in your text.', icon: 'TestTube2' },
-      { href: '/readability-checker', title: 'Readability Checker', description: 'Calculate the Flesch-Kincaid readability score.', icon: 'FileText' },
-      { href: '/lorem-ipsum-generator', title: 'Lorem Ipsum Generator', description: 'Generate placeholder text for your mockups.', icon: 'Pilcrow' },
-      { href: '/press-release-title-generator', title: 'Press Release Title Generator', description: 'Help businesses craft compelling headlines.', icon: 'Lightbulb' },
-      { href: '/word-counter', title: 'Word & Character Counter', description: 'Count words, characters, sentences, and paragraphs.', icon: 'FileText' },
-      { href: '/case-converter', title: 'Case Converter', description: 'Convert text to different letter cases.', icon: 'CaseSensitive' },
-      { href: '/hashtag-generator', title: 'Hashtag Generator', description: 'Suggest relevant hashtags for social media.', icon: 'Hash' },
       { href: '/robots-txt-generator', title: 'Robots.txt Generator', description: 'Create a robots.txt file for search engine crawlers.', icon: 'Bot' },
       { href: '/utm-link-builder', title: 'UTM Link Builder', description: 'Create URLs with UTM parameters for tracking.', icon: 'LinkIcon' },
-  { href: '/hindi-typing', title: 'Hindi Typing Tool', description: 'Type in Hindi using an on-screen Devanagari keyboard.', icon: 'FileText' },
-  { href: '/hinglish-typing', title: 'Indian Language Typing Workspace', description: 'Real-time transliteration across 23+ Indian language scripts.', icon: 'FileText' },
+      { href: '/review-link-generator', title: 'Google Review Link Generator', description: 'Create a direct link for customers to leave a Google Review.', icon: 'Star' },
+      { href: '/email-permutator', title: 'Email Permutator', description: 'Generate possible email addresses from a name and domain.', icon: 'Mail' },
+      { href: '/email-subject-line-tester', title: 'Email Subject Line Tester', description: 'Analyze your email subject lines for potential issues.', icon: 'Mail' },
+      { href: '/hashtag-generator', title: 'Hashtag Generator', description: 'Suggest relevant hashtags for social media.', icon: 'Hash' },
+      { href: '/whatsapp-link-generator', title: 'WhatsApp Link Generator', description: 'Create a wa.me link with a pre-filled message.', icon: 'MessageSquare' },
+      { href: '/whatsapp-widget-generator', title: 'WhatsApp Widget Generator', description: 'Create a floating WhatsApp chat button for your website.', icon: 'MessageSquarePlus' },
     ]
   },
   {
     category: 'Branding & Design',
     icon: 'Paintbrush',
     tools: [
-      { href: '/invoice-generator', title: 'Shareable Invoice Generator', description: 'Generate a professional invoice to print, save as PDF, and share.', icon: 'FileText' },
-      { href: '/business-slogan-generator', title: 'Business Slogan Generator', description: 'Generate catchy taglines based on keywords.', icon: 'Lightbulb' },
-      { href: '/business-name-generator', title: 'Business Name Generator', description: 'Generate potential names for a new business.', icon: 'PenSquare' },
       { href: '/logo-maker', title: 'Advanced Logo Maker', description: 'Create a simple, text-based logo for your business.', icon: 'Palette' },
-      { href: '/color-palette-generator', title: 'Color Palette Generator', description: 'Generate accessible color schemes from a base color.', icon: 'Palette' },
+      { href: 'color-palette-generator', title: 'Color Palette Generator', description: 'Generate accessible color schemes from a base color.', icon: 'Palette' },
+      { href: '/business-name-generator', title: 'Business Name Generator', description: 'Generate potential names for a new business.', icon: 'PenSquare' },
+      { href: '/business-slogan-generator', title: 'Business Slogan Generator', description: 'Generate catchy taglines based on keywords.', icon: 'Lightbulb' },
+      { href: '/press-release-title-generator', title: 'Press Release Title Generator', description: 'Help businesses craft compelling headlines.', icon: 'Lightbulb' },
       { href: '/email-signature-generator', title: 'Email Signature Generator', description: 'Create a professional HTML email signature.', icon: 'PenSquare' },
+      { href: '/digital-business-card', title: 'Digital Business Card Generator', description: 'Create a modern, shareable digital business card.', icon: 'Contact' },
     ]
   },
   {
-    category: 'Image Tools',
+    category: 'Image & Video Tools',
     icon: 'Image',
     tools: [
         { href: '/background-remover', title: 'AI Background Remover', description: 'Remove backgrounds locally with an on-device AI model.', icon: 'Sparkles' },
@@ -83,37 +95,27 @@ export const allTools = [
     ]
   },
   {
-    category: 'WhatsApp Tools',
-    icon: 'MessageSquare',
+    category: 'Web & Utilities',
+    icon: 'Globe',
     tools: [
-      { href: '/whatsapp-link-generator', title: 'WhatsApp Link Generator', description: 'Create a wa.me link with a pre-filled message.', icon: 'MessageSquare' },
-      { href: '/whatsapp-widget-generator', title: 'WhatsApp Widget Generator', description: 'Create a floating WhatsApp chat button for your website.', icon: 'MessageSquarePlus' },
-      { href: '/whatsapp-bio-link', title: 'WhatsApp Bio Link Page', description: 'Create a Linktree-style page for your WhatsApp profile.', icon: 'Contact' },
-      { href: '/whatsapp-broadcast-templates', title: 'WhatsApp Broadcast Templates', description: 'Free templates for sales, support, and more.', icon: 'BookOpen' },
-    ]
-  },
-  {
-    category: 'Marketing & Utilities',
-    icon: 'Users',
-    tools: [
+      { href: '/invoice-generator', title: 'Shareable Invoice Generator', description: 'Generate a professional invoice to print, save as PDF, and share.', icon: 'FileText' },
       { href: '/qr-code-generator', title: 'QR Code Generator', description: 'Instantly create a downloadable QR code.', icon: 'QrCode' },
       { href: '/vcard-qr-code-generator', title: 'Business Card QR Code Generator', description: 'Generate a QR code that contains contact info (vCard).', icon: 'Contact' },
-      { href: '/festival-wish-generator', title: 'Festival Wish Generator', description: 'Create pre-written messages for festivals.', icon: 'PartyPopper' },
-      { href: '/google-maps-link-generator', title: 'Google Maps Link Generator', description: 'Create a direct link to a business address on Google Maps.', icon: 'MapPin' },
-      { href: '/review-link-generator', title: 'Google Review Link Generator', description: 'Create a direct link for customers to leave a Google Review.', icon: 'Star' },
       { href: '/privacy-policy-generator', title: 'Privacy Policy Generator', description: 'Generate a generic privacy policy for your website.', icon: 'Shield' },
       { href: '/terms-and-conditions-generator', title: 'Terms & Conditions Generator', description: 'Generate a generic T&C page for your website.', icon: 'FileText' },
-      { href: '/text-to-speech', title: 'Text to Speech', description: 'Convert text passages into spoken audio.', icon: 'Volume2' },
       { href: '/wav-to-mp3-converter', title: 'WAV to MP3 Converter', description: 'Convert .wav audio files to .mp3 format.', icon: 'AudioLines' },
       { href: '/url-shortener', title: 'URL Redirect Tool', description: 'Create a short link that redirects to a long URL.', icon: 'ExternalLink' },
       { href: '/what-is-my-ip', title: 'What Is My IP?', description: 'A simple utility that shows your public IP address.', icon: 'Network' },
       { href: '/discount-coupon-generator', title: 'Discount Coupon Code Generator', description: 'Create batches of unique, random codes for campaigns.', icon: 'Gift' },
-      { href: '/digital-business-card', title: 'Digital Business Card Generator', description: 'Create a modern, shareable digital business card.', icon: 'Contact' },
-      { href: '/email-permutator', title: 'Email Permutator', description: 'Generate possible email addresses from a name and domain.', icon: 'Mail' },
-      { href: '/email-subject-line-tester', title: 'Email Subject Line Tester', description: 'Analyze your email subject lines for potential issues.', icon: 'Mail' },
       { href: '/time-zone-converter', title: 'Time Zone Converter', description: 'Compare time across different cities.', icon: 'Clock' },
       { href: '/csv-cleaner', title: 'CSV Cleaner', description: 'Clean and standardize data in your CSV files.', icon: 'FileText' },
       { href: '/password-generator', title: 'Password Generator', description: 'Generate strong, secure passwords.', icon: 'Shield' },
+      { href: '/whatsapp-bio-link', title: 'WhatsApp Bio Link Page', description: 'Create a Linktree-style page for your WhatsApp profile.', icon: 'Contact' },
+      { href: '/whatsapp-broadcast-templates', title: 'WhatsApp Broadcast Templates', description: 'Free templates for sales, support, and more.', icon: 'BookOpen' },
+      { href: '/festival-wish-generator', title: 'Festival Wish Generator', description: 'Create pre-written messages for festivals.', icon: 'PartyPopper' },
+      { href: '/google-maps-link-generator', title: 'Google Maps Link Generator', description: 'Create a direct link to a business address on Google Maps.', icon: 'MapPin' },
     ]
-  },
+  }
 ];
+
+    
