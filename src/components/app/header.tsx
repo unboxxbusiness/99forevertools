@@ -1,4 +1,3 @@
-
 'use client';
 import React from 'react';
 import Link from 'next/link';
@@ -62,6 +61,7 @@ import {
   MessageSquare,
   MessageSquarePlus,
   MousePointer,
+  Network,
   Package,
   Palette,
   PartyPopper,
@@ -163,12 +163,6 @@ ListItem.displayName = "ListItem"
 
 
 export function Header({ className }: { className?: string }) {
-  const financialTools = allTools.find(c => c.category === 'Financial Calculators')?.tools || [];
-  const contentTools = allTools.find(c => c.category === 'Content & Writing')?.tools || [];
-  const seoTools = allTools.find(c => c.category === 'SEO & Marketing')?.tools || [];
-  const brandingTools = allTools.find(c => c.category === 'Branding & Design')?.tools || [];
-  const imageTools = allTools.find(c => c.category === 'Image & Video Tools')?.tools || [];
-  const utilityTools = allTools.find(c => c.category === 'Web & Utilities')?.tools || [];
 
   return (
     <header className={cn("relative w-full flex items-center justify-between p-4 z-50 print-hidden", className)}>
@@ -182,48 +176,22 @@ export function Header({ className }: { className?: string }) {
       <div className="hidden lg:flex items-center justify-center flex-1">
         <NavigationMenu>
           <NavigationMenuList>
-             <NavigationMenuItem>
-                <Link href="/#calculators" legacyBehavior passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                        Calculators
-                    </NavigationMenuLink>
-                </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-                <Link href="/#content-and-writing" legacyBehavior passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                        Content
-                    </NavigationMenuLink>
-                </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-                <Link href="/#seo-and-marketing" legacyBehavior passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                        Marketing
-                    </NavigationMenuLink>
-                </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-                <Link href="/#branding-and-design" legacyBehavior passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                        Design
-                    </NavigationMenuLink>
-                </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>All Tools</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[600px] gap-3 p-4 md:grid-cols-2">
-                  {allTools.flatMap(c => c.tools).map((tool) => (
-                    <Link key={tool.href} href={tool.href} legacyBehavior passHref>
-                        <ListItem title={tool.title}>
-                            {tool.description}
-                        </ListItem>
-                    </Link>
-                  ))}
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
+            {allTools.map(category => (
+                <NavigationMenuItem key={category.category}>
+                    <NavigationMenuTrigger>{category.category}</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                        <ul className={cn("grid gap-3 p-4", category.tools.length > 6 ? "w-[400px] md:w-[500px] md:grid-cols-2" : "w-[300px]")}>
+                        {category.tools.map((tool) => (
+                            <Link key={tool.href} href={tool.href} legacyBehavior passHref>
+                                <ListItem title={tool.title}>
+                                    {tool.description}
+                                </ListItem>
+                            </Link>
+                        ))}
+                        </ul>
+                    </NavigationMenuContent>
+                </NavigationMenuItem>
+            ))}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
