@@ -35,10 +35,10 @@ const nextConfig = {
     ],
   },
   webpack: (config, { isServer }) => {
-    // Exclude onnxruntime-node from the client-side bundle
-    if (!isServer) {
-      config.externals.push('onnxruntime-node');
-    }
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'onnxruntime-node': 'onnxruntime-web',
+    };
     return config;
   },
 };
