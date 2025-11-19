@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import Link from 'next/link';
@@ -24,17 +25,11 @@ export function ToolCard({ href, title, description, icon }: ToolCardProps) {
             <CardTitle className="text-sm xs:text-base sm:text-base md:text-lg font-semibold leading-tight text-foreground">
               {title}
             </CardTitle>
-            <CardDescription className="mt-1 text-[11px] xs:text-xs sm:text-xs md:text-sm text-muted-foreground">
+            <CardDescription className="mt-1 text-[11px] xs:text-xs sm:text-xs md:text-sm text-muted-foreground line-clamp-2">
               {description}
             </CardDescription>
           </div>
         </div>
-        <span
-          aria-hidden
-          className="relative mt-auto inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary transition-all duration-300 group-hover:translate-x-1 group-hover:bg-primary/20"
-        >
-          →
-        </span>
       </Card>
     </Link>
   );
