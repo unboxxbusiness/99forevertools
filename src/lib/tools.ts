@@ -3,16 +3,6 @@ import { Star, CalculatorIcon, Search, Paintbrush, Image, MessageSquare, Users, 
 
 export const allTools = [
   {
-    category: 'Featured',
-    icon: 'Star',
-    tools: [
-      { href: '/hinglish-typing', title: 'Indian Language Typing Workspace', description: 'Real-time transliteration across 23+ Indian language scripts.', icon: 'FileText' },
-      { href: '/logo-maker', title: 'Advanced Logo Maker', description: 'Create a simple, text-based logo for your business.', icon: 'Palette' },
-      { href: '/manual-sales-tracker', title: 'Manual Sales Tracker', description: 'A simple dashboard to manually track your daily sales revenue.', icon: 'IndianRupee' },
-      { href: '/invoice-generator', title: 'Shareable Invoice Generator', description: 'Generate a professional invoice to print, save as PDF, and share.', icon: 'FileText' },
-    ]
-  },
-  {
     category: 'Financial Calculators',
     icon: 'CalculatorIcon',
     tools: [
