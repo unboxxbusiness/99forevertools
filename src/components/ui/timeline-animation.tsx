@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { motion, useInView, type TargetAndTransition } from "motion/react";
+import { motion, useInView, type TargetAndTransition } from "framer-motion";
 import React from "react";
 
 type TimelineContentProps = {

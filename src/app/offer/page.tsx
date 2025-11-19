@@ -3,7 +3,7 @@ import { TimelineContent } from "@/components/ui/timeline-animation";
 import {VerticalCutReveal} from "@/components/ui/vertical-cut-reveal";
 import { cn } from "@/lib/utils";
 import { CheckCheck, Zap } from "lucide-react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { useId, useRef, useState } from "react";
 
 const PricingSwitch = ({
