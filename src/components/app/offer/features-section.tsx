@@ -1,7 +1,7 @@
 
 'use client';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Briefcase, CheckCheck, Moon, Rocket, Smartphone, Zap } from 'lucide-react';
+import { Briefcase, Moon, Rocket, Smartphone, Zap } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -37,31 +37,31 @@ export function FeaturesSection() {
     const features = [
         {
             id: 'item-1',
-            icon: Moon,
+            icon: '🌙',
             title: "Works even while you're asleep",
             description: "Your website works 24/7 to attract and capture leads, so you can wake up to new business opportunities.",
         },
         {
             id: 'item-2',
-            icon: Rocket,
+            icon: '🚀',
             title: "Built using proven conversion principles",
             description: "We use design and copy that is psychologically proven to encourage visitors to take action.",
         },
         {
             id: 'item-3',
-            icon: Smartphone,
+            icon: '📱',
             title: "Fully responsive on all devices",
             description: "Your website will look perfect and function flawlessly on desktops, tablets, and smartphones.",
         },
         {
             id: 'item-4',
-            icon: Zap,
+            icon: '⚡',
             title: "Loads fast (Google LOVES this)",
             description: "A fast-loading site provides a better user experience and can improve your search engine ranking.",
         },
         {
             id: 'item-5',
-            icon: Briefcase,
+            icon: '💼',
             title: "Instantly boosts your brand image",
             description: "A professional, modern website establishes credibility and makes a great first impression.",
         },
@@ -71,7 +71,7 @@ export function FeaturesSection() {
         <section className="py-12 md:py-20 lg:py-32">
             <div className="mx-auto max-w-5xl space-y-8 px-6 md:space-y-16 lg:space-y-20">
                 <div className="relative z-10 mx-auto max-w-2xl space-y-6 text-center">
-                    <h2 className="text-balance text-4xl font-semibold lg:text-6xl">Here’s EXACTLY What You Get</h2>
+                    <h2 className="text-balance text-4xl font-semibold lg:text-6xl">⭐ ITEM #1: A Professional Lead-Generation Website</h2>
                     <p className="text-muted-foreground">This isn’t just a website… It’s a customer-acquisition system designed to convert visitors into paying clients day and night.</p>
                 </div>
 
@@ -85,13 +85,16 @@ export function FeaturesSection() {
                            <AccordionItem value={feature.id} key={feature.id}>
                              <AccordionTrigger>
                                  <div className="flex items-center gap-2 text-base">
-                                     <feature.icon className="size-4 text-primary" />
+                                     <span>{feature.icon}</span>
                                      {feature.title}
                                  </div>
                              </AccordionTrigger>
                              <AccordionContent>{feature.description}</AccordionContent>
                          </AccordionItem>
                         ))}
+                         <div className="pt-6 text-xl font-semibold text-primary">
+                            Real Value: ₹15,000
+                        </div>
                     </Accordion>
                     <div className="bg-card relative flex overflow-hidden rounded-3xl border p-2">
                         <div className="w-15 absolute inset-0 right-0 ml-auto border-l border-border/20 bg-[repeating-linear-gradient(-45deg,var(--border),var(--border)_1px,transparent_1px,transparent_8px)]"></div>
