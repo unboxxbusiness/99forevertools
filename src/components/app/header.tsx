@@ -140,8 +140,13 @@ type ToolCategory = {
 };
 
 // Icon mapping
-const iconMap: Record<string, ComponentType> = {
+const iconMap: Record<string, ComponentType<{ className?: string }>> = {
   Star, CalculatorIcon, Search, Paintbrush, Image, MessageSquare, Users, Bot, FileText, Percent, Briefcase, CircleDollarSign, Scale, Calculator, HomeIcon, Landmark, TicketPercent, Scaling, QrCode, Lightbulb, PartyPopper, TrendingUp, MapPin, Hash, PenSquare, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, LinkIcon, Activity, ExternalLink, Camera, Code, Network, Gift, FileJson, TestTube2, Mail, Clock, Binary, MessageSquarePlus, BookOpen, IndianRupee, UserIcon, Sparkles, Zap
+};
+
+const renderIcon = (name: string, className?: string) => {
+    const IconComponent = iconMap[name] || Zap;
+    return <IconComponent className={className} />;
 };
 
 const calculatorTools = allTools.find(c => c.category === 'Calculators')?.tools || [];
@@ -159,7 +164,8 @@ const ListItem = React.forwardRef<
   return (
     <li>
       <NavigationMenuLink asChild>
-        <a
+        <Link
+          href={props.href || '/'}
           ref={ref}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
@@ -171,7 +177,7 @@ const ListItem = React.forwardRef<
           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>
-        </a>
+        </Link>
       </NavigationMenuLink>
     </li>
   )
@@ -296,12 +302,20 @@ export function Header({ className }: { className?: string }) {
               <Accordion type="single" collapsible className="w-full mt-8">
                 {allTools.map((category) => (
                   <AccordionItem value={category.category} key={category.category}>
-                    <AccordionTrigger className="font-semibold text-sm">{category.category}</AccordionTrigger>
+                    <AccordionTrigger className="font-semibold text-sm">
+                        <div className="flex items-center gap-3">
+                            {renderIcon(category.icon, 'h-5 w-5 text-primary')}
+                            <span>{category.category}</span>
+                        </div>
+                    </AccordionTrigger>
                     <AccordionContent>
-                      <div className="flex flex-col gap-2 pl-4">
+                      <div className="flex flex-col gap-1 pl-4">
                         {category.tools.map((tool) => (
                           <SheetClose key={tool.href} asChild>
-                            <Link href={tool.href} className="text-sm text-muted-foreground hover:text-foreground py-1.5">{tool.title}</Link>
+                            <Link href={tool.href} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2.5 px-4 rounded-md hover:bg-muted">
+                                {renderIcon(tool.icon, 'h-5 w-5')}
+                                <span>{tool.title}</span>
+                            </Link>
                           </SheetClose>
                         ))}
                       </div>
