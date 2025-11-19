@@ -143,8 +143,8 @@ const designTools = allTools.filter(c => ['Branding & Design', 'Image & Video To
 
 
 const ListItem = React.forwardRef<
-  React.ElementRef<typeof NavigationMenuLink>,
-  React.ComponentPropsWithoutRef<typeof NavigationMenuLink>
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
 >(({ className, title, children, ...props }, ref) => {
   return (
     <li>
@@ -156,7 +156,6 @@ const ListItem = React.forwardRef<
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
             className
           )}
-          {...props}
         >
           <div className="text-sm font-medium leading-none">{title}</div>
         </Link>
@@ -297,7 +296,7 @@ export function Header({ className }: { className?: string }) {
                     </AccordionTrigger>
                     <AccordionContent>
                       <div className="flex flex-col gap-1 pl-4">
-                        {category.tools.slice(0, 8).map((tool) => (
+                        {category.tools.slice(0, 4).map((tool) => (
                           <SheetClose key={tool.href} asChild>
                             <Link href={tool.href} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground py-2.5 px-4 rounded-md hover:bg-muted">
                                 {renderIcon(tool.icon, 'h-5 w-5')}
@@ -305,7 +304,7 @@ export function Header({ className }: { className?: string }) {
                             </Link>
                           </SheetClose>
                         ))}
-                         {category.tools.length > 8 && (
+                         {category.tools.length > 4 && (
                            <SheetClose asChild>
                               <Link href={`/#${category.category.toLowerCase().replace(/ & /g, '-and-')}`} className="flex items-center gap-3 text-sm font-semibold text-primary py-2.5 px-4 rounded-md hover:bg-muted">
                                   <span>View All {category.category}</span>
