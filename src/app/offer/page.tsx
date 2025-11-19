@@ -160,16 +160,7 @@ export default function PricingSection2() {
             <VerticalCutReveal
               text="Let's get started"
               splitBy="words"
-              staggerDuration={0.15}
-              staggerFrom="first"
-              reverse={true}
               containerClassName="justify-center"
-              transition={{
-                type: "spring",
-                stiffness: 250,
-                damping: 40,
-                delay: 0.4,
-              }}
             />
           </h1>
 
