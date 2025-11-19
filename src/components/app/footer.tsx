@@ -28,7 +28,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import { OfferCtaFooter } from './offer-cta-footer';
 import { useTheme } from 'next-themes';
 
 const quickLinks = [
