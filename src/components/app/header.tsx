@@ -47,7 +47,7 @@ export const Header = () => {
                 if (element) {
                     const headerOffset = 100;
                     const elementPosition = element.getBoundingClientRect().top + window.scrollY - headerOffset;
-                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    window.scrollTo({ top: elementPosition, behavior: 'smooth' });
                     // Only update the hash in the URL, don't replace the whole URL
                     window.history.pushState(null, '', `#${hash}`);
                 }
