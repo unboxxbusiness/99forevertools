@@ -31,11 +31,11 @@ import {
 import { useTheme } from 'next-themes';
 
 const quickLinks = [
-  { title: 'Calculators', href: '/#calculators' },
-  { title: 'Content & SEO', href: '/#content-and-seo' },
-  { title: 'Branding & Design', href: '/#branding-and-design' },
-  { title: 'Image Tools', href: '/#image-tools' },
-  { title: 'WhatsApp', href: '/#whatsapp-tools' },
+  { title: 'Calculators', href: '/#financial-calculators' },
+  { title: 'Content & SEO', href: '/#content-writing' },
+  { title: 'Branding & Design', href: '/#branding-design' },
+  { title: 'Image & Video', href: '/#image-video-tools' },
+  { title: 'Web & Utilities', href: '/#web-utilities' },
 ];
 
 const legalLinks = [
@@ -101,13 +101,13 @@ export function Footer() {
             <h3 className="mb-4 text-lg font-semibold">Quick Links</h3>
             <nav className="space-y-2 text-sm">
               {quickLinks.map((link) => (
-                <a
+                <Link
                   key={link.title}
                   href={link.href}
                   className="block transition-colors hover:text-primary"
                 >
                   {link.title}
-                </a>
+                </Link>
               ))}
             </nav>
           </div>
