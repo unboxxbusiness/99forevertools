@@ -38,35 +38,28 @@ export const Header = () => {
     const pathname = usePathname()
 
     const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-        e.preventDefault()
-        const [path, hash] = href.split('#')
+        e.preventDefault();
+        const [path, hash] = href.split('#');
 
         const scrollToSection = () => {
             if (hash) {
-                const element = document.getElementById(hash)
+                const element = document.getElementById(hash);
                 if (element) {
-                    const headerOffset = 100; // Adjust if you have a sticky header
-                    const elementPosition = element.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: "smooth"
-                    });
+                    const headerOffset = 100;
+                    const elementPosition = element.getBoundingClientRect().top + window.scrollY - headerOffset;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    // Only update the hash in the URL, don't replace the whole URL
+                    window.history.pushState(null, '', `#${hash}`);
                 }
             }
-        }
+        };
 
         if (pathname === '/' && hash) {
-            scrollToSection()
+            scrollToSection();
         } else {
-            router.push(href)
-            // Use a timeout to ensure the page has navigated before scrolling
-            setTimeout(() => {
-                scrollToSection();
-            }, 100);
+            router.push(href);
         }
-    }, [pathname, router])
+    }, [pathname, router]);
 
 
     React.useEffect(() => {
