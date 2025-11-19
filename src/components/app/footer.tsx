@@ -96,25 +96,9 @@ export function Footer() {
              <div className="mb-4">
               <Logo />
             </div>
-            <p className="mb-6 text-muted-foreground">
-              Join our newsletter for the latest updates and exclusive offers.
+            <p className="text-muted-foreground">
+              A collection of free tools to supercharge your business growth.
             </p>
-            <form className="relative" onSubmit={handleNewsletterSubmit}>
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                className="pr-12 backdrop-blur-sm"
-                required
-              />
-              <Button
-                type="submit"
-                size="icon"
-                className="absolute right-1 top-1 h-8 w-8 rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105"
-              >
-                <Send className="h-4 w-4" />
-                <span className="sr-only">Subscribe</span>
-              </Button>
-            </form>
           </div>
           <div>
             <h3 className="mb-4 text-lg font-semibold">Quick Links</h3>
