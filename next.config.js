@@ -34,6 +34,13 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config, { isServer }) => {
+    // Exclude onnxruntime-node from the client-side bundle
+    if (!isServer) {
+      config.externals.push('onnxruntime-node');
+    }
+    return config;
+  },
 };
 
 module.exports = nextConfig;
