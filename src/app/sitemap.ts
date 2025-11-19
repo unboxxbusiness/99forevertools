@@ -71,6 +71,7 @@ const tools = [
   '/manual-sales-tracker',
   '/instagram-profile-photo-maker',
   '/social-media-image-generator',
+  '/terms-of-use',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

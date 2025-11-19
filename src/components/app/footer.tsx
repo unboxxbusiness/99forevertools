@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -39,12 +40,17 @@ export function Footer() {
   return (
     <footer className="border-t border-border/50 print-hidden">
       <div className="container mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-3">
-          <Rocket className="h-6 w-6 text-primary" />
-          <span className="text-lg font-bold tracking-tighter text-foreground">
-            99forevertools
-          </span>
-        </Link>
+        <div className='flex items-center gap-4'>
+            <Link href="/" className="flex items-center gap-3">
+              <Rocket className="h-6 w-6 text-primary" />
+              <span className="text-lg font-bold tracking-tighter text-foreground">
+                99forevertools
+              </span>
+            </Link>
+             <Link href="/terms-of-use" className="text-sm text-muted-foreground hover:text-primary">
+              Terms of Use
+            </Link>
+        </div>
         <p className="text-sm text-muted-foreground order-last sm:order-none">
           &copy; {new Date().getFullYear()} 99forevertools. All rights reserved.
         </p>
