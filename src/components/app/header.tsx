@@ -110,6 +110,7 @@ import {
   Zap,
   Paintbrush,
   Shield,
+  Network
 } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 import { Logo } from '../logo';
@@ -127,7 +128,7 @@ import { type ComponentType } from 'react';
 
 // Icon mapping
 const iconMap: Record<string, ComponentType<{ className?: string }>> = {
-  Star, CalculatorIcon, Search, Paintbrush, Image, MessageSquare, Users, Bot, FileText, Percent, Briefcase, CircleDollarSign, Scale, Calculator, HomeIcon, Landmark, TicketPercent, Scaling, QrCode, Lightbulb, PartyPopper, TrendingUp, MapPin, Hash, PenSquare, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, LinkIcon, Activity, ExternalLink, Camera, Code, Gift, FileJson, TestTube2, Mail, Clock, Binary, MessageSquarePlus, BookOpen, IndianRupee, UserIcon, Sparkles, Zap, Globe
+  Star, CalculatorIcon, Search, Paintbrush, Image, MessageSquare, Users, Bot, FileText, Percent, Briefcase, CircleDollarSign, Scale, Calculator, HomeIcon, Landmark, TicketPercent, Scaling, QrCode, Lightbulb, PartyPopper, TrendingUp, MapPin, Hash, PenSquare, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, LinkIcon, Activity, ExternalLink, Camera, Code, Network, Gift, FileJson, TestTube2, Mail, Clock, Binary, MessageSquarePlus, BookOpen, IndianRupee, UserIcon, Sparkles, Zap, Globe
 };
 
 const renderIcon = (name: string, className?: string) => {
@@ -168,7 +169,7 @@ ListItem.displayName = "ListItem"
 export function Header({ className }: { className?: string }) {
 
   return (
-    <header className={cn("sticky top-0 w-full flex items-center justify-between p-4 z-50 print-hidden bg-background/95 backdrop-blur-sm border-b border-border/50", className)}>
+    <header className={cn("fixed top-0 w-full flex items-center justify-between p-4 z-50 print-hidden bg-background/95 backdrop-blur-sm border-b border-border/50", className)}>
       <div className="flex-1 lg:flex-none">
         <Link href="/">
           <Logo />
@@ -184,8 +185,8 @@ export function Header({ className }: { className?: string }) {
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                   {allTools.find(c => c.category === 'Top Tools')?.tools.map((tool) => (
-                    <Link href={tool.href} key={tool.href} passHref legacyBehavior>
-                      <ListItem title={tool.title}/>
+                     <Link href={tool.href} key={tool.href} passHref legacyBehavior>
+                        <ListItem title={tool.title}/>
                     </Link>
                   ))}
                 </ul>
