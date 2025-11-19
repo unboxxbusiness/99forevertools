@@ -13,7 +13,7 @@ export function HeroSection({ whatsAppUrl }: HeroSectionProps) {
       <div className="mx-auto max-w-5xl space-y-8 px-6 md:space-y-12">
         <Image
           className="rounded-lg"
-          src="https://picsum.photos/seed/offer-hero/1200/600"
+          src="https://res.cloudinary.com/dhrigocvd/image/upload/v1763533783/99foreversite_lead_gen_wwo4wz.webp"
           alt="Modern website on a laptop"
           height={600}
           width={1200}
@@ -23,8 +23,8 @@ export function HeroSection({ whatsAppUrl }: HeroSectionProps) {
         <div className="grid gap-6 md:grid-cols-2 md:gap-12">
           <h2 className="text-4xl font-medium">Unlock Your Own 24/7 Lead-Generation Machine… For A Single One-Time Payment</h2>
           <div className="space-y-6">
-            <p className="text-muted-foreground">(Never Pay Monthly Fees Again!)</p>
             <p className="font-semibold text-primary">This is a limited-time launch offer.</p>
+            <p className="text-muted-foreground">(Never Pay Monthly Fees Again!)</p>
             <Button
               asChild
               size="lg"
