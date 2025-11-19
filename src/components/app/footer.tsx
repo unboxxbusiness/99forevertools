@@ -32,10 +32,11 @@ import { useTheme } from 'next-themes';
 
 const quickLinks = [
   { title: 'Calculators', href: '/#financial-calculators' },
-  { title: 'Content & SEO', href: '/#content-writing' },
-  { title: 'Branding & Design', href: '/#branding-design' },
-  { title: 'Image & Video', href: '/#image-video-tools' },
-  { title: 'Web & Utilities', href: '/#web-utilities' },
+  { title: 'Content & Writing', href: '/#content-and-writing' },
+  { title: 'SEO & Marketing', href: '/#seo-and-marketing' },
+  { title: 'Branding & Design', href: '/#branding-and-design' },
+  { title: 'Image & Video', href: '/#image-and-video-tools' },
+  { title: 'Web & Utilities', href: '/#web-and-utilities' },
 ];
 
 const legalLinks = [
