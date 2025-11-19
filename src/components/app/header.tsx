@@ -143,13 +143,14 @@ const designTools = allTools.filter(c => ['Branding & Design', 'Image & Video To
 
 
 const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, ...props }, ref) => {
+  React.ElementRef<typeof NavigationMenuLink>,
+  React.ComponentPropsWithoutRef<typeof NavigationMenuLink>
+>(({ className, title, children, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
-        <a
+        <Link
+          href={props.href || '/'}
           ref={ref}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
@@ -158,7 +159,7 @@ const ListItem = React.forwardRef<
           {...props}
         >
           <div className="text-sm font-medium leading-none">{title}</div>
-        </a>
+        </Link>
       </NavigationMenuLink>
     </li>
   )
@@ -185,9 +186,7 @@ export function Header({ className }: { className?: string }) {
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                   {allTools.find(c => c.category === 'Top Tools')?.tools.map((tool) => (
-                     <Link href={tool.href} key={tool.href} passHref legacyBehavior>
-                        <ListItem title={tool.title}/>
-                    </Link>
+                    <ListItem key={tool.href} href={tool.href} title={tool.title}/>
                   ))}
                 </ul>
               </NavigationMenuContent>
@@ -197,9 +196,7 @@ export function Header({ className }: { className?: string }) {
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                   {businessTools[0]?.tools.slice(0, 7).map((tool) => (
-                    <Link href={tool.href} key={tool.href} passHref legacyBehavior>
-                      <ListItem title={tool.title}/>
-                    </Link>
+                    <ListItem key={tool.href} href={tool.href} title={tool.title}/>
                   ))}
                    <li>
                     <Link href="/#financial-calculators" passHref legacyBehavior>
@@ -220,9 +217,7 @@ export function Header({ className }: { className?: string }) {
                     </h3>
                     <ul className="flex flex-col gap-1">
                       {contentTools[0].tools.slice(0, 7).map((tool) => (
-                        <Link href={tool.href} key={tool.href} passHref legacyBehavior>
-                         <ListItem title={tool.title} />
-                        </Link>
+                        <ListItem key={tool.href} href={tool.href} title={tool.title} />
                       ))}
                        <li>
                         <Link href="/#content-writing" passHref legacyBehavior>
@@ -238,9 +233,7 @@ export function Header({ className }: { className?: string }) {
                     </h3>
                     <ul className="flex flex-col gap-1">
                       {marketingTools[0].tools.slice(0, 7).map((tool) => (
-                        <Link href={tool.href} key={tool.href} passHref legacyBehavior>
-                         <ListItem title={tool.title} />
-                        </Link>
+                        <ListItem key={tool.href} href={tool.href} title={tool.title} />
                       ))}
                        <li>
                         <Link href="/#seo-marketing" passHref legacyBehavior>
@@ -264,9 +257,7 @@ export function Header({ className }: { className?: string }) {
                         </h3>
                         <ul className="flex flex-col gap-1">
                           {category.tools.slice(0,7).map((tool) => (
-                            <Link href={tool.href} key={tool.href} passHref legacyBehavior>
-                              <ListItem title={tool.title} />
-                             </Link>
+                            <ListItem key={tool.href} href={tool.href} title={tool.title} />
                           ))}
                           <li>
                             <Link href={`/#${category.category.toLowerCase().replace(/ & /g, '-and-')}`} passHref legacyBehavior>
