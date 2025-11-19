@@ -12,19 +12,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { HeroPill } from '../ui/hero-pill';
 import { usePathname } from 'next/navigation';
+import { OfferCtaFooter } from './offer-cta-footer';
 
 export function Footer() {
   const { toast } = useToast();
   const [pageUrl, setPageUrl] = useState('');
   const pathname = usePathname();
-  const showPill = pathname !== '/offer';
 
   useEffect(() => {
     setPageUrl(window.location.href);
   }, []);
-
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(pageUrl).then(() => {
@@ -43,6 +41,7 @@ export function Footer() {
 
   return (
     <footer className="border-t border-border/50 print-hidden">
+      {pathname !== '/offer' && <OfferCtaFooter />}
       <div className="container mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className='flex items-center gap-4'>
             <Link href="/" className="flex items-center gap-3">
