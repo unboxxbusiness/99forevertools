@@ -6,6 +6,7 @@ import { VerticalCutReveal } from "@/components/ui/vertical-cut-reveal";
 import { AlertTriangle, ArrowRight, CheckCircle, Clock, PlayCircle, Rocket, Search, Smartphone, Sparkles, Star, Trophy, Zap, CheckCheck } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
+import Image from 'next/image';
 
 export default function OfferPage() {
   const features = [
@@ -32,40 +33,44 @@ export default function OfferPage() {
 
   return (
     <div className="bg-background text-foreground" ref={pageRef}>
-        <div className="relative isolate overflow-hidden bg-gray-900">
-            <div className="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
-                <div className="mx-auto max-w-2xl text-center">
-                    <TimelineContent className="flex justify-center items-center gap-2 text-yellow-400">
-                        <AlertTriangle className="h-5 w-5" />
-                        <h2 className="text-lg font-semibold uppercase tracking-wider">
-                           This Special Launch Offer Is Ending Soon
-                        </h2>
-                    </TimelineContent>
-
-                    <h1 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
-                      <VerticalCutReveal text="Unlock Your Own 24/7 Lead-Generation Machine… For A Single One-Time Payment" />
-                    </h1>
-                    <TimelineContent
-                        as="p"
-                        className="mt-6 text-lg leading-8 text-gray-300"
-                    >
-                        (Never Pay Monthly Fees Again!)
-                    </TimelineContent>
-
-                    <TimelineContent className="mt-10 flex flex-col items-center justify-center gap-y-6">
-                        <div className="w-full max-w-xl aspect-video bg-black rounded-lg border border-primary/20 flex items-center justify-center flex-col gap-2">
-                           <PlayCircle className="h-16 w-16 text-primary" />
-                           <p className="text-primary/70">▶️ Press PLAY on the video below to discover how this can change your business…</p>
+        <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-24 sm:py-32 lg:px-8">
+             <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(125%_125%_at_50%_10%,#000_40%,#243A73_100%)]"></div>
+            <div className="mx-auto max-w-5xl">
+                <TimelineContent className="flex justify-center items-center gap-2 text-yellow-400">
+                    <AlertTriangle className="h-5 w-5" />
+                    <h2 className="text-lg font-semibold uppercase tracking-wider">
+                       This Special Launch Offer Is Ending Soon
+                    </h2>
+                </TimelineContent>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mt-8">
+                     <div className="relative">
+                         <div className="bg-gradient-to-b from-primary/30 to-transparent rounded-2xl p-px">
+                            <div className="w-full aspect-video bg-black rounded-[15px] flex items-center justify-center flex-col gap-2">
+                               <PlayCircle className="h-16 w-16 text-primary" />
+                               <p className="text-primary/70">▶️ Press PLAY on the video below</p>
+                            </div>
                         </div>
-                         <Button asChild size="lg" className="w-full max-w-md text-lg h-14 bg-green-600 text-white hover:bg-green-700">
-                            <a href={whatsAppUrl} target="_blank" rel="noopener noreferrer">
-                                Book Offer Now
-                            </a>
-                        </Button>
-                    </TimelineContent>
+                    </div>
+                    <div className="text-center lg:text-left">
+                        <h1 className="text-3xl font-bold tracking-tight text-white sm:text-5xl">
+                          Unlock Your Own 24/7 Lead-Generation Machine… For A Single One-Time Payment
+                        </h1>
+                        <TimelineContent
+                            as="p"
+                            className="mt-6 text-lg leading-8 text-gray-300"
+                        >
+                            (Never Pay Monthly Fees Again!)
+                        </TimelineContent>
+                         <TimelineContent className="mt-10 flex flex-col items-center lg:items-start justify-center gap-y-6">
+                            <Button asChild size="lg" className="w-full max-w-md text-lg h-14 bg-green-600 text-white hover:bg-green-700">
+                                <a href={whatsAppUrl} target="_blank" rel="noopener noreferrer">
+                                    Book Offer Now
+                                </a>
+                            </Button>
+                        </TimelineContent>
+                    </div>
                 </div>
             </div>
-             <div className="absolute top-0 -z-10 h-full w-full bg-[radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
         </div>
 
         <div className="py-24 px-4 max-w-5xl mx-auto space-y-16">
@@ -107,13 +112,13 @@ export default function OfferPage() {
                     <TimelineContent as="p" className="text-lg font-semibold pt-4">Real Value: <span className="line-through text-muted-foreground">₹15,000</span></TimelineContent>
                 </div>
                 <div>
-                    <img src="https://picsum.photos/seed/offer1/600/500" alt="Professional Website Mockup" className="rounded-lg shadow-xl" data-ai-hint="website mockup" />
+                    <Image src="https://picsum.photos/seed/offer1/600/500" alt="Professional Website Mockup" className="rounded-lg shadow-xl" data-ai-hint="website mockup" width={600} height={500} />
                 </div>
             </div>
 
              <div className="grid md:grid-cols-2 gap-12 items-center">
                  <div className="order-2 md:order-1">
-                    <img src="https://picsum.photos/seed/offer2/600/500" alt="Secure Hosting Graphic" className="rounded-lg shadow-xl" data-ai-hint="server security" />
+                    <Image src="https://picsum.photos/seed/offer2/600/500" alt="Secure Hosting Graphic" className="rounded-lg shadow-xl" data-ai-hint="server security" width={600} height={500} />
                 </div>
                 <div className="order-1 md:order-2">
                     <TimelineContent
@@ -200,4 +205,6 @@ export default function OfferPage() {
     </div>
   );
 }
+    
+
     
