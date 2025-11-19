@@ -3,7 +3,6 @@ import { TimelineContent } from "@/components/ui/timeline-animation";
 import {VerticalCutReveal} from "@/components/ui/vertical-cut-reveal";
 import { cn } from "@/lib/utils";
 import { CheckCheck, Zap } from "lucide-react";
-import { motion } from "framer-motion";
 import { useId, useRef, useState } from "react";
 
 const PricingSwitch = ({
@@ -11,17 +10,13 @@ const PricingSwitch = ({
   button2,
   onSwitch,
   className,
-  layoutId,
 }: {
   button1: string;
   button2: string;
   onSwitch: (value: string) => void;
   className?: string;
-  layoutId?: string;
 }) => {
   const [selected, setSelected] = useState("0");
-  const uniqueId = useId();
-  const switchLayoutId = layoutId || `switch-${uniqueId}`;
 
   const handleSwitch = (value: string) => {
     setSelected(value);
@@ -45,10 +40,8 @@ const PricingSwitch = ({
         )}
       >
         {selected === "0" && (
-          <motion.span
-            layoutId={switchLayoutId}
+          <span
             className="absolute top-0 left-0 sm:h-14 h-10 w-full rounded-full border-4 shadow-sm shadow-black border-black bg-gradient-to-t from-neutral-900 via-neutral-800 to-neutral-900"
-            transition={{ type: "spring", stiffness: 500, damping: 30 }}
           />
         )}
         <span className="relative">{button1}</span>
@@ -64,10 +57,8 @@ const PricingSwitch = ({
         )}
       >
         {selected === "1" && (
-          <motion.span
-            layoutId={switchLayoutId}
+          <span
             className="absolute top-0 left-0 sm:h-14 h-10 w-full rounded-full border-4 shadow-sm shadow-black border-black bg-gradient-to-t from-neutral-900 via-neutral-800 to-neutral-900"
-            transition={{ type: "spring", stiffness: 500, damping: 30 }}
           />
         )}
         <span className="relative flex justify-center items-center gap-2">
@@ -158,16 +149,12 @@ export default function PricingSection2() {
           }}
         />
         <div className="max-w-4xl mx-auto text-center">
-          <TimelineContent
-            as="div"
-            animationNum={0}
-            timelineRef={pricingRef}
-            customVariants={revealVariants}
-            className="flex items-center justify-center mb-4"
+          <div
+            className="flex items-center justify-center mb-4 animate-fade-in"
           >
             <Zap className="h-5 w-5 text-blue-500 fill-blue-500 mr-2" />
             <span className="text-blue-600 font-medium">Time to connect</span>
-          </TimelineContent>
+          </div>
 
           <h1 className="md:text-5xl sm:text-4xl text-3xl font-semibold text-gray-900 mb-4 leading-[120%]">
             <VerticalCutReveal
@@ -186,15 +173,11 @@ export default function PricingSection2() {
             />
           </h1>
 
-          <TimelineContent
-            as="p"
-            animationNum={1}
-            timelineRef={pricingRef}
-            customVariants={revealVariants}
-            className="text-xl text-gray-600"
+          <p
+            className="text-xl text-gray-600 animate-fade-in"
           >
             Get Module, connect, save time and money. Profit!
-          </TimelineContent>
+          </p>
         </div>
       </div>
 
@@ -202,43 +185,30 @@ export default function PricingSection2() {
       <div className="px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid sm:grid-cols-2 md:gap-12 gap-4 items-center">
-            <div>
-              <TimelineContent
-                as="h3"
-                animationNum={2}
-                timelineRef={pricingRef}
-                customVariants={revealVariants}
+            <div className="animate-fade-in">
+              <h3
                 className="text-3xl font-medium text-gray-900 mb-2"
               >
                 What's inside
-              </TimelineContent>
+              </h3>
 
               <div className="space-y-4">
                 {features.map((feature, index) => (
-                  <TimelineContent
+                  <div
                     key={index}
-                    as="div"
-                    animationNum={3 + index}
-                    timelineRef={pricingRef}
-                    customVariants={timelineVaraints}
-                    className="flex items-center"
+                    className="flex items-center animate-fade-in"
                   >
                     <div className="w-6 h-6 bg-blue-500 shadow-md shadow-blue-500 rounded-full flex items-center justify-center mr-3">
                       <CheckCheck className="h-4 w-4 text-white" />
                     </div>
                     <span className="text-gray-700">{feature}</span>
-                  </TimelineContent>
+                  </div>
                 ))}
               </div>
             </div>
 
-            <div className="space-y-8">
-              <TimelineContent
-                as="div"
-                animationNum={3}
-                timelineRef={pricingRef}
-                customVariants={revealVariants}
-              >
+            <div className="space-y-8 animate-fade-in">
+              <div>
                 <h4 className="font-semibold text-gray-900 mb-2">
                   Access to updates
                 </h4>
@@ -251,14 +221,9 @@ export default function PricingSection2() {
                   onSwitch={toggleUpdates}
                   className="grid grid-cols-2 w-full"
                 />
-              </TimelineContent>
+              </div>
 
-              <TimelineContent
-                as="div"
-                animationNum={4}
-                timelineRef={pricingRef}
-                customVariants={revealVariants}
-              >
+              <div>
                 <h4 className="font-semibold text-gray-900 mb-1">
                   Lifetime license
                 </h4>
@@ -271,13 +236,9 @@ export default function PricingSection2() {
                   onSwitch={toggleCorporate}
                   className="grid grid-cols-2 w-full"
                 />
-              </TimelineContent>
+              </div>
 
-              <TimelineContent
-                as="div"
-                animationNum={5}
-                timelineRef={pricingRef}
-                customVariants={revealVariants}
+              <div
                 className="text-center grid grid-cols-2 items-center gap-2 px-2"
               >
                 <div className="flex items-center mb-4">
@@ -290,16 +251,12 @@ export default function PricingSection2() {
                     <span className="text-xl font-semibold line-through">{originalPrice}</span>
                   </span>
                 </div>
-                <TimelineContent
-                  as="button"
-                  animationNum={6}
-                  timelineRef={pricingRef}
-                  customVariants={revealVariants}
+                <button
                   className="text-white text-xl font-semibold h-10 sm:h-16 w-full rounded-full border-4 shadow-sm shadow-blue-600 border-blue-600 bg-gradient-to-t from-blue-600 via-blue-500 to-blue-600"
                 >
                   Purchase
-                </TimelineContent>
-              </TimelineContent>
+                </button>
+              </div>
             </div>
           </div>
         </div>
