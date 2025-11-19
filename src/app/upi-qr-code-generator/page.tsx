@@ -1,4 +1,4 @@
-
+'use client';
 import { Header } from '@/components/app/header';
 import { QrCodeGeneratorForm, type QrCodeConfig } from '@/components/app/qr-code-generator/qr-code-generator-form';
 import { QrCodeGeneratorResults } from '@/components/app/qr-code-generator/qr-code-generator-results';
@@ -6,6 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { useState } from 'react';
 
 export const metadata: Metadata = {
   title: 'UPI QR Code Generator | 99forevertools',
@@ -26,7 +27,6 @@ const schema = {
 };
 
 function QrCodeGeneratorWrapper() {
-  'use client';
   const [qrConfig, setQrConfig] = useState<QrCodeConfig>({
     type: 'upi', // Default to UPI
     value: '',
@@ -77,5 +77,3 @@ export default function QrCodeGeneratorPage() {
     </div>
   );
 }
-
-    
