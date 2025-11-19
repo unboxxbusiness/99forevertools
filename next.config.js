@@ -6,14 +6,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  webpack: (config, { isServer }) => {
-    config.module.rules.push({
-      test: /\.wasm$/,
-      type: 'asset/resource',
-    });
-
-    return config;
-  },
   images: {
     remotePatterns: [
       {
