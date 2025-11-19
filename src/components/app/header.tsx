@@ -129,7 +129,7 @@ export const Header = () => {
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent>
                                             {businessToolsGroup.map((item, index) => (
-                                                <DropdownMenuItem key={index} asChild>
+                                                <DropdownMenuItem key={index} asChild onSelect={(e) => e.preventDefault()}>
                                                     <Link href={item.href} onClick={(e) => handleNavClick(e, item.href)}>{item.name}</Link>
                                                 </DropdownMenuItem>
                                             ))}
@@ -143,7 +143,7 @@ export const Header = () => {
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent>
                                             {technicalToolsGroup.map((item, index) => (
-                                                <DropdownMenuItem key={index} asChild>
+                                                <DropdownMenuItem key={index} asChild onSelect={(e) => e.preventDefault()}>
                                                     <Link href={item.href} onClick={(e) => handleNavClick(e, item.href)}>{item.name}</Link>
                                                 </DropdownMenuItem>
                                             ))}
