@@ -1,8 +1,8 @@
-"use client";
-import React, { SVGProps, useState } from "react";
-import { motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { X } from "lucide-react";
+'use client';
+import React, { SVGProps, useState, useEffect } from 'react';
+import { motion, useMotionValueEvent, useScroll } from 'framer-motion';
+import { cn } from '@/lib/utils';
+import { X } from 'lucide-react';
 
 export const StickyBanner = ({
   className,
@@ -13,10 +13,22 @@ export const StickyBanner = ({
   children: React.ReactNode;
   hideOnScroll?: boolean;
 }) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false); // Default to closed until we check storage
   const { scrollY } = useScroll();
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
+  useEffect(() => {
+    const isBannerClosed = sessionStorage.getItem('bannerClosed');
+    if (isBannerClosed !== 'true') {
+      setOpen(true);
+    }
+  }, []);
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const isBannerClosed = sessionStorage.getItem('bannerClosed');
+    if (isBannerClosed === 'true') {
+      setOpen(false);
+      return;
+    }
     if (hideOnScroll && latest > 40) {
       setOpen(false);
     } else {
@@ -24,10 +36,15 @@ export const StickyBanner = ({
     }
   });
 
+  const handleClose = () => {
+    setOpen(false);
+    sessionStorage.setItem('bannerClosed', 'true');
+  };
+
   return (
     <motion.div
       className={cn(
-        "sticky inset-x-0 top-0 z-50 flex min-h-12 w-full items-center justify-center bg-primary px-4 py-2 text-primary-foreground print-hidden",
+        'sticky inset-x-0 top-0 z-50 flex min-h-12 w-full items-center justify-center bg-primary px-4 py-2 text-primary-foreground print-hidden',
         className
       )}
       initial={{
@@ -40,7 +57,7 @@ export const StickyBanner = ({
       }}
       transition={{
         duration: 0.3,
-        ease: "easeInOut",
+        ease: 'easeInOut',
       }}
     >
       {children}
@@ -53,7 +70,7 @@ export const StickyBanner = ({
           scale: 1,
         }}
         className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer"
-        onClick={() => setOpen(!open)}
+        onClick={handleClose}
       >
         <X className="h-5 w-5" />
       </motion.button>
