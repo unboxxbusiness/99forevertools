@@ -30,7 +30,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full print-hidden">
         <div className="bg-primary text-primary-foreground">
             <div className="container mx-auto px-4 py-2 text-center text-sm font-medium">
-                <Link href="/#lifetime-deal" className="inline-flex items-center gap-2 group">
+                <Link href="/offer" className="inline-flex items-center gap-2 group">
                     <span>Stop Paying Monthly Fees! Get a Lifetime Website for ₹10,000.</span>
                     <span className="font-bold underline underline-offset-2 flex items-center gap-1 group-hover:gap-2 transition-all">
                         Claim Offer
