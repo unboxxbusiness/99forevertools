@@ -31,9 +31,9 @@ export const Header = () => {
     return (
         <header className="sticky top-0 z-40 w-full print-hidden">
             <nav className="w-full px-2">
-                <div className={cn('mx-auto mt-2 max-w-6xl px-6 transition-all duration-300 lg:px-12', isScrolled && 'bg-background/80 backdrop-blur-lg max-w-5xl rounded-2xl border border-border/50')}>
+                <div className={cn('mx-auto mt-2 max-w-6xl px-4 transition-all duration-300 lg:px-8', isScrolled && 'bg-background/80 backdrop-blur-lg max-w-5xl rounded-2xl border border-border/50')}>
                     <div className="relative flex items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
-                        <div className="relative z-20">
+                        <div className="relative z-20 flex items-center gap-2">
                             <Link
                                 href="/"
                                 aria-label="home"
@@ -65,7 +65,7 @@ export const Header = () => {
                                                 </li>
                                             ))}
                                         </ul>
-                                        <SheetTrigger asChild>
+                                         <SheetTrigger asChild>
                                             <Button asChild size="lg" className="w-full">
                                                 <Link href="/offer">
                                                     Lifetime Website Offer
@@ -77,8 +77,8 @@ export const Header = () => {
                             </Sheet>
                         </div>
 
-                         <div className="hidden lg:flex lg:items-center lg:gap-8">
-                            <ul className="flex gap-8 text-sm">
+                         <div className="hidden lg:flex lg:items-center lg:justify-center lg:flex-1">
+                            <ul className="flex gap-x-6 xl:gap-x-8 text-sm">
                                 {menuItems.map((item, index) => (
                                     <li key={index}>
                                         <Link
@@ -91,7 +91,7 @@ export const Header = () => {
                             </ul>
                         </div>
                          
-                         <div className="hidden lg:flex flex-wrap items-center justify-end">
+                         <div className="hidden lg:flex items-center justify-end">
                             <Button asChild size="sm">
                                 <Link href="/offer">
                                     Lifetime Website Offer
