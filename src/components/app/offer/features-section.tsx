@@ -1,4 +1,3 @@
-
 'use client';
 import { Briefcase, Moon, Rocket, Smartphone, Zap } from 'lucide-react';
 import Image from 'next/image';
@@ -50,8 +49,8 @@ export function FeaturesSection() {
                         </div>
                     </div>
                     <div className="border-border/50 relative rounded-3xl border p-3 lg:col-span-3">
-                        <div className="bg-linear-to-b aspect-w-4 aspect-h-3 relative rounded-2xl from-zinc-300 to-transparent p-px dark:from-zinc-700">
-                             <Image src="https://res.cloudinary.com/dhrigocvd/image/upload/v1763533783/99foreversite_lead_gen_wwo4wz.webp" className="rounded-[15px] shadow" alt="Lead Generation Website" width={1207} height={929} />
+                        <div className="bg-linear-to-b aspect-76/59 relative rounded-2xl from-zinc-300 to-transparent p-px dark:from-zinc-700">
+                             <Image src="https://res.cloudinary.com/dhrigocvd/image/upload/v1763532779/24_7_lead_generation_g2ddnu.webp" className="rounded-[15px] shadow" alt="Lead Generation Website" width={1207} height={929} />
                         </div>
                     </div>
                 </div>
