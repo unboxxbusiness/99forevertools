@@ -139,61 +139,18 @@ type ToolCategory = {
   tools: Tool[];
 };
 
-type NavItem = {
-  id: number;
-  label: string;
-  href?: string;
-  subMenus?: {
-    title: string;
-    items: Tool[];
-  }[];
-};
-
-
 // Icon mapping
 const iconMap: Record<string, ComponentType> = {
   Star, CalculatorIcon, Search, Paintbrush, Image, MessageSquare, Users, Bot, FileText, Percent, Briefcase, CircleDollarSign, Scale, Calculator, HomeIcon, Landmark, TicketPercent, Scaling, QrCode, Lightbulb, PartyPopper, TrendingUp, MapPin, Hash, PenSquare, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, LinkIcon, Activity, ExternalLink, Camera, Code, Network, Gift, FileJson, TestTube2, Mail, Clock, Binary, MessageSquarePlus, BookOpen, IndianRupee, UserIcon, Sparkles, Zap
 };
 
-const calculatorsGroup = allTools.filter(c => ['Calculators'].includes(c.category));
-const contentSeoGroup = allTools.filter(c => ['Content & SEO'].includes(c.category));
-const marketingSalesGroup = allTools.filter(c => ['Marketing & Utilities', 'WhatsApp Tools'].includes(c.category));
-const designBrandingGroup = allTools.filter(c => ['Branding & Design', 'Image Tools'].includes(c.category));
+const calculatorTools = allTools.find(c => c.category === 'Calculators')?.tools || [];
+const contentSeoTools = allTools.find(c => c.category === 'Content & SEO')?.tools || [];
+const marketingUtilitiesTools = allTools.find(c => c.category === 'Marketing & Utilities')?.tools || [];
+const whatsappTools = allTools.find(c => c.category === 'WhatsApp Tools')?.tools || [];
+const brandingDesignTools = allTools.find(c => c.category === 'Branding & Design')?.tools || [];
+const imageTools = allTools.find(c => c.category === 'Image Tools')?.tools || [];
 
-const desktopNavItems: NavItem[] = [
-    {
-        id: 1,
-        label: 'Calculators',
-        subMenus: calculatorsGroup.map(category => ({
-            title: category.category,
-            items: category.tools,
-        })),
-    },
-    {
-        id: 2,
-        label: 'Content & SEO',
-        subMenus: contentSeoGroup.map(category => ({
-            title: category.category,
-            items: category.tools,
-        })),
-    },
-    {
-        id: 3,
-        label: 'Marketing & Sales',
-        subMenus: marketingSalesGroup.map(category => ({
-            title: category.category,
-            items: category.tools,
-        })),
-    },
-    {
-        id: 4,
-        label: 'Design & Branding',
-        subMenus: designBrandingGroup.map(category => ({
-            title: category.category,
-            items: category.tools,
-        })),
-    },
-];
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
@@ -235,43 +192,91 @@ export function Header({ className }: { className?: string }) {
       <div className="hidden lg:flex items-center justify-center flex-1">
         <NavigationMenu>
           <NavigationMenuList>
-            {desktopNavItems.map(navItem => (
-              <NavigationMenuItem key={navItem.id}>
-                {navItem.subMenus ? (
-                  <>
-                    <NavigationMenuTrigger>{navItem.label}</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <div className={cn("grid gap-3 p-4", navItem.subMenus.length > 1 ? "w-[600px] grid-cols-2" : "w-[300px] grid-cols-1")}>
-                        {navItem.subMenus.map((subMenu) => (
-                          <div key={subMenu.title}>
-                            <h3 className="mb-2 text-sm font-medium text-muted-foreground px-3">{subMenu.title}</h3>
-                            <ul className="flex flex-col gap-1">
-                              {subMenu.items.map((item) => {
-                                const Icon = iconMap[item.icon] || Zap;
-                                return (
-                                  <ListItem key={item.title} href={item.href} title={item.title}>
-                                    <div className="flex items-start gap-2">
-                                      <Icon className="h-5 w-5 text-primary/80" />
-                                      <span className="text-xs">{item.description}</span>
-                                    </div>
-                                  </ListItem>
-                                )
-                              })}
-                            </ul>
-                          </div>
+            <NavigationMenuItem>
+              <Link href="/#featured" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Featured
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Calculators</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[250px] gap-3 p-4">
+                  {calculatorTools.map((tool) => (
+                    <ListItem key={tool.title} title={tool.title} href={tool.href}>
+                      {tool.description}
+                    </ListItem>
+                  ))}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+             <NavigationMenuItem>
+              <NavigationMenuTrigger>Content & SEO</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[250px] gap-3 p-4">
+                  {contentSeoTools.map((tool) => (
+                    <ListItem key={tool.title} title={tool.title} href={tool.href}>
+                      {tool.description}
+                    </ListItem>
+                  ))}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Marketing</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                 <div className="grid w-[500px] grid-cols-2 gap-3 p-4">
+                    <div>
+                      <h3 className="mb-2 text-sm font-medium text-muted-foreground px-3">Utilities</h3>
+                      <ul>
+                        {marketingUtilitiesTools.map((tool) => (
+                          <ListItem key={tool.title} title={tool.title} href={tool.href}>
+                            {tool.description}
+                          </ListItem>
                         ))}
-                      </div>
-                    </NavigationMenuContent>
-                  </>
-                ) : (
-                   <Link href={navItem.href || '/'} legacyBehavior passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                      {navItem.label}
-                    </NavigationMenuLink>
-                  </Link>
-                )}
-              </NavigationMenuItem>
-            ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="mb-2 text-sm font-medium text-muted-foreground px-3">WhatsApp</h3>
+                       <ul>
+                        {whatsappTools.map((tool) => (
+                          <ListItem key={tool.title} title={tool.title} href={tool.href}>
+                            {tool.description}
+                          </ListItem>
+                        ))}
+                      </ul>
+                    </div>
+                 </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Design</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                 <div className="grid w-[500px] grid-cols-2 gap-3 p-4">
+                    <div>
+                      <h3 className="mb-2 text-sm font-medium text-muted-foreground px-3">Branding</h3>
+                      <ul>
+                        {brandingDesignTools.map((tool) => (
+                          <ListItem key={tool.title} title={tool.title} href={tool.href}>
+                            {tool.description}
+                          </ListItem>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="mb-2 text-sm font-medium text-muted-foreground px-3">Image Tools</h3>
+                       <ul>
+                        {imageTools.map((tool) => (
+                          <ListItem key={tool.title} title={tool.title} href={tool.href}>
+                            {tool.description}
+                          </ListItem>
+                        ))}
+                      </ul>
+                    </div>
+                 </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
       </div>
