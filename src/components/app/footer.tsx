@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Rocket, Share2, Facebook, Twitter, Linkedin, Link as LinkIcon } from 'lucide-react';
+import { Share2, Facebook, Twitter, Linkedin, Link as LinkIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -14,6 +14,13 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { usePathname } from 'next/navigation';
 import { OfferCtaFooter } from './offer-cta-footer';
+import { Logo } from '../logo';
+
+const footerLinks = [
+    { title: 'Terms of Use', href: '/terms-of-use' },
+    { title: 'Privacy Policy', href: '/privacy-policy' },
+    { title: 'Refund Policy', href: '/refund-policy' },
+]
 
 export function Footer() {
   const { toast } = useToast();
@@ -22,7 +29,7 @@ export function Footer() {
 
   useEffect(() => {
     setPageUrl(window.location.href);
-  }, []);
+  }, [pathname]);
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(pageUrl).then(() => {
@@ -42,56 +49,53 @@ export function Footer() {
   return (
     <footer className="border-t border-border/50 print-hidden">
       {pathname !== '/offer' && <OfferCtaFooter />}
-      <div className="container mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className='flex items-center gap-4'>
-            <Link href="/" className="flex items-center gap-3">
-              <Rocket className="h-6 w-6 text-primary" />
-              <span className="text-lg font-bold tracking-tighter text-foreground">
-                99forevertools
-              </span>
+        <div className="mx-auto max-w-5xl px-6 py-16 md:py-24">
+             <Link
+                href="/"
+                aria-label="go home"
+                className="mx-auto block size-fit">
+                <Logo />
             </Link>
-             <Link href="/terms-of-use" className="text-sm text-muted-foreground hover:text-primary">
-              Terms of Use
-            </Link>
-            <Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary">
-              Privacy Policy
-            </Link>
-            <Link href="/refund-policy" className="text-sm text-muted-foreground hover:text-primary">
-              Refund Policy
-            </Link>
+             <div className="my-8 flex flex-wrap justify-center gap-6 text-sm">
+                {footerLinks.map((link, index) => (
+                    <Link
+                        key={index}
+                        href={link.href}
+                        className="text-muted-foreground hover:text-primary block duration-150">
+                        <span>{link.title}</span>
+                    </Link>
+                ))}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary p-0 h-auto">
+                        <Share2 className="mr-2 h-4 w-4" />
+                        Share
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuItem asChild>
+                            <a href={socialShareLinks.facebook} target="_blank" rel="noopener noreferrer">
+                                <Facebook className="mr-2 h-4 w-4"/>Facebook
+                            </a>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <a href={socialShareLinks.twitter} target="_blank" rel="noopener noreferrer">
+                                <Twitter className="mr-2 h-4 w-4"/>Twitter
+                            </a>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <a href={socialShareLinks.linkedin} target="_blank" rel="noopener noreferrer">
+                                <Linkedin className="mr-2 h-4 w-4"/>LinkedIn
+                            </a>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleCopyLink}>
+                            <LinkIcon className="mr-2 h-4 w-4"/>Copy Link
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
+            <span className="text-muted-foreground block text-center text-sm"> © {new Date().getFullYear()} 99forevertools, All rights reserved</span>
         </div>
-        <p className="text-sm text-muted-foreground order-last sm:order-none">
-          &copy; {new Date().getFullYear()} 99forevertools. All rights reserved.
-        </p>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-             <Button variant="outline" size="sm">
-              <Share2 className="mr-2 h-4 w-4" />
-              Share
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem asChild>
-                <a href={socialShareLinks.facebook} target="_blank" rel="noopener noreferrer">
-                    <Facebook className="mr-2 h-4 w-4"/>Facebook
-                </a>
-            </DropdownMenuItem>
-             <DropdownMenuItem asChild>
-                <a href={socialShareLinks.twitter} target="_blank" rel="noopener noreferrer">
-                    <Twitter className="mr-2 h-4 w-4"/>Twitter
-                </a>
-            </DropdownMenuItem>
-             <DropdownMenuItem asChild>
-                <a href={socialShareLinks.linkedin} target="_blank" rel="noopener noreferrer">
-                    <Linkedin className="mr-2 h-4 w-4"/>LinkedIn
-                </a>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleCopyLink}>
-                <LinkIcon className="mr-2 h-4 w-4"/>Copy Link
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
     </footer>
   );
 }
