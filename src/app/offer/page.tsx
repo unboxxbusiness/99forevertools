@@ -72,7 +72,7 @@ export default function OfferPage() {
                      </div>
                      <div className="border-border/50 relative rounded-3xl border p-3 lg:col-span-3">
                          <div className="bg-linear-to-b aspect-w-4 aspect-h-3 relative rounded-2xl from-zinc-300 to-transparent p-px dark:from-zinc-700">
-                             <Image src="https://picsum.photos/seed/offer1/1207/929" className="rounded-[15px] shadow" alt="payments illustration light" layout="fill" objectFit="cover" />
+                             <Image src="https://picsum.photos/seed/offer1/1207/929" className="rounded-[15px] shadow" alt="payments illustration light" layout="fill" objectFit="cover" data-ai-hint="lead generation" />
                          </div>
                      </div>
                  </div>
@@ -177,3 +177,5 @@ export default function OfferPage() {
     </div>
   );
 }
+
+    
