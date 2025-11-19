@@ -126,15 +126,74 @@ import {
 import { cn } from '@/lib/utils';
 import { type ComponentType } from 'react';
 
+type Tool = {
+  href: string;
+  title: string;
+  description: string;
+  icon: string;
+};
+
+type ToolCategory = {
+  category: string;
+  icon: string;
+  tools: Tool[];
+};
+
+type NavItem = {
+  id: number;
+  label: string;
+  href?: string;
+  subMenus?: {
+    title: string;
+    items: Tool[];
+  }[];
+};
+
 
 // Icon mapping
 const iconMap: Record<string, ComponentType> = {
   Star, CalculatorIcon, Search, Paintbrush, Image, MessageSquare, Users, Bot, FileText, Percent, Briefcase, CircleDollarSign, Scale, Calculator, HomeIcon, Landmark, TicketPercent, Scaling, QrCode, Lightbulb, PartyPopper, TrendingUp, MapPin, Hash, PenSquare, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, LinkIcon, Activity, ExternalLink, Camera, Code, Network, Gift, FileJson, TestTube2, Mail, Clock, Binary, MessageSquarePlus, BookOpen, IndianRupee, UserIcon, Sparkles, Zap
 };
 
-const businessAndMarketingTools = allTools.filter(c => ['Calculators', 'Content & SEO', 'Marketing & Utilities', 'WhatsApp Tools'].includes(c.category));
-const brandingAndDesignTools = allTools.filter(c => ['Branding & Design', 'Image Tools'].includes(c.category));
+const calculatorsGroup = allTools.filter(c => ['Calculators'].includes(c.category));
+const contentSeoGroup = allTools.filter(c => ['Content & SEO'].includes(c.category));
+const marketingSalesGroup = allTools.filter(c => ['Marketing & Utilities', 'WhatsApp Tools'].includes(c.category));
+const designBrandingGroup = allTools.filter(c => ['Branding & Design', 'Image Tools'].includes(c.category));
 
+const desktopNavItems: NavItem[] = [
+    {
+        id: 1,
+        label: 'Calculators',
+        subMenus: calculatorsGroup.map(category => ({
+            title: category.category,
+            items: category.tools,
+        })),
+    },
+    {
+        id: 2,
+        label: 'Content & SEO',
+        subMenus: contentSeoGroup.map(category => ({
+            title: category.category,
+            items: category.tools,
+        })),
+    },
+    {
+        id: 3,
+        label: 'Marketing & Sales',
+        subMenus: marketingSalesGroup.map(category => ({
+            title: category.category,
+            items: category.tools,
+        })),
+    },
+    {
+        id: 4,
+        label: 'Design & Branding',
+        subMenus: designBrandingGroup.map(category => ({
+            title: category.category,
+            items: category.tools,
+        })),
+    },
+];
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
@@ -167,64 +226,52 @@ export function Header({ className }: { className?: string }) {
   return (
     <header className={cn("relative w-full flex items-center justify-between p-4 z-50 print-hidden", className)}>
       <div className="flex-1 lg:flex-none">
-        <Logo />
+        <Link href="/">
+          <Logo />
+        </Link>
       </div>
 
       {/* Desktop Menu */}
       <div className="hidden lg:flex items-center justify-center flex-1">
         <NavigationMenu>
           <NavigationMenuList>
-             <NavigationMenuItem>
-              <Link href="/#featured" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Featured
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Business & Marketing</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <div className="grid w-[600px] grid-cols-2 gap-3 p-4">
-                  {businessAndMarketingTools.map((category) => (
-                     <div key={category.category}>
-                        <h3 className="mb-2 text-sm font-medium text-muted-foreground px-3">{category.category}</h3>
-                        <ul className="flex flex-col gap-1">
-                          {category.tools.map((tool) => {
-                            const Icon = iconMap[tool.icon] || Zap;
-                            return (
-                               <ListItem key={tool.title} href={tool.href} title={tool.title}>
-                                {tool.description}
-                              </ListItem>
-                            )
-                          })}
-                        </ul>
-                     </div>
-                  ))}
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Branding & Design</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                 <div className="grid w-[600px] grid-cols-2 gap-3 p-4">
-                  {brandingAndDesignTools.map((category) => (
-                     <div key={category.category}>
-                        <h3 className="mb-2 text-sm font-medium text-muted-foreground px-3">{category.category}</h3>
-                        <ul className="flex flex-col gap-1">
-                          {category.tools.map((tool) => {
-                            const Icon = iconMap[tool.icon] || Zap;
-                            return (
-                               <ListItem key={tool.title} href={tool.href} title={tool.title}>
-                                {tool.description}
-                              </ListItem>
-                            )
-                          })}
-                        </ul>
-                     </div>
-                  ))}
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
+            {desktopNavItems.map(navItem => (
+              <NavigationMenuItem key={navItem.id}>
+                {navItem.subMenus ? (
+                  <>
+                    <NavigationMenuTrigger>{navItem.label}</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <div className={cn("grid gap-3 p-4", navItem.subMenus.length > 1 ? "w-[600px] grid-cols-2" : "w-[300px] grid-cols-1")}>
+                        {navItem.subMenus.map((subMenu) => (
+                          <div key={subMenu.title}>
+                            <h3 className="mb-2 text-sm font-medium text-muted-foreground px-3">{subMenu.title}</h3>
+                            <ul className="flex flex-col gap-1">
+                              {subMenu.items.map((item) => {
+                                const Icon = iconMap[item.icon] || Zap;
+                                return (
+                                  <ListItem key={item.title} href={item.href} title={item.title}>
+                                    <div className="flex items-start gap-2">
+                                      <Icon className="h-5 w-5 text-primary/80" />
+                                      <span className="text-xs">{item.description}</span>
+                                    </div>
+                                  </ListItem>
+                                )
+                              })}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    </NavigationMenuContent>
+                  </>
+                ) : (
+                   <Link href={navItem.href || '/'} legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                      {navItem.label}
+                    </NavigationMenuLink>
+                  </Link>
+                )}
+              </NavigationMenuItem>
+            ))}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
