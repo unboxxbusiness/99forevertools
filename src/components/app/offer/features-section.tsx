@@ -1,3 +1,4 @@
+
 'use client';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Briefcase, CheckCheck, Moon, Rocket, Smartphone, Zap } from 'lucide-react';
@@ -12,7 +13,7 @@ export function FeaturesSection() {
 
     const images = {
         'item-1': {
-            image: 'https://picsum.photos/seed/item1/1207/929',
+            image: 'https://res.cloudinary.com/dhrigocvd/image/upload/v1763533783/99foreversite_lead_gen_wwo4wz.webp',
             alt: 'Person sleeping peacefully',
         },
         'item-2': {
