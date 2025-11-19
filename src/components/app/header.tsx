@@ -5,7 +5,7 @@ import Link from "next/link";
 import { allTools } from "@/lib/tools";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '../ui/sheet';
-import { Menu as MenuIcon, Activity, AudioLines, Award, BarChart, Binary, BookOpen, Bot, Briefcase, Building, Calculator, CalculatorIcon, Camera, CaseSensitive, Check, CircleDollarSign, Clapperboard, Clock, Cloud, Code, Compass, Contact, Cpu, CreditCard, Crop, Download, ExternalLink, FileJson, FileText, Flag, Gem, Gift, GitCompareArrows, GitBranch, Globe, Hash, Heart, Home as HomeIcon, Image, IndianRupee, Info, Instagram, Keyboard, Layers, LifeBuoy, Lightbulb, Link as LinkIcon, Linkedin, Lock, Mail, MapPin, Menu, MessageSquare, MessageSquarePlus, MousePointer, Package, Palette, PartyPopper, PenSquare, Percent, Phone, PieChart, Pilcrow, PlaySquare, PlusCircle, Pointer, Puzzle, QrCode, Quote, Rocket, Scaling, Scale, Search, Server, Settings, Share2, Shield, ShoppingBag, ShoppingCart, Smartphone, Sparkles, Speaker, Star, Sun, Target, Terminal, TestTube2, ThumbsUp, TicketPercent, Train, Trash2, TrendingUp, TreePine, Truck, Umbrella, User as UserIcon, Volume2, Wallet, Watch, Wrench, Wind, Zap } from 'lucide-react';
+import { Menu as MenuIcon, Activity, AudioLines, Award, BarChart, Binary, BookOpen, Bot, Briefcase, Building, Calculator, CalculatorIcon, Camera, CaseSensitive, Check, CircleDollarSign, Clapperboard, Clock, Cloud, Code, Compass, Contact, Cpu, CreditCard, Crop, Download, ExternalLink, FileJson, FileText, Flag, Gem, Gift, GitCompareArrows, GitBranch, Globe, Hash, Heart, Home as HomeIcon, Image, IndianRupee, Info, Instagram, Keyboard, Layers, LifeBuoy, Lightbulb, Link as LinkIcon, Linkedin, Lock, Mail, MapPin, Menu, MessageSquare, MessageSquarePlus, MousePointer, Package, Palette, PartyPopper, PenSquare, Percent, Phone, PieChart, Pilcrow, PlaySquare, PlusCircle, Pointer, Puzzle, QrCode, Quote, Rocket, Scaling, Scale, Search, Server, Settings, Share2, Shield, ShoppingBag, ShoppingCart, Smartphone, Sparkles, Speaker, Star, Sun, Target, Terminal, TestTube2, ThumbsUp, TicketPercent, Train, Trash2, TrendingUp, TreePine, Truck, Umbrella, User as UserIcon, Users, Volume2, Wallet, Watch, Wrench, Wind, Zap, Paintbrush } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 import { Logo } from "../logo";
 import { DropdownNavigation, type NavItem } from "../ui/dropdown-navigation";
@@ -15,7 +15,6 @@ import { type ComponentType } from "react";
 const iconMap: Record<string, ComponentType> = {
   Star, CalculatorIcon, Search, Paintbrush, Image, MessageSquare, Users, Bot, FileText, Percent, Briefcase, CircleDollarSign, Scale, Calculator, HomeIcon, Landmark, TicketPercent, Scaling, QrCode, Lightbulb, PartyPopper, TrendingUp, MapPin, Hash, PenSquare, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, LinkIcon, Activity, ExternalLink, Camera, Code, Network, Gift, FileJson, TestTube2, Mail, Clock, Binary, MessageSquarePlus, BookOpen, IndianRupee, UserIcon, Sparkles, Zap
 };
-
 
 const desktopNavItems: NavItem[] = [
   {

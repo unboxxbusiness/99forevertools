@@ -1,4 +1,3 @@
-
 "use client";
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -42,7 +41,6 @@ export function DropdownNavigation({ navItems }: Props) {
     setOpenMenu(menuLabel);
   };
 
-  const [isHover, setIsHover] = React.useState<number | null>(null);
   return (
     <main className="relative w-full flex items-start md:items-center justify-center">
       <div className="relative gap-5 flex flex-col items-center justify-center">
@@ -56,8 +54,6 @@ export function DropdownNavigation({ navItems }: Props) {
             >
               <button
                 className="text-sm py-1.5 px-4 flex cursor-pointer group transition-colors duration-300 items-center justify-center gap-1 text-muted-foreground hover:text-foreground relative"
-                onMouseEnter={() => setIsHover(navItem.id)}
-                onMouseLeave={() => setIsHover(null)}
               >
                 <span>{navItem.label}</span>
                 {navItem.subMenus && (
@@ -66,7 +62,7 @@ export function DropdownNavigation({ navItems }: Props) {
                       ${openMenu === navItem.label ? "rotate-180" : ""}`}
                   />
                 )}
-                {(isHover === navItem.id || openMenu === navItem.label) && (
+                {openMenu === navItem.label && (
                   <motion.div
                     layoutId="hover-bg"
                     className="absolute inset-0 size-full bg-primary/10"
