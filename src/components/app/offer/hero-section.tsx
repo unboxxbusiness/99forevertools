@@ -1,0 +1,42 @@
+"use client";
+import Image from 'next/image';
+import { Button } from "@/components/ui/button";
+import { ChevronRight } from "lucide-react";
+
+type HeroSectionProps = {
+  whatsAppUrl: string;
+};
+
+export function HeroSection({ whatsAppUrl }: HeroSectionProps) {
+  return (
+    <section className="py-16 md:py-24">
+      <div className="mx-auto max-w-5xl space-y-8 px-6 md:space-y-12">
+        <Image
+          className="rounded-lg"
+          src="https://picsum.photos/seed/offer-hero/1200/600"
+          alt="Modern website on a laptop"
+          height={600}
+          width={1200}
+          data-ai-hint="website laptop"
+          loading="lazy"
+        />
+        <div className="grid gap-6 md:grid-cols-2 md:gap-12">
+          <h2 className="text-4xl font-medium">Unlock Your Own 24/7 Lead-Generation Machine… For A Single One-Time Payment</h2>
+          <div className="space-y-6">
+            <p className="text-muted-foreground">(Never Pay Monthly Fees Again!)</p>
+            <p className="font-semibold text-primary">This is a limited-time launch offer.</p>
+            <Button
+              asChild
+              size="lg"
+              className="gap-1 h-12 text-lg">
+              <a href={whatsAppUrl} target="_blank" rel="noopener noreferrer">
+                <span>Book Offer Now</span>
+                <ChevronRight className="size-4" />
+              </a>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
