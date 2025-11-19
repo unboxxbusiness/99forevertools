@@ -1,3 +1,4 @@
+
 "use client";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, ArrowRight, CheckCircle, Clock, PlayCircle, Rocket, Search, Smartphone, Sparkles, Star, Trophy, Zap } from "lucide-react";
@@ -43,7 +44,7 @@ export default function OfferPage() {
                         </div>
                          <Button asChild size="lg" className="w-full max-w-md text-lg h-14 bg-green-600 text-white hover:bg-green-700">
                             <a href={whatsAppUrl} target="_blank" rel="noopener noreferrer">
-                                🎉 YES! I Want This Offer!
+                                Book Offer Now
                             </a>
                         </Button>
                     </div>
@@ -109,7 +110,7 @@ export default function OfferPage() {
                  <div className="pt-4">
                     <Button asChild size="lg" className="w-full max-w-md text-lg h-14 bg-green-600 text-white hover:bg-green-700 shadow-lg">
                         <a href={whatsAppUrl} target="_blank" rel="noopener noreferrer">
-                            🟢 GET INSTANT ACCESS NOW <ArrowRight className="ml-2 h-5 w-5"/>
+                            Book Offer Now
                         </a>
                     </Button>
                     <p className="text-xs text-muted-foreground mt-2">Click the button to secure your lifetime deal.</p>
@@ -152,7 +153,7 @@ export default function OfferPage() {
                  <div className="mt-8">
                      <Button asChild size="lg" className="w-full max-w-lg text-xl h-16 bg-red-600 text-white hover:bg-red-700 shadow-lg">
                         <a href={whatsAppUrl} target="_blank" rel="noopener noreferrer">
-                            🔥 YES! I Want Instant Access — One-Time ₹8,300 Only
+                           Book Offer Now
                         </a>
                     </Button>
                  </div>
