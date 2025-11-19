@@ -1,3 +1,4 @@
+
 'use client'
 import Link from 'next/link'
 import { Logo } from '@/components/logo'
@@ -8,11 +9,11 @@ import { cn } from '@/lib/utils'
 
 const menuItems = [
     { name: 'Calculators', href: '#calculators' },
-    { name: 'Content & SEO', href: '#content-&-seo' },
-    { name: 'Branding & Design', href: '#branding-&-design' },
+    { name: 'Content & SEO', href: '#content-and-seo' },
+    { name: 'Branding & Design', href: '#branding-and-design' },
     { name: 'Image Tools', href: '#image-tools' },
     { name: 'WhatsApp', href: '#whatsapp-tools' },
-    { name: 'Marketing', href: '#marketing-&-utilities' },
+    { name: 'Marketing', href: '#marketing-and-utilities' },
 ]
 
 export const Header = () => {
@@ -31,7 +32,7 @@ export const Header = () => {
         <header>
             <nav
                 data-state={menuState ? 'active' : 'inactive'}
-                className="fixed z-20 w-full px-2">
+                className="fixed z-20 w-full px-2 print-hidden">
                 <div className={cn('mx-auto mt-2 max-w-6xl px-6 transition-all duration-300 lg:px-12', isScrolled && 'bg-background/80 backdrop-blur-lg max-w-5xl rounded-2xl border border-border/50')}>
                     <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
                         <div className="flex w-full justify-between lg:w-auto">
@@ -54,7 +55,7 @@ export const Header = () => {
                                 {menuItems.map((item, index) => (
                                     <li key={index}>
                                         <Link
-                                            href={item.href}
+                                            href={`/${item.href}`}
                                             className="text-muted-foreground hover:text-accent-foreground block duration-150">
                                             <span>{item.name}</span>
                                         </Link>
@@ -68,7 +69,7 @@ export const Header = () => {
                                     {menuItems.map((item, index) => (
                                         <li key={index}>
                                             <Link
-                                                href={item.href}
+                                                href={`/${item.href}`}
                                                 onClick={() => setMenuState(false)}
                                                 className="text-muted-foreground hover:text-accent-foreground block duration-150">
                                                 <span>{item.name}</span>
