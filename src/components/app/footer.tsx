@@ -72,7 +72,7 @@ export function Footer() {
                         Share
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
+                    <DropdownMenuContent side="top">
                         <DropdownMenuItem asChild>
                             <a href={socialShareLinks.facebook} target="_blank" rel="noopener noreferrer">
                                 <Facebook className="mr-2 h-4 w-4"/>Facebook
