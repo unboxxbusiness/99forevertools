@@ -25,9 +25,9 @@ export function HeroPill({
       href={href}
       target={isExternal ? "_blank" : undefined}
       className={cn(
-        "flex w-auto items-center space-x-2 rounded-full",
-        "bg-primary/20 ring-1 ring-accent",
-        "px-2 py-1 whitespace-pre",
+        "flex w-auto items-center justify-center space-x-2 rounded-full",
+        "bg-primary/10 ring-1 ring-accent",
+        "flex-col gap-2 p-2 text-center sm:flex-row sm:gap-0 sm:p-1 sm:text-left",
         "group",
         className
       )}
@@ -36,18 +36,17 @@ export function HeroPill({
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
       <div className={cn(
-        "w-fit rounded-full bg-accent px-2 py-0.5",
-        "text-xs font-medium text-primary sm:text-sm",
-        "text-center"
+        "w-fit rounded-full bg-accent px-2.5 py-1",
+        "text-xs font-semibold text-primary"
       )}>
         {announcement}
       </div>
-      <p className="text-xs font-medium text-primary sm:text-sm">
+      <p className="flex items-center text-xs font-semibold text-primary sm:text-sm">
         {label}
+        <MoveRight
+          className="ml-1.5 h-4 w-4 text-primary transition-transform group-hover:translate-x-1"
+        />
       </p>
-      <MoveRight
-        className="ml-1 h-4 w-4 text-primary transition-transform group-hover:translate-x-1"
-      />
     </motion.a>
   );
 }
