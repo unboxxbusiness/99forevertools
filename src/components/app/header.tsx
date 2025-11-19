@@ -11,6 +11,8 @@ const menuItems = [
     { name: 'Content & SEO', href: '#content-&-seo' },
     { name: 'Branding & Design', href: '#branding-&-design' },
     { name: 'Image Tools', href: '#image-tools' },
+    { name: 'WhatsApp', href: '#whatsapp-tools' },
+    { name: 'Marketing', href: '#marketing-&-utilities' },
 ]
 
 export const Header = () => {
