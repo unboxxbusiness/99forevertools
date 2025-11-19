@@ -10,127 +10,20 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from '../ui/sheet';
 import { Menu as MenuIcon } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 import { Logo } from "../logo";
-
-const transition = {
-  type: "spring",
-  mass: 0.5,
-  damping: 11.5,
-  stiffness: 100,
-  restDelta: 0.001,
-  restSpeed: 0.001,
-};
-
-export const MenuItem = ({
-  setActive,
-  active,
-  item,
-  children,
-}: {
-  setActive: (item: string) => void;
-  active: string | null;
-  item: string;
-  children?: React.ReactNode;
-}) => {
-  return (
-    <div onMouseEnter={() => setActive(item)} className="relative ">
-      <motion.p
-        transition={{ duration: 0.3 }}
-        className="cursor-pointer text-foreground hover:opacity-[0.9]"
-      >
-        {item}
-      </motion.p>
-      {active !== null && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={transition}
-        >
-          {active === item && (
-            <div className="absolute top-[calc(100%_+_1.2rem)] left-1/2 transform -translate-x-1/2 pt-4">
-              <motion.div
-                transition={transition}
-                layoutId="active" // layoutId ensures smooth animation
-                className="bg-background backdrop-blur-sm rounded-2xl overflow-hidden border border-border/[0.2] shadow-xl"
-              >
-                <motion.div
-                  layout // layout ensures smooth animation
-                  className="w-max h-full p-4"
-                >
-                  {children}
-                </motion.div>
-              </motion.div>
-            </div>
-          )}
-        </motion.div>
-      )}
-    </div>
-  );
-};
-
-export const Menu = ({
-  setActive,
-  children,
-  className,
-}: {
-  setActive: (item: string | null) => void;
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return (
-    <nav
-      onMouseLeave={() => setActive(null)} // resets the state
-      className={`relative rounded-full border border-border/20 bg-background/80 shadow-input flex justify-center space-x-4 px-8 py-6 ${className}`}
-    >
-      {children}
-    </nav>
-  );
-};
-
-export const ProductItem = ({
-  title,
-  description,
-  href,
-  src,
-}: {
-  title: string;
-  description: string;
-  href: string;
-  src: string;
-}) => {
-  return (
-    <Link href={href} className="flex space-x-2">
-      <Image
-        src={src}
-        width={140}
-        height={70}
-        alt={title}
-        className="flex-shrink-0 rounded-md shadow-2xl"
-      />
-      <div>
-        <h4 className="text-xl font-bold mb-1 text-foreground">
-          {title}
-        </h4>
-        <p className="text-neutral-700 text-sm max-w-[10rem] dark:text-neutral-300">
-          {description}
-        </p>
-      </div>
-    </Link>
-  );
-};
-
-export const HoveredLink = ({ children, ...rest }: any) => {
-  return (
-    <Link
-      {...rest}
-      className="text-muted-foreground hover:text-foreground"
-    >
-      {children}
-    </Link>
-  );
-};
+import { MenuItem, Menu, ProductItem, HoveredLink } from "../ui/navbar-menu";
 
 export function Header({ className }: { className?: string }) {
   const [active, setActive] = useState<string | null>(null);
+
+  const businessTools = allTools.filter(category => 
+    ['Calculators', 'Content & SEO', 'Marketing & Utilities', 'WhatsApp Tools'].includes(category.category)
+  );
+
+  const designTools = allTools.filter(category => 
+    ['Branding & Design', 'Image Tools'].includes(category.category)
+  );
+  
+  const featuredTools = allTools.find(category => category.category === 'Featured');
 
   return (
     <header className={`relative w-full flex items-center justify-center p-4 z-50 print-hidden ${className}`}>
@@ -141,17 +34,41 @@ export function Header({ className }: { className?: string }) {
       {/* Desktop Menu */}
       <div className="hidden lg:flex">
          <Menu setActive={setActive}>
-            {allTools.map((category, index) => (
-                <div key={`${category.category}-${index}`} onClick={(e) => e.stopPropagation()}>
-                    <MenuItem setActive={setActive} active={active} item={category.category}>
-                        <div className="grid grid-cols-2 gap-10 p-4">
-                            {category.tools.map((tool) => (
-                                <HoveredLink key={tool.href} href={tool.href}>{tool.title}</HoveredLink>
-                            ))}
-                        </div>
-                    </MenuItem>
-                </div>
-            ))}
+            {featuredTools && (
+                 <MenuItem setActive={setActive} active={active} item="Featured">
+                    <div className="flex flex-col space-y-4 text-sm">
+                      {featuredTools.tools.map(tool => (
+                          <HoveredLink key={tool.href} href={tool.href}>{tool.title}</HoveredLink>
+                      ))}
+                    </div>
+                 </MenuItem>
+            )}
+
+            <MenuItem setActive={setActive} active={active} item="Business & Marketing">
+              <div className="grid grid-cols-2 gap-10 p-4">
+                {businessTools.map(category => (
+                  <div key={category.category} className="flex flex-col space-y-2">
+                    <h3 className="font-bold text-foreground">{category.category}</h3>
+                    {category.tools.map(tool => (
+                      <HoveredLink key={tool.href} href={tool.href}>{tool.title}</HoveredLink>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </MenuItem>
+
+            <MenuItem setActive={setActive} active={active} item="Branding & Design">
+               <div className="grid grid-cols-2 gap-10 p-4">
+                {designTools.map(category => (
+                  <div key={category.category} className="flex flex-col space-y-2">
+                    <h3 className="font-bold text-foreground">{category.category}</h3>
+                    {category.tools.map(tool => (
+                      <HoveredLink key={tool.href} href={tool.href}>{tool.title}</HoveredLink>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </MenuItem>
         </Menu>
       </div>
 
