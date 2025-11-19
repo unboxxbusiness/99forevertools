@@ -168,7 +168,7 @@ ListItem.displayName = "ListItem"
 export function Header({ className }: { className?: string }) {
 
   return (
-    <header className={cn("relative w-full flex items-center justify-between p-4 z-50 print-hidden", className)}>
+    <header className={cn("sticky top-0 w-full flex items-center justify-between p-4 z-50 print-hidden bg-background/95 backdrop-blur-sm border-b border-border/50", className)}>
       <div className="flex-1 lg:flex-none">
         <Link href="/">
           <Logo />
@@ -332,5 +332,3 @@ export function Header({ className }: { className?: string }) {
     </header>
   );
 }
-
-    
