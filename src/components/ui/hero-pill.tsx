@@ -25,9 +25,9 @@ export function HeroPill({
       href={href}
       target={isExternal ? "_blank" : undefined}
       className={cn(
-        "flex w-auto items-center justify-center space-x-2 rounded-full",
-        "bg-primary/10 ring-1 ring-accent",
-        "flex-col gap-2 p-2 text-center sm:flex-row sm:gap-0 sm:p-1 sm:text-left",
+        "flex w-fit items-center justify-center rounded-full",
+        "bg-primary/10 ring-1 ring-primary/20",
+        "flex-col gap-2 p-2 text-center sm:flex-row sm:gap-0 sm:p-1",
         "group",
         className
       )}
@@ -41,7 +41,7 @@ export function HeroPill({
       )}>
         {announcement}
       </div>
-      <p className="flex items-center text-xs font-semibold text-primary sm:text-sm">
+      <p className="flex items-center text-xs font-semibold text-primary sm:text-sm sm:px-2">
         {label}
         <MoveRight
           className="ml-1.5 h-4 w-4 text-primary transition-transform group-hover:translate-x-1"
