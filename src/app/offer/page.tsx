@@ -2,256 +2,161 @@
 import { TimelineContent } from "@/components/ui/timeline-animation";
 import {VerticalCutReveal} from "@/components/ui/vertical-cut-reveal";
 import { cn } from "@/lib/utils";
-import { CheckCheck, Zap } from "lucide-react";
+import { CheckCheck, Zap, AlertTriangle, PlayCircle, Star, Rocket, Smartphone, Search, CheckCircle, Trophy, Sparkles, Clock, ArrowRight } from "lucide-react";
 import { useId, useRef, useState } from "react";
+import Link from "next/link";
 
-const PricingSwitch = ({
-  button1,
-  button2,
-  onSwitch,
-  className,
-}: {
-  button1: string;
-  button2: string;
-  onSwitch: (value: string) => void;
-  className?: string;
-}) => {
-  const [selected, setSelected] = useState("0");
-
-  const handleSwitch = (value: string) => {
-    setSelected(value);
-    onSwitch(value);
-  };
-
-  return (
-    <div
-      className={cn(
-        "relative z-10 w-full flex rounded-full bg-neutral-50 border border-gray-200 p-1",
-        className,
-      )}
-    >
-      <button
-        onClick={() => handleSwitch("0")}
-        className={cn(
-          "relative z-10 w-full sm:h-14 h-10 rounded-full sm:px-6 px-3 sm:py-2 py-1 font-medium transition-colors",
-          selected === "0"
-            ? "text-white"
-            : "text-muted-foreground hover:text-black",
-        )}
-      >
-        {selected === "0" && (
-          <span
-            className="absolute top-0 left-0 sm:h-14 h-10 w-full rounded-full border-4 shadow-sm shadow-black border-black bg-gradient-to-t from-neutral-900 via-neutral-800 to-neutral-900"
-          />
-        )}
-        <span className="relative">{button1}</span>
-      </button>
-
-      <button
-        onClick={() => handleSwitch("1")}
-        className={cn(
-          "relative z-10 w-full sm:h-14 h-10 flex-shrink-0 rounded-full sm:px-6 px-3 sm:py-2 py-1 font-medium transition-colors",
-          selected === "1"
-            ? "text-white"
-            : "text-muted-foreground hover:text-black",
-        )}
-      >
-        {selected === "1" && (
-          <span
-            className="absolute top-0 left-0 sm:h-14 h-10 w-full rounded-full border-4 shadow-sm shadow-black border-black bg-gradient-to-t from-neutral-900 via-neutral-800 to-neutral-900"
-          />
-        )}
-        <span className="relative flex justify-center items-center gap-2">
-          {button2}
-        </span>
-      </button>
-    </div>
-  );
-};
-
-export default function PricingSection2() {
-  const [isUpdates, setIsUpdates] = useState(false);
-  const [isCorporate, setIsCorporate] = useState(false);
-  const pricingRef = useRef<HTMLDivElement>(null);
-
-  const revealVariants = {
-    visible: (i: number) => ({
-      y: 0,
-      opacity: 1,
-      filter: "blur(0px)",
-      transition: {
-        delay: i * 0.3,
-        duration: 0.5,
-      },
-    }),
-    hidden: {
-      filter: "blur(10px)",
-      y: -20,
-      opacity: 0,
-    },
-  };
-  const timelineVaraints = {
-    visible: (i: number) => ({
-      y: 0,
-      opacity: 1,
-      filter: "blur(0px)",
-      transition: {
-        delay: i * 0.1,
-        duration: 0.5,
-      },
-    }),
-    hidden: {
-      filter: "blur(10px)",
-      y: -20,
-      opacity: 0,
-    },
-  };
-
-  const toggleUpdates = (value: string) =>
-    setIsUpdates(Number.parseInt(value) === 1);
-  const toggleCorporate = (value: string) =>
-    setIsCorporate(Number.parseInt(value) === 1);
-
-  const calculatePrice = () => {
-    if (!isUpdates && !isCorporate) return 98; // 3 months + personal
-    if (isUpdates && !isCorporate) return 400; // forever + personal
-    if (!isUpdates && isCorporate) return 159; // 3 months + corporate
-    if (isUpdates && isCorporate) return 650; // forever + corporate
-    return 98;
-  };
-
-  const calculateOriginalPrice = () => {
-    const currentPrice = calculatePrice();
-    return Math.round(currentPrice * 1.45);
-  };
-
-  const currentPrice = calculatePrice();
-  const originalPrice = calculateOriginalPrice();
-
+export default function OfferPage() {
   const features = [
-    "Figma Design system file",
-    "2000+ components and variants",
-    "Predefined style system",
-    "Free licensed icons",
-    "Step-by-step tutorial",
-    "Use on unlimited projects",
-    "Friendly support",
+    { text: "Lifetime Hosting (never pay again — ever)", icon: <Zap/> },
+    { text: "Custom Domain Setup Included", icon: <CheckCircle/> },
+    { text: "Mobile-Responsive & Conversion-Optimized", icon: <Smartphone/> },
+    { text: "SEO-Ready Structure to Rank Fast", icon: <Search/> },
+    { text: "Up to 5 Premium-Designed Pages", icon: <Trophy/> },
+    { text: "Lead Capture Forms Installed", icon: <CheckCircle/> },
+    { text: "All Social Media Links Added", icon: <Sparkles/> },
+    { text: "No Monthly or Yearly Fees — Permanent Access", icon: <Clock/> },
   ];
 
   return (
-    <div className="px-4 pt-10 w-full min-h-screen mx-auto relative bg-white" ref={pricingRef}>
-      <div className="py-16 px-4 ">
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            background:
-              "radial-gradient(125% 125% at 50% 90%, #fff 40%, #2529f8 100%)",
-          }}
-        />
-        <div className="max-w-4xl mx-auto text-center">
-          <div
-            className="flex items-center justify-center mb-4 animate-fade-in"
-          >
-            <Zap className="h-5 w-5 text-blue-500 fill-blue-500 mr-2" />
-            <span className="text-blue-600 font-medium">Time to connect</span>
-          </div>
-
-          <h1 className="md:text-5xl sm:text-4xl text-3xl font-semibold text-gray-900 mb-4 leading-[120%]">
-            <VerticalCutReveal
-              text="Let's get started"
-              splitBy="words"
-              containerClassName="justify-center"
-            />
-          </h1>
-
-          <p
-            className="text-xl text-gray-600 animate-fade-in"
-          >
-            Get Module, connect, save time and money. Profit!
-          </p>
-        </div>
-      </div>
-
-      {/* Product Features */}
-      <div className="px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid sm:grid-cols-2 md:gap-12 gap-4 items-center">
-            <div className="animate-fade-in">
-              <h3
-                className="text-3xl font-medium text-gray-900 mb-2"
-              >
-                What's inside
-              </h3>
-
-              <div className="space-y-4">
-                {features.map((feature, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center animate-fade-in"
-                  >
-                    <div className="w-6 h-6 bg-blue-500 shadow-md shadow-blue-500 rounded-full flex items-center justify-center mr-3">
-                      <CheckCheck className="h-4 w-4 text-white" />
+    <div className="bg-background text-foreground animate-fade-in">
+        <div className="relative isolate overflow-hidden bg-gray-900">
+            <div className="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
+                <div className="mx-auto max-w-2xl text-center">
+                    <div className="flex justify-center items-center gap-2 text-yellow-400">
+                        <AlertTriangle className="h-5 w-5" />
+                        <h2 className="text-lg font-semibold uppercase tracking-wider">
+                           This Special Launch Offer Is Ending Soon
+                        </h2>
                     </div>
-                    <span className="text-gray-700">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
 
-            <div className="space-y-8 animate-fade-in">
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">
-                  Access to updates
-                </h4>
-                <p className="text-sm text-gray-600 mb-2">
-                  One-time payment, updates come to the email
-                </p>
-                <PricingSwitch
-                  button1="3 Months"
-                  button2="Forever"
-                  onSwitch={toggleUpdates}
-                  className="grid grid-cols-2 w-full"
-                />
-              </div>
+                    <h1 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
+                        Unlock Your Own 24/7 Lead-Generation Machine… For A Single One-Time Payment
+                    </h1>
+                    <p className="mt-6 text-lg leading-8 text-gray-300">
+                        (Never Pay Monthly Fees Again!)
+                    </p>
 
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-1">
-                  Lifetime license
-                </h4>
-                <p className="text-sm text-gray-600 mb-2">
-                  Select Corporate if you're part of the team
-                </p>
-                <PricingSwitch
-                  button1="Personal"
-                  button2="Corporate"
-                  onSwitch={toggleCorporate}
-                  className="grid grid-cols-2 w-full"
-                />
-              </div>
-
-              <div
-                className="text-center grid grid-cols-2 items-center gap-2 px-2"
-              >
-                <div className="flex items-center mb-4">
-                  <span className="text-5xl font-semibold text-gray-900">
-                    $
-                    <span className="text-5xl font-semibold">{currentPrice}</span>
-                  </span>
-                  <span className="text-xl text-gray-600 line-through ml-2 relative before:content-[''] before:absolute before:left-0 before:top-3.5 before:w-full before:h-0.5 before:bg-gray-800 before:z-10">
-                    $
-                    <span className="text-xl font-semibold line-through">{originalPrice}</span>
-                  </span>
+                    <div className="mt-10 flex flex-col items-center justify-center gap-y-6">
+                        <div className="w-full max-w-xl aspect-video bg-black rounded-lg border border-primary/20 flex items-center justify-center flex-col gap-2">
+                           <PlayCircle className="h-16 w-16 text-primary" />
+                           <p className="text-primary/70">▶️ Press PLAY on the video below to discover how this can change your business…</p>
+                        </div>
+                         <Link href="#pricing" className="w-full">
+                            <Button size="lg" className="w-full max-w-md text-lg h-14 bg-green-600 text-white hover:bg-green-700">
+                                🎉 YES! I Want This Offer!
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
-                <button
-                  className="text-white text-xl font-semibold h-10 sm:h-16 w-full rounded-full border-4 shadow-sm shadow-blue-600 border-blue-600 bg-gradient-to-t from-blue-600 via-blue-500 to-blue-600"
-                >
-                  Purchase
-                </button>
-              </div>
             </div>
-          </div>
+             <div className="absolute top-0 -z-10 h-full w-full bg-[radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
         </div>
-      </div>
+
+        <div className="py-24 px-4 max-w-5xl mx-auto space-y-16">
+            <div className="text-center">
+                 <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                    Here’s EXACTLY What You Get When You Order TODAY…
+                 </h2>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+                <div className="space-y-4">
+                    <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-primary">
+                        <Star className="h-5 w-5" />
+                        <span className="font-semibold">ITEM #1</span>
+                    </div>
+                    <h3 className="text-3xl font-bold">A Professional Lead-Generation Website</h3>
+                    <p className="text-muted-foreground">
+                        This isn’t just a website… It’s a customer-acquisition system designed to convert visitors into paying clients day and night.
+                    </p>
+                    <ul className="space-y-3 pt-2">
+                        <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary" /><span>Works even while you're asleep 🌙</span></li>
+                        <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary" /><span>Built using proven conversion principles 🚀</span></li>
+                        <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary" /><span>Fully responsive on all devices 📱</span></li>
+                        <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary" /><span>Loads fast (Google LOVES this) ⚡</span></li>
+                        <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary" /><span>Instantly boosts your brand image 💼</span></li>
+                    </ul>
+                    <p className="text-lg font-semibold pt-2">Real Value: <span className="line-through text-muted-foreground">₹15,000</span></p>
+                </div>
+                <div>
+                    <img src="https://picsum.photos/seed/offer1/600/500" alt="Professional Website Mockup" className="rounded-lg shadow-xl" data-ai-hint="website mockup" />
+                </div>
+            </div>
+
+             <div className="grid md:grid-cols-2 gap-12 items-center">
+                 <div className="order-2 md:order-1">
+                    <img src="https://picsum.photos/seed/offer2/600/500" alt="Secure Hosting Graphic" className="rounded-lg shadow-xl" data-ai-hint="server security" />
+                </div>
+                <div className="space-y-4 order-1 md:order-2">
+                    <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-primary">
+                        <Star className="h-5 w-5" />
+                        <span className="font-semibold">ITEM #2</span>
+                    </div>
+                    <h3 className="text-3xl font-bold">FREE Lifetime “Business-Class” Hosting</h3>
+                    <p className="text-muted-foreground">
+                        Say goodbye to monthly and yearly hosting bills — forever. Your site stays fast, secure, and live without you ever paying again.
+                    </p>
+                    <p className="text-lg font-semibold pt-2">Real Value: <span className="line-through text-muted-foreground">₹5,000 every year — for life</span></p>
+                </div>
+            </div>
+
+            <div id="pricing" className="border-2 border-primary/50 rounded-xl p-8 lg:p-12 text-center bg-card shadow-2xl shadow-primary/10 space-y-4">
+                 <p className="text-lg font-semibold text-muted-foreground">Total Real Value: <span className="line-through">Over ₹20,000+</span></p>
+                 <p className="text-xl font-bold">But today, because you are early…</p>
+                 <h2 className="text-5xl md:text-6xl font-extrabold text-primary">You Pay ONLY ₹8,300 <span className="text-2xl">(One-Time)</span></h2>
+                 <p className="text-muted-foreground max-w-md mx-auto">(One-Time $99 — No Monthly Fees. No Renewals. Nothing Ever Again.)</p>
+                 <p className="text-green-400 font-semibold text-xl">🎉 You save over 60% instantly — and avoid lifetime hosting costs.</p>
+                 <div className="pt-4">
+                    <Button size="lg" className="w-full max-w-md text-lg h-14 bg-green-600 text-white hover:bg-green-700 shadow-lg">
+                        🟢 GET INSTANT ACCESS NOW <ArrowRight className="ml-2 h-5 w-5"/>
+                    </Button>
+                    <p className="text-xs text-muted-foreground mt-2">Click the button to secure your lifetime deal.</p>
+                 </div>
+            </div>
+
+            <div className="border border-border rounded-lg p-8 grid md:grid-cols-3 gap-8 items-center">
+                <div className="md:col-span-1 text-center">
+                    <div className="inline-block bg-primary/10 p-4 rounded-full">
+                        <Trophy className="h-16 w-16 text-primary"/>
+                    </div>
+                </div>
+                <div className="md:col-span-2">
+                    <h3 className="text-2xl font-bold">Your 100% Satisfaction Promise</h3>
+                    <p className="mt-2 text-muted-foreground">
+                        You’re fully protected. If you’re not absolutely in love with your new website, we’ll revise it, polish it, and adjust it until you are. No risk. No stress. You either LOVE your website… or we work until you do.
+                    </p>
+                </div>
+            </div>
+
+            <div className="space-y-8">
+                 <div className="text-center">
+                    <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                        Why Smart Business Owners Jump On This Immediately
+                    </h2>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {features.map((feature) => (
+                        <div key={feature.text} className="bg-card border border-border rounded-lg p-4 flex items-start gap-3">
+                             <div className="text-primary mt-1">{feature.icon}</div>
+                            <span>{feature.text}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="text-center border-t border-border pt-16">
+                 <p className="text-yellow-400 font-bold text-lg flex items-center justify-center gap-2"><Clock /> IMPORTANT: This Price Will Increase Soon</p>
+                 <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">This is a limited-time launch offer. Once the timer hits zero or the slots are gone, the one-time pricing disappears — forever. Most website owners pay monthly… for years. You pay once and own it for life.</p>
+                 <div className="mt-8">
+                     <Button size="lg" className="w-full max-w-lg text-xl h-16 bg-red-600 text-white hover:bg-red-700 shadow-lg">
+                        🔥 YES! I Want Instant Access — One-Time ₹8,300 Only
+                    </Button>
+                 </div>
+            </div>
+        </div>
     </div>
   );
 }
+
+    
