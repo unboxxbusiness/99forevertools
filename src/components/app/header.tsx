@@ -6,7 +6,7 @@ import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import React from 'react'
 import { cn } from '@/lib/utils'
-import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '../ui/sheet'
 
 const menuItems = [
     { name: 'Calculators', href: '#calculators' },
@@ -47,6 +47,7 @@ export const Header = () => {
                                     </Button>
                                 </SheetTrigger>
                                 <SheetContent side="left">
+                                     <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                                      <ul className="space-y-6 text-base pt-8">
                                         {menuItems.map((item, index) => (
                                             <li key={index}>
