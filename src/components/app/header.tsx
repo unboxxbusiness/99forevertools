@@ -15,7 +15,7 @@ const allMenuItems = [
     { name: 'Content & SEO', href: '/#content-and-seo' },
     { name: 'Branding & Design', href: '/#branding-and-design' },
     { name: 'Image Tools', href: '/#image-tools' },
-    { name: 'WhatsApp', href: '/#whatsapp-tools' },
+    { name: 'WhatsApp Tools', href: '/#whatsapp-tools' },
     { name: 'Marketing & Utilities', href: '/#marketing-and-utilities' },
 ]
 
@@ -42,16 +42,18 @@ export const Header = () => {
         const [path, hash] = href.split('#')
 
         const scrollToSection = () => {
-            const element = document.getElementById(hash)
-            if (element) {
-                const headerOffset = 100; // Adjust if you have a sticky header
-                const elementPosition = element.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            if (hash) {
+                const element = document.getElementById(hash)
+                if (element) {
+                    const headerOffset = 100; // Adjust if you have a sticky header
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: "smooth"
-                });
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
             }
         }
 
@@ -59,6 +61,10 @@ export const Header = () => {
             scrollToSection()
         } else {
             router.push(href)
+            // Use a timeout to ensure the page has navigated before scrolling
+            setTimeout(() => {
+                scrollToSection();
+            }, 100);
         }
     }, [pathname, router])
 
