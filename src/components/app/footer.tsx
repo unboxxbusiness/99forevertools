@@ -43,15 +43,6 @@ export function Footer() {
 
   return (
     <footer className="border-t border-border/50 print-hidden">
-       {showPill && (
-        <div className="container mx-auto px-4 py-8 flex justify-center">
-            <HeroPill 
-                href="/offer"
-                announcement="Limited Time Deal"
-                label="Get a Lifetime Website for just ₹8,300!"
-            />
-        </div>
-       )}
       <div className="container mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className='flex items-center gap-4'>
             <Link href="/" className="flex items-center gap-3">

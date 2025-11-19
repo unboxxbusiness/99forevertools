@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { allTools } from '@/lib/tools';
 import { Search, Star, CalculatorIcon, Paintbrush, Image, MessageSquare, Users, Bot, FileText, Percent, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, Lightbulb, PartyPopper, TrendingUp, MapPin, Hash, PenSquare, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as LinkIcon, Activity, ExternalLink, Camera, Code, Network, Gift, FileJson, TestTube2, Mail, Clock, Binary, MessageSquarePlus, BookOpen, IndianRupee, User as UserIcon } from 'lucide-react';
 import React from 'react';
+import { HeroPill } from '@/components/ui/hero-pill';
 
 const iconMap: { [key: string]: React.ReactNode } = {
     Star: <Star className="mr-2 h-5 w-5" />,
@@ -98,6 +99,13 @@ export default function Home() {
               backgroundImage: 'radial-gradient(circle at 50% 30%, hsl(var(--primary) / 0.1), transparent 60%)'
             }}
           />
+           <div className="flex justify-center mb-8">
+            <HeroPill 
+                href="/offer"
+                announcement="Limited Time Deal"
+                label="Get a Lifetime Website for just ₹8,300!"
+            />
+        </div>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-primary">
             Free Tools for Small Business Growth
           </h1>
