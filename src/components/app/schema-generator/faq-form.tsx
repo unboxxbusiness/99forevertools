@@ -113,4 +113,3 @@ export function FaqForm({ setSchema }: FaqFormProps) {
     </div>
   );
 }
-
