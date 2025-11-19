@@ -20,7 +20,7 @@ export default function OfferPage() {
     { text: "No Monthly or Yearly Fees — Permanent Access", icon: <Clock/> },
   ];
 
-  const whatsAppUrl = "https://wa.me/918851481785?text=Hi!%20I'm%20interested%20in%20the%20Lifetime%20Website%20Offer%20for%20₹8,300.";
+  const whatsAppUrl = "https://wa.me/918851481785?text=Hi!%20I'm%20interested%20in%20the%20Lifetime%20Website%20Offer%20for%20%E2%82%B98,300.";
   const pageRef = useRef<HTMLDivElement>(null);
 
   const listFeatures = [
@@ -39,8 +39,8 @@ export default function OfferPage() {
                      className="rounded-lg"
                      src="https://picsum.photos/seed/offer-hero/1200/600"
                      alt="Modern website on a laptop"
-                     height="600"
-                     width="1200"
+                     height={600}
+                     width={1200}
                      data-ai-hint="website laptop"
                      loading="lazy"
                  />
@@ -48,6 +48,7 @@ export default function OfferPage() {
                      <h2 className="text-4xl font-medium">Unlock Your Own 24/7 Lead-Generation Machine… For A Single One-Time Payment</h2>
                      <div className="space-y-6">
                          <p className="text-muted-foreground">(Never Pay Monthly Fees Again!)</p>
+                         <p className="font-semibold text-primary">This is a limited-time launch offer.</p>
                           <Button
                              asChild
                              size="lg"
