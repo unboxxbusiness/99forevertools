@@ -2,15 +2,15 @@
 'use client'
 import Link from 'next/link'
 import { Logo } from '@/components/logo'
-import { Menu, ChevronDown } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import React, { useCallback } from 'react'
 import { cn } from '@/lib/utils'
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '../ui/sheet'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetClose } from '../ui/sheet'
 import { usePathname, useRouter } from 'next/navigation'
 
 const allMenuItems = [
+    { name: 'Featured', href: '/#featured' },
     { name: 'Calculators', href: '/#calculators' },
     { name: 'Content & SEO', href: '/#content-and-seo' },
     { name: 'Branding & Design', href: '/#branding-and-design' },
@@ -19,45 +19,29 @@ const allMenuItems = [
     { name: 'Marketing & Utilities', href: '/#marketing-and-utilities' },
 ]
 
-const businessToolsGroup = [
-    { name: 'Content & SEO', href: '/#content-and-seo' },
-    { name: 'Branding & Design', href: '/#branding-and-design' },
-    { name: 'WhatsApp Tools', href: '/#whatsapp-tools' },
-    { name: 'Marketing & Utilities', href: '/#marketing-and-utilities' },
-];
-
-const technicalToolsGroup = [
-    { name: 'Calculators', href: '/#calculators' },
-    { name: 'Image Tools', href: '/#image-tools' },
-];
-
-
 export const Header = () => {
     const [isScrolled, setIsScrolled] = React.useState(false)
     const router = useRouter()
     const pathname = usePathname()
 
-    const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, href: string) => {
         const [path, hash] = href.split('#');
-
-        const scrollToSection = () => {
-            if (hash) {
-                const element = document.getElementById(hash);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+        if (pathname === path || (pathname === '/' && path === '')) {
+            e.preventDefault();
+            const element = document.getElementById(hash);
+            if (element) {
+                const headerOffset = 120;
+                const elementPosition = element.getBoundingClientRect().top + window.scrollY - headerOffset;
+                window.scrollTo({
+                    top: elementPosition,
+                    behavior: 'smooth'
+                });
+                window.history.pushState(null, '', `${path}#${hash}`);
             }
-        };
-
-        if (pathname === '/' && path === '') {
-            e.preventDefault();
-            scrollToSection();
-        } else if (path === '') {
-            e.preventDefault();
-            router.push(href);
+        } else {
+            // Let Next.js handle navigation to a different page
         }
-    }, [pathname, router]);
-
+    }, [pathname]);
 
     React.useEffect(() => {
         const handleScroll = () => {
@@ -66,7 +50,7 @@ export const Header = () => {
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
-    
+
     return (
         <header className="sticky top-0 z-40 w-full print-hidden">
             <nav className="w-full px-2">
@@ -80,7 +64,7 @@ export const Header = () => {
                                 <Logo />
                             </Link>
                         </div>
-                        
+
                         <div className="flex items-center lg:hidden">
                              <Sheet>
                                 <SheetTrigger asChild>
@@ -94,62 +78,43 @@ export const Header = () => {
                                         <ul className="space-y-6 text-base pt-8 flex-grow">
                                             {allMenuItems.map((item, index) => (
                                                 <li key={index}>
-                                                    <SheetTrigger asChild>
+                                                    <SheetClose asChild>
                                                         <Link
                                                             href={item.href}
                                                             onClick={(e) => handleNavClick(e, item.href)}
                                                             className="text-muted-foreground hover:text-accent-foreground block duration-150">
                                                             <span>{item.name}</span>
                                                         </Link>
-                                                    </SheetTrigger>
+                                                    </SheetClose>
                                                 </li>
                                             ))}
                                         </ul>
-                                         <SheetTrigger asChild>
+                                         <SheetClose asChild>
                                             <Button asChild size="lg" className="w-full">
                                                 <Link href="/offer">
                                                     Lifetime Website Offer
                                                 </Link>
                                             </Button>
-                                        </SheetTrigger>
+                                        </SheetClose>
                                      </div>
                                 </SheetContent>
                             </Sheet>
                         </div>
 
                          <div className="hidden lg:flex items-center justify-center flex-1">
-                            <ul className="flex items-center gap-x-6 xl:gap-x-8 text-sm">
-                                <li>
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger className="flex items-center gap-1 text-muted-foreground hover:text-accent-foreground transition-colors outline-none">
-                                            Business & Marketing <ChevronDown className="h-4 w-4" />
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent>
-                                            {businessToolsGroup.map((item, index) => (
-                                                <DropdownMenuItem key={index} asChild onSelect={(e) => e.preventDefault()}>
-                                                    <Link href={item.href} onClick={(e) => handleNavClick(e, item.href)}>{item.name}</Link>
-                                                </DropdownMenuItem>
-                                            ))}
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </li>
-                                <li>
-                                     <DropdownMenu>
-                                        <DropdownMenuTrigger className="flex items-center gap-1 text-muted-foreground hover:text-accent-foreground transition-colors outline-none">
-                                            Technical & Creative <ChevronDown className="h-4 w-4" />
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent>
-                                            {technicalToolsGroup.map((item, index) => (
-                                                <DropdownMenuItem key={index} asChild onSelect={(e) => e.preventDefault()}>
-                                                    <Link href={item.href} onClick={(e) => handleNavClick(e, item.href)}>{item.name}</Link>
-                                                </DropdownMenuItem>
-                                            ))}
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </li>
+                            <ul className="flex items-center gap-x-2 xl:gap-x-4 text-sm">
+                                {allMenuItems.map(item => (
+                                    <li key={item.name}>
+                                        <Button variant="ghost" asChild>
+                                             <Link href={item.href} onClick={(e) => handleNavClick(e, item.href)}>
+                                                {item.name}
+                                            </Link>
+                                        </Button>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
-                         
+
                          <div className="hidden lg:flex items-center justify-end">
                             <Button asChild size="sm">
                                 <Link href="/offer">
