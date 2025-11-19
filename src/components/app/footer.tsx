@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Rocket, Share2, Facebook, Twitter, Linkedin, Link as LinkIcon } from 'lucide-react';
+import { Rocket, Share2, Facebook, Twitter, Linkedin, Link as LinkIcon, MoveRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -39,6 +39,19 @@ export function Footer() {
 
   return (
     <footer className="border-t border-border/50 print-hidden">
+       <div className="bg-primary text-primary-foreground">
+            <div className="container mx-auto px-4 py-2 text-center text-sm font-medium">
+                <Link href="/offer" className="inline-flex items-center gap-2 group">
+                    <span>
+                        Stop Paying Monthly Fees! Get a Lifetime Website for <del>₹15,000</del> just <strong>₹8,300</strong> ($99 USD).
+                    </span>
+                    <span className="font-bold underline underline-offset-2 flex items-center gap-1 group-hover:gap-2 transition-all">
+                        Claim Offer
+                        <MoveRight className="h-4 w-4" />
+                    </span>
+                </Link>
+            </div>
+        </div>
       <div className="container mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className='flex items-center gap-4'>
             <Link href="/" className="flex items-center gap-3">
