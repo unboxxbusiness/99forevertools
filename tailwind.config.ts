@@ -16,12 +16,12 @@ export default {
         code: ['monospace'],
       },
       fontSize: {
-        'fluid-h1': 'clamp(2.5rem, 6vw, 4.5rem)',
-        'fluid-h2': 'clamp(2rem, 5vw, 3rem)',
-        'fluid-h3': 'clamp(1.5rem, 4vw, 2.25rem)',
+        'fluid-h1': 'clamp(2.25rem, 5vw, 3.75rem)',
+        'fluid-h2': 'clamp(1.75rem, 4vw, 2.5rem)',
+        'fluid-h3': 'clamp(1.5rem, 3vw, 2rem)',
         'fluid-xl': 'clamp(1.125rem, 2.5vw, 1.5rem)',
         'fluid-lg': 'clamp(1rem, 2vw, 1.25rem)',
-        'fluid-base': 'clamp(0.9rem, 1.5vw, 1rem)',
+        'fluid-base': 'clamp(1rem, 2vw, 1.125rem)',
       },
       colors: {
         background: 'hsl(var(--background))',
