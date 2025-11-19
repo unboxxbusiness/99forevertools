@@ -1,44 +1,13 @@
 
 'use client';
-import { useState } from 'react';
 import { Header } from '@/components/app/header';
-import { SchemaGeneratorForm } from '@/components/app/schema-generator/schema-generator-form';
-import { SchemaResults } from '@/components/app/schema-generator/schema-results';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-const schemaJson = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Schema Markup Generator (JSON-LD)",
-  "applicationCategory": "BusinessApplication",
-  "operatingSystem": "Web",
-  "description": "A free tool to generate structured data markup (JSON-LD) for Articles, FAQs, and Local Businesses.",
-  "offers": {
-    "@type": "Offer",
-    "price": "0"
-  }
-};
-
-function SchemaGeneratorWrapper() {
-  const [schema, setSchema] = useState<string>('');
-
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-      <SchemaGeneratorForm setSchema={setSchema} />
-      <SchemaResults schema={schema} />
-    </div>
-  );
-}
-
 export default function SchemaGeneratorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }}
-      />
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
         <div className="mb-6">
@@ -49,7 +18,12 @@ export default function SchemaGeneratorPage() {
             </Link>
           </Button>
         </div>
-        <SchemaGeneratorWrapper />
+        <div className="text-center py-16 border-2 border-dashed rounded-lg border-muted">
+            <h3 className="mt-4 text-lg font-medium">Feature Temporarily Unavailable</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              The Schema Generator is currently being fixed. Please check back later.
+            </p>
+          </div>
       </main>
     </div>
   );
