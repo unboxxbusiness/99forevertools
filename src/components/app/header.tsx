@@ -38,25 +38,22 @@ export const Header = () => {
     const pathname = usePathname()
 
     const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-        e.preventDefault();
         const [path, hash] = href.split('#');
 
         const scrollToSection = () => {
             if (hash) {
                 const element = document.getElementById(hash);
                 if (element) {
-                    const headerOffset = 100;
-                    const elementPosition = element.getBoundingClientRect().top + window.scrollY - headerOffset;
-                    window.scrollTo({ top: elementPosition, behavior: 'smooth' });
-                    // Use location.hash to let the browser manage history state correctly.
-                    window.location.hash = hash;
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }
         };
 
-        if (pathname === '/' && hash) {
+        if (pathname === '/' && path === '') {
+            e.preventDefault();
             scrollToSection();
-        } else {
+        } else if (path === '') {
+            e.preventDefault();
             router.push(href);
         }
     }, [pathname, router]);
