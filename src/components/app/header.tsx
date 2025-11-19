@@ -31,7 +31,9 @@ export function Header() {
         <div className="bg-primary text-primary-foreground">
             <div className="container mx-auto px-4 py-2 text-center text-sm font-medium">
                 <Link href="/offer" className="inline-flex items-center gap-2 group">
-                    <span>Stop Paying Monthly Fees! Get a Lifetime Website for ₹10,000.</span>
+                    <span>
+                        Stop Paying Monthly Fees! Get a Lifetime Website for <del>₹15,000</del> just <strong>₹8,300</strong> ($99 USD).
+                    </span>
                     <span className="font-bold underline underline-offset-2 flex items-center gap-1 group-hover:gap-2 transition-all">
                         Claim Offer
                         <MoveRight className="h-4 w-4" />
