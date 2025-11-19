@@ -10,24 +10,24 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '../ui/sheet'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
 
 const allMenuItems = [
-    { name: 'Calculators', href: '#calculators' },
-    { name: 'Content & SEO', href: '#content-and-seo' },
-    { name: 'Branding & Design', href: '#branding-and-design' },
-    { name: 'Image Tools', href: '#image-tools' },
-    { name: 'WhatsApp', href: '#whatsapp-tools' },
-    { name: 'Marketing & Utilities', href: '#marketing-and-utilities' },
+    { name: 'Calculators', href: '/#calculators' },
+    { name: 'Content & SEO', href: '/#content-and-seo' },
+    { name: 'Branding & Design', href: '/#branding-and-design' },
+    { name: 'Image Tools', href: '/#image-tools' },
+    { name: 'WhatsApp', href: '/#whatsapp-tools' },
+    { name: 'Marketing & Utilities', href: '/#marketing-and-utilities' },
 ]
 
 const businessToolsGroup = [
-    { name: 'Content & SEO', href: '#content-and-seo' },
-    { name: 'Branding & Design', href: '#branding-and-design' },
-    { name: 'WhatsApp Tools', href: '#whatsapp-tools' },
-    { name: 'Marketing & Utilities', href: '#marketing-and-utilities' },
+    { name: 'Content & SEO', href: '/#content-and-seo' },
+    { name: 'Branding & Design', href: '/#branding-and-design' },
+    { name: 'WhatsApp Tools', href: '/#whatsapp-tools' },
+    { name: 'Marketing & Utilities', href: '/#marketing-and-utilities' },
 ];
 
 const technicalToolsGroup = [
-    { name: 'Calculators', href: '#calculators' },
-    { name: 'Image Tools', href: '#image-tools' },
+    { name: 'Calculators', href: '/#calculators' },
+    { name: 'Image Tools', href: '/#image-tools' },
 ];
 
 
@@ -71,7 +71,7 @@ export const Header = () => {
                                                 <li key={index}>
                                                     <SheetTrigger asChild>
                                                         <Link
-                                                            href={`/${item.href}`}
+                                                            href={item.href}
                                                             className="text-muted-foreground hover:text-accent-foreground block duration-150">
                                                             <span>{item.name}</span>
                                                         </Link>
@@ -101,7 +101,7 @@ export const Header = () => {
                                         <DropdownMenuContent>
                                             {businessToolsGroup.map((item, index) => (
                                                 <DropdownMenuItem key={index} asChild>
-                                                    <Link href={`/${item.href}`}>{item.name}</Link>
+                                                    <Link href={item.href}>{item.name}</Link>
                                                 </DropdownMenuItem>
                                             ))}
                                         </DropdownMenuContent>
@@ -115,7 +115,7 @@ export const Header = () => {
                                         <DropdownMenuContent>
                                             {technicalToolsGroup.map((item, index) => (
                                                 <DropdownMenuItem key={index} asChild>
-                                                    <Link href={`/${item.href}`}>{item.name}</Link>
+                                                    <Link href={item.href}>{item.name}</Link>
                                                 </DropdownMenuItem>
                                             ))}
                                         </DropdownMenuContent>
