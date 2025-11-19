@@ -69,8 +69,6 @@ const tools = [
   '/manual-sales-tracker',
   '/instagram-profile-photo-maker',
   '/social-media-image-generator',
-  '/ai-ad-copy-generator',
-  '/ai-business-story-generator',
   '/terms-of-use',
   '/privacy-policy',
   '/refund-policy',

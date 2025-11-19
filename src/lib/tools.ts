@@ -13,14 +13,6 @@ export const allTools = [
     ]
   },
   {
-    category: 'AI Tools',
-    icon: 'Bot',
-    tools: [
-        { href: '/ai-ad-copy-generator', title: 'AI Ad Copy Generator', description: 'Generate compelling ad copy for your products.', icon: 'PenSquare' },
-        { href: '/ai-business-story-generator', title: 'AI Business Story Generator', description: 'Generate a compelling brand story for your business.', icon: 'BookOpen' },
-    ]
-  },
-  {
     category: 'Calculators',
     icon: 'CalculatorIcon',
     tools: [

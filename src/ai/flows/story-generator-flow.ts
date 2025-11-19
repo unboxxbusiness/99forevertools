@@ -1,49 +1,82 @@
-'use server';
-/**
- * @fileOverview A flow for generating a business story.
- */
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
-
-const StoryInputSchema = z.object({
-  companyName: z.string().describe('The name of the company.'),
-  industry: z.string().describe('The company\'s industry.'),
-  values: z.string().describe('The core values of the company.'),
-});
-
-export type StoryInput = z.infer<typeof StoryInputSchema>;
-
-const StoryOutputSchema = z.object({
-  story: z.string().describe('A compelling brand story.'),
-});
-
-export type StoryOutput = z.infer<typeof StoryOutputSchema>;
-
-export async function generateStory(input: StoryInput): Promise<StoryOutput> {
-  return storyGeneratorFlow(input);
-}
-
-const prompt = ai.definePrompt({
-  name: 'storyGeneratorPrompt',
-  input: {schema: StoryInputSchema},
-  output: {schema: StoryOutputSchema},
-  prompt: `You are a branding expert. Write a short, compelling brand story for the following company.
-
-Company Name: {{{companyName}}}
-Industry: {{{industry}}}
-Core Values: {{{values}}}
-
-The story should be engaging and reflect the company's values.`,
-});
-
-const storyGeneratorFlow = ai.defineFlow(
-  {
-    name: 'storyGeneratorFlow',
-    inputSchema: StoryInputSchema,
-    outputSchema: StoryOutputSchema,
+{
+  "name": "nextn",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack -p 9002",
+    "build": "NODE_ENV=production next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
   },
-  async input => {
-    const {output} = await prompt(input);
-    return output!;
+  "dependencies": {
+    "@hookform/resolvers": "^4.1.3",
+    "@radix-ui/react-accordion": "^1.2.3",
+    "@radix-ui/react-alert-dialog": "^1.1.6",
+    "@radix-ui/react-avatar": "^1.1.3",
+    "@radix-ui/react-checkbox": "^1.1.4",
+    "@radix-ui/react-collapsible": "^1.1.11",
+    "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-dropdown-menu": "^2.1.6",
+    "@radix-ui/react-label": "^2.1.2",
+    "@radix-ui/react-menubar": "^1.1.6",
+    "@radix-ui/react-popover": "^1.1.6",
+    "@radix-ui/react-progress": "^1.1.2",
+    "@radix-ui/react-radio-group": "^1.2.3",
+    "@radix-ui/react-scroll-area": "^1.2.3",
+    "@radix-ui/react-select": "^2.1.6",
+    "@radix-ui/react-separator": "^1.1.2",
+    "@radix-ui/react-slider": "^1.2.3",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-switch": "^1.1.3",
+    "@radix-ui/react-tabs": "^1.1.3",
+    "@radix-ui/react-toast": "^1.2.6",
+    "@radix-ui/react-toggle-group": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.8",
+    "@tabler/icons-react": "^3.11.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "css": "^3.0.0",
+    "date-fns": "^3.6.0",
+    "dotenv": "^16.5.0",
+    "embla-carousel-react": "^8.6.0",
+    "fabric": "^5.3.0",
+    "firebase": "^11.9.1",
+    "framer-motion": "^11.5.7",
+    "gifshot": "^0.4.5",
+    "jsdom": "^24.1.1",
+    "jszip": "^3.10.1",
+    "lamejs": "^1.2.1",
+    "lucide-react": "^0.475.0",
+    "motion": "^10.18.0",
+    "next": "15.3.3",
+    "patch-package": "^8.0.0",
+    "qrcode.react": "^4.0.0",
+    "react": "^18.3.1",
+    "react-day-picker": "^8.10.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.54.2",
+    "react-timezone-select": "^3.2.4",
+    "recharts": "^2.12.7",
+    "tailwind-merge": "^3.0.1",
+    "tailwindcss-animate": "^1.0.7",
+    "wav": "^1.0.2",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/css": "^0.0.37",
+    "@types/fabric": "^5.3.7",
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^20",
+    "@types/qrcode.react": "^1.0.5",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/recharts": "^1.8.29",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5",
+    "@types/gifshot": "file:./@types/gifshot",
+    "@types/lamejs": "file:./@types/lamejs",
+    "@types/wav": "^1.0.3"
   }
-);
+}

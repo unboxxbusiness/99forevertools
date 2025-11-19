@@ -1,91 +1,82 @@
-'use client';
-
-import { useState } from 'react';
-import { Header } from '@/components/app/header';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { ArrowLeft, Loader2, Sparkles } from 'lucide-react';
-import Link from 'next/link';
-import { generateStory, type StoryInput, type StoryOutput } from '@/ai/flows/story-generator-flow';
-
-export default function AiBusinessStoryGeneratorPage() {
-  const [form, setForm] = useState<StoryInput>({
-    companyName: '',
-    industry: '',
-    values: '',
-  });
-  const [result, setResult] = useState<StoryOutput | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setResult(null);
-    try {
-      const story = await generateStory(form);
-      setResult(story);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <Header />
-      <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
-        <div className="mb-6">
-          <Button asChild variant="ghost" className="pl-0">
-            <Link href="/">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Tools
-            </Link>
-          </Button>
-        </div>
-        <Card className="w-full max-w-4xl mx-auto shadow-lg">
-          <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-bold tracking-tight">AI Business Story Generator</CardTitle>
-            <CardDescription>Generate a compelling brand story with AI.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="companyName">Company Name</Label>
-                <Input id="companyName" name="companyName" value={form.companyName} onChange={handleInputChange} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="industry">Industry</Label>
-                <Input id="industry" name="industry" value={form.industry} onChange={handleInputChange} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="values">Core Values (comma separated)</Label>
-                <Input id="values" name="values" value={form.values} onChange={handleInputChange} />
-              </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-                Generate Story
-              </Button>
-            </form>
-
-            {result && (
-              <div className="mt-8 border-t pt-6">
-                <h3 className="text-xl font-bold">Generated Story</h3>
-                <div className="mt-4 space-y-4 bg-muted p-4 rounded-lg">
-                  <p className="whitespace-pre-wrap">{result.story}</p>
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </main>
-    </div>
-  );
+{
+  "name": "nextn",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack -p 9002",
+    "build": "NODE_ENV=production next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^4.1.3",
+    "@radix-ui/react-accordion": "^1.2.3",
+    "@radix-ui/react-alert-dialog": "^1.1.6",
+    "@radix-ui/react-avatar": "^1.1.3",
+    "@radix-ui/react-checkbox": "^1.1.4",
+    "@radix-ui/react-collapsible": "^1.1.11",
+    "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-dropdown-menu": "^2.1.6",
+    "@radix-ui/react-label": "^2.1.2",
+    "@radix-ui/react-menubar": "^1.1.6",
+    "@radix-ui/react-popover": "^1.1.6",
+    "@radix-ui/react-progress": "^1.1.2",
+    "@radix-ui/react-radio-group": "^1.2.3",
+    "@radix-ui/react-scroll-area": "^1.2.3",
+    "@radix-ui/react-select": "^2.1.6",
+    "@radix-ui/react-separator": "^1.1.2",
+    "@radix-ui/react-slider": "^1.2.3",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-switch": "^1.1.3",
+    "@radix-ui/react-tabs": "^1.1.3",
+    "@radix-ui/react-toast": "^1.2.6",
+    "@radix-ui/react-toggle-group": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.8",
+    "@tabler/icons-react": "^3.11.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "css": "^3.0.0",
+    "date-fns": "^3.6.0",
+    "dotenv": "^16.5.0",
+    "embla-carousel-react": "^8.6.0",
+    "fabric": "^5.3.0",
+    "firebase": "^11.9.1",
+    "framer-motion": "^11.5.7",
+    "gifshot": "^0.4.5",
+    "jsdom": "^24.1.1",
+    "jszip": "^3.10.1",
+    "lamejs": "^1.2.1",
+    "lucide-react": "^0.475.0",
+    "motion": "^10.18.0",
+    "next": "15.3.3",
+    "patch-package": "^8.0.0",
+    "qrcode.react": "^4.0.0",
+    "react": "^18.3.1",
+    "react-day-picker": "^8.10.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.54.2",
+    "react-timezone-select": "^3.2.4",
+    "recharts": "^2.12.7",
+    "tailwind-merge": "^3.0.1",
+    "tailwindcss-animate": "^1.0.7",
+    "wav": "^1.0.2",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/css": "^0.0.37",
+    "@types/fabric": "^5.3.7",
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^20",
+    "@types/qrcode.react": "^1.0.5",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/recharts": "^1.8.29",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5",
+    "@types/gifshot": "file:./@types/gifshot",
+    "@types/lamejs": "file:./@types/lamejs",
+    "@types/wav": "^1.0.3"
+  }
 }
