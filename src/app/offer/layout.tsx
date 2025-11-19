@@ -1,7 +1,4 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
   title: 'Lifetime Website Offer | 99forevertools',
@@ -13,9 +10,5 @@ export default function OfferLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en" className={`dark ${inter.variable}`}>
-      <body>{children}</body>
-    </html>
-  );
+  return <>{children}</>;
 }
