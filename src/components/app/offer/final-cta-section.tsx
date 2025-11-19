@@ -1,9 +1,9 @@
 "use client";
 import { Button } from '@/components/ui/button';
 import { cn } from "@/lib/utils";
-import { IconAdjustmentsBolt, IconCloud, IconCurrencyDollar, IconEaseInOut, IconHeart, IconHelp, IconRouteAltLeft, IconTerminal2 } from "@tabler/icons-react";
 import { CheckCircle, Clock, Search, Smartphone, Sparkles, Trophy, Zap } from 'lucide-react';
 import React from 'react';
+import { CountdownTimer } from './countdown-timer';
 
 const Feature = ({
   title,
@@ -78,6 +78,7 @@ export function FinalCTASection({ whatsAppUrl }: FinalCTASectionProps) {
 
             <div className="text-center border-t border-border pt-16">
                  <p className="text-yellow-400 font-bold text-fluid-lg flex items-center justify-center gap-2"><Clock /> IMPORTANT: This Price Will Increase Soon</p>
+                 <CountdownTimer />
                  <p className="text-muted-foreground mt-2 max-w-2xl mx-auto text-fluid-base">This is a limited-time launch offer. Once the timer hits zero or the slots are gone, the one-time pricing disappears — forever. Most website owners pay monthly… for years. You pay once and own it for life.</p>
                  <div className="mt-8">
                      <Button asChild size="lg" className="w-full max-w-lg text-xl h-16 bg-red-600 text-white hover:bg-red-700 shadow-lg">

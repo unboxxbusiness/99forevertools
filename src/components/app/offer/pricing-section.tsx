@@ -1,5 +1,6 @@
 "use client";
 import { Button } from '@/components/ui/button';
+import { CountdownTimer } from './countdown-timer';
 
 type PricingSectionProps = {
   whatsAppUrl: string;
@@ -12,6 +13,7 @@ export function PricingSection({ whatsAppUrl }: PricingSectionProps) {
              <p className="text-fluid-xl font-bold">But today, because you are early…</p>
              <h2 className="text-fluid-h1 font-extrabold text-primary">You Pay ONLY ₹8,300 <span className="text-2xl">(One-Time)</span></h2>
              <p className="text-muted-foreground max-w-md mx-auto text-fluid-base">(One-Time $99 — No Monthly Fees. No Renewals. Nothing Ever Again.)</p>
+             <CountdownTimer />
              <p className="text-green-400 font-semibold text-fluid-xl">🎉 You save over 60% instantly — and avoid lifetime hosting costs.</p>
              <div className="pt-4">
                 <Button asChild size="lg" className="w-full max-w-md text-lg h-14 bg-green-600 text-white hover:bg-green-700 shadow-lg">
