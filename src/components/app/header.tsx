@@ -149,16 +149,16 @@ const ListItem = React.forwardRef<
   return (
     <li>
       <NavigationMenuLink asChild>
-        <Link
-          href={props.href || '/'}
+        <a
           ref={ref}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
             className
           )}
+          {...props}
         >
           <div className="text-sm font-medium leading-none">{title}</div>
-        </Link>
+        </a>
       </NavigationMenuLink>
     </li>
   )
@@ -185,7 +185,9 @@ export function Header({ className }: { className?: string }) {
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                   {allTools.find(c => c.category === 'Top Tools')?.tools.map((tool) => (
-                    <ListItem key={tool.href} href={tool.href} title={tool.title}/>
+                     <Link key={tool.href} href={tool.href} legacyBehavior passHref>
+                        <ListItem title={tool.title}/>
+                     </Link>
                   ))}
                 </ul>
               </NavigationMenuContent>
@@ -195,7 +197,9 @@ export function Header({ className }: { className?: string }) {
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                   {businessTools[0]?.tools.slice(0, 7).map((tool) => (
-                    <ListItem key={tool.href} href={tool.href} title={tool.title}/>
+                    <Link key={tool.href} href={tool.href} legacyBehavior passHref>
+                        <ListItem title={tool.title}/>
+                     </Link>
                   ))}
                    <li>
                     <Link href="/#financial-calculators" passHref legacyBehavior>
@@ -216,7 +220,9 @@ export function Header({ className }: { className?: string }) {
                     </h3>
                     <ul className="flex flex-col gap-1">
                       {contentTools[0].tools.slice(0, 7).map((tool) => (
-                        <ListItem key={tool.href} href={tool.href} title={tool.title} />
+                        <Link key={tool.href} href={tool.href} legacyBehavior passHref>
+                            <ListItem title={tool.title} />
+                        </Link>
                       ))}
                        <li>
                         <Link href="/#content-writing" passHref legacyBehavior>
@@ -232,7 +238,9 @@ export function Header({ className }: { className?: string }) {
                     </h3>
                     <ul className="flex flex-col gap-1">
                       {marketingTools[0].tools.slice(0, 7).map((tool) => (
-                        <ListItem key={tool.href} href={tool.href} title={tool.title} />
+                        <Link key={tool.href} href={tool.href} legacyBehavior passHref>
+                            <ListItem title={tool.title} />
+                        </Link>
                       ))}
                        <li>
                         <Link href="/#seo-marketing" passHref legacyBehavior>
@@ -256,7 +264,9 @@ export function Header({ className }: { className?: string }) {
                         </h3>
                         <ul className="flex flex-col gap-1">
                           {category.tools.slice(0,7).map((tool) => (
-                            <ListItem key={tool.href} href={tool.href} title={tool.title} />
+                            <Link key={tool.href} href={tool.href} legacyBehavior passHref>
+                                <ListItem title={tool.title} />
+                            </Link>
                           ))}
                           <li>
                             <Link href={`/#${category.category.toLowerCase().replace(/ & /g, '-and-')}`} passHref legacyBehavior>
@@ -274,7 +284,7 @@ export function Header({ className }: { className?: string }) {
       </div>
 
       <div className="flex-1 flex justify-end items-center gap-4">
-        <Button asChild size="sm">
+        <Button asChild size="sm" className="hidden lg:inline-flex">
           <Link href="/offer">Lifetime Website Offer</Link>
         </Button>
 
