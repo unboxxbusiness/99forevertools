@@ -1,7 +1,22 @@
 
+
 import { Star, CalculatorIcon, Search, Paintbrush, Image, MessageSquare, Users, Bot, FileText, Percent, Briefcase, CircleDollarSign, Scale, Calculator, Home as HomeIcon, Landmark, TicketPercent, Scaling, QrCode, Lightbulb, PartyPopper, TrendingUp, MapPin, Hash, PenSquare, Crop, Palette, Layers, GitCompareArrows, Clapperboard, Contact, PlaySquare, CaseSensitive, Shield, Info, Pilcrow, Volume2, AudioLines, Link as LinkIcon, Activity, ExternalLink, Camera, Code, Network, Gift, FileJson, TestTube2, Mail, Clock, Binary, MessageSquarePlus, BookOpen, IndianRupee, User as UserIcon, Sparkles } from 'lucide-react';
 
 export const allTools = [
+  {
+    category: 'Top Tools',
+    icon: 'Star',
+    tools: [
+      { href: '/gst-calculator', title: 'GST Calculator', description: 'Calculate GST amounts for any price.', icon: 'Percent' },
+      { href: '/image-compressor', title: 'Image Compressor', description: 'Reduce image file sizes for faster web loading.', icon: 'Image' },
+      { href: '/background-remover', title: 'AI Background Remover', description: 'Remove backgrounds locally with an on-device AI model.', icon: 'Sparkles' },
+      { href: '/logo-maker', title: 'Advanced Logo Maker', description: 'Create a simple, text-based logo for your business.', icon: 'Palette' },
+      { href: '/qr-code-generator', title: 'QR Code Generator', description: 'Instantly create a downloadable QR code.', icon: 'QrCode' },
+      { href: '/whatsapp-link-generator', title: 'WhatsApp Link Generator', description: 'Create a wa.me link with a pre-filled message.', icon: 'MessageSquare' },
+      { href: '/invoice-generator', title: 'Shareable Invoice Generator', description: 'Generate a professional invoice to print, save as PDF, and share.', icon: 'FileText' },
+      { href: '/word-counter', title: 'Word & Character Counter', description: 'Count words, characters, sentences, and paragraphs.', icon: 'FileText' },
+    ]
+  },
   {
     category: 'Financial Calculators',
     icon: 'CalculatorIcon',
