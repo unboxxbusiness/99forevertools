@@ -28,14 +28,6 @@ const nextConfig = {
       type: 'asset/resource',
     });
 
-    config.module.rules.push({
-      test: /\.m?js$/,
-      type: 'javascript/auto',
-      resolve: {
-        fullySpecified: false,
-      },
-    });
-
     return config;
   },
   images: {
