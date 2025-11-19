@@ -1,17 +1,11 @@
+
 'use client';
+
 import { Header } from '@/components/app/header';
-import { QrCodeGeneratorForm, type QrCodeConfig } from '@/components/app/qr-code-generator/qr-code-generator-form';
-import { QrCodeGeneratorResults } from '@/components/app/qr-code-generator/qr-code-generator-results';
+import { UpiQrCodeGenerator } from '@/components/app/upi-qr-code-generator/upi-qr-code-generator';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-import { useState } from 'react';
-
-export const metadata: Metadata = {
-  title: 'UPI QR Code Generator | 99forevertools',
-  description: 'Create a custom QR code for UPI payments. Enter your UPI ID and name to generate a downloadable QR code.',
-};
 
 const schema = {
   "@context": "https://schema.org",
@@ -19,46 +13,17 @@ const schema = {
   "name": "UPI QR Code Generator",
   "applicationCategory": "FinancialApplication",
   "operatingSystem": "Web",
-  "description": "A free tool to create a custom QR code for UPI payments.",
+  "description": "A free tool to create a custom QR code for UPI payments by entering a UPI ID and payee name.",
   "offers": {
     "@type": "Offer",
     "price": "0"
   }
 };
 
-function QrCodeGeneratorWrapper() {
-  const [qrConfig, setQrConfig] = useState<QrCodeConfig>({
-    type: 'upi', // Default to UPI
-    value: '',
-    fgColor: '#000000',
-    bgColor: '#ffffff',
-    level: 'M',
-    // ... other fields
-    url: '',
-    ssid: '',
-    password: '',
-    encryption: 'WPA',
-    firstName: '',
-    lastName: '',
-    phone: '',
-    email: '',
-    website: '',
-    upiId: '',
-    payeeName: '',
-  });
-
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-      <QrCodeGeneratorForm config={qrConfig} setConfig={setQrConfig} />
-      <QrCodeGeneratorResults config={qrConfig} />
-    </div>
-  );
-}
-
-export default function QrCodeGeneratorPage() {
+export default function UpiQrCodeGeneratorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <script
+       <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
@@ -72,7 +37,7 @@ export default function QrCodeGeneratorPage() {
             </Link>
           </Button>
         </div>
-        <QrCodeGeneratorWrapper />
+        <UpiQrCodeGenerator />
       </main>
     </div>
   );

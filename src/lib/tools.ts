@@ -18,7 +18,6 @@ export const allTools = [
     tools: [
         { href: '/ai-ad-copy-generator', title: 'AI Ad Copy Generator', description: 'Generate compelling ad copy for your products.', icon: 'PenSquare' },
         { href: '/ai-business-story-generator', title: 'AI Business Story Generator', description: 'Generate a compelling brand story for your business.', icon: 'BookOpen' },
-        { href: '/ai-blog-post-idea-generator', title: 'AI Blog Post Idea Generator', description: 'Generate a list of blog post ideas based on a topic.', icon: 'Lightbulb' },
     ]
   },
   {
@@ -104,7 +103,6 @@ export const allTools = [
     icon: 'Users',
     tools: [
       { href: '/qr-code-generator', title: 'QR Code Generator', description: 'Instantly create a downloadable QR code.', icon: 'QrCode' },
-      { href: '/upi-qr-code-generator', title: 'UPI QR Code Generator', description: 'Create a QR code for UPI payments.', icon: 'IndianRupee' },
       { href: '/vcard-qr-code-generator', title: 'Business Card QR Code Generator', description: 'Generate a QR code that contains contact info (vCard).', icon: 'Contact' },
       { href: '/festival-wish-generator', title: 'Festival Wish Generator', description: 'Create pre-written messages for festivals.', icon: 'PartyPopper' },
       { href: '/google-maps-link-generator', title: 'Google Maps Link Generator', description: 'Create a direct link to a business address on Google Maps.', icon: 'MapPin' },
