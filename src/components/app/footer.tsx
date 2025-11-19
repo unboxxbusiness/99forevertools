@@ -50,6 +50,9 @@ export function Footer() {
              <Link href="/terms-of-use" className="text-sm text-muted-foreground hover:text-primary">
               Terms of Use
             </Link>
+            <Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary">
+              Privacy Policy
+            </Link>
         </div>
         <p className="text-sm text-muted-foreground order-last sm:order-none">
           &copy; {new Date().getFullYear()} 99forevertools. All rights reserved.

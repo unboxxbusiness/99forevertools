@@ -72,6 +72,7 @@ const tools = [
   '/instagram-profile-photo-maker',
   '/social-media-image-generator',
   '/terms-of-use',
+  '/privacy-policy',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
