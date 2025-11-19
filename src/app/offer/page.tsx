@@ -1,72 +1,309 @@
-'use client';
-import { Button } from '@/components/ui/button';
-import { Check } from 'lucide-react';
-import Link from 'next/link';
+"use client";
+import { TimelineContent } from "@/components/ui/timeline-animation";
+import {VerticalCutReveal} from "@/components/ui/vertical-cut-reveal";
+import { cn } from "@/lib/utils";
+import { CheckCheck, Zap } from "lucide-react";
+import { motion } from "motion/react";
+import { useId, useRef, useState } from "react";
 
-export default function OfferPage() {
+const PricingSwitch = ({
+  button1,
+  button2,
+  onSwitch,
+  className,
+  layoutId,
+}: {
+  button1: string;
+  button2: string;
+  onSwitch: (value: string) => void;
+  className?: string;
+  layoutId?: string;
+}) => {
+  const [selected, setSelected] = useState("0");
+  const uniqueId = useId();
+  const switchLayoutId = layoutId || `switch-${uniqueId}`;
+
+  const handleSwitch = (value: string) => {
+    setSelected(value);
+    onSwitch(value);
+  };
+
+  return (
+    <div
+      className={cn(
+        "relative z-10 w-full flex rounded-full bg-neutral-50 border border-gray-200 p-1",
+        className,
+      )}
+    >
+      <button
+        onClick={() => handleSwitch("0")}
+        className={cn(
+          "relative z-10 w-full sm:h-14 h-10 rounded-full sm:px-6 px-3 sm:py-2 py-1 font-medium transition-colors",
+          selected === "0"
+            ? "text-white"
+            : "text-muted-foreground hover:text-black",
+        )}
+      >
+        {selected === "0" && (
+          <motion.span
+            layoutId={switchLayoutId}
+            className="absolute top-0 left-0 sm:h-14 h-10 w-full rounded-full border-4 shadow-sm shadow-black border-black bg-gradient-to-t from-neutral-900 via-neutral-800 to-neutral-900"
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+          />
+        )}
+        <span className="relative">{button1}</span>
+      </button>
+
+      <button
+        onClick={() => handleSwitch("1")}
+        className={cn(
+          "relative z-10 w-full sm:h-14 h-10 flex-shrink-0 rounded-full sm:px-6 px-3 sm:py-2 py-1 font-medium transition-colors",
+          selected === "1"
+            ? "text-white"
+            : "text-muted-foreground hover:text-black",
+        )}
+      >
+        {selected === "1" && (
+          <motion.span
+            layoutId={switchLayoutId}
+            className="absolute top-0 left-0 sm:h-14 h-10 w-full rounded-full border-4 shadow-sm shadow-black border-black bg-gradient-to-t from-neutral-900 via-neutral-800 to-neutral-900"
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+          />
+        )}
+        <span className="relative flex justify-center items-center gap-2">
+          {button2}
+        </span>
+      </button>
+    </div>
+  );
+};
+
+export default function PricingSection2() {
+  const [isUpdates, setIsUpdates] = useState(false);
+  const [isCorporate, setIsCorporate] = useState(false);
+  const pricingRef = useRef<HTMLDivElement>(null);
+
+  const revealVariants = {
+    visible: (i: number) => ({
+      y: 0,
+      opacity: 1,
+      filter: "blur(0px)",
+      transition: {
+        delay: i * 0.3,
+        duration: 0.5,
+      },
+    }),
+    hidden: {
+      filter: "blur(10px)",
+      y: -20,
+      opacity: 0,
+    },
+  };
+  const timelineVaraints = {
+    visible: (i: number) => ({
+      y: 0,
+      opacity: 1,
+      filter: "blur(0px)",
+      transition: {
+        delay: i * 0.1,
+        duration: 0.5,
+      },
+    }),
+    hidden: {
+      filter: "blur(10px)",
+      y: -20,
+      opacity: 0,
+    },
+  };
+
+  const toggleUpdates = (value: string) =>
+    setIsUpdates(Number.parseInt(value) === 1);
+  const toggleCorporate = (value: string) =>
+    setIsCorporate(Number.parseInt(value) === 1);
+
+  const calculatePrice = () => {
+    if (!isUpdates && !isCorporate) return 98; // 3 months + personal
+    if (isUpdates && !isCorporate) return 400; // forever + personal
+    if (!isUpdates && isCorporate) return 159; // 3 months + corporate
+    if (isUpdates && isCorporate) return 650; // forever + corporate
+    return 98;
+  };
+
+  const calculateOriginalPrice = () => {
+    const currentPrice = calculatePrice();
+    return Math.round(currentPrice * 1.45);
+  };
+
+  const currentPrice = calculatePrice();
+  const originalPrice = calculateOriginalPrice();
+
   const features = [
-    'Lifetime Hosting Included',
-    'Custom Domain Name',
-    'Mobile-Responsive Design',
-    'SEO-Optimized Structure',
-    'Up to 5 Pages',
-    'Contact Form Integration',
-    'Social Media Links',
-    'No Monthly or Yearly Fees',
+    "Figma Design system file",
+    "2000+ components and variants",
+    "Predefined style system",
+    "Free licensed icons",
+    "Step-by-step tutorial",
+    "Use on unlimited projects",
+    "Friendly support",
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <main className="flex-grow flex items-center justify-center container mx-auto px-4 py-16 md:py-24">
-        <div className="w-full max-w-4xl mx-auto">
-          <div className="text-center mb-12 animate-fade-in">
-            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-primary">
-              Stop Paying Monthly Fees!
-            </h1>
-            <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-              Get a stunning, professional website for your business with a single, one-time payment.
-              Never worry about recurring hosting or platform fees again.
-            </p>
-          </div>
+    <div className="px-4 pt-10 w-full min-h-screen mx-auto relative bg-white" ref={pricingRef}>
+      <div className="py-16 px-4 ">
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            background:
+              "radial-gradient(125% 125% at 50% 90%, #fff 40%, #2529f8 100%)",
+          }}
+        />
+        <div className="max-w-4xl mx-auto text-center">
+          <TimelineContent
+            as="div"
+            animationNum={0}
+            timelineRef={pricingRef}
+            customVariants={revealVariants}
+            className="flex items-center justify-center mb-4"
+          >
+            <Zap className="h-5 w-5 text-blue-500 fill-blue-500 mr-2" />
+            <span className="text-blue-600 font-medium">Time to connect</span>
+          </TimelineContent>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center animate-fade-in" style={{ animationDelay: '200ms' }}>
-            <div className="bg-card p-8 rounded-xl border border-border">
-              <h2 className="text-2xl font-bold mb-4">What You Get</h2>
-              <ul className="space-y-3">
-                {features.map((feature, index) => (
-                  <li key={index} className="flex items-center gap-3">
-                    <Check className="h-5 w-5 text-green-500" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <h1 className="md:text-5xl sm:text-4xl text-3xl font-semibold text-gray-900 mb-4 leading-[120%]">
+            <VerticalCutReveal
+              text="Let's get started"
+              splitBy="words"
+              staggerDuration={0.15}
+              staggerFrom="first"
+              reverse={true}
+              containerClassName="justify-center"
+              transition={{
+                type: "spring",
+                stiffness: 250,
+                damping: 40,
+                delay: 0.4,
+              }}
+            />
+          </h1>
 
-            <div className="bg-primary/10 p-8 rounded-xl border-2 border-primary shadow-2xl shadow-primary/10 text-center">
-              <h2 className="text-xl font-semibold text-primary">One-Time Payment</h2>
-              <p className="text-6xl font-bold my-4">
-                ₹10,000
-              </p>
-              <p className="text-muted-foreground mb-6">+18% GST</p>
-              <Button size="lg" className="w-full text-lg h-14" asChild>
-                <a href="https://wa.me/919876543210?text=I'm%20interested%20in%20the%20lifetime%20website%20offer%20for%20%E2%82%B910,000." target="_blank" rel="noopener noreferrer">
-                  Claim Offer on WhatsApp
-                </a>
-              </Button>
-              <p className="text-xs text-muted-foreground mt-4">
-                Limited Time Offer. Click to start a conversation.
-              </p>
-            </div>
-          </div>
-           <div className="text-center mt-12">
-                <Button variant="ghost" asChild>
-                    <Link href="/">
-                        &larr; Back to Main Site
-                    </Link>
-                </Button>
-            </div>
+          <TimelineContent
+            as="p"
+            animationNum={1}
+            timelineRef={pricingRef}
+            customVariants={revealVariants}
+            className="text-xl text-gray-600"
+          >
+            Get Module, connect, save time and money. Profit!
+          </TimelineContent>
         </div>
-      </main>
+      </div>
+
+      {/* Product Features */}
+      <div className="px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid sm:grid-cols-2 md:gap-12 gap-4 items-center">
+            <div>
+              <TimelineContent
+                as="h3"
+                animationNum={2}
+                timelineRef={pricingRef}
+                customVariants={revealVariants}
+                className="text-3xl font-medium text-gray-900 mb-2"
+              >
+                What's inside
+              </TimelineContent>
+
+              <div className="space-y-4">
+                {features.map((feature, index) => (
+                  <TimelineContent
+                    key={index}
+                    as="div"
+                    animationNum={3 + index}
+                    timelineRef={pricingRef}
+                    customVariants={timelineVaraints}
+                    className="flex items-center"
+                  >
+                    <div className="w-6 h-6 bg-blue-500 shadow-md shadow-blue-500 rounded-full flex items-center justify-center mr-3">
+                      <CheckCheck className="h-4 w-4 text-white" />
+                    </div>
+                    <span className="text-gray-700">{feature}</span>
+                  </TimelineContent>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-8">
+              <TimelineContent
+                as="div"
+                animationNum={3}
+                timelineRef={pricingRef}
+                customVariants={revealVariants}
+              >
+                <h4 className="font-semibold text-gray-900 mb-2">
+                  Access to updates
+                </h4>
+                <p className="text-sm text-gray-600 mb-2">
+                  One-time payment, updates come to the email
+                </p>
+                <PricingSwitch
+                  button1="3 Months"
+                  button2="Forever"
+                  onSwitch={toggleUpdates}
+                  className="grid grid-cols-2 w-full"
+                />
+              </TimelineContent>
+
+              <TimelineContent
+                as="div"
+                animationNum={4}
+                timelineRef={pricingRef}
+                customVariants={revealVariants}
+              >
+                <h4 className="font-semibold text-gray-900 mb-1">
+                  Lifetime license
+                </h4>
+                <p className="text-sm text-gray-600 mb-2">
+                  Select Corporate if you're part of the team
+                </p>
+                <PricingSwitch
+                  button1="Personal"
+                  button2="Corporate"
+                  onSwitch={toggleCorporate}
+                  className="grid grid-cols-2 w-full"
+                />
+              </TimelineContent>
+
+              <TimelineContent
+                as="div"
+                animationNum={5}
+                timelineRef={pricingRef}
+                customVariants={revealVariants}
+                className="text-center grid grid-cols-2 items-center gap-2 px-2"
+              >
+                <div className="flex items-center mb-4">
+                  <span className="text-5xl font-semibold text-gray-900">
+                    $
+                    <span className="text-5xl font-semibold">{currentPrice}</span>
+                  </span>
+                  <span className="text-xl text-gray-600 line-through ml-2 relative before:content-[''] before:absolute before:left-0 before:top-3.5 before:w-full before:h-0.5 before:bg-gray-800 before:z-10">
+                    $
+                    <span className="text-xl font-semibold line-through">{originalPrice}</span>
+                  </span>
+                </div>
+                <TimelineContent
+                  as="button"
+                  animationNum={6}
+                  timelineRef={pricingRef}
+                  customVariants={revealVariants}
+                  className="text-white text-xl font-semibold h-10 sm:h-16 w-full rounded-full border-4 shadow-sm shadow-blue-600 border-blue-600 bg-gradient-to-t from-blue-600 via-blue-500 to-blue-600"
+                >
+                  Purchase
+                </TimelineContent>
+              </TimelineContent>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
