@@ -1,9 +1,6 @@
 "use client";
-import { TimelineContent } from "@/components/ui/timeline-animation";
-import {VerticalCutReveal} from "@/components/ui/vertical-cut-reveal";
-import { cn } from "@/lib/utils";
-import { CheckCheck, Zap, AlertTriangle, PlayCircle, Star, Rocket, Smartphone, Search, CheckCircle, Trophy, Sparkles, Clock, ArrowRight } from "lucide-react";
-import { useId, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { AlertTriangle, ArrowRight, CheckCircle, Clock, PlayCircle, Rocket, Search, Smartphone, Sparkles, Star, Trophy, Zap } from "lucide-react";
 import Link from "next/link";
 
 export default function OfferPage() {
@@ -158,5 +155,3 @@ export default function OfferPage() {
     </div>
   );
 }
-
-    
