@@ -34,13 +34,14 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { OfferCtaFooter } from './offer-cta-footer';
+import { useTheme } from 'next-themes';
 
 const quickLinks = [
-  { title: 'Calculators', href: '/#calculators' },
-  { title: 'Content & SEO', href: '/#content-and-seo' },
-  { title: 'Branding & Design', href: '/#branding-and-design' },
-  { title: 'Image Tools', href: '/#image-tools' },
-  { title: 'WhatsApp', href: '/#whatsapp-tools' },
+  { title: 'Calculators', href: '#calculators' },
+  { title: 'Content & SEO', href: '#content-and-seo' },
+  { title: 'Branding & Design', href: '#branding-and-design' },
+  { title: 'Image Tools', href: '#image-tools' },
+  { title: 'WhatsApp', href: '#whatsapp-tools' },
 ];
 
 const legalLinks = [
@@ -50,15 +51,10 @@ const legalLinks = [
 ];
 
 export function Footer() {
-  const [isDarkMode, setIsDarkMode] = React.useState(true);
+  const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const { toast } = useToast();
   const [pageUrl, setPageUrl] = React.useState('');
-
-  React.useEffect(() => {
-    // This effect is no longer controlling the theme, but can be kept for local state if needed.
-    // The actual theme change is now handled by a theme provider.
-  }, [isDarkMode]);
 
   React.useEffect(() => {
     setPageUrl(window.location.href);
@@ -105,7 +101,7 @@ export function Footer() {
               {quickLinks.map((link) => (
                 <a
                   key={link.title}
-                  href={link.href}
+                  href={`/${link.href}`}
                   className="block transition-colors hover:text-primary"
                 >
                   {link.title}
@@ -172,8 +168,8 @@ export function Footer() {
               <Sun className="h-4 w-4" />
               <Switch
                 id="dark-mode"
-                checked={isDarkMode}
-                onCheckedChange={setIsDarkMode}
+                checked={theme === 'dark'}
+                onCheckedChange={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               />
               <Moon className="h-4 w-4" />
               <Label htmlFor="dark-mode" className="sr-only">
