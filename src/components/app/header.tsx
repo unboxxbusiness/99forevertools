@@ -48,19 +48,28 @@ export const Header = () => {
                                 </SheetTrigger>
                                 <SheetContent side="right">
                                      <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                                     <ul className="space-y-6 text-base pt-8">
-                                        {menuItems.map((item, index) => (
-                                            <li key={index}>
-                                                <SheetTrigger asChild>
-                                                    <Link
-                                                        href={`/${item.href}`}
-                                                        className="text-muted-foreground hover:text-accent-foreground block duration-150">
-                                                        <span>{item.name}</span>
-                                                    </Link>
-                                                </SheetTrigger>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                     <div className="flex flex-col h-full">
+                                        <ul className="space-y-6 text-base pt-8 flex-grow">
+                                            {menuItems.map((item, index) => (
+                                                <li key={index}>
+                                                    <SheetTrigger asChild>
+                                                        <Link
+                                                            href={`/${item.href}`}
+                                                            className="text-muted-foreground hover:text-accent-foreground block duration-150">
+                                                            <span>{item.name}</span>
+                                                        </Link>
+                                                    </SheetTrigger>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <SheetTrigger asChild>
+                                            <Button asChild size="lg" className="w-full">
+                                                <Link href="/offer">
+                                                    Lifetime Website Offer
+                                                </Link>
+                                            </Button>
+                                        </SheetTrigger>
+                                     </div>
                                 </SheetContent>
                             </Sheet>
                         </div>
