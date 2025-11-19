@@ -1,3 +1,4 @@
+
 'use client';
 import React from 'react';
 import Link from 'next/link';
@@ -135,28 +136,28 @@ const renderIcon = (name: string, className?: string) => {
     return <IconComponent className={className} />;
 };
 
+const businessAndMarketingTools = allTools.filter(c => ['Financial Calculators', 'Content & Writing', 'SEO & Marketing'].includes(c.category));
+const designAndMediaTools = allTools.filter(c => ['Branding & Design', 'Image & Video Tools'].includes(c.category));
+const webAndUtilitiesTools = allTools.filter(c => ['Web & Utilities'].includes(c.category));
+
+
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
+>(({ className, title, ...props }, ref) => {
   return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
+    <NavigationMenuLink asChild>
+      <a
+        ref={ref}
+        className={cn(
+          "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+          className
+        )}
+        {...props}
+      >
+        <div className="text-sm font-medium leading-none">{title}</div>
+      </a>
+    </NavigationMenuLink>
   )
 })
 ListItem.displayName = "ListItem"
@@ -176,22 +177,72 @@ export function Header({ className }: { className?: string }) {
       <div className="hidden lg:flex items-center justify-center flex-1">
         <NavigationMenu>
           <NavigationMenuList>
-            {allTools.map(category => (
-                <NavigationMenuItem key={category.category}>
-                    <NavigationMenuTrigger>{category.category}</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className={cn("grid gap-3 p-4", category.tools.length > 6 ? "w-[400px] md:w-[500px] md:grid-cols-2" : "w-[300px]")}>
-                        {category.tools.map((tool) => (
-                            <Link key={tool.href} href={tool.href} legacyBehavior passHref>
-                                <ListItem title={tool.title}>
-                                    {tool.description}
-                                </ListItem>
-                            </Link>
-                        ))}
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Business & Marketing</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <div className="grid w-[600px] grid-cols-3 gap-3 p-4">
+                  {businessAndMarketingTools.map((category) => (
+                     <div key={category.category}>
+                        <h3 className="mb-2 text-sm font-medium text-muted-foreground px-3 flex items-center gap-2">
+                           {renderIcon(category.icon, 'h-4 w-4')}
+                          <span>{category.category}</span>
+                        </h3>
+                        <ul className="flex flex-col gap-1">
+                          {category.tools.map((tool) => (
+                             <Link key={tool.href} href={tool.href} legacyBehavior passHref>
+                              <ListItem title={tool.title} />
+                             </Link>
+                          ))}
                         </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-            ))}
+                     </div>
+                  ))}
+                </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Design & Media</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                 <div className="grid w-[400px] grid-cols-2 gap-3 p-4">
+                  {designAndMediaTools.map((category) => (
+                     <div key={category.category}>
+                        <h3 className="mb-2 text-sm font-medium text-muted-foreground px-3 flex items-center gap-2">
+                          {renderIcon(category.icon, 'h-4 w-4')}
+                          <span>{category.category}</span>
+                        </h3>
+                        <ul className="flex flex-col gap-1">
+                          {category.tools.map((tool) => (
+                             <Link key={tool.href} href={tool.href} legacyBehavior passHref>
+                              <ListItem title={tool.title} />
+                             </Link>
+                          ))}
+                        </ul>
+                     </div>
+                  ))}
+                </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+             <NavigationMenuItem>
+              <NavigationMenuTrigger>Web & Utilities</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                 <div className="grid w-[400px] grid-cols-2 gap-3 p-4">
+                  {webAndUtilitiesTools.map((category) => (
+                     <div key={category.category}>
+                        <h3 className="mb-2 text-sm font-medium text-muted-foreground px-3 flex items-center gap-2">
+                          {renderIcon(category.icon, 'h-4 w-4')}
+                          <span>{category.category}</span>
+                        </h3>
+                        <ul className="flex flex-col gap-1">
+                          {category.tools.map((tool) => (
+                             <Link key={tool.href} href={tool.href} legacyBehavior passHref>
+                              <ListItem title={tool.title} />
+                             </Link>
+                          ))}
+                        </ul>
+                     </div>
+                  ))}
+                </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
       </div>
