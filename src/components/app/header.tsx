@@ -4,10 +4,11 @@ import Link from 'next/link'
 import { Logo } from '@/components/logo'
 import { Menu, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { cn } from '@/lib/utils'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '../ui/sheet'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
+import { usePathname, useRouter } from 'next/navigation'
 
 const allMenuItems = [
     { name: 'Calculators', href: '/#calculators' },
@@ -33,6 +34,34 @@ const technicalToolsGroup = [
 
 export const Header = () => {
     const [isScrolled, setIsScrolled] = React.useState(false)
+    const router = useRouter()
+    const pathname = usePathname()
+
+    const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+        e.preventDefault()
+        const [path, hash] = href.split('#')
+
+        const scrollToSection = () => {
+            const element = document.getElementById(hash)
+            if (element) {
+                const headerOffset = 100; // Adjust if you have a sticky header
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+            }
+        }
+
+        if (pathname === '/' && hash) {
+            scrollToSection()
+        } else {
+            router.push(href)
+        }
+    }, [pathname, router])
+
 
     React.useEffect(() => {
         const handleScroll = () => {
@@ -72,6 +101,7 @@ export const Header = () => {
                                                     <SheetTrigger asChild>
                                                         <Link
                                                             href={item.href}
+                                                            onClick={(e) => handleNavClick(e, item.href)}
                                                             className="text-muted-foreground hover:text-accent-foreground block duration-150">
                                                             <span>{item.name}</span>
                                                         </Link>
@@ -101,7 +131,7 @@ export const Header = () => {
                                         <DropdownMenuContent>
                                             {businessToolsGroup.map((item, index) => (
                                                 <DropdownMenuItem key={index} asChild>
-                                                    <Link href={item.href}>{item.name}</Link>
+                                                    <Link href={item.href} onClick={(e) => handleNavClick(e, item.href)}>{item.name}</Link>
                                                 </DropdownMenuItem>
                                             ))}
                                         </DropdownMenuContent>
@@ -115,7 +145,7 @@ export const Header = () => {
                                         <DropdownMenuContent>
                                             {technicalToolsGroup.map((item, index) => (
                                                 <DropdownMenuItem key={index} asChild>
-                                                    <Link href={item.href}>{item.name}</Link>
+                                                    <Link href={item.href} onClick={(e) => handleNavClick(e, item.href)}>{item.name}</Link>
                                                 </DropdownMenuItem>
                                             ))}
                                         </DropdownMenuContent>
