@@ -1,8 +1,11 @@
 
 "use client";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, ArrowRight, CheckCircle, Clock, PlayCircle, Rocket, Search, Smartphone, Sparkles, Star, Trophy, Zap } from "lucide-react";
+import { TimelineContent } from "@/components/ui/timeline-animation";
+import { VerticalCutReveal } from "@/components/ui/vertical-cut-reveal";
+import { AlertTriangle, ArrowRight, CheckCircle, Clock, PlayCircle, Rocket, Search, Smartphone, Sparkles, Star, Trophy, Zap, CheckCheck } from "lucide-react";
 import Link from "next/link";
+import { useRef } from "react";
 
 export default function OfferPage() {
   const features = [
@@ -17,27 +20,39 @@ export default function OfferPage() {
   ];
 
   const whatsAppUrl = "https://wa.me/918851481785?text=Hi!%20I'm%20interested%20in%20the%20Lifetime%20Website%20Offer%20for%20₹8,300.";
+  const pageRef = useRef<HTMLDivElement>(null);
+
+  const listFeatures = [
+    "Works even while you're asleep 🌙",
+    "Built using proven conversion principles 🚀",
+    "Fully responsive on all devices 📱",
+    "Loads fast (Google LOVES this) ⚡",
+    "Instantly boosts your brand image 💼",
+  ]
 
   return (
-    <div className="bg-background text-foreground animate-fade-in">
+    <div className="bg-background text-foreground" ref={pageRef}>
         <div className="relative isolate overflow-hidden bg-gray-900">
             <div className="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
                 <div className="mx-auto max-w-2xl text-center">
-                    <div className="flex justify-center items-center gap-2 text-yellow-400">
+                    <TimelineContent className="flex justify-center items-center gap-2 text-yellow-400">
                         <AlertTriangle className="h-5 w-5" />
                         <h2 className="text-lg font-semibold uppercase tracking-wider">
                            This Special Launch Offer Is Ending Soon
                         </h2>
-                    </div>
+                    </TimelineContent>
 
                     <h1 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
-                        Unlock Your Own 24/7 Lead-Generation Machine… For A Single One-Time Payment
+                      <VerticalCutReveal text="Unlock Your Own 24/7 Lead-Generation Machine… For A Single One-Time Payment" />
                     </h1>
-                    <p className="mt-6 text-lg leading-8 text-gray-300">
+                    <TimelineContent
+                        as="p"
+                        className="mt-6 text-lg leading-8 text-gray-300"
+                    >
                         (Never Pay Monthly Fees Again!)
-                    </p>
+                    </TimelineContent>
 
-                    <div className="mt-10 flex flex-col items-center justify-center gap-y-6">
+                    <TimelineContent className="mt-10 flex flex-col items-center justify-center gap-y-6">
                         <div className="w-full max-w-xl aspect-video bg-black rounded-lg border border-primary/20 flex items-center justify-center flex-col gap-2">
                            <PlayCircle className="h-16 w-16 text-primary" />
                            <p className="text-primary/70">▶️ Press PLAY on the video below to discover how this can change your business…</p>
@@ -47,7 +62,7 @@ export default function OfferPage() {
                                 Book Offer Now
                             </a>
                         </Button>
-                    </div>
+                    </TimelineContent>
                 </div>
             </div>
              <div className="absolute top-0 -z-10 h-full w-full bg-[radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
@@ -61,23 +76,35 @@ export default function OfferPage() {
             </div>
             
             <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div className="space-y-4">
-                    <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-primary">
+                <div>
+                    <TimelineContent
+                        as="div"
+                        className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-primary"
+                    >
                         <Star className="h-5 w-5" />
                         <span className="font-semibold">ITEM #1</span>
-                    </div>
-                    <h3 className="text-3xl font-bold">A Professional Lead-Generation Website</h3>
-                    <p className="text-muted-foreground">
+                    </TimelineContent>
+                    <TimelineContent
+                        as="h3"
+                        className="text-3xl font-bold mt-4"
+                    >
+                      A Professional Lead-Generation Website
+                    </TimelineContent>
+                    <TimelineContent
+                        as="p"
+                        className="text-muted-foreground mt-2"
+                    >
                         This isn’t just a website… It’s a customer-acquisition system designed to convert visitors into paying clients day and night.
-                    </p>
-                    <ul className="space-y-3 pt-2">
-                        <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary" /><span>Works even while you're asleep 🌙</span></li>
-                        <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary" /><span>Built using proven conversion principles 🚀</span></li>
-                        <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary" /><span>Fully responsive on all devices 📱</span></li>
-                        <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary" /><span>Loads fast (Google LOVES this) ⚡</span></li>
-                        <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary" /><span>Instantly boosts your brand image 💼</span></li>
+                    </TimelineContent>
+                    <ul className="space-y-3 pt-4">
+                        {listFeatures.map((feature, i) => (
+                           <TimelineContent
+                            key={i}
+                            as="li"
+                            className="flex items-center gap-3"><CheckCheck className="h-5 w-5 text-primary" /><span>{feature}</span></TimelineContent>
+                        ))}
                     </ul>
-                    <p className="text-lg font-semibold pt-2">Real Value: <span className="line-through text-muted-foreground">₹15,000</span></p>
+                    <TimelineContent as="p" className="text-lg font-semibold pt-4">Real Value: <span className="line-through text-muted-foreground">₹15,000</span></TimelineContent>
                 </div>
                 <div>
                     <img src="https://picsum.photos/seed/offer1/600/500" alt="Professional Website Mockup" className="rounded-lg shadow-xl" data-ai-hint="website mockup" />
@@ -88,16 +115,27 @@ export default function OfferPage() {
                  <div className="order-2 md:order-1">
                     <img src="https://picsum.photos/seed/offer2/600/500" alt="Secure Hosting Graphic" className="rounded-lg shadow-xl" data-ai-hint="server security" />
                 </div>
-                <div className="space-y-4 order-1 md:order-2">
-                    <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-primary">
-                        <Star className="h-5 w-5" />
-                        <span className="font-semibold">ITEM #2</span>
-                    </div>
-                    <h3 className="text-3xl font-bold">FREE Lifetime “Business-Class” Hosting</h3>
-                    <p className="text-muted-foreground">
-                        Say goodbye to monthly and yearly hosting bills — forever. Your site stays fast, secure, and live without you ever paying again.
-                    </p>
-                    <p className="text-lg font-semibold pt-2">Real Value: <span className="line-through text-muted-foreground">₹5,000 every year — for life</span></p>
+                <div className="order-1 md:order-2">
+                    <TimelineContent
+                          as="div"
+                          className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-primary"
+                      >
+                          <Star className="h-5 w-5" />
+                          <span className="font-semibold">ITEM #2</span>
+                      </TimelineContent>
+                      <TimelineContent
+                          as="h3"
+                          className="text-3xl font-bold mt-4"
+                      >
+                        FREE Lifetime “Business-Class” Hosting
+                      </TimelineContent>
+                      <TimelineContent
+                          as="p"
+                          className="text-muted-foreground mt-2"
+                      >
+                          Say goodbye to monthly and yearly hosting bills — forever. Your site stays fast, secure, and live without you ever paying again.
+                      </TimelineContent>
+                    <TimelineContent as="p" className="text-lg font-semibold pt-4">Real Value: <span className="line-through text-muted-foreground">₹5,000 every year — for life</span></TimelineContent>
                 </div>
             </div>
 
