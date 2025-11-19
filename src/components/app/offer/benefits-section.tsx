@@ -9,7 +9,7 @@ export function BenefitsSection() {
                  <div className="grid gap-6 sm:grid-cols-2 md:gap-12 lg:gap-24">
                      <div className="relative mb-6 sm:mb-0">
                          <div className="bg-linear-to-b aspect-76/59 relative rounded-2xl from-zinc-300 to-transparent p-px dark:from-zinc-700">
-                             <Image src="https://res.cloudinary.com/dhrigocvd/image/upload/v1763532962/Free_lifetime_hosting_dlirx1.webp" alt="Secure Hosting Graphic" className="rounded-[15px] shadow" data-ai-hint="server security" width={1207} height={929} />
+                             <Image src="https://res.cloudinary.com/dhrigocvd/image/upload/v1763532962/Free_lifetime_hosting_dlirx1.webp" alt="Illustration of a secure server rack representing lifetime business-class hosting." className="rounded-[15px] shadow" data-ai-hint="server security" width={1207} height={929} />
                          </div>
                      </div>
                       <div className="relative space-y-4">

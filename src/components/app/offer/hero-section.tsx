@@ -14,7 +14,7 @@ export function HeroSection({ whatsAppUrl }: HeroSectionProps) {
         <Image
           className="rounded-lg"
           src="https://res.cloudinary.com/dhrigocvd/image/upload/v1763533783/99foreversite_lead_gen_wwo4wz.webp"
-          alt="Modern website on a laptop"
+          alt="A modern website displayed on a laptop, emphasizing the one-time payment offer."
           height={600}
           width={1200}
           data-ai-hint="website laptop"

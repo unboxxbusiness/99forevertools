@@ -50,7 +50,7 @@ export function FeaturesSection() {
                     </div>
                     <div className="border-border/50 relative rounded-3xl border p-3 lg:col-span-3">
                         <div className="bg-linear-to-b aspect-76/59 relative rounded-2xl from-zinc-300 to-transparent p-px dark:from-zinc-700">
-                             <Image src="https://res.cloudinary.com/dhrigocvd/image/upload/v1763532779/24_7_lead_generation_g2ddnu.webp" className="rounded-[15px] shadow" alt="Lead Generation Website" width={1207} height={929} />
+                             <Image src="https://res.cloudinary.com/dhrigocvd/image/upload/v1763532779/24_7_lead_generation_g2ddnu.webp" className="rounded-[15px] shadow" alt="A professional lead-generation website design shown on a laptop screen." width={1207} height={929} />
                         </div>
                     </div>
                 </div>
