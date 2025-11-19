@@ -62,6 +62,7 @@ import {
   MessageSquare,
   MessageSquarePlus,
   MousePointer,
+  Network,
   Package,
   Palette,
   PartyPopper,
