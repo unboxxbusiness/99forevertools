@@ -2,26 +2,33 @@
 
 import { useState, useEffect } from 'react';
 
-const calculateTimeLeft = () => {
-  const now = new Date();
-  const endOfDay = new Date(now);
-  endOfDay.setHours(23, 59, 59, 999); // Set to the end of the current day
-  
-  const difference = endOfDay.getTime() - now.getTime();
+const getCountdownEndTime = (): number => {
+  if (typeof window !== 'undefined') {
+    const storedEndTime = localStorage.getItem('countdownEndTime');
+    if (storedEndTime) {
+      return parseInt(storedEndTime, 10);
+    } else {
+      const newEndTime = new Date().getTime() + 10 * 60 * 1000; // 10 minutes from now
+      localStorage.setItem('countdownEndTime', newEndTime.toString());
+      return newEndTime;
+    }
+  }
+  return new Date().getTime() + 10 * 60 * 1000;
+};
+
+const calculateTimeLeft = (endTime: number) => {
+  const difference = endTime - new Date().getTime();
 
   let timeLeft = {
-    hours: '00',
     minutes: '00',
     seconds: '00',
   };
 
   if (difference > 0) {
-    const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((difference / 1000 / 60) % 60);
     const seconds = Math.floor((difference / 1000) % 60);
     
     timeLeft = {
-      hours: String(hours).padStart(2, '0'),
       minutes: String(minutes).padStart(2, '0'),
       seconds: String(seconds).padStart(2, '0'),
     };
@@ -31,22 +38,25 @@ const calculateTimeLeft = () => {
 };
 
 export function CountdownTimer() {
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [endTime, setEndTime] = useState<number | null>(null);
+  const [timeLeft, setTimeLeft] = useState({ minutes: '10', seconds: '00' });
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
+    setEndTime(getCountdownEndTime());
+  }, []);
+
+  useEffect(() => {
+    if (endTime === null) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft(endTime));
     }, 1000);
 
-    return () => clearTimeout(timer);
-  });
+    return () => clearInterval(timer);
+  }, [endTime]);
 
   return (
     <div className="flex justify-center gap-2 md:gap-4 my-4">
-      <div className="text-center">
-        <div className="text-2xl md:text-4xl font-bold bg-primary/10 text-primary p-2 md:p-4 rounded-lg min-w-[50px] md:min-w-[70px]">{timeLeft.hours}</div>
-        <div className="text-xs text-muted-foreground mt-1">Hours</div>
-      </div>
        <div className="text-center">
         <div className="text-2xl md:text-4xl font-bold bg-primary/10 text-primary p-2 md:p-4 rounded-lg min-w-[50px] md:min-w-[70px]">{timeLeft.minutes}</div>
         <div className="text-xs text-muted-foreground mt-1">Minutes</div>
